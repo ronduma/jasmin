@@ -37,3 +37,12 @@ html{
     transform: rotate(360deg);
   }
 }
+
+.homeBanner{
+  color: #439873;
+  font-family: EB Garamond;
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
