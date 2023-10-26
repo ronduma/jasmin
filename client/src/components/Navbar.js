@@ -1,7 +1,10 @@
 import '../App.css';
 import logo from '../images/jasmin logo.png';
 
+import {Link, useLocation} from 'react-router-dom';
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -22,9 +25,9 @@ function Navbar() {
         <div
           style={{marginLeft:"auto"}}
         >
-          <Button color="inherit">About Us</Button>
-          <Button color="inherit">Log In</Button>
-          <Button color="inherit">Register</Button>
+          <Button><Link to="/about">About Us</Link></Button>
+          <Button color="inherit"><Link to="/login">Log In</Link></Button>
+          <Button color="inherit"><Link to="/register">Register</Link></Button>
         </div>
       </Toolbar>
     </AppBar>

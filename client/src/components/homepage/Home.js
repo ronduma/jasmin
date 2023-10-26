@@ -8,15 +8,14 @@ function Home() {
   return (
     <div className="Home" >
       <Navbar />
-      <Box
-        className="homeBanner"
-        sx={{
-          backgroundColor:"white",
-          py:"15vh"
-        }}
-      >
-        Bringing together patients and psychologists in a seamless way.
-      </Box>
+        <Box
+          className="homeBanner"
+          sx={{
+            backgroundColor:"white",
+            py:"15vh"
+          }}
+        >
+        </Box>
       <Box
         sx={{
           mx:"2vw",
