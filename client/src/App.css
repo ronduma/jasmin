@@ -46,3 +46,48 @@ html{
   font-weight: 700;
   line-height: normal;
 }
+
+/* profile */
+
+/* CSS for the round image */
+
+.boxes-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.patient {
+  border: 1px solid #000;
+  padding: 20px;
+  width: 200px;
+}
+
+.right-boxes {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.right-box {
+  border: 1px solid #000;
+  padding: 20px;
+  width: 200px;
+  margin-left: 20px;
+}
+
+.round-image {
+  border-radius: 50%;
+  max-width: 100%;
+}
+
+.list-container {
+  display: flex;
+}
+
+.list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0 20px;
+}
+/* done with profile */
