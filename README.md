@@ -5,4 +5,6 @@
 Ron Dumalagan, Dylan Tran, Colleen Que, Jae Jang, Fenella Lachica, Bishawjit Saha
 
 ```git clone https://github.com/ronduma/jasmin.git```
-```git checkout [branch name]```
+
+
+```git checkout profile```
