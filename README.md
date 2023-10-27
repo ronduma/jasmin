@@ -10,3 +10,7 @@ enter github
 ```cd jasmin/```
 
 ```git checkout profile```
+
+to run
+```npm i```
+```npm start```
