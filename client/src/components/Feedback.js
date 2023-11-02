@@ -1,10 +1,10 @@
 import '../App.css';
-import Navbar from './Navbar';
+import Navigation from './Navigation';
 
 function Feedback() {
   return (
     <div className="Feedback" >
-      <Navbar />
+      <Navigation />
       <div>Feedback</div>
     </div>
   );

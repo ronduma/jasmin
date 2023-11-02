@@ -1,24 +1,13 @@
 import React, {useContext} from 'react';
 import SocialSignIn from './SocialSignIn';
 import {Navigate} from 'react-router-dom';
-
 import {AuthContext} from '../context/AuthContext';
 import {
   doSignInWithEmailAndPassword,
   doPasswordReset
 } from '../firebase/FirebaseFunctions';
 
-import axios from 'axios';
-
-import '../App.css';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Link from '@mui/material/Link';
-import TextField from '@mui/material/TextField';
-
-function Login() {
+function SignIn() {
   const {currentUser} = useContext(AuthContext);
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -44,56 +33,56 @@ function Login() {
     }
   };
   if (currentUser) {
-    console.log(currentUser)
-    return <Navigate to='/profile' />;
+    return <Navigate to='/home' />;
   }
   return (
-    <Card>
-      <CardContent className='card'>
-        <h1>Log In</h1>
-        <form onSubmit={handleLogin}>
-          <Box 
-            className='form' 
-            onSubmit={handleLogin}
-            sx={{'& > div': { marginBottom: '1rem' } }}
-          >
-            <div>
-              <TextField
+    <div>
+      <div className='card'>
+        <h1>Log-In</h1>
+        <form className='form' onSubmit={handleLogin}>
+          <div className='form-group'>
+            <label>
+              Email Address:
+              <br />
+              <input
                 name='email'
                 id='email'
                 type='email'
                 placeholder='Email'
-                label='Email'
-                autoFocus={true}
                 required
+                autoFocus={true}
               />
-            </div>
-            <div>
-              <TextField
+            </label>
+          </div>
+          <br />
+          <div className='form-group'>
+            <label>
+              Password:
+              <br />
+              <input
                 name='password'
                 type='password'
                 placeholder='Password'
-                label='Password'
                 autoComplete='off'
                 required
               />
-            </div>  
-            <div>
-              <Button className='button' type='submit' variant='contained'>
-                Log in
-              </Button>
-            </div>
-            <div>
-              <Link className='forgotPassword' onClick={passwordReset}>
-                Forgot Password?
-              </Link>
-            </div>
-          </Box>
+            </label>
+          </div>
+
+          <button className='button' type='submit'>
+            Log in
+          </button>
+
+          <button className='forgotPassword' onClick={passwordReset}>
+            Forgot Password
+          </button>
         </form>
+
+        <br />
         <SocialSignIn />
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
 
-export default Login;
+export default SignIn;
