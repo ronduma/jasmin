@@ -1,23 +1,15 @@
 import React, {useContext, useState} from 'react';
 import {Navigate} from 'react-router-dom';
-import {doCreateUserWithEmailAndPassword} from '../firebase/FirebaseFunctions';
 import {AuthContext} from '../context/AuthContext';
 import SocialSignIn from './SocialSignIn';
+import {doCreateUserWithEmailAndPassword} from '../firebase/FirebaseFunctions';
 
 import '../App.css';
-import {
-  Alert,
-  Box,
-  Button,
-  // FormControl,
-  IconButton,
-  // Input,
-  InputAdornment,
-  // InputLabel,
-  TextField,
-} from '@mui/material'
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import TextField from '@mui/material/TextField';
 
 function Register() {
   const {currentUser} = useContext(AuthContext);
@@ -46,78 +38,77 @@ function Register() {
   }
 
   return (
-    <div className='card'>
-      <h1>Register</h1>
-      {pwMatch && <h4 className='error'>{pwMatch}</h4>}
-      <form onSubmit={handleSignUp}>
-        <div className='form-group'>
-          <label>
-            Name:
-            <br />
-            <input
+    <Card className='card'>
+      <CardContent>
+        <h1>Register</h1>
+        {pwMatch && <h4 className='error'>{pwMatch}</h4>}
+        <Box 
+          autoComplete="off"
+          component="form"
+          onSubmit={handleSignUp}
+          sx={{'& > div': { marginBottom: '1rem' } }}
+        >
+          <div>
+            <TextField
               className='form-control'
-              required
               name='displayName'
               type='text'
               placeholder='Name'
+              label='Name'
               autoFocus={true}
+              autoComplete="off"
+              required
             />
-          </label>
-        </div>
-        <div className='form-group'>
-          <label>
-            Email:
-            <br />
-            <input
+          </div>
+          
+          <div>
+            <TextField
               className='form-control'
               required
               name='email'
               type='email'
               placeholder='Email'
+              label='Email'
+              autoComplete="off"
             />
-          </label>
-        </div>
-        <div className='form-group'>
-          <label>
-            Password:
-            <br />
-            <input
+          </div>
+          <div>
+            <TextField
               className='form-control'
               id='passwordOne'
               name='passwordOne'
               type='password'
               placeholder='Password'
-              autoComplete='off'
+              label='Password'
               required
             />
-          </label>
-        </div>
-        <div className='form-group'>
-          <label>
-            Confirm Password:
-            <br />
-            <input
+          </div>
+          <div>
+            <TextField
               className='form-control'
               name='passwordTwo'
               type='password'
               placeholder='Confirm Password'
-              autoComplete='off'
+              label='Confirm Password'
               required
             />
-          </label>
-        </div>
-        <button
-          className='button'
-          id='submitButton'
-          name='submitButton'
-          type='submit'
-        >
-          Sign Up
-        </button>
-      </form>
-      <br />
-      <SocialSignIn />
-    </div>
+          </div>
+          <div>
+            <Button
+              className='button'
+              id='submitButton'
+              name='submitButton'
+              type='submit'
+              variant='contained'
+              sx={{mb:'1rem'}}
+            >
+              Register
+            </Button>
+            <SocialSignIn />
+          </div>
+        </Box>
+      </CardContent>
+    </Card>
   );
 }
 
