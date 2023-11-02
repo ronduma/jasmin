@@ -1,13 +1,11 @@
-import '../../App.css';
-import Navbar from '../Navbar';
-import HomeCard from './HomeCard';
+import React from 'react';
 
+import '../../App.css';
 import Box from '@mui/material/Box';
 
 function Home() {
   return (
     <div className="Home" >
-      <Navbar />
         <Box
           className="homeBanner"
           sx={{
@@ -26,10 +24,6 @@ function Home() {
         alignItems="center"     // Center the cards vertically
         gap={16}                // Adjust the spacing between cards
       >
-        <HomeCard></HomeCard>
-        <HomeCard></HomeCard>
-        <HomeCard></HomeCard>
-        <HomeCard></HomeCard>
       </Box>
     </div>
   );

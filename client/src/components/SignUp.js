@@ -3,23 +3,7 @@ import {Navigate} from 'react-router-dom';
 import {doCreateUserWithEmailAndPassword} from '../firebase/FirebaseFunctions';
 import {AuthContext} from '../context/AuthContext';
 import SocialSignIn from './SocialSignIn';
-
-import '../App.css';
-import {
-  Alert,
-  Box,
-  Button,
-  // FormControl,
-  IconButton,
-  // Input,
-  InputAdornment,
-  // InputLabel,
-  TextField,
-} from '@mui/material'
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-
-function Register() {
+function SignUp() {
   const {currentUser} = useContext(AuthContext);
   const [pwMatch, setPwMatch] = useState('');
   const handleSignUp = async (e) => {
@@ -42,12 +26,12 @@ function Register() {
   };
 
   if (currentUser) {
-    return <Navigate to='/profile' />;
+    return <Navigate to='/home' />;
   }
 
   return (
     <div className='card'>
-      <h1>Register</h1>
+      <h1>Sign up</h1>
       {pwMatch && <h4 className='error'>{pwMatch}</h4>}
       <form onSubmit={handleSignUp}>
         <div className='form-group'>
@@ -121,4 +105,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default SignUp;

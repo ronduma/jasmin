@@ -7,63 +7,6 @@ const saltRounds = 10;
 
 const helpers = require('../helpers');
 
-const emptyUploadsFolder = async () => {
-  const folderPath = './uploads';
-  const files = await fs.promises.readdir(folderPath);
-
-  for (const file of files) {
-    await fs.promises.unlink(`${folderPath}/${file}`);
-  }
-};
-
-const saveImgToDB = async (username, path) => {
-  const image = fs.readFileSync(path);
-
-  try {
-    const userCollection = await users();
-    const userExists = await userCollection.findOne({ username: username });
-    if (userExists) { console.log('User found. Profile pic uploading now.') }
-    const updatedUser = await userCollection.findOneAndUpdate(
-      { username: username },
-      { $set: {profilePic: image} },
-      { returnOriginal: false }
-    );
-
-    if (!updatedUser) {
-      throw `Error: User with username ${username} not found`;
-    }
-
-    console.log('User updated.');
-    await emptyUploadsFolder()
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-const modifyImage = async (username, imageBuffer) => {
-  if (imageBuffer && imageBuffer.length > 0) {
-    let updated = await new Promise((resolve, reject) => {
-      gm(imageBuffer)
-        .gravity('Center')
-        .crop(200, 200)
-        .toBuffer("jpg", (err, croppedBuffer) => {
-          if (err) reject(err);
-          else resolve(croppedBuffer);
-        });
-    });
-    const userCollection = await users();
-    const updatedUser = await userCollection.findOneAndUpdate(
-      { username: username },
-      { $set: { profilePic: updated } },
-      { returnOriginal: false }
-    );
-    console.log(updatedUser);
-  } else {
-    throw "Empty image buffer";
-  }
-};
-
-
 const createUser = async (
   username,
   password,
@@ -145,6 +88,4 @@ module.exports = {
   checkUser,
   getUserByUsername,
   getUserById,
-  saveImgToDB,
-  modifyImage
 };

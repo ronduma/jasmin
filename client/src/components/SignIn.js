@@ -7,7 +7,7 @@ import {
   doPasswordReset
 } from '../firebase/FirebaseFunctions';
 
-function LogIn() {
+function SignIn() {
   const {currentUser} = useContext(AuthContext);
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -33,12 +33,12 @@ function LogIn() {
     }
   };
   if (currentUser) {
-    return <Navigate to='/profile' />;
+    return <Navigate to='/home' />;
   }
   return (
     <div>
       <div className='card'>
-        <h1>Sign In</h1>
+        <h1>Log-In</h1>
         <form className='form' onSubmit={handleLogin}>
           <div className='form-group'>
             <label>
@@ -85,4 +85,4 @@ function LogIn() {
   );
 }
 
-export default LogIn;
+export default SignIn;

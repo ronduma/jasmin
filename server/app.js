@@ -11,7 +11,7 @@ app.use(cors({
 }));
 
 app.use(
-  session({
+session({
     name: 'AuthCookie',
     secret: "some secret string!",
     saveUninitialized: true,
@@ -40,29 +40,29 @@ app.use('/login', (req, res, next) => {
   }
 });
 
-// app.use('/profile', (req, res, next) => {
-//   if (!req.session.user) {
-//     console.log('/profile: not logged in')
-//     return res.redirect('/login');
-//   } else {
-//     console.log('/profile: logged in')
-//     next(); 
-//   }
-// });
+app.use('/profile', (req, res, next) => {
+  if (!req.session.user) {
+    console.log('/profile: not logged in')
+    return res.redirect('/login');
+  } else {
+    console.log('/profile: logged in')
+    next(); 
+  }
+});
 
-// app.use('/logout', (req, res, next) => {
-//   if (!req.session.user) {
-//     console.log('/logout: not logged in')
-//     return res.redirect('/login');
-//   } else {
-//     console.log('/logout: logged in')
-//     next(); 
-//   }
-// });
+app.use('/logout', (req, res, next) => {
+  if (!req.session.user) {
+    console.log('/logout: not logged in')
+    return res.redirect('/login');
+  } else {
+    console.log('/logout: logged in')
+    next(); 
+  }
+});
 
 
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+// app.use(express.json());
+// app.use(express.urlencoded({extended: true}));
 
 configRoutes(app);
 
