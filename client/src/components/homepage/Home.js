@@ -2,8 +2,6 @@
 import React from 'react';
 
 import '../../App.css';
-import Navbar from '../Navbar';
-import HomeCard from './HomeCard';
 import ImageSlideshow from './ImageSlideShow';
 import Box from '@mui/material/Box';
 import TextSlideshow from  './TextSlideShow.js';
@@ -42,7 +40,6 @@ const quotes = [
 function Home() {
   return (
     <div className="Home">
-      <Navbar />
       <Box
         className="homeBanner"
         display ="flex" 
