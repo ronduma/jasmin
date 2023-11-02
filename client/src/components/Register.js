@@ -4,6 +4,8 @@ import {AuthContext} from '../context/AuthContext';
 import SocialSignIn from './SocialSignIn';
 import {doCreateUserWithEmailAndPassword} from '../firebase/FirebaseFunctions';
 
+import axios from 'axios';
+
 import '../App.css';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -14,7 +16,7 @@ import TextField from '@mui/material/TextField';
 function Register() {
   const {currentUser} = useContext(AuthContext);
   const [pwMatch, setPwMatch] = useState('');
-  const handleSignUp = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     const {displayName, email, passwordOne, passwordTwo} = e.target.elements;
     if (passwordOne.value !== passwordTwo.value) {
@@ -45,7 +47,7 @@ function Register() {
         <Box 
           autoComplete="off"
           component="form"
-          onSubmit={handleSignUp}
+          onSubmit={handleRegister}
           sx={{'& > div': { marginBottom: '1rem' } }}
         >
           <div>

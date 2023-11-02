@@ -1,11 +1,14 @@
 import React, {useContext} from 'react';
 import SocialSignIn from './SocialSignIn';
 import {Navigate} from 'react-router-dom';
+
 import {AuthContext} from '../context/AuthContext';
 import {
   doSignInWithEmailAndPassword,
   doPasswordReset
 } from '../firebase/FirebaseFunctions';
+
+import axios from 'axios';
 
 import '../App.css';
 import Box from '@mui/material/Box';
@@ -41,6 +44,7 @@ function Login() {
     }
   };
   if (currentUser) {
+    console.log(currentUser)
     return <Navigate to='/profile' />;
   }
   return (
