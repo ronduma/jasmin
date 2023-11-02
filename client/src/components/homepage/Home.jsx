@@ -2,9 +2,9 @@
 import React from 'react';
 
 import '../../App.css';
-import ImageSlideshow from './ImageSlideShow';
+import ImageSlideshow from './ImageSlideShow.jsx';
 import Box from '@mui/material/Box';
-import TextSlideshow from  './TextSlideShow.js';
+import TextSlideshow from  './TextSlideShow.jsx';
 
 //importing images for each section of the slideshow
 import image1 from '../../images/image1.jpg'
