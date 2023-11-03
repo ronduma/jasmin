@@ -34,7 +34,7 @@ const NavigationAuth = () => {
         >
         <Button component = {NavLink} to='/about' color="inherit">About Us</Button>
         <Button component = {NavLink} to='/profile' color="inherit">Profile</Button>
-        <Button><SignOutButton /></Button>
+        <SignOutButton />
         </div>
       </Toolbar>
     </AppBar>
