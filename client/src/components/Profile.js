@@ -13,7 +13,10 @@ function Profile() {
         <div class="boxes-container">
           <div class="left-boxes">
             <div class="patient">
-              <h1>Ron D</h1>
+              <h1>
+                Ron D <i class="fa-regular fa-pen-to-square"></i>
+              </h1>
+
               <img src={profile_img} alt="Your Image" class="round-image" />
 
               <div class="list-container">
