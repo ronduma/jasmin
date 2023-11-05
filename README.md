@@ -13,4 +13,5 @@ enter github
 
 to run
 ```npm i```
+```cd client```
 ```npm start```
