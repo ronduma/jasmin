@@ -12,6 +12,8 @@ import {
   reauthenticateWithCredential
 } from 'firebase/auth';
 
+import axios from 'axios';
+
 async function doCreateUserWithEmailAndPassword(email, password, displayName) {
   const auth = getAuth();
   await createUserWithEmailAndPassword(auth, email, password);
@@ -35,9 +37,21 @@ async function doSignInWithEmailAndPassword(email, password) {
 }
 
 async function doSocialSignIn() {
-  let auth = getAuth();
-  let socialProvider = new GoogleAuthProvider();
-  await signInWithRedirect(auth, socialProvider);
+  try { 
+    let auth = getAuth();
+    let socialProvider = new GoogleAuthProvider();
+    let result = await signInWithRedirect(auth, socialProvider)
+    .then(async (result) => {
+      let user = auth.user;
+      let response = await axios.post('http://localhost:5000/register', user);
+      console.log("user", user);
+      console.log("response", response);
+    });
+
+  } catch(error) {
+    console.error("error:", error);
+    throw error;
+  }
 }
 
 async function doPasswordReset(email) {
