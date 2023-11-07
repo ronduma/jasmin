@@ -5,7 +5,7 @@ import {
   updateProfile,
   signInWithEmailAndPassword,
   updatePassword,
-  signInWithPopup,
+  signInWithRedirect,
   GoogleAuthProvider,
   sendPasswordResetEmail,
   EmailAuthProvider,
@@ -37,7 +37,7 @@ async function doSignInWithEmailAndPassword(email, password) {
 async function doSocialSignIn() {
   let auth = getAuth();
   let socialProvider = new GoogleAuthProvider();
-  await signInWithPopup(auth, socialProvider);
+  await signInWithRedirect(auth, socialProvider);
 }
 
 async function doPasswordReset(email) {

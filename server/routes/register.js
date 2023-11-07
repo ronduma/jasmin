@@ -5,8 +5,8 @@ const helpers = require('../helpers');
 const xss = require('xss');
 
 router.post('/', async(req,res) => {
-  console.log(req.body)
-  // let user = await users.createUser()
+  let user = await users.createUser(req.body.email);
+  return res.status(200).json(user);
 });
 
 router.get('/:id', async(req,res) => {

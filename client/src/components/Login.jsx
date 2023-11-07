@@ -49,7 +49,9 @@ function Login() {
   }
   return (
     <Card>
-      <CardContent className='card'>
+      <CardContent className='card'
+        sx={{'& > div': { marginBottom: '1rem' } }}
+      >
         <h1>Log In</h1>
         <form onSubmit={handleLogin}>
           <Box 
@@ -78,18 +80,18 @@ function Login() {
                 required
               />
             </div>  
-            <div>
-              <Button className='button' type='submit' variant='contained'>
-                Log in
-              </Button>
-            </div>
-            <div>
-              <Link className='forgotPassword' onClick={passwordReset}>
-                Forgot Password?
-              </Link>
-            </div>
           </Box>
         </form>
+        <div>
+          <Button className='button' type='submit' variant='contained'>
+            Log in
+          </Button>
+        </div>
+        <div>
+          <Link className='forgotPassword' onClick={passwordReset}>
+            Forgot Password?
+          </Link>
+        </div>
         <SocialSignIn />
       </CardContent>
     </Card>

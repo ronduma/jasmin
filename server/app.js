@@ -61,7 +61,7 @@ app.use('/logout', (req, res, next) => {
 });
 
 
-// app.use(express.json());
+app.use(express.json());
 // app.use(express.urlencoded({extended: true}));
 
 configRoutes(app);

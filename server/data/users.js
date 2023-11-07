@@ -19,7 +19,7 @@ const createUser = async (email) => {
     concerns : [],
     chatLog : []
   }; 
-  const insertInfo = await userCollection.insertOne(newUser);
+  const insertInfo = await userCollection.insertOne(user);
   console.log(insertInfo)
   if (!insertInfo.acknowledged || !insertInfo.insertedId) {
     throw "Could not add user";

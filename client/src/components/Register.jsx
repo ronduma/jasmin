@@ -17,6 +17,7 @@ function Register() {
   const {currentUser} = useContext(AuthContext);
   const [mongoUpload, setMongoUpload] = useState(null);
   const [pwMatch, setPwMatch] = useState('');
+  
   const handleRegister = async (e) => {
     e.preventDefault();
     const {displayName, email, passwordOne, passwordTwo} = e.target.elements;
