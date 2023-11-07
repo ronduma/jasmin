@@ -1,3 +1,5 @@
+
+
 html{
   background-color: #85C2A7;
 }
@@ -37,7 +39,42 @@ html{
     transform: rotate(360deg);
   }
 }
+.slideshow-container {
+  width: 1000px;
+  justify-content: center;
+  display: center;
+  overflow: hidden;
+  align-items: center;
+}
 
+.each-slide > div{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 700px; /* Adjust the height to your preference */
+  background-size: cover;
+  border-radius: 50px;
+}
+
+.spanStyle {
+  padding: '20px';
+  background: white;
+  text-align: center;
+  font-size: 20px;
+  color: #439873;
+  font-family: EB Garamond;
+  font-style: normal;
+  font-weight: 700;
+}
+.textStyle {
+  padding: '20px';
+  text-align: center;
+  font-size: 50px;
+  color: #439873;
+  font-family: EB Garamond;
+  font-style: normal;
+  font-weight: 700;
+}
 .homeBanner{
   color: #439873;
   font-family: EB Garamond;
