@@ -30,7 +30,7 @@ const images = [
     },
     {
       image: image4,
-      caption: 'Obtain support during the times when you need it'
+      caption: 'Get your support during the times of need'
     }
 ];
 const quotes = [

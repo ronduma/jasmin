@@ -1,9 +1,17 @@
 import '../App.css';
-
+import {Box} from '@mui/material';
 function Profile() {
   return (
     <div className="Profile" >
-      <div>Profile</div>
+      <Box
+      sx = {{
+        width: 700,
+        height: 1000,
+        borderRadius: 1,
+        bgcolor: 'white',
+      }}>
+
+      </Box>
     </div>
   );
 }
