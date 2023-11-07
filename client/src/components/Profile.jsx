@@ -1,10 +1,8 @@
 import '../App.css';
-import Navbar from './Navbar';
 import {Box} from '@mui/material';
 function Profile() {
   return (
     <div className="Profile" >
-      <Navbar />
       <Box
       sx = {{
         width: 700,
