@@ -1,9 +1,10 @@
+
+import React from 'react';
+
 import '../../App.css';
-import Navbar from '../Navbar';
-import HomeCard from './HomeCard';
-import ImageSlideshow from './ImageSlideShow';
+import ImageSlideshow from './ImageSlideShow.jsx';
 import Box from '@mui/material/Box';
-import TextSlideshow from  './TextSlideShow.js';
+import TextSlideshow from  './TextSlideShow.jsx';
 
 //importing images for each section of the slideshow
 import image1 from '../../images/image1.jpg'
@@ -39,7 +40,6 @@ const quotes = [
 function Home() {
   return (
     <div className="Home">
-      <Navbar />
       <Box
         className="homeBanner"
         display ="flex" 
