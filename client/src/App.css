@@ -40,13 +40,48 @@ html{
   }
 }
 .slideshow-container {
-  width: 1000px;
+  width: flex;
+  justify-content: space-between;
+  display: center;
+  overflow: hidden;
+  align-items: center;
+  
+}
+.slideshow-container2 {
+  width: 700px;
   justify-content: center;
   display: center;
   overflow: hidden;
   align-items: center;
 }
-
+.div-between {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  border: 1px;
+}
+.slide-button {
+  background-color: #439873;
+  width : 400px;
+  height: 100px;
+  text-align: center;
+  font-size: 70px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  border-radius: 20px;
+}
+.image-slide {
+  width: 700px;
+  height: 400px;
+  border-radius: 20%;
+  text-align: center;
+  flex: 1;
+}
+.text-slide {
+  flex: 1;
+  background-size: cover;
+  font-size: 50px;
+  font-weight: 300;
+}
 .each-slide > div{
   display: flex;
   align-items: center;

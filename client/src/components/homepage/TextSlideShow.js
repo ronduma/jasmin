@@ -4,8 +4,8 @@ import 'react-slideshow-image/dist/styles.css';
 import '../../App.css';
 const TextSlideshow = ({ texts }) => {
     return(
-        <div className = "slideshow-container">
-            <Slide arrows = {false}  autoplay = {true} texts = {texts}>
+        <div className = "slideshow-container2">
+            <Slide arrows = {false}  duration = {5000} autoplay = {true} texts = {texts}>
                 {texts.map((each, index) => (
                     <div key = {index} className ="each-slide">
                         <span className = "textStyle" >
