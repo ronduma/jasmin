@@ -15,6 +15,7 @@ import TextField from '@mui/material/TextField';
 
 function Register() {
   const {currentUser} = useContext(AuthContext);
+  const [mongoUpload, setMongoUpload] = useState(null);
   const [pwMatch, setPwMatch] = useState('');
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -23,13 +24,21 @@ function Register() {
       setPwMatch('Passwords do not match');
       return false;
     }
-
     try {
-      await doCreateUserWithEmailAndPassword(
+      let user = await doCreateUserWithEmailAndPassword(
         email.value,
         passwordOne.value,
         displayName.value
       );
+      console.log("user created:", user)  
+      axios.post('http://localhost:5000/register', user)
+      .then(response => {
+        console.log("user", user)
+        console.log("response", response)
+      })
+      .catch(error => {
+        console.log(error.response.data.error)
+      });        
     } catch (error) {
       alert(error);
     }

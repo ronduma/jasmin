@@ -16,6 +16,7 @@ async function doCreateUserWithEmailAndPassword(email, password, displayName) {
   const auth = getAuth();
   await createUserWithEmailAndPassword(auth, email, password);
   await updateProfile(auth.currentUser, {displayName: displayName});
+  return auth.currentUser;
 }
 
 async function doChangePassword(email, oldPassword, newPassword) {
