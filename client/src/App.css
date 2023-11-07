@@ -83,3 +83,81 @@ html{
   font-weight: 700;
   line-height: normal;
 }
+
+/* profile */
+
+/* CSS for the round image */
+
+.boxes-container {
+  display: flex;
+  margin-top:20px
+  /* background-color:green; */
+}
+
+.left-boxes{
+  padding: 20px;
+  width: 500px;
+  margin:20px;
+}
+
+.patient {
+  border: 1px solid white;
+  background-color: white;
+  padding: 20px;
+  width: 300px;
+  
+  margin:20px;
+
+}
+
+.right-boxes {
+  /* float:right; */
+  padding: 0;
+  margin: 0 20px;
+  /* flex-direction: column; */
+}
+
+.right-box {
+  border: 1px solid white;
+  background-color: white;
+  padding: 20px;
+  width: 700px;
+  margin-left: 20px;
+  margin-bottom: 20px;
+  /* flex-direction: column; */
+}
+
+.round-image {
+  border-radius: 50%;
+  max-width: 100%;
+}
+
+.list-container {
+  display: flex;
+  
+}
+
+.list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0 20px;
+}
+
+.blue{
+  background-color: blue; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: flex;
+  font-size: 16px;
+  margin-left:100px;
+  margin-bottom:20px;
+  
+}
+
+.container {
+  display: flex;
+}
+/* done with profile */
