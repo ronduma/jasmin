@@ -1,11 +1,9 @@
 import "../App.css";
-import Navbar from "./Navbar";
 import profile_img from "../images/profile.jpg";
 
 function Profile() {
   return (
     <div>
-      <Navbar />
       {/* <div>
         <h1>Profile</h1>
       </div> */}

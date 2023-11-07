@@ -1,11 +1,9 @@
 import "../App.css";
-import Navbar from "./Navbar";
 import profile_img from "../images/profile.jpg";
 
-function Profile() {
+function Psychologist() {
   return (
     <div>
-      <Navbar />
       {/* <div>
         <h1>Profile</h1>
       </div> */}
@@ -179,4 +177,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default Psychologist;
