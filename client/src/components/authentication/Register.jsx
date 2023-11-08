@@ -1,12 +1,12 @@
 import React, {useContext, useState} from 'react';
 import {Navigate} from 'react-router-dom';
-import {AuthContext} from '../context/AuthContext';
-import SocialSignIn from './SocialSignIn';
-import {doCreateUserWithEmailAndPassword} from '../firebase/FirebaseFunctions';
+import {AuthContext} from '../../context/AuthContext';
+import SocialRegister from './SocialRegister';
+import {doCreateUserWithEmailAndPassword} from '../../firebase/FirebaseFunctions';
 
 import axios from 'axios';
 
-import '../App.css';
+import '../../App.css';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -17,7 +17,7 @@ function Register() {
   const {currentUser} = useContext(AuthContext);
   const [mongoUpload, setMongoUpload] = useState(null);
   const [pwMatch, setPwMatch] = useState('');
-  
+
   const handleRegister = async (e) => {
     e.preventDefault();
     const {displayName, email, passwordOne, passwordTwo} = e.target.elements;
@@ -116,7 +116,7 @@ function Register() {
             >
               Register
             </Button>
-            <SocialSignIn />
+            <SocialRegister />
           </div>
         </Box>
       </CardContent>

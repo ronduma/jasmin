@@ -5,7 +5,7 @@ import {
   updateProfile,
   signInWithEmailAndPassword,
   updatePassword,
-  signInWithRedirect,
+  signInWithPopup,
   GoogleAuthProvider,
   sendPasswordResetEmail,
   EmailAuthProvider,
@@ -40,14 +40,8 @@ async function doSocialSignIn() {
   try { 
     let auth = getAuth();
     let socialProvider = new GoogleAuthProvider();
-    let result = await signInWithRedirect(auth, socialProvider)
-    .then(async (result) => {
-      let user = auth.user;
-      let response = await axios.post('http://localhost:5000/register', user);
-      console.log("user", user);
-      console.log("response", response);
-    });
-
+    let result = await signInWithPopup(auth, socialProvider)
+    return result;
   } catch(error) {
     console.error("error:", error);
     throw error;
