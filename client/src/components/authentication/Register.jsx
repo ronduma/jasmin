@@ -2,7 +2,7 @@ import React, {useContext, useState} from 'react';
 import {Navigate} from 'react-router-dom';
 import {AuthContext} from '../../context/AuthContext';
 import SocialRegister from './SocialRegister';
-import {doCreateUserWithEmailAndPassword} from '../../firebase/FirebaseFunctions';
+import {doCreateUserWithEmailAndPassword, doSignOut} from '../../firebase/FirebaseFunctions';
 
 import axios from 'axios';
 
@@ -17,6 +17,12 @@ function Register() {
   const {currentUser} = useContext(AuthContext);
   const [mongoUpload, setMongoUpload] = useState(null);
   const [pwMatch, setPwMatch] = useState('');
+  const [isNewUser, setIsNewUser] = useState(true);
+
+  const handleNewUser = async (additionalUserInfo) => {
+    console.log(additionalUserInfo.isNewUser)
+    setIsNewUser(additionalUserInfo.isNewUser)
+  }
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -46,7 +52,14 @@ function Register() {
   };
 
   if (currentUser) {
-    return <Navigate to='/profile' />;
+    if (isNewUser){
+      return <Navigate to='/getting-started' /> 
+    } else {
+      alert("user exists");
+      doSignOut();
+      return <Navigate to='/register' />
+    } 
+    
   }
 
   return (
@@ -116,7 +129,7 @@ function Register() {
             >
               Register
             </Button>
-            <SocialRegister />
+            <SocialRegister onRegister={handleNewUser}/>
           </div>
         </Box>
       </CardContent>

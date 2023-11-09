@@ -4,6 +4,11 @@ const users = mongoCollections.users;
 
 const createUser = async (email) => {
   const userCollection = await users();
+  const userExists = await userCollection.findOne({ email: email });
+  if (userExists){
+    console.log("ahaha")
+    throw "User with email already exists."
+  }
   const user = {
     email : email,
     username : null,

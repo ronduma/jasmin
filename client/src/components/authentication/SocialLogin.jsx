@@ -4,12 +4,12 @@ import { getAdditionalUserInfo } from 'firebase/auth';
 
 import axios from 'axios';
 
-const SocialRegister = ({ onRegister }) => {
+const SocialLogin = ({ onSignIn }) => {
   const socialSignOn = async () => {
     try {
       let user = await doSocialSignIn();
       let additionalUserInfo = getAdditionalUserInfo(user)
-      onRegister(additionalUserInfo)
+      onSignIn(additionalUserInfo);
       if (additionalUserInfo.isNewUser){
         axios.post('http://localhost:5000/register', user.user)
         .then(response => {
@@ -32,4 +32,4 @@ const SocialRegister = ({ onRegister }) => {
   );
 };
 
-export default SocialRegister;
+export default SocialLogin;

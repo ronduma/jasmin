@@ -1,7 +1,6 @@
 import React, {useContext, useState} from 'react';
 import {Navigate} from 'react-router-dom';
 import {AuthContext} from '../context/AuthContext';
-import SocialRegister from './SocialRegister';
 import {doCreateUserWithEmailAndPassword} from '../firebase/FirebaseFunctions';
 
 import axios from 'axios';
@@ -11,112 +10,81 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 
-function Register() {
+function GettingStarted() {
   const {currentUser} = useContext(AuthContext);
-  const [mongoUpload, setMongoUpload] = useState(null);
-  const [pwMatch, setPwMatch] = useState('');
-
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    const {displayName, email, passwordOne, passwordTwo} = e.target.elements;
-    if (passwordOne.value !== passwordTwo.value) {
-      setPwMatch('Passwords do not match');
-      return false;
-    }
-    try {
-      let user = await doCreateUserWithEmailAndPassword(
-        email.value,
-        passwordOne.value,
-        displayName.value
-      );
-      console.log("user created:", user)  
-      axios.post('http://localhost:5000/register', user)
-      .then(response => {
-        console.log("user", user)
-        console.log("response", response)
-      })
-      .catch(error => {
-        console.log(error.response.data.error)
-      });        
-    } catch (error) {
-      alert(error);
-    }
-  };
-
-  if (currentUser) {
-    return <Navigate to='/profile' />;
-  }
 
   return (
     <Card className='card'>
       <CardContent>
-        <h1>Register</h1>
-        {pwMatch && <h4 className='error'>{pwMatch}</h4>}
+        <h1>Getting Started</h1>
         <Box 
           autoComplete="off"
           component="form"
-          onSubmit={handleRegister}
           sx={{'& > div': { marginBottom: '1rem' } }}
         >
           <div>
             <TextField
               className='form-control'
-              name='displayName'
               type='text'
-              placeholder='Name'
-              label='Name'
+              placeholder='First Name'
+              label='First Name'
               autoFocus={true}
               autoComplete="off"
-              required
             />
-          </div>
-          
-          <div>
             <TextField
               className='form-control'
-              required
-              name='email'
-              type='email'
-              placeholder='Email'
-              label='Email'
+              type='text'
+              placeholder='Last Name'
+              label='Last Name'
+              autoFocus={true}
               autoComplete="off"
             />
           </div>
           <div>
             <TextField
               className='form-control'
-              id='passwordOne'
-              name='passwordOne'
-              type='password'
-              placeholder='Password'
-              label='Password'
-              required
+              type='number'
+              placeholder='Age'
+              label='Age'
+              autoFocus={true}
+              autoComplete="off"
             />
           </div>
           <div>
             <TextField
               className='form-control'
-              name='passwordTwo'
-              type='password'
-              placeholder='Confirm Password'
-              label='Confirm Password'
-              required
+              type='text'
+              placeholder='Location'
+              label='Location'
+              autoFocus={true}
+              autoComplete="off"
             />
           </div>
           <div>
-            <Button
-              className='button'
-              id='submitButton'
-              name='submitButton'
-              type='submit'
-              variant='contained'
-              sx={{mb:'1rem'}}
+            <FormControl
+              sx={{width : '10vw'}}
             >
-              Register
-            </Button>
-            <SocialRegister />
+              <InputLabel>Gender</InputLabel>
+              <Select
+                label="Gender"
+              >
+                <MenuItem>Male</MenuItem>
+                <MenuItem>Female</MenuItem>
+                <MenuItem>Non-Binary</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+          <div>
+            <FormControlLabel control={<Switch />} label="Therapist?" />
           </div>
         </Box>
       </CardContent>
@@ -124,4 +92,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default GettingStarted;

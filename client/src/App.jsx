@@ -7,6 +7,7 @@ import Navigation from './components/Navigation';
 import About from './components/About';
 import Login from './components/authentication/Login';
 import Register from './components/authentication/Register';
+import GettingStarted from './components/GettingStarted';
 import Profile from './components/Profile';
 import Psychologist from './components/Psychologist';
 import Feedback from './components/Feedback';
@@ -23,6 +24,9 @@ function App() {
             <Navigation />
             <Routes>
               <Route path="/" element={<Home/>} /> 
+              <Route path='/getting-started' element={<PrivateRoute />}>
+                <Route path="/getting-started" element={<GettingStarted/>} /> 
+              </Route>
               <Route path='/profile' element={<PrivateRoute />}>
                 <Route path='/profile' element={<Profile />} />
               </Route>

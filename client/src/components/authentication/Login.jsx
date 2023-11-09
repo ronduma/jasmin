@@ -1,5 +1,5 @@
-import React, {useContext} from 'react';
-import SocialSignIn from './SocialSignIn';
+import React, {useContext, useState} from 'react';
+import SocialLogin from './SocialLogin';
 import {Navigate} from 'react-router-dom';
 
 import {AuthContext} from '../../context/AuthContext';
@@ -7,6 +7,7 @@ import {
   doSignInWithEmailAndPassword,
   doPasswordReset
 } from '../../firebase/FirebaseFunctions';
+
 
 import axios from 'axios';
 
@@ -20,6 +21,12 @@ import TextField from '@mui/material/TextField';
 
 function Login() {
   const {currentUser} = useContext(AuthContext);
+  const [isNewUser, setIsNewUser] = useState(null);
+
+  const handleNewUser = async (additionalUserInfo) => {
+    setIsNewUser(additionalUserInfo.isNewUser)
+  }
+
   const handleLogin = async (event) => {
     event.preventDefault();
     let {email, password} = event.target.elements;
@@ -43,9 +50,10 @@ function Login() {
       );
     }
   };
+
   if (currentUser) {
-    console.log(currentUser)
-    return <Navigate to='/profile' />;
+    console.log(isNewUser)
+    return <Navigate to={ isNewUser ? '/getting-started' : '/profile'} />;
   }
   return (
     <Card>
@@ -92,7 +100,7 @@ function Login() {
             Forgot Password?
           </Link>
         </div>
-        <SocialSignIn />
+        <SocialLogin onSignIn={handleNewUser}/>
       </CardContent>
     </Card>
   );
