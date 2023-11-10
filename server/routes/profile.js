@@ -5,10 +5,14 @@ const users = require('../data/users');
 const path = require('path');
 const xss = require('xss');
 
-router.get('/', async(req,res) => {
-    let userObj = await users.getUserByUsername(req.session.user);
-    // console.log(userObj)
-    return res.status(200).json(userObj);
+router.post('/', async(req,res) => {
+    try {
+        let user = await users.updateUser(req.body.uid, req.body.email);
+        return res.status(200).json(user);
+    } catch (e) {
+        console.log(e)
+    return res.status(400).json(e);
+    }
 });
 
 module.exports = router;
