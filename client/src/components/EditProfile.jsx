@@ -1,10 +1,9 @@
 import "../App.css";
 import profile_img from "../images/profile.jpg";
-// import React, {useContext} from 'react';
 import {NavLink} from 'react-router-dom';
 import Button from '@mui/material/Button';
 
-function Profile() {
+function EditProfile() {
   return (
     <div>
       {/* <div>
@@ -38,8 +37,9 @@ function Profile() {
                 </ul>
               </div>
             </div>
-            <Button class = "blue" component = {NavLink} to='/editprofile' color="inherit">Edit Profile</Button>
-             {/* <button class="blue">Edit Profile</button>  */}
+
+            <Button class = "blue" component = {NavLink} to='/profile' color="inherit">Save and Return</Button>
+            
           </div>
 
           <div class="right-boxes">
@@ -94,4 +94,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default EditProfile;

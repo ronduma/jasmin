@@ -9,6 +9,7 @@ import Login from './components/authentication/Login';
 import Register from './components/authentication/Register';
 import GettingStarted from './components/GettingStarted';
 import Profile from './components/Profile';
+import EditProfile from './components/EditProfile';
 import Psychologist from './components/Psychologist';
 import Feedback from './components/Feedback';
 import NotFound from './components/NotFound';
@@ -30,6 +31,8 @@ function App() {
               <Route path='/profile' element={<PrivateRoute />}>
                 <Route path='/profile' element={<Profile />} />
               </Route>
+              <Route path='/editprofile' element={<EditProfile />} />
+  
               <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />
 
