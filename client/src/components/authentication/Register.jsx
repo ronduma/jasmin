@@ -1,12 +1,12 @@
 import React, {useContext, useState} from 'react';
 import {Navigate} from 'react-router-dom';
-import {AuthContext} from '../context/AuthContext';
-import SocialSignIn from './SocialSignIn';
-import {doCreateUserWithEmailAndPassword} from '../firebase/FirebaseFunctions';
+import {AuthContext} from '../../context/AuthContext';
+import SocialRegister from './SocialRegister';
+import {doCreateUserWithEmailAndPassword, doSignOut} from '../../firebase/FirebaseFunctions';
 
 import axios from 'axios';
 
-import '../App.css';
+import '../../App.css';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -15,7 +15,15 @@ import TextField from '@mui/material/TextField';
 
 function Register() {
   const {currentUser} = useContext(AuthContext);
+  const [mongoUpload, setMongoUpload] = useState(null);
   const [pwMatch, setPwMatch] = useState('');
+  const [isNewUser, setIsNewUser] = useState(true);
+
+  const handleNewUser = async (additionalUserInfo) => {
+    console.log(additionalUserInfo.isNewUser)
+    setIsNewUser(additionalUserInfo.isNewUser)
+  }
+
   const handleRegister = async (e) => {
     e.preventDefault();
     const {displayName, email, passwordOne, passwordTwo} = e.target.elements;
@@ -23,20 +31,35 @@ function Register() {
       setPwMatch('Passwords do not match');
       return false;
     }
-
     try {
-      await doCreateUserWithEmailAndPassword(
+      let user = await doCreateUserWithEmailAndPassword(
         email.value,
         passwordOne.value,
         displayName.value
       );
+      console.log("user created:", user)  
+      axios.post('http://localhost:5000/register', user)
+      .then(response => {
+        console.log("user", user)
+        console.log("response", response)
+      })
+      .catch(error => {
+        console.log(error.response.data.error)
+      });        
     } catch (error) {
       alert(error);
     }
   };
 
   if (currentUser) {
-    return <Navigate to='/profile' />;
+    if (isNewUser){
+      return <Navigate to='/getting-started' /> 
+    } else {
+      alert("user exists");
+      doSignOut();
+      return <Navigate to='/register' />
+    } 
+    
   }
 
   return (
@@ -106,7 +129,7 @@ function Register() {
             >
               Register
             </Button>
-            <SocialSignIn />
+            <SocialRegister onRegister={handleNewUser}/>
           </div>
         </Box>
       </CardContent>

@@ -12,10 +12,13 @@ import {
   reauthenticateWithCredential
 } from 'firebase/auth';
 
+import axios from 'axios';
+
 async function doCreateUserWithEmailAndPassword(email, password, displayName) {
   const auth = getAuth();
   await createUserWithEmailAndPassword(auth, email, password);
   await updateProfile(auth.currentUser, {displayName: displayName});
+  return auth.currentUser;
 }
 
 async function doChangePassword(email, oldPassword, newPassword) {
@@ -34,9 +37,15 @@ async function doSignInWithEmailAndPassword(email, password) {
 }
 
 async function doSocialSignIn() {
-  let auth = getAuth();
-  let socialProvider = new GoogleAuthProvider();
-  await signInWithPopup(auth, socialProvider);
+  try { 
+    let auth = getAuth();
+    let socialProvider = new GoogleAuthProvider();
+    let result = await signInWithPopup(auth, socialProvider)
+    return result;
+  } catch(error) {
+    console.error("error:", error);
+    throw error;
+  }
 }
 
 async function doPasswordReset(email) {

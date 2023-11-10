@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {NavLink} from 'react-router-dom';
 import {AuthContext} from '../context/AuthContext';
-import SignOutButton from './LogOut';
+import LogOutButton from './LogOut';
 
 import '../App.css';
 import logo from '../images/jasmin logo.png';
@@ -34,7 +34,7 @@ const NavigationAuth = () => {
         >
         <Button component = {NavLink} to='/about' color="inherit">About Us</Button>
         <Button component = {NavLink} to='/profile' color="inherit">Profile</Button>
-        <Button><SignOutButton /></Button>
+        <LogOutButton />
         </div>
       </Toolbar>
     </AppBar>
@@ -58,8 +58,8 @@ const NavigationNonAuth = () => {
         style={{marginLeft:"auto"}}
       >
         <Button component = {NavLink} to='/about' color="inherit">About Us</Button>
-        <Button component = {NavLink} to='/login' color="inherit">Log In</Button>
         <Button component = {NavLink} to='/register' color="inherit">Register</Button>
+        <Button component = {NavLink} to='/login' color="inherit">Log In</Button>
       </div>
     </Toolbar>
   </AppBar>

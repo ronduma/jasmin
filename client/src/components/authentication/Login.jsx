@@ -1,16 +1,17 @@
-import React, {useContext} from 'react';
-import SocialSignIn from './SocialSignIn';
+import React, {useContext, useState} from 'react';
+import SocialLogin from './SocialLogin';
 import {Navigate} from 'react-router-dom';
 
-import {AuthContext} from '../context/AuthContext';
+import {AuthContext} from '../../context/AuthContext';
 import {
   doSignInWithEmailAndPassword,
   doPasswordReset
-} from '../firebase/FirebaseFunctions';
+} from '../../firebase/FirebaseFunctions';
+
 
 import axios from 'axios';
 
-import '../App.css';
+import '../../App.css';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -20,6 +21,12 @@ import TextField from '@mui/material/TextField';
 
 function Login() {
   const {currentUser} = useContext(AuthContext);
+  const [isNewUser, setIsNewUser] = useState(null);
+
+  const handleNewUser = async (additionalUserInfo) => {
+    setIsNewUser(additionalUserInfo.isNewUser)
+  }
+
   const handleLogin = async (event) => {
     event.preventDefault();
     let {email, password} = event.target.elements;
@@ -43,13 +50,16 @@ function Login() {
       );
     }
   };
+
   if (currentUser) {
-    console.log(currentUser)
-    return <Navigate to='/profile' />;
+    console.log(isNewUser)
+    return <Navigate to={ isNewUser ? '/getting-started' : '/profile'} />;
   }
   return (
     <Card>
-      <CardContent className='card'>
+      <CardContent className='card'
+        sx={{'& > div': { marginBottom: '1rem' } }}
+      >
         <h1>Log In</h1>
         <form onSubmit={handleLogin}>
           <Box 
@@ -78,19 +88,19 @@ function Login() {
                 required
               />
             </div>  
-            <div>
-              <Button className='button' type='submit' variant='contained'>
-                Log in
-              </Button>
-            </div>
-            <div>
-              <Link className='forgotPassword' onClick={passwordReset}>
-                Forgot Password?
-              </Link>
-            </div>
           </Box>
         </form>
-        <SocialSignIn />
+        <div>
+          <Button className='button' type='submit' variant='contained'>
+            Log in
+          </Button>
+        </div>
+        <div>
+          <Link className='forgotPassword' onClick={passwordReset}>
+            Forgot Password?
+          </Link>
+        </div>
+        <SocialLogin onSignIn={handleNewUser}/>
       </CardContent>
     </Card>
   );
