@@ -196,3 +196,19 @@ html{
   display: flex;
 }
 /* done with profile */
+
+
+
+/*Chat feature*/
+.cardChat{
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	margin: 30px;
+	min-height: 30rem;
+}
+.render-chat {
+	max-width: 350px;
+	border-radius: 5px;
+	padding: 20px;
+	box-shadow: 0px 3px 24px -8px rgba(0, 0, 0, 0.75);
+}

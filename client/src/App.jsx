@@ -11,7 +11,7 @@ import Profile from './components/Profile';
 import Psychologist from './components/Psychologist';
 import Feedback from './components/Feedback';
 import NotFound from './components/NotFound';
-
+import Chat from './components/Chat';
 import {AuthProvider} from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 
@@ -36,6 +36,7 @@ function App() {
               <Route path="/profile" element={<Profile/>} /> 
               <Route path="/psychologist" element={<Psychologist/>} /> 
               <Route path="/feedback" element={<Feedback/>} /> 
+              <Route path="/chat" element={<Chat/>} /> 
               <Route path="*" element={<NotFound/>} />
             </Routes>
           </main>

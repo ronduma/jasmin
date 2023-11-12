@@ -1,9 +1,11 @@
 const express = require('express');
 const app = express();
+const http = require('http').createServer(app);
 const configRoutes = require('./routes');
 const session = require('express-session');
-
+var io = require('socket.io')(http);
 const cors = require('cors');
+const chatroom = require('./data/chatroom')
 
 app.use(cors({
   origin: 'http://localhost:3000',
@@ -65,6 +67,45 @@ app.use('/logout', (req, res, next) => {
 // app.use(express.urlencoded({extended: true}));
 
 configRoutes(app);
+
+
+//Chat
+io.on('connection', (socket) => {
+  console.log('new client connected', socket.id);
+
+  socket.on('user_join', ({name, psychologist }) => {
+    console.log('A user joined their name is ' + name);
+    console.log('psychologist = ' + psychologist);
+    // socket.broadcast.emit('user_join', {name, roomNumber});
+    //https://stackoverflow.com/questions/40367765/joining-socket-io-room-on-connect
+    //i spent 1 hours trying to find
+    socket.join(psychologist)
+    chatroom.addUser(socket.id, name, psychologist);
+    socket.to(psychologist).emit('user_join', {name, psychologist});
+  });
+
+  socket.on('message', ({name, message, psychologist}) => {
+    console.log(name, message,psychologist, socket.id);
+    // io.emit('message', {name, message});
+    
+    io.to(psychologist).emit('message', {name, message});
+  });
+
+  socket.on('disconnect', () => {
+    //delete user
+    const deleteUser = chatroom.deleteUser(socket.id);
+    if (deleteUser){
+      //same
+      // io.in(deleteUser.roomNumber).emit('user_leave', deleteUser);
+      socket.to(deleteUser.psychologist).emit('user_leave', deleteUser);
+    }
+    console.log('Disconnect Fired');
+  });
+});
+
+http.listen(4000, () => {
+  console.log(`listening on *:${4000}`);
+});
 
 app.listen(5000, () => {
   console.log("We've now got a server!");
