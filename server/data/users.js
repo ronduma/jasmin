@@ -62,6 +62,7 @@ const updateUser = async (
     }).filter(([key, value]) => value !== undefined && value !== null)
   );
   const userCollection = await users();
+
   const user = await userCollection.findOneAndUpdate(
     { _id : uid },
     { $set: updated },
@@ -69,9 +70,10 @@ const updateUser = async (
   );
 }
 
-const getUserById = async (userId) => {
+
+const getUserById = async (uid) => {
   const userCollection = await users();
-  const user = await userCollection.findOne({ _id: new ObjectId(userId) });
+  const user = await userCollection.findOne({ _id: uid});
   if (!user) throw "User not found";
   return user;
 }

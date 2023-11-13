@@ -1,94 +1,43 @@
 import "../App.css";
 import profile_img from "../images/profile.jpg";
-
+import React, {useState, useEffect, useContext} from 'react';
+import axios from 'axios';
+import {useNavigate} from 'react-router-dom';
+import {Box} from "@mui/material";
+import {AuthContext} from '../context/AuthContext';
 function Profile() {
-  return (
-    <div>
-      {/* <div>
-        <h1>Profile</h1>
-      </div> */}
-      {
-        <div class="boxes-container">
-          <div class="left-boxes">
-            <div class="patient">
-              <h1>
-                Ron D <i class="fa-regular fa-pen-to-square"></i>
-              </h1>
-
-              <img src={profile_img} alt="Your Image" class="round-image" />
-
-              <div class="list-container">
-                <ul class="list">
-                  <li>Age</li>
-
-                  <li>Gender</li>
-                  <li>Languages</li>
-                  <li>Location</li>
-                  <li>Occupation</li>
-                </ul>
-                <ul class="list">
-                  <li>21</li>
-                  <li>Male</li>
-                  <li>English, Viet, Spanish</li>
-                  <li>New Jersey, USA</li>
-                  <li>Student</li>
-                </ul>
-              </div>
-            </div>
-
-            <button class="blue">Edit Profile</button>
-          </div>
-
-          <div class="right-boxes">
-            <div class="right-box">
-              <h1>Bio</h1>
-
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce
-                felis tellus, malesuada vel cursus et, sodales sit amet eros.
-                Integer sed justo ac dolor molestie.
-              </p>
-            </div>
-
-            <div class="right-box">
-              <h1>Core Concerns</h1>
-              <ul>
-                <li>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                </li>
-
-                <li>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                </li>
-
-                <li>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                </li>
-              </ul>
-            </div>
-
-            <div class="right-box">
-              <h1>Frustrations</h1>
-              <ul>
-                <li>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                </li>
-
-                <li>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                </li>
-
-                <li>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
+  const {currentUser} = useContext(AuthContext);
+  const [profileData, setProfileData] = useState(undefined);
+  const [error, setErrorCode] = useState(false);
+  useEffect(() => {
+    async function fetchUserData() {
+      try {
+        const response = await axios.get(`http://localhost:5000/profile/${currentUser.uid}`);
+        setProfileData(response.data);
       }
+      catch(e){
+        console.log(e);
+        setErrorCode(true);
+      }
+    }
+    fetchUserData();
+ });
 
-    </div>
+  return (
+    <Box sx = {{width : '100%', 
+                marginTop: 10,
+                maxWidth : 350, 
+                backgroundColor : 'white',
+                border: 1,
+                borderRadius: 4,
+                boxShadow: 10,
+                borderColor: 'grey.300',
+                }}>
+                  <h1>Profile</h1>
+                  {profileData ? (
+                  <h2>{profileData.email}</h2>) : <h2>Missing Email</h2>}
+      
+    </Box>
   );
 }
-
 export default Profile;
