@@ -65,11 +65,11 @@ const updateUser = async (
   const userCollection = await users();
   const user = await userCollection.findOne({ _id : uid });
   console.log(user)
-} 
+}
 
-const getUserById = async (uid) => {
+const getUserById = async (userId) => {
   const userCollection = await users();
-  const user = await userCollection.findOne({ _id: uid});
+  const user = await userCollection.findOne({ _id: new ObjectId(userId) });
   if (!user) throw "User not found";
   return user;
 }

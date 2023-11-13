@@ -8,7 +8,6 @@ export const AuthProvider = ({children}) => {
   const auth = getAuth();
   useEffect(() => {
     let myListener = onAuthStateChanged(auth, (user) => {
-      console.log(user);
       setCurrentUser(user);
       setLoadingUser(false);
     });
