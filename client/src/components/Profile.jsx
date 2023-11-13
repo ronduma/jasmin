@@ -14,7 +14,6 @@ function Profile() {
       try {
         const response = await axios.get(`http://localhost:5000/profile/${currentUser.uid}`);
         setProfileData(response.data);
-        // console.log(profileData);
       }
       catch(e){
         console.log(e);
@@ -35,8 +34,8 @@ function Profile() {
                 borderColor: 'grey.300',
                 }}>
                   <h1>Profile</h1>
-                  <p>Email: {profileData.email}</p>
-                  <p>Bio: {profileData.bio}</p>
+                  {profileData ? (
+                  <h2>{profileData.email}</h2>) : <h2>Missing Email</h2>}
       
     </Box>
   );
