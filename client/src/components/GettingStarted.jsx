@@ -32,19 +32,19 @@ function GettingStarted() {
 
   const handleInfo = async (e) => {
     e.preventDefault();
-    const {firstName, lastName, age, gender, location, occupation} = e.target.elements;
+    const {firstName, lastName, username, age, gender, location, occupation} = e.target.elements;
     let user = {
       uid : currentUser.uid, 
       firstName : firstName.value, 
       lastName : lastName.value, 
+      username : username.value,
       age : age.value, 
       gender : gender.value, 
       location : location.value, 
       occupation : occupation.value
     };
-    console.log(user)
     try {
-      axios.post('http://localhost:5000/profile', user) 
+      axios.put('http://localhost:5000/profile', user) 
     } catch (error) {
       alert(error);
     }
@@ -96,6 +96,20 @@ function GettingStarted() {
                 width: "25ch"
               }}
             />
+          </div>
+          <div>
+            <TextField
+                className='form-control'
+                name='username'
+                type='text'
+                placeholder='Username'
+                label='Username'
+                autoFocus={true}
+                autoComplete="off"
+                sx={{
+                  width: "40ch"
+                }}
+              />
           </div>
           <div>
             <TextField
