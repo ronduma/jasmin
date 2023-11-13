@@ -5,13 +5,9 @@ const users = require('../data/users');
 const path = require('path');
 const xss = require('xss');
 
-router.get('/:id', async(req,res) => {
-    const userObject = await users.getUserById(req.params.id);
-    return res.status(200).json(userObject);
-})
-router.post('/', async(req,res) => {
+router.put('/', async(req,res) => {
     try {
-        let user = await users.updateUser(req.body.uid, req.body.email);
+        let user = await users.updateUser(req.body);
         return res.status(200).json(user);
     } catch (e) {
         console.log(e)
