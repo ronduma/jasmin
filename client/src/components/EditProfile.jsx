@@ -1,95 +1,99 @@
+import React from 'react';
 import "../App.css";
 import profile_img from "../images/profile.jpg";
-import {NavLink} from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import Button from '@mui/material/Button';
+import { FaEdit } from 'react-icons/fa'; // Importing edit icon from Font Awesome
 
 function EditProfile() {
+  // Sample data for attributes
+  const attributes = [
+    { name: "Ron D" },
+    { name: "Age", value: "21" },
+    { name: "Gender", value: "Male" },
+    { name: "Languages", value: "English, Viet, Spanish" },
+    { name: "Location", value: "New Jersey, USA" },
+    { name: "Occupation", value: "Student" }
+  ];
+
   return (
     <div>
-      {/* <div>
-        <h1>Profile</h1>
-      </div> */}
-      {
-        <div class="boxes-container">
-          <div class="left-boxes">
-            <div class="patient">
-              <h1>
-                Ron D <i class="fa-regular fa-pen-to-square"></i>
-              </h1>
+      <div className="boxes-container">
+        <div className="left-boxes">
+          <div className="patient">
+            <h1>
+              {attributes[0].name}
+              <FaEdit className="edit-icon" />
+            </h1>
 
-              <img src={profile_img} alt="Your Image" class="round-image" />
+            <img src={profile_img} alt="Your Image" className="round-image" />
 
-              <div class="list-container">
-                <ul class="list">
-                  <li>Age</li>
-
-                  <li>Gender</li>
-                  <li>Languages</li>
-                  <li>Location</li>
-                  <li>Occupation</li>
-                </ul>
-                <ul class="list">
-                  <li>21</li>
-                  <li>Male</li>
-                  <li>English, Viet, Spanish</li>
-                  <li>New Jersey, USA</li>
-                  <li>Student</li>
-                </ul>
-              </div>
+            <div className="list-container">
+              <ul className="list">
+                {/* Mapping through attributes to generate rows */}
+                {attributes.slice(1).map((attribute, index) => (
+                  <li key={index}>
+                    <span>{attribute.name}: {attribute.value}</span>
+                    {/* Add edit icon for each attribute */}
+                    <FaEdit className="edit-icon" />
+                  </li>
+                ))}
+              </ul>
             </div>
-
-            <Button class = "blue" component = {NavLink} to='/profile' color="inherit">Save and Return</Button>
-            
           </div>
 
-          <div class="right-boxes">
-            <div class="right-box">
-              <h1>Bio</h1>
+          <Button className="blue" component={NavLink} to='/profile' color="inherit">Save and Return</Button>
+        </div>
 
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce
-                felis tellus, malesuada vel cursus et, sodales sit amet eros.
-                Integer sed justo ac dolor molestie.
-              </p>
-            </div>
+        <div className="right-boxes">
+          <div className="right-box">
+            <h1>
+              Bio
+              <FaEdit className="edit-icon" />
+            </h1>
 
-            <div class="right-box">
-              <h1>Core Concerns</h1>
-              <ul>
-                <li>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                </li>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce felis tellus, malesuada vel cursus et, sodales sit amet eros. Integer sed justo ac dolor molestie.
+            </p>
+          </div>
 
-                <li>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                </li>
+          <div className="right-box">
+            <h1>
+              Core Concerns
+              <FaEdit className="edit-icon" />
+            </h1>
+            <ul>
+              <li>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              </li>
+              <li>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              </li>
+              <li>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              </li>
+            </ul>
+          </div>
 
-                <li>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                </li>
-              </ul>
-            </div>
-
-            <div class="right-box">
-              <h1>Frustrations</h1>
-              <ul>
-                <li>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                </li>
-
-                <li>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                </li>
-
-                <li>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                </li>
-              </ul>
-            </div>
+          <div className="right-box">
+            <h1>
+              Frustrations
+              <FaEdit className="edit-icon" />
+            </h1>
+            <ul>
+              <li>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              </li>
+              <li>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              </li>
+              <li>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              </li>
+            </ul>
           </div>
         </div>
-      }
-
+      </div>
     </div>
   );
 }
