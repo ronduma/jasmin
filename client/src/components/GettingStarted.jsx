@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {Navigate} from 'react-router-dom';
+import {useNavigate, Navigate} from 'react-router-dom';
 import {AuthContext} from '../context/AuthContext';
 import {doCreateUserWithEmailAndPassword} from '../firebase/FirebaseFunctions';
 
@@ -25,6 +25,7 @@ import TextField from '@mui/material/TextField';
 function GettingStarted() {
   const {currentUser} = useContext(AuthContext);
   const [gender, setGender] = React.useState('');
+  const navigate = useNavigate(); 
 
   const handleGenderChange = (event) => {
     setGender(event.target.value);
@@ -32,9 +33,11 @@ function GettingStarted() {
 
   const handleInfo = async (e) => {
     e.preventDefault();
-    const {firstName, lastName, username, age, gender, location, occupation} = e.target.elements;
+    const {isTherapist, firstName, lastName, username, age, gender, location, occupation} = e.target.elements;
+    // console.log(isTherapist, isTherapist.value)
     let user = {
       uid : currentUser.uid, 
+      isTherapist : isTherapist.value,
       firstName : firstName.value, 
       lastName : lastName.value, 
       username : username.value,
@@ -44,10 +47,12 @@ function GettingStarted() {
       occupation : occupation.value
     };
     try {
-      axios.put('http://localhost:5000/profile', user) 
+      axios.put('http://localhost:5000/profile', user)
     } catch (error) {
       alert(error);
     }
+    console.log("navigate to profile")
+    navigate('/profile')
   };
 
   return (
@@ -64,11 +69,10 @@ function GettingStarted() {
               <FormLabel id="demo-row-radio-buttons-group-label">I am a...</FormLabel>
               <RadioGroup
                 row
-                aria-labelledby="demo-row-radio-buttons-group-label"
-                name="row-radio-buttons-group"
+                name="isTherapist"
               >
-                <FormControlLabel value="patient" control={<Radio />} label="Patient" />
-                <FormControlLabel value="therapist" control={<Radio />} label="Therapist" />
+                <FormControlLabel value="false" control={<Radio />} label="Patient" />
+                <FormControlLabel value="true" control={<Radio />} label="Therapist" />
               </RadioGroup>
             </FormControl>
           <div>
