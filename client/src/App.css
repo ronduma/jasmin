@@ -195,4 +195,8 @@ html{
 .container {
   display: flex;
 }
+
+.edit-icon {
+  margin-left: 10px; /* Adjust the margin as needed */
+}
 /* done with profile */

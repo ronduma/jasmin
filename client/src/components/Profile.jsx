@@ -1,9 +1,12 @@
 import "../App.css";
 import profile_img from "../images/profile.jpg";
+
+// import React, {useContext} from 'react';
+import {NavLink} from 'react-router-dom';
+import Button from '@mui/material/Button';
+
 import React, {useState, useEffect, useContext} from 'react';
 import {useNavigate} from 'react-router-dom';
-
-import axios from 'axios';
 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
@@ -13,6 +16,9 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 
 import {AuthContext} from '../context/AuthContext';
+
+import axios from 'axios';
+
 
 function Profile() {
   const {currentUser, profileData} = useContext(AuthContext);
@@ -43,6 +49,7 @@ function Profile() {
                 <div>Email: {profileData.email}</div> 
               </div>
               : <div>Missing Data</div>}
+<Button class = "blue" component = {NavLink} to='/editprofile' color="inherit">Edit Profile</Button>
           </Paper>
         </Grid>
 
