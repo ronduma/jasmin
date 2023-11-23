@@ -1,20 +1,12 @@
-import React from 'react';
+import React from "react";
 import "../App.css";
 import profile_img from "../images/profile.jpg";
-import { NavLink } from 'react-router-dom';
-import Button from '@mui/material/Button';
-import { FaEdit } from 'react-icons/fa'; // Importing edit icon from Font Awesome
+import { NavLink } from "react-router-dom";
+import Button from "@mui/material/Button";
+import { FaEdit } from "react-icons/fa"; // Importing edit icon from Font Awesome
 
 function EditProfile() {
   // Sample data for attributes
-  const attributes = [
-    { name: "Ron D" },
-    { name: "Age", value: "21" },
-    { name: "Gender", value: "Male" },
-    { name: "Languages", value: "English, Viet, Spanish" },
-    { name: "Location", value: "New Jersey, USA" },
-    { name: "Occupation", value: "Student" }
-  ];
 
   return (
     <div>
@@ -22,7 +14,7 @@ function EditProfile() {
         <div className="left-boxes">
           <div className="patient">
             <h1>
-              {attributes[0].name}
+              {"Ron D"}
               <FaEdit className="edit-icon" />
             </h1>
 
@@ -31,18 +23,48 @@ function EditProfile() {
             <div className="list-container">
               <ul className="list">
                 {/* Mapping through attributes to generate rows */}
-                {attributes.slice(1).map((attribute, index) => (
-                  <li key={index}>
-                    <span>{attribute.name}: {attribute.value}</span>
-                    {/* Add edit icon for each attribute */}
-                    <FaEdit className="edit-icon" />
-                  </li>
-                ))}
+
+                <li>
+                  <span>{"Age: 21"}</span>
+                  {/* Add edit icon for each attribute */}
+                  <FaEdit className="edit-icon" />
+                </li>
+
+                <li>
+                  <span>{"Gender: Male"}</span>
+                  {/* Add edit icon for each attribute */}
+                  <FaEdit className="edit-icon" />
+                </li>
+
+                <li>
+                  <span>{"Languages: English, Viet, Spanish"}</span>
+                  {/* Add edit icon for each attribute */}
+                  <FaEdit className="edit-icon" />
+                </li>
+
+                <li>
+                  <span>{"Location: New Jersey, USA"}</span>
+                  {/* Add edit icon for each attribute */}
+                  <FaEdit className="edit-icon" />
+                </li>
+
+                <li>
+                  <span>{"Occupation: Student"}</span>
+                  {/* Add edit icon for each attribute */}
+                  <FaEdit className="edit-icon" />
+                </li>
               </ul>
             </div>
           </div>
 
-          <Button className="blue" component={NavLink} to='/profile' color="inherit">Save and Return</Button>
+          <Button
+            className="blue"
+            component={NavLink}
+            to="/profile"
+            color="inherit"
+          >
+            Save and Return
+          </Button>
         </div>
 
         <div className="right-boxes">
@@ -53,7 +75,9 @@ function EditProfile() {
             </h1>
 
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce felis tellus, malesuada vel cursus et, sodales sit amet eros. Integer sed justo ac dolor molestie.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce
+              felis tellus, malesuada vel cursus et, sodales sit amet eros.
+              Integer sed justo ac dolor molestie.
             </p>
           </div>
 
@@ -63,15 +87,9 @@ function EditProfile() {
               <FaEdit className="edit-icon" />
             </h1>
             <ul>
-              <li>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              </li>
-              <li>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              </li>
-              <li>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              </li>
+              <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+              <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+              <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
             </ul>
           </div>
 
@@ -81,15 +99,9 @@ function EditProfile() {
               <FaEdit className="edit-icon" />
             </h1>
             <ul>
-              <li>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              </li>
-              <li>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              </li>
-              <li>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              </li>
+              <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+              <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+              <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
             </ul>
           </div>
         </div>
