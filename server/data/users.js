@@ -6,11 +6,8 @@ const createUser = async (uid, email) => {
   const userCollection = await users();
   const userExists = await userCollection.findOne({ uid: uid });
   if (userExists){
-    console.log("ahaha")
     throw "User with email already exists."
   }
-
-  console.log(uid)
 
   const user = {
     _id : uid,
@@ -21,7 +18,7 @@ const createUser = async (uid, email) => {
     lastName : null,
     location : null,
     age : null, 
-    isPsychologist : null,
+    isTherapist : null,
     gender : null,
     bio : null,
     occupation : null,
@@ -36,7 +33,7 @@ const createUser = async (uid, email) => {
 }
 
 const updateUser = async (
-  uid,
+  {uid,
   email,
   username,
   profile_img,
@@ -44,32 +41,41 @@ const updateUser = async (
   lastName,
   location,
   age,
+  isTherapist,
   gender,
   occupation,
   concerns,
-  chatLog
+  chatLog}
 ) => {
-  let updated = {
-    email,
-    username,
-    profile_img,
-    firstName,
-    lastName,
-    location,
-    age,
-    gender,
-    occupation,
-    concerns,
-    chatLog
-  }
+  let updated = Object.fromEntries(
+    Object.entries({
+      email,
+      username,
+      profile_img,
+      firstName,
+      lastName,
+      location,
+      age,
+      isTherapist,
+      gender,
+      occupation,
+      concerns,
+      chatLog
+    }).filter(([key, value]) => value !== undefined && value !== null)
+  );
   const userCollection = await users();
-  const user = await userCollection.findOne({ _id : uid });
-  console.log(user)
+
+  const user = await userCollection.findOneAndUpdate(
+    { _id : uid },
+    { $set: updated },
+    { returnDocument: 'after' }
+  );
 }
 
-const getUserById = async (userId) => {
+
+const getUserById = async (uid) => {
   const userCollection = await users();
-  const user = await userCollection.findOne({ _id: new ObjectId(userId) });
+  const user = await userCollection.findOne({ _id: uid});
   if (!user) throw "User not found";
   return user;
 }
