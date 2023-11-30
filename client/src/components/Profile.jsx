@@ -3,7 +3,7 @@ import profile_img from "../images/profile.jpg";
 import React, {useState, useEffect, useContext} from 'react';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
-import {Box} from "@mui/material";
+import {Box, Button, Link} from "@mui/material";
 import {AuthContext} from '../context/AuthContext';
 function Profile() {
   const {currentUser} = useContext(AuthContext);
@@ -36,6 +36,7 @@ function Profile() {
                   <h1>Profile</h1>
                   {profileData ? (
                   <h2>{profileData.email}</h2>) : <h2>Missing Email</h2>}
+                  <Button component ={Link} to ="/" variant="contained" color ="primary">Edit Profile</Button>
       
     </Box>
   );
