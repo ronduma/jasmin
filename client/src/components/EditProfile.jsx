@@ -35,6 +35,7 @@ function EditProfile() {
     const editInfo = async (e) => {
         e.preventDefault();
         const {firstName, lastName, age, gender, location, occupation} = e.target.elements;
+        
         let editedUser = {
             uid: currentUser.uid,
             firstName: firstName.value,
