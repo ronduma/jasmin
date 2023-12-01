@@ -16,7 +16,6 @@ import NotFound from './components/NotFound';
 
 import {AuthProvider} from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
-import EditProfile from './components/EditProfile';
 
 function App() {
   return (
