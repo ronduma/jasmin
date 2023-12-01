@@ -11,18 +11,20 @@ import {useNavigate} from 'react-router-dom';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import Avatar from '@mui/material/Avatar';
-import {Box} from "@mui/material";
+import {Box, Button, Link} from "@mui/material";
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 
 import {AuthContext} from '../context/AuthContext';
 
-import axios from 'axios';
-
-
 function Profile() {
-  const {currentUser, profileData} = useContext(AuthContext);
-
+  const navigate = useNavigate();
+  const {profileData} = useContext(AuthContext);
+  const changeInfo = (e) => {
+    e.preventDefault();
+    console.log('navgiate to home');
+    navigate('/edit-profile');
+  }
   return (
     <div>
       <Grid container spacing={2}>
@@ -49,7 +51,20 @@ function Profile() {
                 <div>Email: {profileData.email}</div> 
               </div>
               : <div>Missing Data</div>}
-<Button class = "blue" component = {NavLink} to='/editprofile' color="inherit">Edit Profile</Button>
+              <br/>
+              <form onSubmit={changeInfo}>
+                <Button 
+                type = 'submit' 
+                variant='contained'
+                id='submitButton'
+                name='submitButton'
+                className ='button'
+                sx={{mb:'1rem'}}
+                >
+                  Edit Profile
+                </Button>
+              </form>
+
           </Paper>
         </Grid>
 
