@@ -11,7 +11,7 @@ import {useNavigate} from 'react-router-dom';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import Avatar from '@mui/material/Avatar';
-import {Box, Button, Link} from "@mui/material";
+import {Box, Link} from "@mui/material";
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 
