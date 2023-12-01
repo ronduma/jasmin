@@ -1,9 +1,12 @@
 import "../App.css";
 import profile_img from "../images/profile.jpg";
+
+// import React, {useContext} from 'react';
+import {NavLink} from 'react-router-dom';
+import Button from '@mui/material/Button';
+
 import React, {useState, useEffect, useContext} from 'react';
 import {useNavigate} from 'react-router-dom';
-
-import axios from 'axios';
 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
@@ -13,6 +16,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 
 import {AuthContext} from '../context/AuthContext';
+
 function Profile() {
   const navigate = useNavigate();
   const {profileData} = useContext(AuthContext);
@@ -60,6 +64,7 @@ function Profile() {
                   Edit Profile
                 </Button>
               </form>
+
           </Paper>
         </Grid>
 
