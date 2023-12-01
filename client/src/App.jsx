@@ -9,12 +9,14 @@ import Login from './components/authentication/Login';
 import Register from './components/authentication/Register';
 import GettingStarted from './components/GettingStarted';
 import Profile from './components/Profile';
+import EditProfile from './components/EditProfile';
 import Psychologist from './components/Psychologist';
 import Feedback from './components/Feedback';
 import NotFound from './components/NotFound';
 
 import {AuthProvider} from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
+import EditProfile from './components/EditProfile';
 
 function App() {
   return (
@@ -30,6 +32,10 @@ function App() {
               <Route path='/profile' element={<PrivateRoute />}>
                 <Route path='/profile' element={<Profile />} />
               </Route>
+              <Route path ='/edit-profile' element={<PrivateRoute />}>
+                <Route path='/edit-profile' element={<EditProfile/>}/>
+              </Route>
+
               <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />
 

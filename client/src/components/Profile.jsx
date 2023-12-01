@@ -1,92 +1,88 @@
 import "../App.css";
 import profile_img from "../images/profile.jpg";
 
+
+// import React, {useContext} from 'react';
+import {NavLink} from 'react-router-dom';
+import Button from '@mui/material/Button';
+
+import React, {useState, useEffect, useContext} from 'react';
+import {useNavigate} from 'react-router-dom';
+
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
+import Avatar from '@mui/material/Avatar';
+import {Box, Button, Link} from "@mui/material";
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+
+import {AuthContext} from '../context/AuthContext';
+
 function Profile() {
+  const navigate = useNavigate();
+  const {profileData} = useContext(AuthContext);
+  const changeInfo = (e) => {
+    e.preventDefault();
+    console.log('navgiate to home');
+    navigate('/edit-profile');
+  }
   return (
     <div>
-      {/* <div>
-        <h1>Profile</h1>
-      </div> */}
-      {
-        <div class="boxes-container">
-          <div class="left-boxes">
-            <div class="patient">
-              <h1>
-                Ron D <i class="fa-regular fa-pen-to-square"></i>
-              </h1>
-
-              <img src={profile_img} alt="Your Image" class="round-image" />
-
-              <div class="list-container">
-                <ul class="list">
-                  <li>Age</li>
-
-                  <li>Gender</li>
-                  <li>Languages</li>
-                  <li>Location</li>
-                  <li>Occupation</li>
-                </ul>
-                <ul class="list">
-                  <li>21</li>
-                  <li>Male</li>
-                  <li>English, Viet, Spanish</li>
-                  <li>New Jersey, USA</li>
-                  <li>Student</li>
-                </ul>
+      <Grid container spacing={2}>
+        <Grid item xs={6}>
+          <Paper style={{ height: '100%' }}>
+            {profileData ? 
+              <div>
+                <div>{profileData.firstName} {profileData.lastName}</div> 
+                {profileData.profile_img ?             
+                  <Avatar
+                    alt="Profile Picture"
+                    src={profileData.profile_img}
+                    sx={{ width: 24, height: 24 }}
+                  /> :
+                  <AccountCircleIcon
+                    sx={{ width: "auto", height: 100 }}
+                  />
+                }
+                <div></div>
+                <div>Age: {profileData.age}</div> 
+                <div>Gender: {profileData.gender}</div> 
+                <div>Location: {profileData.location}</div> 
+                <div>Occupation: {profileData.occupation}</div> 
+                <div>Email: {profileData.email}</div> 
               </div>
-            </div>
+              : <div>Missing Data</div>}
+              <br/>
+              <form onSubmit={changeInfo}>
+                <Button 
+                type = 'submit' 
+                variant='contained'
+                id='submitButton'
+                name='submitButton'
+                className ='button'
+                sx={{mb:'1rem'}}
+                >
+                  Edit Profile
+                </Button>
+              </form>
 
-            <button class="blue">Edit Profile</button>
-          </div>
+          </Paper>
+        </Grid>
 
-          <div class="right-boxes">
-            <div class="right-box">
-              <h1>Bio</h1>
-
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce
-                felis tellus, malesuada vel cursus et, sodales sit amet eros.
-                Integer sed justo ac dolor molestie.
-              </p>
-            </div>
-
-            <div class="right-box">
-              <h1>Core Concerns</h1>
-              <ul>
-                <li>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                </li>
-
-                <li>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                </li>
-
-                <li>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                </li>
-              </ul>
-            </div>
-
-            <div class="right-box">
-              <h1>Frustrations</h1>
-              <ul>
-                <li>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                </li>
-
-                <li>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                </li>
-
-                <li>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      }
-
+        <Grid item xs={6}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Paper>About Me</Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper>Core Concerns</Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper>Frustrations</Paper>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
     </div>
   );
 }
