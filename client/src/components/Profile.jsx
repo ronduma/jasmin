@@ -7,7 +7,6 @@ import Button from '@mui/material/Button';
 
 import React, {useState, useEffect, useContext} from 'react';
 import {useNavigate} from 'react-router-dom';
-
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import Avatar from '@mui/material/Avatar';
