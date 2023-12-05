@@ -25,7 +25,7 @@ import TextField from '@mui/material/TextField';
 
 
 function EditProfile() {
-    const {currentUser} = useContext(AuthContext);
+    const {currentUser, setProfileData} = useContext(AuthContext);
     const [gender, setGender] = React.useState('');
     const navigate = useNavigate();
 
@@ -48,12 +48,13 @@ function EditProfile() {
         };
         console.log(editedUser);
         try{
-            axios.put('http://localhost:5000/profile', editedUser)
+            axios.put('http://localhost:5000/profile', editedUser);
         }
         catch(error){
             alert(error);
         }
         console.log('navigate to profile');
+        setProfileData(editedUser);
         navigate('/profile')
     };
 
@@ -167,4 +168,5 @@ function EditProfile() {
   </Card>
 );
 }
+
 export default EditProfile;
