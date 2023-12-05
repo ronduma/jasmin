@@ -22,7 +22,6 @@ export const AuthProvider = ({children}) => {
       }
     };
     let myListener = onAuthStateChanged(auth, (user) => {
-      console.log(user);
       setCurrentUser(user);
     });
     fetchData();
