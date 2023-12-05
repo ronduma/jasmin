@@ -47,7 +47,10 @@ function GettingStarted() {
       occupation : occupation.value
     };
     try {
-      axios.put('http://localhost:5000/profile', user)
+      let test = await axios.put('http://localhost:5000/profile', user)
+      console.log(test)
+      // let refetch = await axios.get('http://localhost:5000/profile', user.uid)
+      // console.log(refetch)
     } catch (error) {
       alert(error);
     }

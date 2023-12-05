@@ -6,7 +6,7 @@ import axios from 'axios';
 
 export const AuthProvider = ({children}) => {
   const [currentUser, setCurrentUser] = useState(null);
-  const [profileData, setProfileData] = useState(undefined);
+  const [profileData, setProfileData] = useState({});
   const auth = getAuth();
   useEffect(() => {
     const fetchData = async () => {
@@ -25,7 +25,7 @@ export const AuthProvider = ({children}) => {
       console.log(user);
       setCurrentUser(user);
     });
-    fetchData();
+    // fetchData();
     return () => {
       if (myListener) myListener();
     };
