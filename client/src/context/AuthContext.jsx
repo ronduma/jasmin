@@ -22,7 +22,6 @@ export const AuthProvider = ({children}) => {
       }
     };
     let myListener = onAuthStateChanged(auth, (user) => {
-      console.log(user);
       setCurrentUser(user);
     });
     fetchData();
@@ -32,7 +31,7 @@ export const AuthProvider = ({children}) => {
   }, [auth, currentUser]);
 
   return (
-    <AuthContext.Provider value={{currentUser, profileData}}>
+    <AuthContext.Provider value={{currentUser, profileData, setProfileData}}>
       {children}
     </AuthContext.Provider>
   );

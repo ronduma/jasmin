@@ -1,113 +1,172 @@
-import React from "react";
-import "../App.css";
-import profile_img from "../images/profile.jpg";
-import { NavLink } from "react-router-dom";
-import Button from "@mui/material/Button";
-import { FaEdit } from "react-icons/fa"; // Importing edit icon from Font Awesome
+
+import React, {useContext, useState} from 'react';
+import {useNavigate, Navigate} from 'react-router-dom';
+import {AuthContext} from '../context/AuthContext';
+import {doCreateUserWithEmailAndPassword} from '../firebase/FirebaseFunctions';
+
+import axios from 'axios';
+
+import '../App.css';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
+import FormLabel from '@mui/material/FormLabel';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import Select from '@mui/material/Select';
+import Switch from '@mui/material/Switch';
+import TextField from '@mui/material/TextField';
+
 
 function EditProfile() {
-  // Sample data for attributes
+    const {currentUser, setProfileData} = useContext(AuthContext);
+    const [gender, setGender] = React.useState('');
+    const navigate = useNavigate();
 
-  return (
-    <div>
-      <div className="boxes-container">
-        <div className="left-boxes">
-          <div className="patient">
-            <h1>
-              {"Ron D"}
-              <FaEdit className="edit-icon" />
-            </h1>
+    const handleGenderChange = (event) => {
+        setGender(event.target.value);
+    };
 
-            <img src={profile_img} alt="Your Image" className="round-image" />
+    const editInfo = async (e) => {
+        e.preventDefault();
+        const {firstName, lastName, age, gender, location, occupation} = e.target.elements;
+        
+        let editedUser = {
+            uid: currentUser.uid,
+            firstName: firstName.value,
+            lastName: lastName.value,
+            age: age.value,
+            gender: gender.value,
+            location: location.value,
+            occupation: occupation.value
+        };
+        console.log(editedUser);
+        try{
+            axios.put('http://localhost:5000/profile', editedUser);
+        }
+        catch(error){
+            alert(error);
+        }
+        console.log('navigate to profile');
+        setProfileData(editedUser);
+        navigate('/profile')
+    };
 
-            <div className="list-container">
-              <ul className="list">
-                {/* Mapping through attributes to generate rows */}
-
-                <li>
-                  <span>{"Age: 21"}</span>
-                  {/* Add edit icon for each attribute */}
-                  <FaEdit className="edit-icon" />
-                </li>
-
-                <li>
-                  <span>{"Gender: Male"}</span>
-                  {/* Add edit icon for each attribute */}
-                  <FaEdit className="edit-icon" />
-                </li>
-
-                <li>
-                  <span>{"Languages: English, Viet, Spanish"}</span>
-                  {/* Add edit icon for each attribute */}
-                  <FaEdit className="edit-icon" />
-                </li>
-
-                <li>
-                  <span>{"Location: New Jersey, USA"}</span>
-                  {/* Add edit icon for each attribute */}
-                  <FaEdit className="edit-icon" />
-                </li>
-
-                <li>
-                  <span>{"Occupation: Student"}</span>
-                  {/* Add edit icon for each attribute */}
-                  <FaEdit className="edit-icon" />
-                </li>
-              </ul>
+    return(
+    <Card className='card'>
+        <CardContent>
+            <h1>Getting Started</h1>
+            <Box 
+            autoComplete="off"
+            component="form"
+            onSubmit={editInfo}
+            sx={{'& > div': { marginBottom: '1rem' } }}
+            >
+            <div>
+                <TextField
+                className='form-control'
+                name='firstName'
+                type='text'
+                placeholder='First Name'
+                label='First Name'
+                autoFocus={true}
+                autoComplete="off"
+                sx={{
+                    width: "15ch"
+                }}
+                />
+                <TextField
+                className='form-control'
+                name='lastName'
+                type='text'
+                placeholder='Last Name'
+                label='Last Name'
+                autoFocus={true}
+                autoComplete="off"
+                sx={{
+                    width: "25ch"
+                }}
+                />
             </div>
-          </div>
-
-          <Button
-            className="blue"
-            component={NavLink}
-            to="/profile"
-            color="inherit"
-          >
-            Save and Return
-          </Button>
-        </div>
-
-        <div className="right-boxes">
-          <div className="right-box">
-            <h1>
-              Bio
-              <FaEdit className="edit-icon" />
-            </h1>
-
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce
-              felis tellus, malesuada vel cursus et, sodales sit amet eros.
-              Integer sed justo ac dolor molestie.
-            </p>
-          </div>
-
-          <div className="right-box">
-            <h1>
-              Core Concerns
-              <FaEdit className="edit-icon" />
-            </h1>
-            <ul>
-              <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-              <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-              <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-            </ul>
-          </div>
-
-          <div className="right-box">
-            <h1>
-              Frustrations
-              <FaEdit className="edit-icon" />
-            </h1>
-            <ul>
-              <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-              <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-              <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+            <div>
+                <TextField
+                className='form-control'
+                name='age'
+                type='number'
+                placeholder='Age'
+                label='Age'
+                autoFocus={true}
+                autoComplete="off"
+                sx={{
+                    width: "10ch"
+                }}
+                />
+                <FormControl
+                sx={{width : '30ch'}}
+                >
+                <InputLabel>Gender</InputLabel>
+                    <Select
+                    value={gender}
+                    label="Gender"
+                    name="gender"
+                    onChange={handleGenderChange}
+                    >
+                    <MenuItem value={'male'}>Male</MenuItem>
+                    <MenuItem value={'female'}>Female</MenuItem>
+                    <MenuItem value={'nonbinary'}>Non-Binary</MenuItem>
+                    </Select>
+                </FormControl>
+            </div>
+            <div>
+                <TextField
+                    className='form-control'
+                    name='location'
+                    type='text'
+                    placeholder='Location'
+                    label='Location'
+                    autoFocus={true}
+                    autoComplete="off"
+                    sx={{
+                    width: "40ch"
+                    }}
+                />
+            </div>
+            <div>
+                <TextField
+                    className='form-control'
+                    name='occupation'
+                    type='text'
+                    placeholder='Occupation'
+                    label='Occupation'
+                    autoFocus={true}
+                    autoComplete="off"
+                    sx={{
+                    width: "40ch"
+                    }}
+                />
+            </div>
+            <div>
+                <Button
+                className='button'
+                id='submitButton'
+                name='submitButton'
+                type='submit'
+                variant='contained'
+                sx={{mb:'1rem'}}
+                >
+                Submit
+                </Button>
+            </div>
+            </Box>
+        </CardContent>
+  </Card>
+);
 }
 
 export default EditProfile;

@@ -31,8 +31,10 @@ function App() {
               <Route path='/profile' element={<PrivateRoute />}>
                 <Route path='/profile' element={<Profile />} />
               </Route>
-              <Route path='/editprofile' element={<EditProfile />} />
-  
+              <Route path ='/edit-profile' element={<PrivateRoute />}>
+                <Route path='/edit-profile' element={<EditProfile/>}/>
+              </Route>
+
               <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />
 
