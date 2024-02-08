@@ -63,7 +63,6 @@ function GettingStarted() {
       <CardContent>
         <h1>Getting Started</h1>
         <Box 
-          autoComplete="off"
           component="form"
           onSubmit={handleInfo}
           sx={{'& > div': { marginBottom: '1rem' } }}
