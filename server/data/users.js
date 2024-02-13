@@ -65,13 +65,14 @@ const updateUser = async (
   );
   const userCollection = await users();
 
+
   const user = await userCollection.findOneAndUpdate(
     { _id : uid },
     { $set: updated },
     { returnDocument: 'after' }
   );
 }
-
+  
 
 const getUserById = async (uid) => {
   const userCollection = await users();

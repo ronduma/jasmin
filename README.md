@@ -9,7 +9,7 @@ Ron Dumalagan, Dylan Tran, Colleen Que, Jae Jang, Fenella Lachica, Bishawjit Sah
 enter github
 ```cd jasmin/```
 
-```git checkout profile```
+```git checkout [branch]```
 
 to run
 ```npm i```

@@ -1,14 +1,17 @@
 import "../App.css";
 import profile_img from "../images/profile.jpg";
+
+
+// import React, {useContext} from 'react';
+import {NavLink} from 'react-router-dom';
+import Button from '@mui/material/Button';
+
 import React, {useState, useEffect, useContext} from 'react';
 import {useNavigate} from 'react-router-dom';
-
-import axios from 'axios';
-
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import Avatar from '@mui/material/Avatar';
-import {Box} from "@mui/material";
+import {Box, Link} from "@mui/material";
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 
@@ -59,6 +62,20 @@ function Profile() {
                 <div>Email: {profileData.email}</div> 
               </div>
               : <div>Missing Data</div>}
+              <br/>
+              <form onSubmit={changeInfo}>
+                <Button 
+                type = 'submit' 
+                variant='contained'
+                id='submitButton'
+                name='submitButton'
+                className ='button'
+                sx={{mb:'1rem'}}
+                >
+                  Edit Profile
+                </Button>
+              </form>
+
           </Paper>
         </Grid>
 

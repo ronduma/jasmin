@@ -9,6 +9,7 @@ import Login from './components/authentication/Login';
 import Register from './components/authentication/Register';
 import GettingStarted from './components/GettingStarted';
 import Profile from './components/Profile';
+import EditProfile from './components/EditProfile';
 import Psychologist from './components/Psychologist';
 import Feedback from './components/Feedback';
 import NotFound from './components/NotFound';
