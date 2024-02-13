@@ -1,6 +1,7 @@
 import "../App.css";
 import profile_img from "../images/profile.jpg";
 
+import axios from 'axios';
 
 // import React, {useContext} from 'react';
 import {NavLink} from 'react-router-dom';
@@ -26,6 +27,7 @@ function Profile() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log("getting prof data")
         const response = await axios.get(`http://localhost:5000/profile/${currentUser.uid}`);
         setProfileData(response.data);
       } catch (e) {
@@ -63,7 +65,7 @@ function Profile() {
               </div>
               : <div>Missing Data</div>}
               <br/>
-              <form onSubmit={changeInfo}>
+              {/* <form onSubmit={changeInfo}>
                 <Button 
                 type = 'submit' 
                 variant='contained'
@@ -74,7 +76,7 @@ function Profile() {
                 >
                   Edit Profile
                 </Button>
-              </form>
+              </form> */}
 
           </Paper>
         </Grid>
