@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {useNavigate, Navigate} from 'react-router-dom';
+import {redirect, useLocation, useNavigate, Navigate} from 'react-router-dom';
 import {AuthContext} from '../context/AuthContext';
 import {doCreateUserWithEmailAndPassword} from '../firebase/FirebaseFunctions';
 
@@ -26,7 +26,7 @@ function GettingStarted() {
   const {currentUser} = useContext(AuthContext);
   const [gender, setGender] = React.useState('');
   const navigate = useNavigate(); 
-
+  // console.log(location)
   const handleGenderChange = (event) => {
     setGender(event.target.value);
   };
@@ -47,12 +47,13 @@ function GettingStarted() {
       occupation : occupation.value
     };
     try {
-      axios.put('http://localhost:5000/profile', user)
+      console.log("UPDATING DATA")
+      let test = await axios.put('http://localhost:5000/profile', user)
+      console.log("updated data", test)
+      navigate('/profile');
     } catch (error) {
       alert(error);
     }
-    console.log("navigate to profile")
-    navigate('/profile')
   };
 
   return (
@@ -60,7 +61,6 @@ function GettingStarted() {
       <CardContent>
         <h1>Getting Started</h1>
         <Box 
-          autoComplete="off"
           component="form"
           onSubmit={handleInfo}
           sx={{'& > div': { marginBottom: '1rem' } }}

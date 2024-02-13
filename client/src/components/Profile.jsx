@@ -18,13 +18,24 @@ import Paper from '@mui/material/Paper';
 import {AuthContext} from '../context/AuthContext';
 
 function Profile() {
-  const navigate = useNavigate();
-  const {profileData} = useContext(AuthContext);
-  const changeInfo = (e) => {
-    e.preventDefault();
-    console.log('navgiate to home');
-    navigate('/edit-profile');
-  }
+  const {currentUser} = useContext(AuthContext);
+  const [profileData, setProfileData] = useState(null);
+
+  console.log(profileData)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/profile/${currentUser.uid}`);
+        setProfileData(response.data);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    fetchData(); 
+  }, [currentUser.uid]);
+
   return (
     <div>
       <Grid container spacing={2}>

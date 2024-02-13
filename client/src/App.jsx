@@ -20,32 +20,30 @@ import PrivateRoute from './components/PrivateRoute';
 function App() {
   return (
     <AuthProvider>
-        <div className="App">
-          <main>
-            <Navigation />
-            <Routes>
-              <Route path="/" element={<Home/>} /> 
-              <Route path='/getting-started' element={<PrivateRoute />}>
-                <Route path="/getting-started" element={<GettingStarted/>} /> 
-              </Route>
-              <Route path='/profile' element={<PrivateRoute />}>
-                <Route path='/profile' element={<Profile />} />
-              </Route>
-              <Route path ='/edit-profile' element={<PrivateRoute />}>
-                <Route path='/edit-profile' element={<EditProfile/>}/>
-              </Route>
+      <div className="App">
+        <header>
+          <Navigation />
+        </header>
+        <main>
+          <Routes>
+            <Route path="/" element={<Home/>} /> 
+            <Route path='/getting-started' element={<PrivateRoute />}>
+              <Route path="/getting-started" element={<GettingStarted/>} /> 
+            </Route>
+            <Route path='/profile' element={<PrivateRoute />}>
+              <Route path='/profile' element={<Profile />} />
+            </Route>
+            <Route path='/login' element={<Login />} />
+            <Route path='/register' element={<Register />} />
 
-              <Route path='/login' element={<Login />} />
-              <Route path='/register' element={<Register />} />
-
-              <Route path="/about" element={<About/>} /> 
-              <Route path="/profile" element={<Profile/>} /> 
-              <Route path="/psychologist" element={<Psychologist/>} /> 
-              <Route path="/feedback" element={<Feedback/>} /> 
-              <Route path="*" element={<NotFound/>} />
-            </Routes>
-          </main>
-        </div>
+            <Route path="/about" element={<About/>} /> 
+            <Route path="/profile" element={<Profile/>} /> 
+            <Route path="/psychologist" element={<Psychologist/>} /> 
+            <Route path="/feedback" element={<Feedback/>} /> 
+            <Route path="*" element={<NotFound/>} />
+          </Routes>
+        </main>
+      </div>
     </AuthProvider>
   );
 }
