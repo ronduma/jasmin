@@ -22,10 +22,10 @@ export const AuthProvider = ({children}) => {
       }
     };
     let myListener = onAuthStateChanged(auth, (user) => {
-      console.log(user);
+      console.log("user:", user);
       setCurrentUser(user);
+      fetchData();
     });
-    // fetchData();
     return () => {
       if (myListener) myListener();
     };

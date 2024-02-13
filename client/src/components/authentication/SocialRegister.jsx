@@ -13,8 +13,8 @@ const SocialRegister = ({ onRegister }) => {
       if (additionalUserInfo.isNewUser){
         axios.post('http://localhost:5000/register', user.user)
         .then(response => {
-          console.log("user", user)
-          console.log("response", response)
+          // console.log("user", user)
+          // console.log("response", response)
         })
       }
     } catch (error) {

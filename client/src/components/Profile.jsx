@@ -15,7 +15,23 @@ import Paper from '@mui/material/Paper';
 import {AuthContext} from '../context/AuthContext';
 
 function Profile() {
-  const {currentUser, profileData} = useContext(AuthContext);
+  const {currentUser} = useContext(AuthContext);
+  const [profileData, setProfileData] = useState(null);
+
+  console.log(profileData)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/profile/${currentUser.uid}`);
+        setProfileData(response.data);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    fetchData(); 
+  }, [currentUser.uid]);
 
   return (
     <div>
