@@ -125,8 +125,6 @@ function Profile() {
                     ),
                   }}
                 />
-                {/* <CheckCircleIcon></CheckCircleIcon>
-                <CancelRoundedIcon></CancelRoundedIcon> */}
               </Paper>
             </Grid>
             <Grid item xs={12}>
@@ -134,6 +132,87 @@ function Profile() {
                 <Typography variant='h5'>
                   Core Concerns
                 </Typography>
+                <TextField
+                  fullWidth
+                  id="outlined-multiline-static"
+                  label="Concern #1"
+                  style={{margin: '2vh 0 1vh 0'}}
+                  onFocus={() => setFocused(true)}
+                  onBlur={() => setFocused(false)}
+                  inputProps={{
+                    maxLength:90
+                  }}
+                  InputProps={{
+                    endAdornment: (
+                      <React.Fragment>
+                        {isFocused && (
+                          <div style={{ position: 'absolute', bottom: 0, right: 0 }}>
+                            <IconButton>
+                              <CheckCircleIcon></CheckCircleIcon>
+                            </IconButton>
+                            <IconButton>
+                              <CancelRoundedIcon></CancelRoundedIcon>
+                            </IconButton>
+                          </div>
+                        )}
+                      </React.Fragment>
+                    ),
+                  }}
+                />
+                <TextField
+                  fullWidth
+                  id="outlined-multiline-static"
+                  label="Concern #2"
+                  style={{margin: '2vh 0 1vh 0'}}
+                  onFocus={() => setFocused(true)}
+                  onBlur={() => setFocused(false)}
+                  inputProps={{
+                    maxLength:80
+                  }}
+                  InputProps={{
+                    endAdornment: (
+                      <React.Fragment>
+                        {isFocused && (
+                          <div style={{ position: 'absolute', bottom: 0, right: 0 }}>
+                            <IconButton>
+                              <CheckCircleIcon></CheckCircleIcon>
+                            </IconButton>
+                            <IconButton>
+                              <CancelRoundedIcon></CancelRoundedIcon>
+                            </IconButton>
+                          </div>
+                        )}
+                      </React.Fragment>
+                    ),
+                  }}
+                />
+                <TextField
+                  fullWidth
+                  id="outlined-multiline-static"
+                  label="Concern #3"
+                  style={{margin: '2vh 0 1vh 0'}}
+                  onFocus={() => setFocused(true)}
+                  onBlur={() => setFocused(false)}
+                  inputProps={{
+                    maxLength:80
+                  }}
+                  InputProps={{
+                    endAdornment: (
+                      <React.Fragment>
+                        {isFocused && (
+                          <div style={{ position: 'absolute', bottom: 0, right: 0 }}>
+                            <IconButton>
+                              <CheckCircleIcon></CheckCircleIcon>
+                            </IconButton>
+                            <IconButton>
+                              <CancelRoundedIcon></CancelRoundedIcon>
+                            </IconButton>
+                          </div>
+                        )}
+                      </React.Fragment>
+                    ),
+                  }}
+                />
               </Paper>
             </Grid>
           </Grid>
