@@ -138,9 +138,9 @@ function GettingStarted() {
                   name="gender"
                   onChange={handleGenderChange}
                 >
-                  <MenuItem value={'male'}>Male</MenuItem>
-                  <MenuItem value={'female'}>Female</MenuItem>
-                  <MenuItem value={'nonbinary'}>Non-Binary</MenuItem>
+                  <MenuItem value={'Male'}>Male</MenuItem>
+                  <MenuItem value={'Female'}>Female</MenuItem>
+                  <MenuItem value={'Non-binary'}>Non-Binary</MenuItem>
                 </Select>
             </FormControl>
           </div>

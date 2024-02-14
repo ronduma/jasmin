@@ -1,20 +1,15 @@
 import "../App.css";
-import profile_img from "../images/profile.jpg";
 
 import axios from 'axios';
 
-// import React, {useContext} from 'react';
-import {NavLink} from 'react-router-dom';
-import Button from '@mui/material/Button';
-
 import React, {useState, useEffect, useContext} from 'react';
-import {useNavigate} from 'react-router-dom';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import Avatar from '@mui/material/Avatar';
-import {Box, Link} from "@mui/material";
+import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
 
 import {AuthContext} from '../context/AuthContext';
 
@@ -40,12 +35,25 @@ function Profile() {
 
   return (
     <div>
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <Paper style={{ height: '100%' }}>
+      <Grid 
+        container 
+        justifyContent={"center"}
+        spacing={2}
+        style={{padding:'4vh 0 0 0'}}
+      >
+        <Grid 
+          fontSize={"14pt"}
+          item 
+          xs={3}
+        >
+          <Paper style={{ height: '60vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
             {profileData ? 
               <div>
-                <div>{profileData.firstName} {profileData.lastName}</div> 
+                <Typography 
+                  variant='h4'
+                >
+                    {profileData.firstName} {profileData.lastName}
+                </Typography> 
                 {profileData.profile_img ?             
                   <Avatar
                     alt="Profile Picture"
@@ -53,20 +61,20 @@ function Profile() {
                     sx={{ width: 24, height: 24 }}
                   /> :
                   <AccountCircleIcon
-                    sx={{ width: "auto", height: 100 }}
+                    sx={{ width: "auto", height: 200 }}
                   />
                 }
-                <div></div>
-                <div>Age: {profileData.age}</div> 
-                <div>Gender: {profileData.gender}</div> 
-                <div>Location: {profileData.location}</div> 
-                <div>Occupation: {profileData.occupation}</div> 
-                <div>Email: {profileData.email}</div> 
+                <div style={{textAlign:'left'}}>
+                  <div>Age: {profileData.age}</div> 
+                  <div>Gender: {profileData.gender}</div> 
+                  <div>Location: {profileData.location}</div> 
+                  <div>Occupation: {profileData.occupation}</div> 
+                  <div>Email: {profileData.email}</div> 
+                </div>                
               </div>
               : <div>Missing Data</div>}
               <br/>
-              {/* <form onSubmit={changeInfo}>
-                <Button 
+              <Button 
                 type = 'submit' 
                 variant='contained'
                 id='submitButton'
@@ -76,21 +84,27 @@ function Profile() {
                 >
                   Edit Profile
                 </Button>
-              </form> */}
-
           </Paper>
         </Grid>
-
         <Grid item xs={6}>
-          <Grid container spacing={2}>
+          <Grid 
+            container 
+            spacing={2}
+            style={{textAlign:"left"}}
+          >
             <Grid item xs={12}>
-              <Paper>About Me</Paper>
+              <Paper style={{height: '17vh', padding: '2vh'}}>
+                <Typography variant='h5'>
+                  About Me
+                </Typography>
+              </Paper>
             </Grid>
             <Grid item xs={12}>
-              <Paper>Core Concerns</Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper>Frustrations</Paper>
+              <Paper style={{height: '33vh', padding: '2vh'}}>
+                <Typography variant='h5'>
+                  Core Concerns
+                </Typography>
+              </Paper>
             </Grid>
           </Grid>
         </Grid>
