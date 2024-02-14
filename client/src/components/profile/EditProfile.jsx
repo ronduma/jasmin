@@ -1,11 +1,11 @@
 import React, {useContext, useState} from 'react';
 import {redirect, useLocation, useNavigate, Navigate} from 'react-router-dom';
-import {AuthContext} from '../context/AuthContext';
-import {doCreateUserWithEmailAndPassword} from '../firebase/FirebaseFunctions';
+import {AuthContext} from '../../context/AuthContext';
+import {doCreateUserWithEmailAndPassword} from '../../firebase/FirebaseFunctions';
 
 import axios from 'axios';
 
-import '../App.css';
+import '../../App.css';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -22,22 +22,19 @@ import Select from '@mui/material/Select';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 
-function GettingStarted() {
+function EditProfile() {
   const {currentUser} = useContext(AuthContext);
   const [gender, setGender] = React.useState('');
   const navigate = useNavigate(); 
-  // console.log(location)
   const handleGenderChange = (event) => {
     setGender(event.target.value);
   };
 
   const handleInfo = async (e) => {
     e.preventDefault();
-    const {isTherapist, firstName, lastName, username, age, gender, location, occupation} = e.target.elements;
-    // console.log(isTherapist, isTherapist.value)
+    const {firstName, lastName, username, age, gender, location, occupation} = e.target.elements;
     let user = {
-      uid : currentUser.uid, 
-      isTherapist : isTherapist.value,
+      uid : currentUser.uid,
       firstName : firstName.value, 
       lastName : lastName.value, 
       username : username.value,
@@ -59,22 +56,12 @@ function GettingStarted() {
   return (
     <Card className='card'>
       <CardContent>
-        <h1>Getting Started</h1>
+        <h1>Edit Profile</h1>
         <Box 
           component="form"
           onSubmit={handleInfo}
           sx={{'& > div': { marginBottom: '1rem' } }}
         >
-          <FormControl>
-              <FormLabel id="demo-row-radio-buttons-group-label">I am a...</FormLabel>
-              <RadioGroup
-                row
-                name="isTherapist"
-              >
-                <FormControlLabel value="false" control={<Radio />} label="Patient" />
-                <FormControlLabel value="true" control={<Radio />} label="Therapist" />
-              </RadioGroup>
-            </FormControl>
           <div>
             <TextField
               className='form-control'
@@ -190,4 +177,4 @@ function GettingStarted() {
   );
 }
 
-export default GettingStarted;
+export default EditProfile;

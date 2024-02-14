@@ -1,21 +1,29 @@
-import "../App.css";
+import "../../App.css";
 
 import axios from 'axios';
 
 import React, {useState, useEffect, useContext} from 'react';
+
+import {NavLink} from 'react-router-dom';
+
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import CheckCircleIcon from '@mui/icons-material/CheckCircleOutlined';
+import CancelRoundedIcon from '@mui/icons-material/CancelOutlined';
 
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
+import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
-import {AuthContext} from '../context/AuthContext';
+import {AuthContext} from '../../context/AuthContext';
 
 function Profile() {
   const {currentUser} = useContext(AuthContext);
   const [profileData, setProfileData] = useState(null);
+  const [isFocused, setFocused] = useState(false);
 
   console.log(profileData)
 
@@ -74,16 +82,7 @@ function Profile() {
               </div>
               : <div>Missing Data</div>}
               <br/>
-              <Button 
-                type = 'submit' 
-                variant='contained'
-                id='submitButton'
-                name='submitButton'
-                className ='button'
-                sx={{mb:'1rem'}}
-                >
-                  Edit Profile
-                </Button>
+              <Button component = {NavLink} to='/edit-profile' variant="contained">Edit Profile</Button>
           </Paper>
         </Grid>
         <Grid item xs={6}>
@@ -93,14 +92,45 @@ function Profile() {
             style={{textAlign:"left"}}
           >
             <Grid item xs={12}>
-              <Paper style={{height: '17vh', padding: '2vh'}}>
+              <Paper style={{height: '18vh', padding: '2vh'}}>
                 <Typography variant='h5'>
                   About Me
                 </Typography>
+                <TextField
+                  fullWidth
+                  id="outlined-multiline-static"
+                  label="Tell us about yourself!"
+                  multiline
+                  style={{margin: '2vh 0 1vh 0'}}
+                  rows={3}
+                  onFocus={() => setFocused(true)}
+                  onBlur={() => setFocused(false)}
+                  inputProps={{
+                    maxLength:285
+                  }}
+                  InputProps={{
+                    endAdornment: (
+                      <React.Fragment>
+                        {isFocused && (
+                          <div style={{ position: 'absolute', bottom: 0, right: 0 }}>
+                            <IconButton>
+                              <CheckCircleIcon></CheckCircleIcon>
+                            </IconButton>
+                            <IconButton>
+                              <CancelRoundedIcon></CancelRoundedIcon>
+                            </IconButton>
+                          </div>
+                        )}
+                      </React.Fragment>
+                    ),
+                  }}
+                />
+                {/* <CheckCircleIcon></CheckCircleIcon>
+                <CancelRoundedIcon></CancelRoundedIcon> */}
               </Paper>
             </Grid>
             <Grid item xs={12}>
-              <Paper style={{height: '33vh', padding: '2vh'}}>
+              <Paper style={{height: '32vh', padding: '2vh'}}>
                 <Typography variant='h5'>
                   Core Concerns
                 </Typography>
