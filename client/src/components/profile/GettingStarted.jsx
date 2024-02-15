@@ -1,11 +1,11 @@
 import React, {useContext, useState} from 'react';
 import {redirect, useLocation, useNavigate, Navigate} from 'react-router-dom';
-import {AuthContext} from '../context/AuthContext';
-import {doCreateUserWithEmailAndPassword} from '../firebase/FirebaseFunctions';
+import {AuthContext} from '../../context/AuthContext';
+import {doCreateUserWithEmailAndPassword} from '../../firebase/FirebaseFunctions';
 
 import axios from 'axios';
 
-import '../App.css';
+import '../../App.css';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -48,8 +48,8 @@ function GettingStarted() {
     };
     try {
       console.log("UPDATING DATA")
-      let test = await axios.put('http://localhost:5000/profile', user)
-      console.log("updated data", test)
+      let updateUser = await axios.put('http://localhost:5000/profile', user)
+      console.log("updated data", updateUser)
       navigate('/profile');
     } catch (error) {
       alert(error);
@@ -138,9 +138,9 @@ function GettingStarted() {
                   name="gender"
                   onChange={handleGenderChange}
                 >
-                  <MenuItem value={'male'}>Male</MenuItem>
-                  <MenuItem value={'female'}>Female</MenuItem>
-                  <MenuItem value={'nonbinary'}>Non-Binary</MenuItem>
+                  <MenuItem value={'Male'}>Male</MenuItem>
+                  <MenuItem value={'Female'}>Female</MenuItem>
+                  <MenuItem value={'Non-binary'}>Non-Binary</MenuItem>
                 </Select>
             </FormControl>
           </div>
