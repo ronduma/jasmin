@@ -48,8 +48,8 @@ function GettingStarted() {
     };
     try {
       console.log("UPDATING DATA")
-      let test = await axios.put('http://localhost:5000/profile', user)
-      console.log("updated data", test)
+      let updateUser = await axios.put('http://localhost:5000/profile', user)
+      console.log("updated data", updateUser)
       navigate('/profile');
     } catch (error) {
       alert(error);
