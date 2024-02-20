@@ -32,8 +32,49 @@ const createUser = async (uid, email) => {
   return { insertedUser: true, insertedId: insertInfo.insertedId };
 }
 
-const updateUser = async (
-  {uid,
+// const updateUser = async (
+//   {uid,
+//   email,
+//   username,
+//   profile_img,
+//   firstName,
+//   lastName,
+//   location,
+//   age,
+//   isTherapist,
+//   gender,
+//   occupation,
+//   concerns,
+//   chatLog}
+// ) => {
+//   let updated = Object.fromEntries(
+//     Object.entries({
+//       email,
+//       username,
+//       profile_img,
+//       firstName,
+//       lastName,
+//       location,
+//       age,
+//       isTherapist,
+//       gender,
+//       occupation,
+//       concerns,
+//       chatLog
+//     }).filter(([key, value]) => value !== undefined && value !== null)
+//   );
+//   const userCollection = await users();
+
+
+//   const user = await userCollection.findOneAndUpdate(
+//     { _id : uid },
+//     { $set: updated },
+//     { returnDocument: 'after' }
+//   );
+// }
+
+const updateUser = async ({
+  uid,
   email,
   username,
   profile_img,
@@ -43,35 +84,45 @@ const updateUser = async (
   age,
   isTherapist,
   gender,
+  bio,
   occupation,
   concerns,
-  chatLog}
-) => {
-  let updated = Object.fromEntries(
-    Object.entries({
-      email,
-      username,
-      profile_img,
-      firstName,
-      lastName,
-      location,
-      age,
-      isTherapist,
-      gender,
-      occupation,
-      concerns,
-      chatLog
-    }).filter(([key, value]) => value !== undefined && value !== null)
-  );
+  chatLog
+}) => {
   const userCollection = await users();
+  const existingUser = await getUserById(uid);
 
+  // Mostly strings
+  let updated = {
+    email: email !== '' ? email : existingUser.email,
+    username: username !== '' ? username : existingUser.username,
+    profile_img: profile_img !== null ? profile_img : existingUser.profile_img,
+    firstName: firstName !== '' ? firstName : existingUser.firstName,
+    lastName: lastName !== '' ? lastName : existingUser.lastName,
+    location: location !== '' ? location : existingUser.location,
+    age: age !== '' ? age : existingUser.age,
+    isTherapist: isTherapist !== '' ? isTherapist : existingUser.isTherapist,
+    bio: bio !== '' ? bio : existingUser.bio,
+    gender: gender !== '' ? gender : existingUser.gender,
+    occupation: occupation !== '' ? occupation : existingUser.occupation,
+    concerns: concerns !== '' ? concerns : existingUser.concerns,
+    chatLog: chatLog !== '' ? chatLog : existingUser.chatLog
+  };
+
+  // Filter out keys with undefined values
+  updated = Object.fromEntries(
+    Object.entries(updated).filter(([key, value]) => value !== undefined)
+  );
 
   const user = await userCollection.findOneAndUpdate(
-    { _id : uid },
+    { _id: uid },
     { $set: updated },
     { returnDocument: 'after' }
   );
-}
+
+  return user;
+};
+
   
 
 const getUserById = async (uid) => {
