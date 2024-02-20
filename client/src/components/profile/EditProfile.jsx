@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import {redirect, useLocation, useNavigate, Navigate} from 'react-router-dom';
 import {AuthContext} from '../../context/AuthContext';
 import {doCreateUserWithEmailAndPassword} from '../../firebase/FirebaseFunctions';
@@ -24,11 +24,30 @@ import TextField from '@mui/material/TextField';
 
 function EditProfile() {
   const {currentUser} = useContext(AuthContext);
+  const [user, setUser] = useState(currentUser); // Initialize user state with currentUser
+  console.log("user:")
+  console.log(user)
+  console.log("Start screen")
   const [gender, setGender] = React.useState('');
   const navigate = useNavigate(); 
   const handleGenderChange = (event) => {
     setGender(event.target.value);
   };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/profile/${currentUser.uid}`);
+        console.log("IN USE EFFECT")
+        setUser(response.data); // Update user state with fetched user data
+        setGender(response.data.gender || ''); // Set gender based on fetched data
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUser();
+  }, [currentUser.uid]);
 
   const handleInfo = async (e) => {
     e.preventDefault();
@@ -52,7 +71,8 @@ function EditProfile() {
       alert(error);
     }
   };
-
+  console.log("AFTER REACT")
+  console.log(user)
   return (
     <Card className='card'>
       <CardContent>
@@ -67,25 +87,27 @@ function EditProfile() {
               className='form-control'
               name='firstName'
               type='text'
-              placeholder='First Name'
+              placeholder={`${user.firstName || 'First Name'}`}
               label='First Name'
               autoFocus={true}
               autoComplete="off"
               sx={{
                 width: "15ch"
               }}
+              defaultValue={user.firstName}
             />
             <TextField
               className='form-control'
               name='lastName'
               type='text'
-              placeholder='Last Name'
+              placeholder={`${user.lastName || 'Last Name'}`}
               label='Last Name'
               autoFocus={true}
               autoComplete="off"
               sx={{
                 width: "25ch"
               }}
+              defaultValue={user.lastName}
             />
           </div>
           <div>
@@ -93,7 +115,7 @@ function EditProfile() {
                 className='form-control'
                 name='username'
                 type='text'
-                placeholder='Username'
+                placeholder={`${user.username || 'Username'}`}
                 label='Username'
                 autoFocus={true}
                 autoComplete="off"
@@ -107,7 +129,7 @@ function EditProfile() {
               className='form-control'
               name='age'
               type='number'
-              placeholder='Age'
+              placeholder={`${user.age || 'Age'}`}
               label='Age'
               autoFocus={true}
               autoComplete="off"
@@ -136,7 +158,7 @@ function EditProfile() {
                 className='form-control'
                 name='location'
                 type='text'
-                placeholder='Location'
+                placeholder={`${user.location || 'Location'}`}
                 label='Location'
                 autoFocus={true}
                 autoComplete="off"
@@ -150,7 +172,7 @@ function EditProfile() {
                 className='form-control'
                 name='occupation'
                 type='text'
-                placeholder='Occupation'
+                placeholder={`${user.occupation || 'Occupation'}`}
                 label='Occupation'
                 autoFocus={true}
                 autoComplete="off"
