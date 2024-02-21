@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import React, {useState, useEffect, useContext} from 'react';
 
-import {NavLink} from 'react-router-dom';
+import {useNavigate, NavLink} from 'react-router-dom';
 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CheckCircleIcon from '@mui/icons-material/CheckCircleOutlined';
@@ -25,6 +25,8 @@ function Profile() {
   const [profileData, setProfileData] = useState(null);
   const [isFocused, setFocused] = useState(false);
 
+  const navigate = useNavigate();
+
   console.log(profileData)
 
   useEffect(() => {
@@ -34,7 +36,8 @@ function Profile() {
         const response = await axios.get(`http://localhost:5000/profile/${currentUser.uid}`);
         setProfileData(response.data);
       } catch (e) {
-        console.error(e);
+        console.log("yo")
+        navigate('/not-found')
       }
     };
 

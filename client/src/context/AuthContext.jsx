@@ -9,22 +9,9 @@ export const AuthProvider = ({children}) => {
   const [profileData, setProfileData] = useState({});
   const auth = getAuth();
   useEffect(() => {
-    // const fetchData = async () => {
-    //   try {
-    //     if (currentUser) {
-    //       console.log("FETCHING DATA")
-    //       const response = await axios.get(`http://localhost:5000/profile/${currentUser.uid}`);
-    //       setProfileData(response.data);
-    //       console.log(response.data);
-    //     }
-    //   } catch (e) {
-    //     console.log(e);
-    //   }
-    // };
     let myListener = onAuthStateChanged(auth, (user) => {
       console.log("user:", user);
       setCurrentUser(user);
-      fetchData();
     });
     return () => {
       if (myListener) myListener();
