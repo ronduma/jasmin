@@ -13,6 +13,7 @@ import EditProfile from './components/profile/EditProfile';
 import Psychologist from './components/Psychologist';
 import Feedback from './components/Feedback';
 import NotFound from './components/NotFound';
+import Matching from './components/Matching';
 
 import {AuthProvider} from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
@@ -42,6 +43,7 @@ function App() {
             <Route path="/about" element={<About/>} />
             <Route path="/psychologist" element={<Psychologist/>} /> 
             <Route path="/feedback" element={<Feedback/>} /> 
+            <Route path='/matching' element={<Matching />} />
             <Route path="*" element={<NotFound/>} />
           </Routes>
         </main>
