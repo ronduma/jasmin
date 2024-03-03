@@ -9,7 +9,7 @@ const xss = require('xss');
 router.get('/:id', async(req,res) => {
   try {
     const userObject = await users.getUserById(req.params.id);
-    console.log("user:", userObject)
+    // console.log("user:", userObject)
     return res.status(200).json(userObject);
   } catch (e){
     console.log(e)
@@ -19,7 +19,7 @@ router.get('/:id', async(req,res) => {
 
 router.put('/', async(req,res) => {
   try {
-    let user = await users.updateUser(req.body);
+    let user = await users.updateUserInfo(req.body);
     return res.status(200).json(user);
   } catch (e) {
     console.log(e)
@@ -29,7 +29,7 @@ router.put('/', async(req,res) => {
 
 router.put('/therapist', async(req,res) => {
   try {
-    let user = await users.updateUser(req.body);
+    let user = await users.updateUserInfo(req.body);
     return res.status(200).json(user);
   } catch (e) {
     console.log(e)

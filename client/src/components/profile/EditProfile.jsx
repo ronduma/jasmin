@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {redirect, useLocation, useNavigate, Navigate} from 'react-router-dom';
 import {AuthContext} from '../../context/AuthContext';
 import {doCreateUserWithEmailAndPassword} from '../../firebase/FirebaseFunctions';
@@ -6,6 +6,7 @@ import {doCreateUserWithEmailAndPassword} from '../../firebase/FirebaseFunctions
 import axios from 'axios';
 
 import '../../App.css';
+import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -24,10 +25,63 @@ import TextField from '@mui/material/TextField';
 
 function EditProfile() {
   const {currentUser} = useContext(AuthContext);
-  const [gender, setGender] = React.useState('');
+  const [profileData, setProfileData] = useState(null);
+
+  const [firstNameError, setFirstNameError] = useState(false);
+  const [lastNameError, setLastNameError] = useState(false);
+  const [usernameError, setUsernameError] = useState(false);
+  const [ageError, setAgeError] = useState(false);
+  const [genderError, setGenderError] = useState(false);
+  const [locationError, setLocationError] = useState(false);
+  const [occupationError, setOccupationError] = useState(false);
+  const [alert, setAlert] = useState(false);
+
+  const [isLoading, setLoading] = useState(true);
   const navigate = useNavigate(); 
-  const handleGenderChange = (event) => {
-    setGender(event.target.value);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        console.log("getting prof data")
+        const response = await axios.get(`http://localhost:5000/profile/${currentUser.uid}`);
+        setProfileData(response.data);
+        setLoading(false);
+        console.log(response.data)
+      } catch (e) {
+        console.log("yo")
+        navigate('/not-found')
+      }
+    };
+
+    fetchData(); 
+  }, []);
+
+  const setError = async (response) => {
+    let field = response.split(' ')[0];
+    switch (field) {
+      case 'firstName':
+        setFirstNameError(response);
+        break;
+      case 'lastName':
+        setLastNameError(response);
+        break;
+      case 'username':
+        setUsernameError(response);
+        break;
+      case 'age':
+        setAgeError(response);
+        break;
+      case 'gender':
+        setGenderError(response);
+        break;
+      case 'location':
+        setLocationError(response);
+        break;
+      case 'occupation':
+        setOccupationError(response);
+        break;
+    }
+    setAlert(response)
   };
 
   const handleInfo = async (e) => {
@@ -49,9 +103,14 @@ function EditProfile() {
       console.log("updated data", test)
       navigate('/profile');
     } catch (error) {
-      alert(error);
+      console.log(error);
+      setError(error.response.data)
     }
   };
+
+  if (isLoading) {
+    return <div className="App">Loading...</div>;
+  }
 
   return (
     <Card className='card'>
@@ -74,6 +133,8 @@ function EditProfile() {
               sx={{
                 width: "15ch"
               }}
+              defaultValue={profileData.firstName}
+              error={Boolean(firstNameError)}
             />
             <TextField
               className='form-control'
@@ -86,6 +147,8 @@ function EditProfile() {
               sx={{
                 width: "25ch"
               }}
+              defaultValue={profileData.lastName}
+              error={Boolean(lastNameError)}
             />
           </div>
           <div>
@@ -100,6 +163,8 @@ function EditProfile() {
                 sx={{
                   width: "40ch"
                 }}
+                defaultValue={profileData.username}
+                error={Boolean(usernameError)}
               />
           </div>
           <div>
@@ -114,16 +179,18 @@ function EditProfile() {
               sx={{
                 width: "10ch"
               }}
+              defaultValue={profileData.age}
+              error={Boolean(ageError)}
             />
             <FormControl
               sx={{width : '30ch'}}
             >
               <InputLabel>Gender</InputLabel>
                 <Select
-                  value={gender}
+                  defaultValue={profileData.gender}
                   label="Gender"
                   name="gender"
-                  onChange={handleGenderChange}
+                  error={Boolean(genderError)}
                 >
                   <MenuItem value={'Male'}>Male</MenuItem>
                   <MenuItem value={'Female'}>Female</MenuItem>
@@ -143,6 +210,8 @@ function EditProfile() {
                 sx={{
                   width: "40ch"
                 }}
+                defaultValue={profileData.location}
+                error={Boolean(locationError)}
               />
           </div>
           <div>
@@ -157,6 +226,8 @@ function EditProfile() {
                 sx={{
                   width: "40ch"
                 }}
+                defaultValue={profileData.occupation}
+                error={Boolean(occupationError)}
               />
           </div>
           <div>
@@ -171,6 +242,7 @@ function EditProfile() {
               Submit
             </Button>
           </div>
+          {alert ? <Alert severity="error" sx={{mx:"auto", width: "40ch"}}>{alert}</Alert> : <div></div>}
         </Box>
       </CardContent>
     </Card>

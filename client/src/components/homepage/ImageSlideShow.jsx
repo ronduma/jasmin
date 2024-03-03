@@ -15,7 +15,7 @@ const ImageSlideshow = ({ images }) => {
             <div style = {{'backgroundColor': "#EADDCA"}}>
               <div className='div-between'>
                 <p className='text-slide'>{each.caption}</p>
-                <button className ='slide-button'>Read More</button>
+                <button className ='slide-button' style={{'background': '#2323'}}>Read More</button>
               </div>
               <div className='div-between'>
                 <img className="image-slide" src={each.image} alt='bruh'></img>

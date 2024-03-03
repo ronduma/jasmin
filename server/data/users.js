@@ -2,6 +2,8 @@ const { ObjectId } = require('mongodb');
 const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
 
+const validation = require("./validation");
+
 const createUser = async (uid, email) => {
   const userCollection = await users();
   const userExists = await userCollection.findOne({ uid: uid });
@@ -32,7 +34,7 @@ const createUser = async (uid, email) => {
   return { insertedUser: true, insertedId: insertInfo.insertedId };
 }
 
-const updateUser = async (
+const updateUserInfo = async (
   {uid,
   email,
   username,
@@ -49,20 +51,21 @@ const updateUser = async (
 ) => {
   let updated = Object.fromEntries(
     Object.entries({
-      email,
       username,
-      profile_img,
+      // profile_img,
       firstName,
       lastName,
       location,
       age,
-      isTherapist,
+      // isTherapist,
       gender,
       occupation,
-      concerns,
-      chatLog
-    }).filter(([key, value]) => value !== undefined && value !== null)
+      // concerns,
+      // chatLog
+    })
   );
+  validation.validateUserUpdate(updated);
+  console.log(validation.validateUserUpdate(updated))
   const userCollection = await users();
 
 
@@ -83,7 +86,7 @@ const getUserById = async (uid) => {
 
 module.exports = {
   createUser,
-  updateUser,
+  updateUserInfo,
   getUserById,
   
 };
