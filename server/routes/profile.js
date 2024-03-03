@@ -27,6 +27,16 @@ router.put('/', async(req,res) => {
   }
 });
 
+router.put('/getting-started', async(req,res) => {
+  try {
+    let user = await users.gettingStarted(req.body);
+    return res.status(200).json(user);
+  } catch (e) {
+    console.log(e)
+    return res.status(400).json(e);
+  }
+});
+
 router.put('/therapist', async(req,res) => {
   try {
     let user = await users.updateUserInfo(req.body);

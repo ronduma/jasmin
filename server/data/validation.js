@@ -13,7 +13,11 @@ function validateUserUpdate (updated) {
       }
       else if (value == 'lastName'){
         throw `Last name cannot be empty.`
-      } else throw `${value.slice(0,1).toUpperCase() + value.slice(1)} cannot be empty.`
+      }
+      else if (value == 'isTherapist'){
+        throw `Are you a patient, or a therapist?`
+      }
+      else throw `${value.slice(0,1).toUpperCase() + value.slice(1)} cannot be empty.`
     }
   }
   return 'done validating'

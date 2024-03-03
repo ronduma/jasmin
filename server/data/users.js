@@ -34,6 +34,48 @@ const createUser = async (uid, email) => {
   return { insertedUser: true, insertedId: insertInfo.insertedId };
 }
 
+const gettingStarted = async (
+  {uid,
+  email,
+  username,
+  profile_img,
+  firstName,
+  lastName,
+  location,
+  age,
+  isTherapist,
+  gender,
+  occupation,
+  concerns,
+  chatLog}
+) => {
+  let updated = Object.fromEntries(
+    Object.entries({
+      username,
+      // profile_img,
+      firstName,
+      lastName,
+      location,
+      age,
+      isTherapist,
+      gender,
+      occupation,
+      // concerns,
+      // chatLog
+    })
+  );
+  validation.validateUserUpdate(updated);
+  console.log(validation.validateUserUpdate(updated))
+  const userCollection = await users();
+
+
+  const user = await userCollection.findOneAndUpdate(
+    { _id : uid },
+    { $set: updated },
+    { returnDocument: 'after' }
+  );
+}
+
 const updateUserInfo = async (
   {uid,
   email,
@@ -88,5 +130,5 @@ module.exports = {
   createUser,
   updateUserInfo,
   getUserById,
-  
+  gettingStarted  
 };
