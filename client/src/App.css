@@ -223,7 +223,7 @@ html{
 }
 
 .search-bar-container {
-  margin-left: auto; /* Pushes the search bar to the right */
+  margin-left: auto; /* Pushes the search bar to the right but it goes off screen*/
 }
 
 .search-bar input {
