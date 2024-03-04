@@ -144,7 +144,6 @@ function EditProfile() {
               className='form-control'
               name='firstName'
               type='text'
-              placeholder={`${user.firstName || 'First Name'}`}
               label='First Name'
               autoFocus={true}
               autoComplete="off"
@@ -158,7 +157,6 @@ function EditProfile() {
               className='form-control'
               name='lastName'
               type='text'
-              placeholder={`${user.lastName || 'Last Name'}`}
               label='Last Name'
               autoFocus={true}
               autoComplete="off"
@@ -174,7 +172,6 @@ function EditProfile() {
                 className='form-control'
                 name='username'
                 type='text'
-                placeholder={`${user.username || 'Username'}`}
                 label='Username'
                 autoFocus={true}
                 autoComplete="off"
@@ -190,7 +187,6 @@ function EditProfile() {
               className='form-control'
               name='age'
               type='number'
-              placeholder={`${user.age || 'Age'}`}
               label='Age'
               autoFocus={true}
               autoComplete="off"
@@ -221,7 +217,6 @@ function EditProfile() {
                 className='form-control'
                 name='location'
                 type='text'
-                placeholder={`${user.location || 'Location'}`}
                 label='Location'
                 autoFocus={true}
                 autoComplete="off"
@@ -237,7 +232,6 @@ function EditProfile() {
                 className='form-control'
                 name='occupation'
                 type='text'
-                placeholder={`${user.occupation || 'Occupation'}`}
                 label='Occupation'
                 autoFocus={true}
                 autoComplete="off"
