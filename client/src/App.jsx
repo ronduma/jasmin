@@ -7,9 +7,9 @@ import Navigation from './components/Navigation';
 import About from './components/About';
 import Login from './components/authentication/Login';
 import Register from './components/authentication/Register';
-import GettingStarted from './components/GettingStarted';
-import Profile from './components/Profile';
-import EditProfile from './components/EditProfile';
+import GettingStarted from './components/profile/GettingStarted';
+import Profile from './components/profile/Profile';
+import EditProfile from './components/profile/EditProfile';
 import Psychologist from './components/Psychologist';
 import Feedback from './components/Feedback';
 import NotFound from './components/NotFound';
@@ -20,32 +20,32 @@ import PrivateRoute from './components/PrivateRoute';
 function App() {
   return (
     <AuthProvider>
-        <div className="App">
-          <main>
-            <Navigation />
-            <Routes>
-              <Route path="/" element={<Home/>} /> 
-              <Route path='/getting-started' element={<PrivateRoute />}>
-                <Route path="/getting-started" element={<GettingStarted/>} /> 
-              </Route>
-              <Route path='/profile' element={<PrivateRoute />}>
-                <Route path='/profile' element={<Profile />} />
-              </Route>
-              <Route path ='/edit-profile' element={<PrivateRoute />}>
-                <Route path='/edit-profile' element={<EditProfile/>}/>
-              </Route>
+      <div className="App">
+        <header>
+          <Navigation />
+        </header>
+        <main>
+          <Routes>
+            <Route path="/" element={<Home/>} /> 
+            <Route path='/getting-started' element={<PrivateRoute />}>
+              <Route path="/getting-started" element={<GettingStarted/>} /> 
+            </Route>
+            <Route path='/profile' element={<PrivateRoute />}>
+              <Route path='/profile' element={<Profile />} />
+            </Route>
+            <Route path='/edit-profile' element={<PrivateRoute />}>
+              <Route path='/edit-profile' element={<EditProfile />} />
+            </Route>
+            <Route path='/login' element={<Login />} />
+            <Route path='/register' element={<Register />} />
 
-              <Route path='/login' element={<Login />} />
-              <Route path='/register' element={<Register />} />
-
-              <Route path="/about" element={<About/>} /> 
-              <Route path="/profile" element={<Profile/>} /> 
-              <Route path="/psychologist" element={<Psychologist/>} /> 
-              <Route path="/feedback" element={<Feedback/>} /> 
-              <Route path="*" element={<NotFound/>} />
-            </Routes>
-          </main>
-        </div>
+            <Route path="/about" element={<About/>} />
+            <Route path="/psychologist" element={<Psychologist/>} /> 
+            <Route path="/feedback" element={<Feedback/>} /> 
+            <Route path="*" element={<NotFound/>} />
+          </Routes>
+        </main>
+      </div>
     </AuthProvider>
   );
 }

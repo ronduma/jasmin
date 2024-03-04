@@ -21,7 +21,7 @@ import TextField from '@mui/material/TextField';
 
 function Login() {
   const {currentUser} = useContext(AuthContext);
-  const [isNewUser, setIsNewUser] = useState(null);
+  const [isNewUser, setIsNewUser] = useState(false);
 
   const handleNewUser = async (additionalUserInfo) => {
     setIsNewUser(additionalUserInfo.isNewUser)
@@ -52,8 +52,19 @@ function Login() {
   };
 
   if (currentUser) {
+    console.log("CurrentUser", currentUser)
     console.log(isNewUser)
-    return <Navigate to={ isNewUser ? '/getting-started' : '/profile'} />;
+    const fetchData = async () => {
+      try{
+        console.log("1")
+        const response = await axios.get(`http://localhost:5000/profile/${currentUser.uid}`);
+      } catch (e) {
+        console.log("2")
+        setIsNewUser(true);
+      }
+    }
+    fetchData();
+    return <Navigate to={ isNewUser ? '/register' : '/profile'} />;
   }
   return (
     <Card>

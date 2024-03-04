@@ -1,6 +1,9 @@
 const { ObjectId } = require('mongodb');
 const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
+const fs = require('fs');
+
+const validation = require("./validation");
 
 const createUser = async (uid, email) => {
   const userCollection = await users();
@@ -32,7 +35,50 @@ const createUser = async (uid, email) => {
   return { insertedUser: true, insertedId: insertInfo.insertedId };
 }
 
-const updateUser = async (
+const gettingStarted = async (
+  {uid,
+  email,
+  username,
+  profile_img,
+  firstName,
+  lastName,
+  location,
+  age,
+  isTherapist,
+  gender,
+  bio,
+  occupation,
+  concerns,
+  chatLog}
+) => {
+  let updated = Object.fromEntries(
+    Object.entries({
+      username,
+      // profile_img,
+      firstName,
+      lastName,
+      location,
+      age,
+      isTherapist,
+      gender,
+      occupation,
+      // concerns,
+      // chatLog
+    })
+  );
+  validation.validateUserUpdate(updated);
+  console.log(validation.validateUserUpdate(updated))
+  const userCollection = await users();
+
+
+  const user = await userCollection.findOneAndUpdate(
+    { _id : uid },
+    { $set: updated },
+    { returnDocument: 'after' }
+  );
+}
+
+const updateUserInfo = async (
   {uid,
   email,
   username,
@@ -49,30 +95,33 @@ const updateUser = async (
 ) => {
   let updated = Object.fromEntries(
     Object.entries({
-      email,
       username,
-      profile_img,
+      // profile_img,
       firstName,
       lastName,
       location,
       age,
-      isTherapist,
+      // isTherapist,
       gender,
       occupation,
-      concerns,
-      chatLog
-    }).filter(([key, value]) => value !== undefined && value !== null)
+      // concerns,
+      // chatLog
+    })
   );
+  validation.validateUserUpdate(updated);
   const userCollection = await users();
 
+  // Filter out keys with undefined values
+  updated = Object.fromEntries(
+    Object.entries(updated).filter(([key, value]) => value !== undefined)
+  );
 
   const user = await userCollection.findOneAndUpdate(
-    { _id : uid },
+    { _id: uid },
     { $set: updated },
     { returnDocument: 'after' }
   );
 }
-  
 
 const getUserById = async (uid) => {
   const userCollection = await users();
@@ -81,9 +130,43 @@ const getUserById = async (uid) => {
   return user;
 }
 
+const emptyUploadsFolder = async () => {
+  const folderPath = './uploads';
+  const files = await fs.promises.readdir(folderPath);
+
+  for (const file of files) {
+    await fs.promises.unlink(`${folderPath}/${file}`);
+  }
+};
+
+const saveImgToDB = async (id, path) => {
+  const image = fs.readFileSync(path);
+
+  try {
+    const userCollection = await users();
+    const userExists = await userCollection.findOne({ _id: id });
+    if (userExists) { console.log('User found. Profile pic uploading now.') }
+    const updatedUser = await userCollection.findOneAndUpdate(
+      { _id: id },
+      { $set: {profile_img: image} },
+      { returnOriginal: false }
+    );
+
+    if (!updatedUser) {
+      throw `Error: User with id ${id} not found`;
+    }
+
+    console.log('User updated.');
+    await emptyUploadsFolder()
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 module.exports = {
   createUser,
-  updateUser,
+  updateUserInfo,
   getUserById,
-  
+  gettingStarted,
+  saveImgToDB,  
 };

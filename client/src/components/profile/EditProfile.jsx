@@ -1,11 +1,12 @@
-import React, {useContext, useState} from 'react';
-import {useNavigate, Navigate} from 'react-router-dom';
-import {AuthContext} from '../context/AuthContext';
-import {doCreateUserWithEmailAndPassword} from '../firebase/FirebaseFunctions';
+import React, {useContext, useEffect, useState} from 'react';
+import {redirect, useLocation, useNavigate, Navigate} from 'react-router-dom';
+import {AuthContext} from '../../context/AuthContext';
+import {doCreateUserWithEmailAndPassword} from '../../firebase/FirebaseFunctions';
 
 import axios from 'axios';
 
-import '../App.css';
+import '../../App.css';
+import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -22,22 +23,90 @@ import Select from '@mui/material/Select';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 
-function GettingStarted() {
+function EditProfile() {
   const {currentUser} = useContext(AuthContext);
+  const [profileData, setProfileData] = useState(null);
+
+  const [firstNameError, setFirstNameError] = useState(false);
+  const [lastNameError, setLastNameError] = useState(false);
+  const [usernameError, setUsernameError] = useState(false);
+  const [ageError, setAgeError] = useState(false);
+  const [genderError, setGenderError] = useState(false);
+  const [locationError, setLocationError] = useState(false);
+  const [occupationError, setOccupationError] = useState(false);
+  const [alert, setAlert] = useState(false);
+
+  const [isLoading, setLoading] = useState(true);
+
   const [gender, setGender] = React.useState('');
+
   const navigate = useNavigate(); 
 
-  const handleGenderChange = (event) => {
-    setGender(event.target.value);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        console.log("getting prof data")
+        const response = await axios.get(`http://localhost:5000/profile/${currentUser.uid}`);
+        setProfileData(response.data);
+        setLoading(false);
+        console.log(response.data)
+      } catch (e) {
+        console.log("yo")
+        navigate('/not-found')
+      }
+    };
+
+    fetchData(); 
+  }, []);
+
+  const setError = async (response) => {
+    let field = response.split(' ')[0];
+    switch (field) {
+      case 'firstName':
+        setFirstNameError(response);
+        break;
+      case 'lastName':
+        setLastNameError(response);
+        break;
+      case 'username':
+        setUsernameError(response);
+        break;
+      case 'age':
+        setAgeError(response);
+        break;
+      case 'gender':
+        setGenderError(response);
+        break;
+      case 'location':
+        setLocationError(response);
+        break;
+      case 'occupation':
+        setOccupationError(response);
+        break;
+    }
+    setAlert(response)
   };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/profile/${currentUser.uid}`);
+        console.log("IN USE EFFECT")
+        setUser(response.data); // Update user state with fetched user data
+        setGender(response.data.gender || ''); // Set gender based on fetched data
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUser();
+  }, [currentUser.uid]);
 
   const handleInfo = async (e) => {
     e.preventDefault();
-    const {isTherapist, firstName, lastName, username, age, gender, location, occupation} = e.target.elements;
-    // console.log(isTherapist, isTherapist.value)
+    const {firstName, lastName, username, age, gender, location, occupation} = e.target.elements;
     let user = {
-      uid : currentUser.uid, 
-      isTherapist : isTherapist.value,
+      uid : currentUser.uid,
       firstName : firstName.value, 
       lastName : lastName.value, 
       username : username.value,
@@ -47,58 +116,55 @@ function GettingStarted() {
       occupation : occupation.value
     };
     try {
-      axios.put('http://localhost:5000/profile', user)
+      console.log("UPDATING DATA")
+      let test = await axios.put('http://localhost:5000/profile', user)
+      console.log("updated data", test)
+      navigate('/profile');
     } catch (error) {
-      alert(error);
+      console.log(error);
+      setError(error.response.data)
     }
-    console.log("navigate to profile")
-    navigate('/profile')
   };
+
+  if (isLoading) {
+    return <div className="App">Loading...</div>;
+  }
 
   return (
     <Card className='card'>
       <CardContent>
-        <h1>Getting Started</h1>
+        <h1>Edit Profile</h1>
         <Box 
-          autoComplete="off"
           component="form"
           onSubmit={handleInfo}
           sx={{'& > div': { marginBottom: '1rem' } }}
         >
-          <FormControl>
-              <FormLabel id="demo-row-radio-buttons-group-label">I am a...</FormLabel>
-              <RadioGroup
-                row
-                name="isTherapist"
-              >
-                <FormControlLabel value="false" control={<Radio />} label="Patient" />
-                <FormControlLabel value="true" control={<Radio />} label="Therapist" />
-              </RadioGroup>
-            </FormControl>
           <div>
             <TextField
               className='form-control'
               name='firstName'
               type='text'
-              placeholder='First Name'
               label='First Name'
               autoFocus={true}
               autoComplete="off"
               sx={{
                 width: "15ch"
               }}
+              defaultValue={profileData.firstName}
+              error={Boolean(firstNameError)}
             />
             <TextField
               className='form-control'
               name='lastName'
               type='text'
-              placeholder='Last Name'
               label='Last Name'
               autoFocus={true}
               autoComplete="off"
               sx={{
                 width: "25ch"
               }}
+              defaultValue={profileData.lastName}
+              error={Boolean(lastNameError)}
             />
           </div>
           <div>
@@ -106,13 +172,14 @@ function GettingStarted() {
                 className='form-control'
                 name='username'
                 type='text'
-                placeholder='Username'
                 label='Username'
                 autoFocus={true}
                 autoComplete="off"
                 sx={{
                   width: "40ch"
                 }}
+                defaultValue={profileData.username}
+                error={Boolean(usernameError)}
               />
           </div>
           <div>
@@ -120,27 +187,28 @@ function GettingStarted() {
               className='form-control'
               name='age'
               type='number'
-              placeholder='Age'
               label='Age'
               autoFocus={true}
               autoComplete="off"
               sx={{
                 width: "10ch"
               }}
+              defaultValue={profileData.age}
+              error={Boolean(ageError)}
             />
             <FormControl
               sx={{width : '30ch'}}
             >
               <InputLabel>Gender</InputLabel>
                 <Select
-                  value={gender}
+                  defaultValue={profileData.gender}
                   label="Gender"
                   name="gender"
-                  onChange={handleGenderChange}
+                  error={Boolean(genderError)}
                 >
-                  <MenuItem value={'male'}>Male</MenuItem>
-                  <MenuItem value={'female'}>Female</MenuItem>
-                  <MenuItem value={'nonbinary'}>Non-Binary</MenuItem>
+                  <MenuItem value={'Male'}>Male</MenuItem>
+                  <MenuItem value={'Female'}>Female</MenuItem>
+                  <MenuItem value={'Non-binary'}>Non-Binary</MenuItem>
                 </Select>
             </FormControl>
           </div>
@@ -149,13 +217,14 @@ function GettingStarted() {
                 className='form-control'
                 name='location'
                 type='text'
-                placeholder='Location'
                 label='Location'
                 autoFocus={true}
                 autoComplete="off"
                 sx={{
                   width: "40ch"
                 }}
+                defaultValue={profileData.location}
+                error={Boolean(locationError)}
               />
           </div>
           <div>
@@ -163,13 +232,14 @@ function GettingStarted() {
                 className='form-control'
                 name='occupation'
                 type='text'
-                placeholder='Occupation'
                 label='Occupation'
                 autoFocus={true}
                 autoComplete="off"
                 sx={{
                   width: "40ch"
                 }}
+                defaultValue={profileData.occupation}
+                error={Boolean(occupationError)}
               />
           </div>
           <div>
@@ -184,10 +254,11 @@ function GettingStarted() {
               Submit
             </Button>
           </div>
+          {alert ? <Alert severity="error" sx={{mx:"auto", width: "40ch"}}>{alert}</Alert> : <div></div>}
         </Box>
       </CardContent>
     </Card>
   );
 }
 
-export default GettingStarted;
+export default EditProfile;
