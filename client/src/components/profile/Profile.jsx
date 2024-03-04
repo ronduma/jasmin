@@ -111,17 +111,12 @@ const [concern3, setConcern3] = useState('');
           <Paper style={{ height: '60vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
             {profileData ? 
               <div>
-                <Typography 
-                  variant='h4'
-                >
-                  {profileData.firstName} {profileData.lastName}
-                </Typography> 
                 <div id='profilePic'>
                   {profileData.profile_img ?             
                     <Avatar
                       alt="Profile Picture"
                       src={`data:image/png;base64,${profileData.profile_img}`}
-                      sx={{ width: 24, height: 24 }}
+                      sx={{ width: 200, height: 200 }}
                       
                     /> :
                     <div sx={{mx:'auto'}}>
@@ -148,6 +143,11 @@ const [concern3, setConcern3] = useState('');
                     </div>
                   }
                 </div>
+                <Typography 
+                  variant='h4'
+                >
+                  {profileData.firstName} {profileData.lastName}
+                </Typography> 
                 <div style={{textAlign:'left', padding:'1.5vh 0 0 0'}}>
                   <div>Age: {profileData.age}</div> 
                   <div>Gender: {profileData.gender}</div> 
