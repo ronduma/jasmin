@@ -9,51 +9,85 @@ import {useNavigate, NavLink} from 'react-router-dom';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CheckCircleIcon from '@mui/icons-material/CheckCircleOutlined';
 import CancelRoundedIcon from '@mui/icons-material/CancelOutlined';
+import UploadIcon from '@mui/icons-material/Upload';
 
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
-import { Unstable_Popup as Popup } from '@mui/base/Unstable_Popup';
 import { styled } from '@mui/system';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
 import {AuthContext} from '../../context/AuthContext';
 
+const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
+  height: 1,
+  overflow: 'hidden',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  whiteSpace: 'nowrap',
+  width: 1,
+});
+
 function Profile() {
   const {currentUser} = useContext(AuthContext);
   const [profileData, setProfileData] = useState(null);
   const [isFocused, setFocused] = useState(false);
+  const [imgFile, setImgFile] = useState(null);
 
   const navigate = useNavigate();
 
   console.log(profileData)
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        console.log("getting prof data")
-        const response = await axios.get(`http://localhost:5000/profile/${currentUser.uid}`);
-        setProfileData(response.data);
-      } catch (e) {
-        console.log("yo")
-        navigate('/not-found')
-      }
-    };
+  const fetchData = async () => {
+    try {
+      console.log("getting prof data")
+      const response = await axios.get(`http://localhost:5000/profile/${currentUser.uid}`);
+      setProfileData(response.data);
+    } catch (e) {
+      console.log("yo")
+      navigate('/not-found')
+    }
+  };
 
+  useEffect(() => {
     fetchData(); 
   }, [currentUser.uid]);
 
-  const [anchor, setAnchor] = React.useState(null);
+  const handleFileUpload = async (event) => {
+    const selectedFile = event.target.files[0];
+    console.log(selectedFile)
+    setImgFile(selectedFile);
+    console.log("HELLO")
+  } 
 
-  const handlePfpChange = (event) => {
-    setAnchor(anchor ? null : event.currentTarget);
-  };
+  useEffect(() => {
+    console.log('Updated imgFile:', imgFile);
+  }, [imgFile]);
 
-  const open = Boolean(anchor);
-  const id = open ? 'simple-popup' : undefined;
+  const handleSubmitFileUpload = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('file', imgFile);
+      await axios.put(`http://localhost:5000/profile/${currentUser.uid}/profile-pic`, formData)
+      .then(response => {
+        if (response.data){
+          console.log("RESPONSE", response);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+      fetchData();
+    } catch (error) {
+      console.error('Error uploading profile picture:', error);
+    }
+  }
 
   return (
     <div>
@@ -76,23 +110,39 @@ function Profile() {
                 >
                   {profileData.firstName} {profileData.lastName}
                 </Typography> 
-                <div aria-describedby={'profilePic'} onClick={handlePfpChange} id='profilePic'>
+                <div id='profilePic'>
                   {profileData.profile_img ?             
                     <Avatar
                       alt="Profile Picture"
-                      src={profileData.profile_img}
+                      src={`data:image/png;base64,${profileData.profile_img}`}
                       sx={{ width: 24, height: 24 }}
                       
                     /> :
-                    <AccountCircleIcon
-                      sx={{ width: "auto", height: 200 }}
-                    />
+                    <div sx={{mx:'auto'}}>
+                      <div>
+                        <AccountCircleIcon
+                          sx={{ width: "auto", height: 200 }}
+                        />
+                      </div>
+                      <div>
+                        <input type='file' onChange={handleFileUpload}/>
+                      </div>
+                      <div>
+                        <Button
+                          component="label"
+                          role={undefined}
+                          variant="contained"
+                          tabIndex={-1}
+                          startIcon={<UploadIcon />}
+                          onClick={handleSubmitFileUpload}
+                        >
+                          Upload picture
+                        </Button>
+                      </div>
+                    </div>
                   }
                 </div>
-                <Popup id={'profilePic'} open={open} anchor={anchor}>
-                  <PopupBody>The content of the Popup.</PopupBody>
-                </Popup>
-                <div style={{textAlign:'left'}}>
+                <div style={{textAlign:'left', padding:'1.5vh 0 0 0'}}>
                   <div>Age: {profileData.age}</div> 
                   <div>Gender: {profileData.gender}</div> 
                   <div>Location: {profileData.location}</div> 
@@ -241,46 +291,5 @@ function Profile() {
     </div>
   );
 }
-
-const grey = {
-  50: '#F3F6F9',
-  100: '#E5EAF2',
-  200: '#DAE2ED',
-  300: '#C7D0DD',
-  400: '#B0B8C4',
-  500: '#9DA8B7',
-  600: '#6B7A90',
-  700: '#434D5B',
-  800: '#303740',
-  900: '#1C2025',
-};
-
-const blue = {
-  200: '#99CCFF',
-  300: '#66B2FF',
-  400: '#3399FF',
-  500: '#007FFF',
-  600: '#0072E5',
-  700: '#0066CC',
-};
-
-const PopupBody = styled('div')(
-  ({ theme }) => `
-  width: max-content;
-  padding: 12px 16px;
-  margin: 8px;
-  border-radius: 8px;
-  border: 1px solid ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
-  background-color: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
-  box-shadow: ${
-    theme.palette.mode === 'dark'
-      ? `0px 4px 8px rgb(0 0 0 / 0.7)`
-      : `0px 4px 8px rgb(0 0 0 / 0.1)`
-  };
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-size: 0.875rem;
-  z-index: 1;
-`,
-);
 
 export default Profile;

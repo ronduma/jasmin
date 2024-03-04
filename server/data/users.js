@@ -1,6 +1,7 @@
 const { ObjectId } = require('mongodb');
 const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
+const fs = require('fs');
 
 const validation = require("./validation");
 
@@ -107,7 +108,6 @@ const updateUserInfo = async (
     })
   );
   validation.validateUserUpdate(updated);
-  console.log(validation.validateUserUpdate(updated))
   const userCollection = await users();
 
 
@@ -117,7 +117,6 @@ const updateUserInfo = async (
     { returnDocument: 'after' }
   );
 }
-  
 
 const getUserById = async (uid) => {
   const userCollection = await users();
@@ -126,9 +125,43 @@ const getUserById = async (uid) => {
   return user;
 }
 
+const emptyUploadsFolder = async () => {
+  const folderPath = './uploads';
+  const files = await fs.promises.readdir(folderPath);
+
+  for (const file of files) {
+    await fs.promises.unlink(`${folderPath}/${file}`);
+  }
+};
+
+const saveImgToDB = async (id, path) => {
+  const image = fs.readFileSync(path);
+
+  try {
+    const userCollection = await users();
+    const userExists = await userCollection.findOne({ _id: id });
+    if (userExists) { console.log('User found. Profile pic uploading now.') }
+    const updatedUser = await userCollection.findOneAndUpdate(
+      { _id: id },
+      { $set: {profile_img: image} },
+      { returnOriginal: false }
+    );
+
+    if (!updatedUser) {
+      throw `Error: User with id ${id} not found`;
+    }
+
+    console.log('User updated.');
+    await emptyUploadsFolder()
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 module.exports = {
   createUser,
   updateUserInfo,
   getUserById,
-  gettingStarted  
+  gettingStarted,
+  saveImgToDB,  
 };

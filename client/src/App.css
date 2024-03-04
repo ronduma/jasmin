@@ -145,10 +145,6 @@ html{
 
 }
 
-#profilePic:hover {
-  cursor:pointer;
-}
-
 .right-boxes {
   /* float:right; */
   padding: 0;
