@@ -42,6 +42,12 @@ function Profile() {
 
   const navigate = useNavigate();
 
+  // Bio + concerns
+  const [bio, setBio] = useState('');
+const [concern1, setConcern1] = useState('');
+const [concern2, setConcern2] = useState('');
+const [concern3, setConcern3] = useState('');
+
   console.log(profileData)
 
   const fetchData = async () => {

@@ -37,6 +37,9 @@ function EditProfile() {
   const [alert, setAlert] = useState(false);
 
   const [isLoading, setLoading] = useState(true);
+
+  const [gender, setGender] = React.useState('');
+
   const navigate = useNavigate(); 
 
   useEffect(() => {
@@ -84,6 +87,21 @@ function EditProfile() {
     setAlert(response)
   };
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/profile/${currentUser.uid}`);
+        console.log("IN USE EFFECT")
+        setUser(response.data); // Update user state with fetched user data
+        setGender(response.data.gender || ''); // Set gender based on fetched data
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUser();
+  }, [currentUser.uid]);
+
   const handleInfo = async (e) => {
     e.preventDefault();
     const {firstName, lastName, username, age, gender, location, occupation} = e.target.elements;
@@ -126,7 +144,7 @@ function EditProfile() {
               className='form-control'
               name='firstName'
               type='text'
-              placeholder='First Name'
+              placeholder={`${user.firstName || 'First Name'}`}
               label='First Name'
               autoFocus={true}
               autoComplete="off"
@@ -140,7 +158,7 @@ function EditProfile() {
               className='form-control'
               name='lastName'
               type='text'
-              placeholder='Last Name'
+              placeholder={`${user.lastName || 'Last Name'}`}
               label='Last Name'
               autoFocus={true}
               autoComplete="off"
@@ -156,7 +174,7 @@ function EditProfile() {
                 className='form-control'
                 name='username'
                 type='text'
-                placeholder='Username'
+                placeholder={`${user.username || 'Username'}`}
                 label='Username'
                 autoFocus={true}
                 autoComplete="off"
@@ -172,7 +190,7 @@ function EditProfile() {
               className='form-control'
               name='age'
               type='number'
-              placeholder='Age'
+              placeholder={`${user.age || 'Age'}`}
               label='Age'
               autoFocus={true}
               autoComplete="off"
@@ -203,7 +221,7 @@ function EditProfile() {
                 className='form-control'
                 name='location'
                 type='text'
-                placeholder='Location'
+                placeholder={`${user.location || 'Location'}`}
                 label='Location'
                 autoFocus={true}
                 autoComplete="off"
@@ -219,7 +237,7 @@ function EditProfile() {
                 className='form-control'
                 name='occupation'
                 type='text'
-                placeholder='Occupation'
+                placeholder={`${user.occupation || 'Occupation'}`}
                 label='Occupation'
                 autoFocus={true}
                 autoComplete="off"

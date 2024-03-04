@@ -46,6 +46,7 @@ const gettingStarted = async (
   age,
   isTherapist,
   gender,
+  bio,
   occupation,
   concerns,
   chatLog}
@@ -110,9 +111,13 @@ const updateUserInfo = async (
   validation.validateUserUpdate(updated);
   const userCollection = await users();
 
+  // Filter out keys with undefined values
+  updated = Object.fromEntries(
+    Object.entries(updated).filter(([key, value]) => value !== undefined)
+  );
 
   const user = await userCollection.findOneAndUpdate(
-    { _id : uid },
+    { _id: uid },
     { $set: updated },
     { returnDocument: 'after' }
   );
