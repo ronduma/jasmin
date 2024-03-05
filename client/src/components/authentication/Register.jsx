@@ -79,7 +79,7 @@ function Register() {
               name='displayName'
               type='text'
               placeholder='Name'
-              label='Name'
+              label='Username'
               autoFocus={true}
               autoComplete="off"
               required

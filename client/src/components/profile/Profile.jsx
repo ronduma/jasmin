@@ -7,20 +7,19 @@ import React, {useState, useEffect, useContext} from 'react';
 import {useNavigate, NavLink} from 'react-router-dom';
 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import CheckCircleIcon from '@mui/icons-material/CheckCircleOutlined';
-import CancelRoundedIcon from '@mui/icons-material/CancelOutlined';
 import UploadIcon from '@mui/icons-material/Upload';
 
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/system';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
 import {AuthContext} from '../../context/AuthContext';
+
+import PatientBio from './PatientBio';
+import TherapistBio from './TherapistBio';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -42,11 +41,7 @@ function Profile() {
 
   const navigate = useNavigate();
 
-  // Bio + concerns
-  const [bio, setBio] = useState('');
-const [concern1, setConcern1] = useState('');
-const [concern2, setConcern2] = useState('');
-const [concern3, setConcern3] = useState('');
+  const [isLoading, setLoading] = useState(true);
 
   console.log(profileData)
 
@@ -55,6 +50,7 @@ const [concern3, setConcern3] = useState('');
       console.log("getting prof data")
       const response = await axios.get(`http://localhost:5000/profile/${currentUser.uid}`);
       setProfileData(response.data);
+      setLoading(false);
     } catch (e) {
       console.log("yo")
       navigate('/not-found')
@@ -95,6 +91,10 @@ const [concern3, setConcern3] = useState('');
     }
   }
 
+  if (isLoading) {
+    return <div className="App">Loading...</div>;
+  }
+
   return (
     <div>
       <Grid 
@@ -108,7 +108,7 @@ const [concern3, setConcern3] = useState('');
           item 
           xs={3}
         >
-          <Paper style={{ height: '60vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          <Paper style={{ height: '68vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
             {profileData ? 
               <div>
                 <div id='profilePic'>
@@ -162,136 +162,7 @@ const [concern3, setConcern3] = useState('');
           </Paper>
         </Grid>
         <Grid item xs={6}>
-          <Grid 
-            container 
-            spacing={2}
-            style={{textAlign:"left"}}
-          >
-            <Grid item xs={12}>
-              <Paper style={{height: '18vh', padding: '2vh'}}>
-                <Typography variant='h5'>
-                  About Me
-                </Typography>
-                <TextField
-                  fullWidth
-                  id="outlined-multiline-static"
-                  label="Tell us about yourself!"
-                  multiline
-                  style={{margin: '2vh 0 1vh 0'}}
-                  rows={3}
-                  onFocus={() => setFocused(true)}
-                  onBlur={() => setFocused(false)}
-                  inputProps={{
-                    maxLength:285
-                  }}
-                  InputProps={{
-                    endAdornment: (
-                      <React.Fragment>
-                        {isFocused && (
-                          <div style={{ position: 'absolute', bottom: 0, right: 0 }}>
-                            <IconButton>
-                              <CheckCircleIcon></CheckCircleIcon>
-                            </IconButton>
-                            <IconButton>
-                              <CancelRoundedIcon></CancelRoundedIcon>
-                            </IconButton>
-                          </div>
-                        )}
-                      </React.Fragment>
-                    ),
-                  }}
-                />
-              </Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper style={{height: '32vh', padding: '2vh'}}>
-                <Typography variant='h5'>
-                  Core Concerns
-                </Typography>
-                <TextField
-                  fullWidth
-                  id="outlined-multiline-static"
-                  label="Concern #1"
-                  style={{margin: '2vh 0 1vh 0'}}
-                  onFocus={() => setFocused(true)}
-                  onBlur={() => setFocused(false)}
-                  inputProps={{
-                    maxLength:90
-                  }}
-                  InputProps={{
-                    endAdornment: (
-                      <React.Fragment>
-                        {isFocused && (
-                          <div style={{ position: 'absolute', bottom: 0, right: 0 }}>
-                            <IconButton>
-                              <CheckCircleIcon></CheckCircleIcon>
-                            </IconButton>
-                            <IconButton>
-                              <CancelRoundedIcon></CancelRoundedIcon>
-                            </IconButton>
-                          </div>
-                        )}
-                      </React.Fragment>
-                    ),
-                  }}
-                />
-                <TextField
-                  fullWidth
-                  id="outlined-multiline-static"
-                  label="Concern #2"
-                  style={{margin: '2vh 0 1vh 0'}}
-                  onFocus={() => setFocused(true)}
-                  onBlur={() => setFocused(false)}
-                  inputProps={{
-                    maxLength:80
-                  }}
-                  InputProps={{
-                    endAdornment: (
-                      <React.Fragment>
-                        {isFocused && (
-                          <div style={{ position: 'absolute', bottom: 0, right: 0 }}>
-                            <IconButton>
-                              <CheckCircleIcon></CheckCircleIcon>
-                            </IconButton>
-                            <IconButton>
-                              <CancelRoundedIcon></CancelRoundedIcon>
-                            </IconButton>
-                          </div>
-                        )}
-                      </React.Fragment>
-                    ),
-                  }}
-                />
-                <TextField
-                  fullWidth
-                  id="outlined-multiline-static"
-                  label="Concern #3"
-                  style={{margin: '2vh 0 1vh 0'}}
-                  onFocus={() => setFocused(true)}
-                  onBlur={() => setFocused(false)}
-                  inputProps={{
-                    maxLength:80
-                  }}
-                  InputProps={{
-                    endAdornment: (
-                      <React.Fragment>
-                        {isFocused && (
-                          <div style={{ position: 'absolute', bottom: 0, right: 0 }}>
-                            <IconButton>
-                              <CheckCircleIcon></CheckCircleIcon>
-                            </IconButton>
-                            <IconButton>
-                              <CancelRoundedIcon></CancelRoundedIcon>
-                            </IconButton>
-                          </div>
-                        )}
-                      </React.Fragment>
-                    ),
-                  }}
-                />
-              </Paper>
-            </Grid>
-          </Grid>
+          {profileData.isTherapist==true ?  <TherapistBio /> : <PatientBio />}
         </Grid>
       </Grid>
     </div>
