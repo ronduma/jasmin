@@ -18,25 +18,12 @@ import Typography from '@mui/material/Typography';
 
 import {AuthContext} from '../../context/AuthContext';
 
-import PatientBio from './PatientBio';
-import TherapistBio from './TherapistBio';
-
-const VisuallyHiddenInput = styled('input')({
-  clip: 'rect(0 0 0 0)',
-  clipPath: 'inset(50%)',
-  height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  whiteSpace: 'nowrap',
-  width: 1,
-});
+import Bio from './Bio';
 
 function Profile() {
   const {currentUser} = useContext(AuthContext);
   const [profileData, setProfileData] = useState(null);
-  const [isFocused, setFocused] = useState(false);
+  const [isTherapist, setIsTherapist] = useState(null);
   const [imgFile, setImgFile] = useState(null);
 
   const navigate = useNavigate();
@@ -50,6 +37,7 @@ function Profile() {
       console.log("getting prof data")
       const response = await axios.get(`http://localhost:5000/profile/${currentUser.uid}`);
       setProfileData(response.data);
+      setIsTherapist(profileData.isTherapist);
       setLoading(false);
     } catch (e) {
       console.log("yo")
@@ -131,7 +119,7 @@ function Profile() {
                         />
                       </div>
                       <div>
-                        <input type='file' onChange={handleFileUpload}/>
+                        <input type='file' onChange={handleFileUpload} error={false}/>
                       </div>
                       <div>
                         <Button
@@ -162,7 +150,7 @@ function Profile() {
           </Paper>
         </Grid>
         <Grid item xs={6}>
-          {profileData.isTherapist==true ?  <TherapistBio /> : <PatientBio />}
+          <Bio isTherapist={profileData.isTherapist}/>
         </Grid>
       </Grid>
     </div>
