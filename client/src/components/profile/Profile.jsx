@@ -37,7 +37,6 @@ function Profile() {
       console.log("getting prof data")
       const response = await axios.get(`http://localhost:5000/profile/${currentUser.uid}`);
       setProfileData(response.data);
-      setIsTherapist(profileData.isTherapist);
       setLoading(false);
     } catch (e) {
       console.log("yo")
