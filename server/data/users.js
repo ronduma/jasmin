@@ -1,42 +1,42 @@
-const { ObjectId } = require('mongodb');
+const { ObjectId } = require("mongodb");
 const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
-const fs = require('fs');
+const fs = require("fs");
 
 const validation = require("./validation");
 
 const createUser = async (uid, email) => {
   const userCollection = await users();
   const userExists = await userCollection.findOne({ uid: uid });
-  if (userExists){
-    throw "User with email already exists."
+  if (userExists) {
+    throw "User with email already exists.";
   }
 
   const user = {
-    _id : uid,
-    email : email,
-    username : null,
-    profile_img : null,
-    firstName : null,
-    lastName : null,
-    location : null,
-    age : null, 
-    isTherapist : null,
-    gender : null,
-    bio : null,
-    occupation : null,
-    concerns : [],
-    chatLog : []
-  }; 
+    _id: uid,
+    email: email,
+    username: null,
+    profile_img: null,
+    firstName: null,
+    lastName: null,
+    location: null,
+    age: null,
+    isTherapist: null,
+    gender: null,
+    bio: null,
+    occupation: null,
+    concerns: [],
+    chatLog: [],
+  };
   const insertInfo = await userCollection.insertOne(user);
   if (!insertInfo.acknowledged || !insertInfo.insertedId) {
     throw "Could not add user";
   }
   return { insertedUser: true, insertedId: insertInfo.insertedId };
-}
+};
 
-const gettingStarted = async (
-  {uid,
+const gettingStarted = async ({
+  uid,
   email,
   username,
   profile_img,
@@ -49,8 +49,9 @@ const gettingStarted = async (
   bio,
   occupation,
   concerns,
-  chatLog}
-) => {
+  chatLog,
+}) => {
+  isTherapist = isTherapist === "true" ? true : false;
   let updated = Object.fromEntries(
     Object.entries({
       username,
@@ -67,19 +68,18 @@ const gettingStarted = async (
     })
   );
   validation.validateUserUpdate(updated);
-  console.log(validation.validateUserUpdate(updated))
+  console.log(validation.validateUserUpdate(updated));
   const userCollection = await users();
 
-
   const user = await userCollection.findOneAndUpdate(
-    { _id : uid },
+    { _id: uid },
     { $set: updated },
-    { returnDocument: 'after' }
+    { returnDocument: "after" }
   );
-}
+};
 
-const updateUserInfo = async (
-  {uid,
+const updateUserInfo = async ({
+  uid,
   email,
   username,
   profile_img,
@@ -91,8 +91,8 @@ const updateUserInfo = async (
   gender,
   occupation,
   concerns,
-  chatLog}
-) => {
+  chatLog,
+}) => {
   let updated = Object.fromEntries(
     Object.entries({
       username,
@@ -119,19 +119,19 @@ const updateUserInfo = async (
   const user = await userCollection.findOneAndUpdate(
     { _id: uid },
     { $set: updated },
-    { returnDocument: 'after' }
+    { returnDocument: "after" }
   );
-}
+};
 
 const getUserById = async (uid) => {
   const userCollection = await users();
-  const user = await userCollection.findOne({ _id: uid});
+  const user = await userCollection.findOne({ _id: uid });
   if (!user) throw "User not found";
   return user;
-}
+};
 
 const emptyUploadsFolder = async () => {
-  const folderPath = './uploads';
+  const folderPath = "./uploads";
   const files = await fs.promises.readdir(folderPath);
 
   for (const file of files) {
@@ -145,10 +145,12 @@ const saveImgToDB = async (id, path) => {
   try {
     const userCollection = await users();
     const userExists = await userCollection.findOne({ _id: id });
-    if (userExists) { console.log('User found. Profile pic uploading now.') }
+    if (userExists) {
+      console.log("User found. Profile pic uploading now.");
+    }
     const updatedUser = await userCollection.findOneAndUpdate(
       { _id: id },
-      { $set: {profile_img: image} },
+      { $set: { profile_img: image } },
       { returnOriginal: false }
     );
 
@@ -156,17 +158,17 @@ const saveImgToDB = async (id, path) => {
       throw `Error: User with id ${id} not found`;
     }
 
-    console.log('User updated.');
-    await emptyUploadsFolder()
+    console.log("User updated.");
+    await emptyUploadsFolder();
   } catch (err) {
     console.error(err);
   }
-}
+};
 
 module.exports = {
   createUser,
   updateUserInfo,
   getUserById,
   gettingStarted,
-  saveImgToDB,  
+  saveImgToDB,
 };
