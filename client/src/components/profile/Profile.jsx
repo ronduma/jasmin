@@ -172,7 +172,7 @@ function Profile() {
           </Paper>
         </Grid>
         <Grid item xs={6}>
-          {profileData.isTherapist == "true" ? <TherapistBio /> : <PatientBio />}
+          {profileData.isTherapist == true ? <TherapistBio /> : <PatientBio />}
         </Grid>
       </Grid>
     </div>
