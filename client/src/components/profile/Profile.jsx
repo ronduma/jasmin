@@ -18,7 +18,8 @@ import Typography from '@mui/material/Typography';
 
 import {AuthContext} from '../../context/AuthContext';
 
-import Bio from './Bio';
+import TherapistBio from "./TherapistBio";
+import PatientBio from "./PatientBio";
 
 function Profile() {
   const {currentUser} = useContext(AuthContext);
@@ -149,7 +150,7 @@ function Profile() {
           </Paper>
         </Grid>
         <Grid item xs={6}>
-          <Bio isTherapist={profileData.isTherapist}/>
+          {profileData.isTherapist == "true" ? <TherapistBio /> : <PatientBio />}
         </Grid>
       </Grid>
     </div>
