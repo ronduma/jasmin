@@ -19,21 +19,19 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
 function PatientBio() {
-  const {currentUser} = useContext(AuthContext);
-  const [isAboutFocused, setAboutFocused] = useState(false);
-  const navigate = useNavigate(); 
 
   const [editAbout, setEditAbout] = useState(false);
+  const [editConcerns, setEditConcerns] = useState(false);
 
-  const aboutRef = useRef(null);
-
-  const allowEditAbout = () =>{
+  const allowEditAbout = () => {
     setEditAbout(true);
-    setTimeout(() => {
-      if (aboutTextFieldRef.current) {
-        aboutTextFieldRef.current.focus();
-      }
-    }, 0);
+  }
+  const confirmEditAbout = () => {
+    setEditAbout(false);
+  }
+
+  const allowEditConcerns = () => {
+    editConcerns(true);
   }
 
   return (
@@ -53,7 +51,7 @@ function PatientBio() {
             </div>
             <TextField
               disabled={!editAbout}
-              ref={aboutRef}
+              // ref={aboutRef}
               inputRef={input => input && input.focus()}
               fullWidth
               id="outlined-multiline-static"
@@ -61,17 +59,15 @@ function PatientBio() {
               multiline
               style={{margin: '2vh 0 1vh 0'}}
               rows={3}
-              onFocus={() => setAboutFocused(true)}
-              onBlur={() => setAboutFocused(false)}
               inputProps={{
                 maxLength:285
               }}
               InputProps={{
                 endAdornment: (
                   <React.Fragment>
-                    {isAboutFocused && (
+                    {editAbout && (
                       <div style={{ position: 'absolute', bottom: 0, right: 0 }}>
-                        <IconButton>
+                        <IconButton onClick={confirmEditAbout}>
                           <CheckCircleIcon></CheckCircleIcon>
                         </IconButton>
                         <IconButton>
@@ -87,9 +83,12 @@ function PatientBio() {
         </Grid>
         <Grid item xs={12}>
           <Paper style={{height: '32vh', padding: '2vh'}}>
-            <Typography variant='h5'>
-              Core Concerns
-            </Typography>
+            <div style={{alignItems: 'flex-start', display: 'flex', justifyContent: 'space-between'}}>
+              <Typography variant='h5'>
+                Core Concerns
+              </Typography>
+              {editConcerns ? "" : <IconButton onClick={allowEditConcerns}><EditIcon /></IconButton>}
+            </div>
             <TextField
               fullWidth
               id="outlined-multiline-static"
