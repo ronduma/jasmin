@@ -20,9 +20,10 @@ function Matching() {
   useEffect(() => {
     const fetchTherapists = async () => {
       try{
+        console.log("here!");
         const response = await axios.get(`http://localhost:5000/therapists`);
         console.log("IN USE EFFECT!");
-        setTherapists(response);
+        setTherapists(response.data);
       }catch(error){
         console.error("Error in fetching therapist data");
       }
