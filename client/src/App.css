@@ -206,11 +206,28 @@ html{
 
 .matching {
   background: white;
-  
-  
 }
-
-
+.matching-title{
+  color: #439873;
+}
+.bold-option {
+  font-weight: bold;
+  text-align: center;
+}
+.custom-select{
+  padding: 5px;
+  font-size: 14px;
+}
+.custom-select option {
+  font-size:16px;
+  font-weight: bold;
+  text-align: center;
+}
+.matching-category-choice{
+  color: #439873;
+  font-weight: bold;
+  font-size: 1000px;
+}
 .matching-container {
   display: flex;
   align-items: center;

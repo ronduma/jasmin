@@ -140,10 +140,18 @@ const getUserByUsername = async (username) => {
   return user;
 }
 
+const getAllTherapists = async() => {
+  const userCollection = await users();
+  const therapistCollection = userCollection.find({isTherapist: true});
+  console.log(therapistCollection);
+  return therapistCollection;
+}
+
+
 module.exports = {
   createUser,
   updateUser,
   getUserById,
-  getUserByUsername
-  
+  getUserByUsername,
+  getAllTherapists
 };

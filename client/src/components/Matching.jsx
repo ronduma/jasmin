@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from 'react';
 import { AuthContext } from "../context/AuthContext";
 import "../App.css";
 import Navigation from "./Navigation";
@@ -12,10 +12,23 @@ function Matching() {
   const [selectedGender, setSelectedGender] = useState("");
   const [selectedPrice, setSelectedPrice] = useState("");
   const [selectedSort, setSelectedSort] = useState("");
+  const [therapists, setTherapists] = useState("");
   const handleSearch = (e) => {
     // Handle search functionality
   };
 
+  useEffect(() => {
+    const fetchTherapists = async () => {
+      try{
+        const response = await axios.get(`http://localhost:5000/therapists`);
+        console.log("IN USE EFFECT!");
+        setTherapists(response);
+      }catch(error){
+        console.error("Error in fetching therapist data");
+      }
+    };
+    fetchTherapists();
+  })
   return (
     <div className="matching">
       <h1 className="matching-title">Psychologist for Personal Therapy</h1>
@@ -40,6 +53,7 @@ function Matching() {
         <select
           value={selectedTopic}
           onChange={(e) => setSelectedTopic(e.target.value)}
+          className ="custom-select"
         >
           <option value="">Select Topic</option>
           <option value="Anxiety">Anxiety</option>
@@ -49,12 +63,14 @@ function Matching() {
         <select
           value={selectedApproach}
           onChange={(e) => setSelectedApproach(e.target.value)}
+          className ="custom-select"
         >
           <option value="">Select Approach</option>
         </select>
         <select
           value={selectedGender}
           onChange={(e) => setSelectedGender(e.target.value)}
+          className ="custom-select"
         >
           <option value="">Select Gender</option>
           <option value="Male">Male</option>
@@ -64,6 +80,7 @@ function Matching() {
         <select
           value={selectedPrice}
           onChange={(e) => setSelectedPrice(e.target.value)}
+          className ="custom-select"
         >
           <option value="">Select Price</option>
           <option value="Low">$ - Low</option>
@@ -73,11 +90,16 @@ function Matching() {
         <select
           value={selectedSort}
           onChange={(e) => setSelectedSort(e.target.value)}
+          className ="custom-select"
         >
           <option value="">No sorting</option>
         </select>
       </div>
       {/* Render psychologist profiles filtered */}
+    </div>
+    {therapists}
+    <div>
+      
     </div>
     </div>
   );
