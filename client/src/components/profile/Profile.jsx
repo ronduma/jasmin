@@ -31,7 +31,12 @@ function Profile() {
 
   const [isLoading, setLoading] = useState(true);
 
-  console.log(profileData)
+  const [uploadMode, setUploadMode] = useState(true);
+  const toggleMode = () => {
+    setUploadMode(prevMode => !prevMode);
+  };
+
+  // console.log(profileData)
 
   const fetchData = async () => {
     try {
@@ -54,6 +59,7 @@ function Profile() {
     console.log(selectedFile)
     setImgFile(selectedFile);
     console.log("HELLO")
+    toggleMode();
   } 
 
   useEffect(() => {
@@ -74,6 +80,7 @@ function Profile() {
         console.log(error);
       });
       fetchData();
+      toggleMode();
     } catch (error) {
       console.error('Error uploading profile picture:', error);
     }
@@ -89,59 +96,74 @@ function Profile() {
         container 
         justifyContent={"center"}
         spacing={2}
-        style={{padding:'4vh 0 0 0'}}
+        style={{padding:'2vh 0 0 0',minWidth: "1200px", minHeight: "500px" }}
       >
         <Grid 
           fontSize={"14pt"}
           item 
           xs={3}
         >
-          <Paper style={{ height: '68vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-            {profileData ? 
-              <div>
-                <Typography 
+          <Paper style={{ minWidth: "200px",height: '59.65vh', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          <Typography 
                   variant='h4'
+                  style={{padding: '1vh 0 0 0'}}
                 >
                   {profileData.firstName} {profileData.lastName}
                 </Typography> 
+            {profileData ? 
+              <div>
                 <div id='profilePic'>
-                  {profileData.profile_img ?             
+                  {profileData.profile_img ?            
                     <Avatar
                       alt="Profile Picture"
                       src={`data:image/png;base64,${profileData.profile_img}`}
-                      sx={{ width: 24, height: 24 }}
-                      
+                      sx={{ minWidth: 200, minHeight: 200, mx: 'auto'}}
+                      style={{marginTop: '1em'}}
                     /> :
                     <div sx={{mx:'auto'}}>
                       <div>
                         <AccountCircleIcon
                           sx={{ width: "auto", height: 200 }}
+                          style={{marginTop: '1em'}}
                         />
-                      </div>
-                      <div>
-                        <input type='file' onChange={handleFileUpload} error={false}/>
-                      </div>
-                      <div>
-                        <Button
-                          component="label"
-                          role={undefined}
-                          variant="contained"
-                          tabIndex={-1}
-                          startIcon={<UploadIcon />}
-                          onClick={handleSubmitFileUpload}
-                        >
-                          Upload picture
-                        </Button>
-                      </div>
+                      </div> 
                     </div>
                   }
+                  <br/>
+                  <div>
+                    {uploadMode ? 
+                    <Button 
+                    component="label"
+                    role={undefined}
+                    variant="contained"
+                    tabIndex={-1}
+                    startIcon={<UploadIcon />}>
+                      <input id="fileInput" type='file' onChange={handleFileUpload} style={{ display: "none" }} /><label htmlFor="fileInput">Edit Picture</label>
+                    </Button> 
+                    : <Button
+                    component="label"
+                    role={undefined}
+                    variant="contained"
+                    tabIndex={-1}
+                    startIcon={<UploadIcon />}
+                    onClick={ uploadMode? handleFileUpload : handleSubmitFileUpload}
+                    >
+                      Submit upload
+                    </Button>
+                    }
+
+                  </div>
                 </div>
-                <div style={{textAlign:'left', padding:'1.5vh 0 0 0'}}>
-                  <div>Age: {profileData.age}</div> 
-                  <div>Gender: {profileData.gender}</div> 
-                  <div>Location: {profileData.location}</div> 
-                  <div>Occupation: {profileData.occupation}</div> 
-                  <div>Email: {profileData.email}</div> 
+                
+                <br/>
+                <div style={{width: "90%", margin: "0 auto", textAlign: "center"}}>
+                  <div style={{display: "inline-block" ,textAlign:'left'}}>
+                    <div>Age: {profileData.age}</div> 
+                    <div>Gender: {profileData.gender}</div> 
+                    <div>Location: {profileData.location}</div> 
+                    <div>Occupation: {profileData.occupation}</div> 
+                    <div>Email: {profileData.email}</div> 
+                  </div>
                 </div>                
               </div>
               : <div>Missing Data</div>}
