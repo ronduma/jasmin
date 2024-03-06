@@ -10,6 +10,7 @@ import '../../App.css';
 
 import CheckCircleIcon from '@mui/icons-material/CheckCircleOutlined';
 import CancelRoundedIcon from '@mui/icons-material/CancelOutlined';
+import EditIcon from '@mui/icons-material/Edit';
 
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
@@ -22,6 +23,8 @@ function PatientBio() {
   const [isFocused, setFocused] = useState(false);
   const navigate = useNavigate(); 
 
+  const [editAbout, setEditAbout] = useState(false);
+
   return (
     <div>
       <Grid 
@@ -31,10 +34,14 @@ function PatientBio() {
       >
         <Grid item xs={12}>
           <Paper style={{height: '18vh', padding: '2vh'}}>
-            <Typography variant='h5'>
-              About Me
-            </Typography>
+            <div style={{alignItems: 'flex-start', display: 'flex', justifyContent: 'space-between'}}>
+              <Typography variant='h5'>
+                About Me
+              </Typography>
+              <IconButton><EditIcon /></IconButton>
+            </div>
             <TextField
+              disabled={!editAbout}
               fullWidth
               id="outlined-multiline-static"
               label="Tell us about yourself!"
