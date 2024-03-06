@@ -30,7 +30,7 @@ function PatientBio() {
         style={{textAlign:"left"}}
       >
         <Grid item xs={12}>
-          <Paper style={{height: '18vh', padding: '2vh'}}>
+          <Paper style={{ height: '18vh', padding: '2vh'}}>
             <Typography variant='h5'>
               About Me
             </Typography>
