@@ -3,7 +3,9 @@ import { AuthContext } from "../context/AuthContext";
 import "../App.css";
 import Navigation from "./Navigation";
 import searchbutton from "../images/search-button.png";
-
+import axios from 'axios';
+import {Card, Avatar, CardActionArea,CardMedia, CardContent, Grid, Typography} from '@mui/material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 function Matching() {
   //   const {currentUser} = useContext(AuthContext);
   const [searchValue, setSearch] = useState("");
@@ -20,16 +22,58 @@ function Matching() {
   useEffect(() => {
     const fetchTherapists = async () => {
       try{
-        console.log("here!");
         const response = await axios.get(`http://localhost:5000/therapists`);
-        console.log("IN USE EFFECT!");
+        
         setTherapists(response.data);
       }catch(error){
-        console.error("Error in fetching therapist data");
+        console.error(e);
       }
     };
     fetchTherapists();
   })
+  
+  const buildCard = (therapist) => {
+    return(
+      <Grid item xs={3}>
+        <Card variant ='outlined'
+        sx = {{maxWidth: 350,
+              height: 'auto',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              paddingBottom: '20px',
+              borderRadius: 5,
+              border: '1px solid #1e8678',
+        }}>
+        <Avatar
+            alt="Profile Picture"
+            src={therapist.profile_img}
+            sx={{ width: 24, height: 24 }}
+          />
+          <AccountCircleIcon
+            sx={{ width: "auto", height: 200 }}
+          />
+        <CardContent>
+          <Typography>
+            {therapist.firstName}
+          </Typography>
+          <Typography>
+            {therapist.lastName}
+          </Typography>
+          <Typography>
+            {therapist.location}
+          </Typography>
+          <Typography>
+            {therapist.age}
+          </Typography>
+          <Typography>
+            {therapist.gender}
+          </Typography>
+        </CardContent>
+        </Card>
+      </Grid>
+    )
+  };
+  console.log(typeof therapists);
   return (
     <div className="matching">
       <h1 className="matching-title">Psychologist for Personal Therapy</h1>
@@ -43,8 +87,8 @@ function Matching() {
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search..."
           />
-          <button onClick={handleSearch}>
-            <img className="search-button" src={searchbutton} alt="Search" />
+          <button className="search-button" onClick={handleSearch}>
+            <img src={searchbutton} alt="Search"/>
           </button>
         </div>
       </div>
@@ -97,10 +141,12 @@ function Matching() {
         </select>
       </div>
       {/* Render psychologist profiles filtered */}
+    <br/>
     </div>
-    {therapists}
     <div>
-      
+    <Grid container spacing={6} justifyContent="center">
+      {therapists && therapists.map((therapist) => buildCard(therapist))}
+    </Grid>
     </div>
     </div>
   );

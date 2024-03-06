@@ -142,8 +142,7 @@ const getUserByUsername = async (username) => {
 
 const getAllTherapists = async() => {
   const userCollection = await users();
-  const therapistCollection = userCollection.find({isTherapist: true});
-  console.log(therapistCollection);
+  const therapistCollection = await userCollection.find({isTherapist: true}).toArray();
   return therapistCollection;
 }
 

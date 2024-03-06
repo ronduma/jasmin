@@ -1,6 +1,7 @@
 import React from 'react';
 import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css';
+import {NavLink} from 'react-router-dom';
 import '../../App.css';
 const ImageSlideshow = ({ images }) => {
   return (
@@ -15,7 +16,7 @@ const ImageSlideshow = ({ images }) => {
             <div style = {{'backgroundColor': "#EADDCA"}}>
               <div className='div-between'>
                 <p className='text-slide'>{each.caption}</p>
-                <button className ='slide-button'>Read More</button>
+                <NavLink to="/about" className ='slide-button'>Read More</NavLink>
               </div>
               <div className='div-between'>
                 <img className="image-slide" src={each.image} alt='bruh'></img>

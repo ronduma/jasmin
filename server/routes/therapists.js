@@ -9,7 +9,7 @@ const xss = require('xss');
 router.get('/', async(req, res) => {
     try{
         const therapistList = await users.getAllTherapists();
-        console.log("list of therapists");
+        // console.log("list of therapists");
         return res.status(200).json(therapistList);
     }
     catch(e){
