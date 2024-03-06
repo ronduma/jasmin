@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useRef, useState} from 'react';
 import {redirect, useLocation, useNavigate, Navigate} from 'react-router-dom';
 import {AuthContext} from '../../context/AuthContext';
 import {doCreateUserWithEmailAndPassword} from '../../firebase/FirebaseFunctions';
@@ -20,10 +20,21 @@ import Typography from '@mui/material/Typography';
 
 function PatientBio() {
   const {currentUser} = useContext(AuthContext);
-  const [isFocused, setFocused] = useState(false);
+  const [isAboutFocused, setAboutFocused] = useState(false);
   const navigate = useNavigate(); 
 
   const [editAbout, setEditAbout] = useState(false);
+
+  const aboutRef = useRef(null);
+
+  const allowEditAbout = () =>{
+    setEditAbout(true);
+    setTimeout(() => {
+      if (aboutTextFieldRef.current) {
+        aboutTextFieldRef.current.focus();
+      }
+    }, 0);
+  }
 
   return (
     <div>
@@ -38,25 +49,27 @@ function PatientBio() {
               <Typography variant='h5'>
                 About Me
               </Typography>
-              <IconButton><EditIcon /></IconButton>
+              {editAbout ? "" : <IconButton onClick={allowEditAbout}><EditIcon /></IconButton>}
             </div>
             <TextField
               disabled={!editAbout}
+              ref={aboutRef}
+              inputRef={input => input && input.focus()}
               fullWidth
               id="outlined-multiline-static"
               label="Tell us about yourself!"
               multiline
               style={{margin: '2vh 0 1vh 0'}}
               rows={3}
-              onFocus={() => setFocused(true)}
-              onBlur={() => setFocused(false)}
+              onFocus={() => setAboutFocused(true)}
+              onBlur={() => setAboutFocused(false)}
               inputProps={{
                 maxLength:285
               }}
               InputProps={{
                 endAdornment: (
                   <React.Fragment>
-                    {isFocused && (
+                    {isAboutFocused && (
                       <div style={{ position: 'absolute', bottom: 0, right: 0 }}>
                         <IconButton>
                           <CheckCircleIcon></CheckCircleIcon>
@@ -82,81 +95,81 @@ function PatientBio() {
               id="outlined-multiline-static"
               label="Concern #1"
               style={{margin: '2vh 0 1vh 0'}}
-              onFocus={() => setFocused(true)}
-              onBlur={() => setFocused(false)}
-              inputProps={{
-                maxLength:90
-              }}
-              InputProps={{
-                endAdornment: (
-                  <React.Fragment>
-                    {isFocused && (
-                      <div style={{ position: 'absolute', bottom: 0, right: 0 }}>
-                        <IconButton>
-                          <CheckCircleIcon></CheckCircleIcon>
-                        </IconButton>
-                        <IconButton>
-                          <CancelRoundedIcon></CancelRoundedIcon>
-                        </IconButton>
-                      </div>
-                    )}
-                  </React.Fragment>
-                ),
-              }}
+              // onFocus={() => setFocused(true)}
+              // onBlur={() => setFocused(false)}
+              // inputProps={{
+              //   maxLength:90
+              // }}
+              // InputProps={{
+              //   endAdornment: (
+              //     <React.Fragment>
+              //       {isFocused && (
+              //         <div style={{ position: 'absolute', bottom: 0, right: 0 }}>
+              //           <IconButton>
+              //             <CheckCircleIcon></CheckCircleIcon>
+              //           </IconButton>
+              //           <IconButton>
+              //             <CancelRoundedIcon></CancelRoundedIcon>
+              //           </IconButton>
+              //         </div>
+              //       )}
+              //     </React.Fragment>
+              //   ),
+              // }}
             />
             <TextField
               fullWidth
               id="outlined-multiline-static"
               label="Concern #2"
               style={{margin: '2vh 0 1vh 0'}}
-              onFocus={() => setFocused(true)}
-              onBlur={() => setFocused(false)}
-              inputProps={{
-                maxLength:80
-              }}
-              InputProps={{
-                endAdornment: (
-                  <React.Fragment>
-                    {isFocused && (
-                      <div style={{ position: 'absolute', bottom: 0, right: 0 }}>
-                        <IconButton>
-                          <CheckCircleIcon></CheckCircleIcon>
-                        </IconButton>
-                        <IconButton>
-                          <CancelRoundedIcon></CancelRoundedIcon>
-                        </IconButton>
-                      </div>
-                    )}
-                  </React.Fragment>
-                ),
-              }}
+              // onFocus={() => setFocused(true)}
+              // onBlur={() => setFocused(false)}
+              // inputProps={{
+              //   maxLength:80
+              // }}
+              // InputProps={{
+              //   endAdornment: (
+              //     <React.Fragment>
+              //       {isFocused && (
+              //         <div style={{ position: 'absolute', bottom: 0, right: 0 }}>
+              //           <IconButton>
+              //             <CheckCircleIcon></CheckCircleIcon>
+              //           </IconButton>
+              //           <IconButton>
+              //             <CancelRoundedIcon></CancelRoundedIcon>
+              //           </IconButton>
+              //         </div>
+              //       )}
+              //     </React.Fragment>
+              //   ),
+              // }}
             />
             <TextField
               fullWidth
               id="outlined-multiline-static"
               label="Concern #3"
               style={{margin: '2vh 0 1vh 0'}}
-              onFocus={() => setFocused(true)}
-              onBlur={() => setFocused(false)}
-              inputProps={{
-                maxLength:80
-              }}
-              InputProps={{
-                endAdornment: (
-                  <React.Fragment>
-                    {isFocused && (
-                      <div style={{ position: 'absolute', bottom: 0, right: 0 }}>
-                        <IconButton>
-                          <CheckCircleIcon></CheckCircleIcon>
-                        </IconButton>
-                        <IconButton>
-                          <CancelRoundedIcon></CancelRoundedIcon>
-                        </IconButton>
-                      </div>
-                    )}
-                  </React.Fragment>
-                ),
-              }}
+              // onFocus={() => setFocused(true)}
+              // onBlur={() => setFocused(false)}
+              // inputProps={{
+              //   maxLength:80
+              // }}
+              // InputProps={{
+              //   endAdornment: (
+              //     <React.Fragment>
+              //       {isFocused && (
+              //         <div style={{ position: 'absolute', bottom: 0, right: 0 }}>
+              //           <IconButton>
+              //             <CheckCircleIcon></CheckCircleIcon>
+              //           </IconButton>
+              //           <IconButton>
+              //             <CancelRoundedIcon></CancelRoundedIcon>
+              //           </IconButton>
+              //         </div>
+              //       )}
+              //     </React.Fragment>
+              //   ),
+              // }}
             />
           </Paper>
         </Grid>
