@@ -29,8 +29,8 @@ function PatientBio() {
         spacing={2}
         style={{textAlign:"left"}}
       >
-        <Grid item xs={12}>
-          <Paper style={{ height: '18vh', padding: '2vh'}}>
+        <Grid item xs={12} >
+          <Paper style={{ minHeight: '18vh', padding: '2vh'}}>
             <Typography variant='h5'>
               About Me
             </Typography>
@@ -66,7 +66,7 @@ function PatientBio() {
           </Paper>
         </Grid>
         <Grid item xs={12}>
-          <Paper style={{height: '32vh', padding: '2vh'}}>
+          <Paper style={{minHeight: '32vh', padding: '2vh'}}>
             <Typography variant='h5'>
               Core Concerns
             </Typography>
