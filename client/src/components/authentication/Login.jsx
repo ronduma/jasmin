@@ -29,10 +29,11 @@ function Login() {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    let {email, password} = event.target.elements;
-
+    let email = document.getElementById('email').value;
+    let password = document.getElementById('password').value;
+    console.log("yo")
     try {
-      await doSignInWithEmailAndPassword(email.value, password.value);
+      await doSignInWithEmailAndPassword(email, password);
     } catch (error) {
       alert(error);
     }
@@ -72,9 +73,9 @@ function Login() {
         sx={{'& > div': { marginBottom: '1rem' } }}
       >
         <h1>Log In</h1>
-        <form onSubmit={handleLogin}>
           <Box 
             className='form' 
+            component="form"
             onSubmit={handleLogin}
             sx={{'& > div': { marginBottom: '1rem' } }}
           >
@@ -93,6 +94,7 @@ function Login() {
               <TextField
                 name='password'
                 type='password'
+                id='password'
                 placeholder='Password'
                 label='Password'
                 autoComplete='off'
@@ -100,10 +102,9 @@ function Login() {
               />
             </div>  
           </Box>
-        </form>
         <div>
-          <Button className='button' type='submit' variant='contained'>
-            Log in
+          <Button className='button' type='submit' variant='contained' onClick={handleLogin}>
+            Log In
           </Button>
         </div>
         <div>

@@ -85,7 +85,6 @@ function Register() {
               required
             />
           </div>
-          
           <div>
             <TextField
               className='form-control'
