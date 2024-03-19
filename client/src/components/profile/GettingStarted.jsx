@@ -1,7 +1,6 @@
 import React, {useContext, useState} from 'react';
 import {redirect, useLocation, useNavigate, Navigate} from 'react-router-dom';
 import {AuthContext} from '../../context/AuthContext';
-import {doCreateUserWithEmailAndPassword} from '../../firebase/FirebaseFunctions';
 
 import axios from 'axios';
 
