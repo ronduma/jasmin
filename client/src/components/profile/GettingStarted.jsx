@@ -1,7 +1,6 @@
 import React, {useContext, useState} from 'react';
 import {redirect, useLocation, useNavigate, Navigate} from 'react-router-dom';
 import {AuthContext} from '../../context/AuthContext';
-import {doCreateUserWithEmailAndPassword} from '../../firebase/FirebaseFunctions';
 
 import axios from 'axios';
 
@@ -26,6 +25,7 @@ import TextField from '@mui/material/TextField';
 function GettingStarted() {
   const {currentUser} = useContext(AuthContext);
   const [gender, setGender] = React.useState('');
+  console.log(currentUser)
 
   const [isTherapistError, setIsTherapistError] = useState(false);
   const [firstNameError, setFirstNameError] = useState(false);
@@ -87,6 +87,7 @@ function GettingStarted() {
     // console.log(isTherapist, isTherapist.value)
     let user = {
       uid : currentUser.uid, 
+      email : currentUser.email,
       isTherapist : isTherapist.value,
       firstName : firstName.value, 
       lastName : lastName.value, 
@@ -96,8 +97,14 @@ function GettingStarted() {
       location : location.value, 
       occupation : occupation.value
     };
+    try{
+      const checkDB = await axios.get(`http://localhost:5000/profile/${currentUser.uid}`);
+    } catch (error) {
+      await axios.post('http://localhost:5000/register', user);
+    }
     try {
       console.log("UPDATING DATA")
+      console.log("DATA:", user)
       let updateUser = await axios.put('http://localhost:5000/profile/getting-started', user)
       console.log("updated data", updateUser)
       navigate('/profile');
