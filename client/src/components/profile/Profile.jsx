@@ -46,7 +46,7 @@ function Profile() {
       setLoading(false);
     } catch (e) {
       console.log("yo")
-      navigate('/not-found')
+      navigate('/getting-started')
     }
   };
 
