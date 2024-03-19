@@ -31,7 +31,7 @@ function Login() {
     event.preventDefault();
     let email = document.getElementById('email').value;
     let password = document.getElementById('password').value;
-    console.log("yo")
+    // console.log("yo")
     try {
       await doSignInWithEmailAndPassword(email, password);
     } catch (error) {
@@ -53,14 +53,14 @@ function Login() {
   };
 
   if (currentUser) {
-    console.log("CurrentUser", currentUser)
-    console.log(isNewUser)
+    // console.log("CurrentUser", currentUser)
+    // console.log(isNewUser)
     const fetchData = async () => {
       try{
-        console.log("1")
+        // console.log("1")
         const response = await axios.get(`http://localhost:5000/profile/${currentUser.uid}`);
       } catch (e) {
-        console.log("2")
+        // console.log("2")
         setIsNewUser(true);
       }
     }
