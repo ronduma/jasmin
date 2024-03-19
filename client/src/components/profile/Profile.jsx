@@ -97,7 +97,7 @@ function Profile() {
         justifyContent={"center"}
         spacing={2}
         alignItems={"stretch"}
-        style={{padding:'2vh 0 0 0',minWidth: "1200px", minHeight: "500px" }}
+        style={{padding:'2vh 0 0 0',minWidth: "1200px", minHeight: "500px"}}
       >
         <Grid 
           fontSize={"14pt"}
