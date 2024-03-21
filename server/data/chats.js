@@ -1,4 +1,3 @@
-const { ObjectId } = require("mongodb");
 const mongoCollections = require("../config/mongoCollections");
 const chats = mongoCollections.chat;
 
