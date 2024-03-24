@@ -5,6 +5,7 @@ import '../../App.css';
 import ImageSlideshow from './ImageSlideShow.jsx';
 import Box from '@mui/material/Box';
 import TextSlideshow from  './TextSlideShow.jsx';
+import Chat from './Chat.jsx';
 import ImageSlider from './ImageSlider.jsx';
 
 //importing images for each section of the slideshow
@@ -45,6 +46,8 @@ function Home() {
   const windowHeight = windowWidth * 1/3;
   return (
     <div className="Home">
+
+
       <Box
         className="homeBanner"
         display ="flex" 
@@ -68,6 +71,24 @@ function Home() {
         gap={16}                // Adjust the spacing between cards
       >
       </Box>
+
+
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        position="fixed"
+        bottom={20}
+        right={20}
+        zIndex={999} 
+      >
+
+        {/* Positioning the Chat component */}
+        <Chat />
+      </Box>
+
+
+
       {/* <Box
         display ="flex" 
         justifyContent = "center" 
