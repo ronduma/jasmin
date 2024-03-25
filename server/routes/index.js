@@ -2,6 +2,7 @@ const registerRoutes = require('./register');
 const loginRoutes = require('./login');
 const logoutRoutes = require('./logout');
 const profileRoutes = require('./profile');
+const chatRoutes = require('./chat');
 
 const constructorMethod = (app) => {
   // app.use('/', (req, res) => {
@@ -13,8 +14,9 @@ const constructorMethod = (app) => {
   app.use('/login', loginRoutes);
   app.use('/profile', profileRoutes);
   app.use('/logout', logoutRoutes);
+  app.use('/chat',chatRoutes);
   app.use('*', (req, res) => {
-    console.log('yo')
+    console.log('not found ')
     res.status(400).json("Error: Page not found.")
   });
 };
