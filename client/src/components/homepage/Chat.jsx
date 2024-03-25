@@ -1,7 +1,12 @@
-import React, { useState } from "react";
+import React, {useContext, useState } from "react";
 import "../../chat.css";
+import {AuthContext} from '../../context/AuthContext';
+import axios from 'axios';
+
 
 const Chat = () => {
+  const {currentUser} = useContext(AuthContext); //get the current username
+
   const [isOpen, setIsOpen] = useState(false); // isOpen state starts as false
   const [message, setMessage] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
@@ -12,29 +17,27 @@ const Chat = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    let {new_message} = event.target.elements;
+
+    console.log(currentUser);
     try {
-      const response = await fetch("/submit-form", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ msg: message }), // Send message data to server
-      });
-      if (response.ok) {
-        // If request is successful, clear the message input
-        setMessage("");
-        // You can optionally update the UI to display a success message or update the chat window
-      } else {
-        console.error("Error submitting form");
-      }
+      axios.post('http://localhost:5000/chat', {sender:currentUser,receiver:"temp", message: new_message})
+      .then(response => {
+        console.log("user", user)
+        console.log("response", response)
+      })
+      .catch(error => {
+        console.log(error.response.data.error)
+      });        
     } catch (error) {
-      console.error("Error submitting form:", error);
+      alert(error);
     }
-  };
+  }
 
   const handleMessageChange = (event) => {
     setMessage(event.target.value);
   };
+
 
   return (
     <div>
