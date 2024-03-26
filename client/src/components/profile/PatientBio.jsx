@@ -20,6 +20,7 @@ import Typography from '@mui/material/Typography';
 
 function PatientBio() {
 
+  const {currentUser} = useContext(AuthContext);
   const [editAbout, setEditAbout] = useState(false);
   const [editConcerns, setEditConcerns] = useState(false);
 
@@ -32,6 +33,20 @@ function PatientBio() {
 
   const allowEditConcerns = () => {
     editConcerns(true);
+  }
+
+  const putBio = () => {
+    console.log("curentUser: ", currentUser);
+    axios.put('http://localhost:5000/profile/bio', {
+      uid: currentUser.uid,
+      bio: document.getElementById('outlined-multiline-static').value
+    })
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
 
   return (
@@ -68,7 +83,8 @@ function PatientBio() {
                     {editAbout && (
                       <div style={{ position: 'absolute', bottom: 0, right: 0 }}>
                         <IconButton onClick={confirmEditAbout}>
-                          <CheckCircleIcon></CheckCircleIcon>
+                          <CheckCircleIcon onClick={putBio}>
+                          </CheckCircleIcon>
                         </IconButton>
                         <IconButton>
                           <CancelRoundedIcon></CancelRoundedIcon>

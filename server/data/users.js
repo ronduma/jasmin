@@ -115,12 +115,31 @@ const updateUserInfo = async ({
   updated = Object.fromEntries(
     Object.entries(updated).filter(([key, value]) => value !== undefined)
   );
-
   const user = await userCollection.findOneAndUpdate(
     { _id: uid },
     { $set: updated },
     { returnDocument: "after" }
   );
+};
+
+const updateProfile = async (uid, updated) => {
+  // Patient profile update
+  // Error handling in routes
+  let user = await getUserById(uid);
+  if (!user) throw "User not found";
+  const userCollection = await users();
+  const updatedUser = await userCollection
+    .findOneAndUpdate(
+      { _id: uid },
+      { $set: updated },
+      { returnDocument: "after" }
+    )
+    .catch((e) => {
+      console.error(e);
+    });
+  if (!updatedUser) {
+    throw "Error: User not found";
+  }
 };
 
 const getUserById = async (uid) => {
@@ -168,6 +187,7 @@ const saveImgToDB = async (id, path) => {
 module.exports = {
   createUser,
   updateUserInfo,
+  updateProfile,
   getUserById,
   gettingStarted,
   saveImgToDB,
