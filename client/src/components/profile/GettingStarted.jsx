@@ -1,11 +1,11 @@
 import React, {useContext, useState} from 'react';
 import {redirect, useLocation, useNavigate, Navigate} from 'react-router-dom';
 import {AuthContext} from '../../context/AuthContext';
-import {doCreateUserWithEmailAndPassword} from '../../firebase/FirebaseFunctions';
 
 import axios from 'axios';
 
 import '../../App.css';
+import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -25,10 +25,60 @@ import TextField from '@mui/material/TextField';
 function GettingStarted() {
   const {currentUser} = useContext(AuthContext);
   const [gender, setGender] = React.useState('');
+  console.log(currentUser)
+
+  const [isTherapistError, setIsTherapistError] = useState(false);
+  const [firstNameError, setFirstNameError] = useState(false);
+  const [lastNameError, setLastNameError] = useState(false);
+  const [usernameError, setUsernameError] = useState('');
+  const [ageError, setAgeError] = useState(false);
+  const [genderError, setGenderError] = useState(false);
+  const [locationError, setLocationError] = useState(false);
+  const [occupationError, setOccupationError] = useState(false);
+  const [alert, setAlert] = useState(false);
+
   const navigate = useNavigate(); 
   // console.log(location)
   const handleGenderChange = (event) => {
     setGender(event.target.value);
+  };
+
+  const setError = async (response) => {
+    let field = response.split(' ')[0];
+    setFirstNameError(false);
+    setLastNameError(false);
+    setUsernameError(false);
+    setAgeError(false);
+    setGenderError(false);
+    setLocationError(false);
+    setOccupationError(false);
+    switch (field) {
+      case 'First':
+        setFirstNameError(response);
+        break;
+      case 'Last':
+        setLastNameError(response);
+        break;
+      case 'Username':
+        setUsernameError(response);
+        break;
+      case 'Age':
+        setAgeError(response);
+        break;
+      case 'Gender':
+        setGenderError(response);
+        break;
+      case 'Location':
+        setLocationError(response);
+        break;
+      case 'Occupation':
+        setOccupationError(response);
+        break;
+      case 'Are':
+        setIsTherapistError(response);
+        break;
+    }
+    setAlert(response)
   };
 
   const handleInfo = async (e) => {
@@ -37,6 +87,7 @@ function GettingStarted() {
     // console.log(isTherapist, isTherapist.value)
     let user = {
       uid : currentUser.uid, 
+      email : currentUser.email,
       isTherapist : isTherapist.value,
       firstName : firstName.value, 
       lastName : lastName.value, 
@@ -46,13 +97,20 @@ function GettingStarted() {
       location : location.value, 
       occupation : occupation.value
     };
+    try{
+      const checkDB = await axios.get(`http://localhost:5000/profile/${currentUser.uid}`);
+    } catch (error) {
+      await axios.post('http://localhost:5000/register', user);
+    }
     try {
       console.log("UPDATING DATA")
-      let updateUser = await axios.put('http://localhost:5000/profile', user)
+      console.log("DATA:", user)
+      let updateUser = await axios.put('http://localhost:5000/profile/getting-started', user)
       console.log("updated data", updateUser)
       navigate('/profile');
     } catch (error) {
-      alert(error);
+      console.log(error);
+      setError(error.response.data)
     }
   };
 
@@ -70,6 +128,7 @@ function GettingStarted() {
               <RadioGroup
                 row
                 name="isTherapist"
+                error={Boolean(isTherapistError)}
               >
                 <FormControlLabel value="false" control={<Radio />} label="Patient" />
                 <FormControlLabel value="true" control={<Radio />} label="Therapist" />
@@ -87,6 +146,7 @@ function GettingStarted() {
               sx={{
                 width: "15ch"
               }}
+              error={Boolean(firstNameError)}
             />
             <TextField
               className='form-control'
@@ -99,6 +159,7 @@ function GettingStarted() {
               sx={{
                 width: "25ch"
               }}
+              error={Boolean(lastNameError)}
             />
           </div>
           <div>
@@ -113,6 +174,7 @@ function GettingStarted() {
                 sx={{
                   width: "40ch"
                 }}
+                error={Boolean(usernameError)}
               />
           </div>
           <div>
@@ -127,6 +189,7 @@ function GettingStarted() {
               sx={{
                 width: "10ch"
               }}
+              error={Boolean(ageError)}
             />
             <FormControl
               sx={{width : '30ch'}}
@@ -137,6 +200,7 @@ function GettingStarted() {
                   label="Gender"
                   name="gender"
                   onChange={handleGenderChange}
+                  error={Boolean(genderError)}
                 >
                   <MenuItem value={'Male'}>Male</MenuItem>
                   <MenuItem value={'Female'}>Female</MenuItem>
@@ -156,6 +220,7 @@ function GettingStarted() {
                 sx={{
                   width: "40ch"
                 }}
+                error={Boolean(locationError)}
               />
           </div>
           <div>
@@ -170,6 +235,7 @@ function GettingStarted() {
                 sx={{
                   width: "40ch"
                 }}
+                error={Boolean(occupationError)}
               />
           </div>
           <div>
@@ -184,6 +250,7 @@ function GettingStarted() {
               Submit
             </Button>
           </div>
+          {alert ? <Alert severity="error" sx={{mx:"auto", width: "40ch"}}>{alert}</Alert> : <div></div>}
         </Box>
       </CardContent>
     </Card>

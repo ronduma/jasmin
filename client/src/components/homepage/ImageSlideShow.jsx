@@ -17,6 +17,7 @@ const ImageSlideshow = ({ images }) => {
               <div className='div-between'>
                 <p className='text-slide'>{each.caption}</p>
                 <NavLink to="/about" className ='slide-button'>Read More</NavLink>
+
               </div>
               <div className='div-between'>
                 <img className="image-slide" src={each.image} alt='bruh'></img>
