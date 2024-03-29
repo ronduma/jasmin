@@ -34,6 +34,7 @@ const NavigationAuth = () => {
         >
         <Button component = {NavLink} to='/about' color="inherit">About Us</Button>
         <Button component = {NavLink} to='/profile' color="inherit">Profile</Button>
+        <Button component = {NavLink} to='/matching' color="inherit">Matching</Button>
         <LogOutButton />
         </div>
       </Toolbar>
