@@ -157,11 +157,13 @@ function Matching() {
     <br/>
     </div>
     <div>
-    <div style={{ display: 'flex',flexWrap: 'wrap', gap: "20px", alignItems:"flex-start", margin: "20px"}}>
-      {loading && 
+    <div style={{ display: 'flex', flexWrap: 'wrap', 
+                  gap: "20px", alignItems:"flex-start", 
+                  margin: "20px", paddingBottom: "50px"}}>
+      {loading && <>
         <Card variant ='outlined'
         sx = {{
-              flex: "1 0 auto",
+              // flex: "1 0 auto",
               width: 350,
               height: 'auto',
               paddingBottom: '20px',
@@ -176,7 +178,62 @@ function Matching() {
           <Typography>Loading...</Typography>
           <Typography>Loading...</Typography>
         </CardContent>
-      </Card>}
+      </Card>
+       <Card variant ='outlined'
+       sx = {{
+             // flex: "1 0 auto",
+             width: 350,
+             height: 'auto',
+             paddingBottom: '20px',
+             borderRadius: 5,
+             border: '1px solid #1e8678',
+       }}>
+       <AccountCircleIcon sx={{ width: 300, height: 200 }} />
+       <CardContent>
+         <Typography>Loading...</Typography>
+         <Typography>Loading...</Typography>
+         <Typography>Loading...</Typography>
+         <Typography>Loading...</Typography>
+         <Typography>Loading...</Typography>
+       </CardContent>
+     </Card>
+      <Card variant ='outlined'
+      sx = {{
+            // flex: "1 0 auto",
+            width: 350,
+            height: 'auto',
+            paddingBottom: '20px',
+            borderRadius: 5,
+            border: '1px solid #1e8678',
+      }}>
+      <AccountCircleIcon sx={{ width: 300, height: 200 }} />
+      <CardContent>
+        <Typography>Loading...</Typography>
+        <Typography>Loading...</Typography>
+        <Typography>Loading...</Typography>
+        <Typography>Loading...</Typography>
+        <Typography>Loading...</Typography>
+      </CardContent>
+    </Card>
+     <Card variant ='outlined'
+     sx = {{
+           // flex: "1 0 auto",
+           width: 350,
+           height: 'auto',
+           paddingBottom: '20px',
+           borderRadius: 5,
+           border: '1px solid #1e8678',
+     }}>
+     <AccountCircleIcon sx={{ width: 300, height: 200 }} />
+     <CardContent>
+       <Typography>Loading...</Typography>
+       <Typography>Loading...</Typography>
+       <Typography>Loading...</Typography>
+       <Typography>Loading...</Typography>
+       <Typography>Loading...</Typography>
+     </CardContent>
+   </Card>
+   </>}
       {therapists && therapists.map((therapist) => buildCard(therapist))}
     </div>
     </div>

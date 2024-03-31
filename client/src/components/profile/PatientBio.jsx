@@ -18,7 +18,7 @@ import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
-function PatientBio() {
+function PatientBio({bio, concerns}) {
 
   const {currentUser} = useContext(AuthContext);
   const [editAbout, setEditAbout] = useState(false);
@@ -71,6 +71,10 @@ function PatientBio() {
               fullWidth
               id="outlined-multiline-static"
               label="Tell us about yourself!"
+              value={bio}
+              InputLabelProps={{
+                shrink: bio ? true : false,
+              }}
               multiline
               style={{margin: '2vh 0 1vh 0'}}
               rows={3}
