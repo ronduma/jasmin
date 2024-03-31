@@ -16,6 +16,7 @@ function Matching() {
   const [selectedPrice, setSelectedPrice] = useState("");
   const [selectedSort, setSelectedSort] = useState("");
   const [therapists, setTherapists] = useState("");
+  const [loading, setLoading] = useState(true);
   const handleSearch = (e) => {
     // Handle search functionality
   };
@@ -26,6 +27,7 @@ function Matching() {
         const response = await axios.get(`http://localhost:5000/therapists`);
         
         setTherapists(response.data);
+        setLoading(false);
 
       }catch(error){
         console.error(e);
@@ -36,45 +38,52 @@ function Matching() {
   
   const buildCard = (therapist) => {
     return(
-      <Grid item xs={3}>
+      
         <Link to={`/matching/${therapist._id}`}>
-        <Card variant ='outlined'
-        sx = {{maxWidth: 350,
-              height: 'auto',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              paddingBottom: '20px',
-              borderRadius: 5,
-              border: '1px solid #1e8678',
-        }}>
-        <Avatar
-            alt="Profile Picture"
-            src={therapist.profile_img}
-            sx={{ width: 24, height: 24 }}
-          />
-          <AccountCircleIcon
-            sx={{ width: "auto", height: 200 }}
-          />
-        <CardContent>
-          <Typography>
-            {therapist.firstName}
-          </Typography>
-          <Typography>
-            {therapist.lastName}
-          </Typography>
-          <Typography>
-            {therapist.location}
-          </Typography>
-          <Typography>
-            {therapist.age}
-          </Typography>
-          <Typography>
-            {therapist.gender}
-          </Typography>
-        </CardContent>
-        </Card>
+          <Card variant ='outlined'
+            sx = {{
+                  flex: "1 0 auto",
+                  width: 350,
+                  height: 'auto',
+                  // margin: '1em',
+                  // marginLeft: 'auto',
+                  // marginRight: 'auto',
+                  paddingBottom: '20px',
+                  borderRadius: 5,
+                  border: '1px solid #1e8678',
+            }}>
+            
+            {therapist.profile_img ?
+              <Avatar
+                          alt="Profile Picture"
+                          src={`data:image/png;base64,${therapist.profile_img}`}
+                          sx={{ minWidth: 200, minHeight: 200, mx: 'auto'}}
+                          style={{marginTop: '1em'}}
+                        />
+              :
+              <AccountCircleIcon sx={{ width: "auto", height: 200 }} />
+            }
+
+            
+            <CardContent>
+              <Typography>
+                {therapist.firstName}
+              </Typography>
+              <Typography>
+                {therapist.lastName}
+              </Typography>
+              <Typography>
+                {therapist.location}
+              </Typography>
+              <Typography>
+                {therapist.age}
+              </Typography>
+              <Typography>
+                {therapist.gender}
+              </Typography>
+            </CardContent>
+          </Card>
         </Link>
-      </Grid>
     )
   };
   // console.log(typeof therapists);
@@ -148,9 +157,28 @@ function Matching() {
     <br/>
     </div>
     <div>
-    <Grid container spacing={6} justifyContent="center">
+    <div style={{ display: 'flex',flexWrap: 'wrap', gap: "20px", alignItems:"flex-start", margin: "20px"}}>
+      {loading && 
+        <Card variant ='outlined'
+        sx = {{
+              flex: "1 0 auto",
+              width: 350,
+              height: 'auto',
+              paddingBottom: '20px',
+              borderRadius: 5,
+              border: '1px solid #1e8678',
+        }}>
+        <AccountCircleIcon sx={{ width: 300, height: 200 }} />
+        <CardContent>
+          <Typography>Loading...</Typography>
+          <Typography>Loading...</Typography>
+          <Typography>Loading...</Typography>
+          <Typography>Loading...</Typography>
+          <Typography>Loading...</Typography>
+        </CardContent>
+      </Card>}
       {therapists && therapists.map((therapist) => buildCard(therapist))}
-    </Grid>
+    </div>
     </div>
     </div>
   );
