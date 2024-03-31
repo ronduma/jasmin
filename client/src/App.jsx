@@ -44,6 +44,7 @@ function App() {
             <Route path="/psychologist" element={<Psychologist/>} /> 
             <Route path="/feedback" element={<Feedback/>} /> 
             <Route path='/matching' element={<Matching />} />
+            <Route path="/matching/:id" element={<Psychologist/>} />
             <Route path='/speciallist' element={<SpecialList />} />
             <Route path="*" element={<NotFound/>} />
           </Routes>

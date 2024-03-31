@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { AuthContext } from "../context/AuthContext";
+import { Link } from 'react-router-dom';
 import "../App.css";
 import Navigation from "./Navigation";
 import searchbutton from "../images/search-button.png";
@@ -25,6 +26,7 @@ function Matching() {
         const response = await axios.get(`http://localhost:5000/therapists`);
         
         setTherapists(response.data);
+
       }catch(error){
         console.error(e);
       }
@@ -35,6 +37,7 @@ function Matching() {
   const buildCard = (therapist) => {
     return(
       <Grid item xs={3}>
+        <Link to={`/matching/${therapist._id}`}>
         <Card variant ='outlined'
         sx = {{maxWidth: 350,
               height: 'auto',
@@ -70,10 +73,11 @@ function Matching() {
           </Typography>
         </CardContent>
         </Card>
+        </Link>
       </Grid>
     )
   };
-  console.log(typeof therapists);
+  // console.log(typeof therapists);
   return (
     <div className="matching">
       <h1 className="matching-title">Psychologist for Personal Therapy</h1>
