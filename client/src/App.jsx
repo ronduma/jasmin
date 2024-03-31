@@ -10,6 +10,7 @@ import Register from './components/authentication/Register';
 import GettingStarted from './components/profile/GettingStarted';
 import Profile from './components/profile/Profile';
 import EditProfile from './components/profile/EditProfile';
+import PsychologistView from './components/PsychologistView';
 import Psychologist from './components/Psychologist';
 import Feedback from './components/Feedback';
 import NotFound from './components/NotFound';
@@ -41,7 +42,7 @@ function App() {
             <Route path='/register' element={<Register />} />
 
             <Route path="/about" element={<About/>} />
-            <Route path="/psychologist" element={<Psychologist/>} /> 
+            <Route path="/psychologist" element={<PsychologistView/>} /> 
             <Route path="/feedback" element={<Feedback/>} /> 
             <Route path='/matching' element={<Matching />} />
             <Route path="/matching/:id" element={<Psychologist/>} />
