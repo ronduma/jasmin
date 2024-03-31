@@ -20,7 +20,7 @@ const upload = multer({ storage: storage })
 router.get('/:id', async(req,res) => {
   try {
     const userObject = await users.getUserById(req.params.id);
-    // console.log("user:", userObject)
+    console.log("user:", userObject)
     return res.status(200).json(userObject);
   } catch (e){
     console.log(e)
