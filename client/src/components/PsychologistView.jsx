@@ -4,34 +4,7 @@ import { useParams} from 'react-router-dom';
 import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
-function Psychologist() {
-  const [isLoading, setLoading] = useState(true);
-  const [therapist, setTherapist] = useState(null);
-  const { id } = useParams();
-  
-  
-  useEffect(() => {
-    console.log("HELLO");
-    const fetchData = async () => {
-      try {
-        console.log("getting therapist prof data");
-        console.log(id);
-        const response = await axios.get(`http://localhost:5000/profile/${id}`);
-        console.log("Therapist id");
-        setTherapist(response.data);
-        setLoading(false);
-        console.log(response.data);
-      } catch (e) {
-        console.log("ERROR: " + e);
-      }
-    };
-    fetchData();
-  }, []);
-
-  
-  if (isLoading) {
-    return <div className="App">Loading...</div>;
-  }
+function PsychologistView() {
 
   return (
     <div>
@@ -43,7 +16,7 @@ function Psychologist() {
           <div class="left-boxes">
             <div class="patient">
               <h1>
-              {therapist.firstName ? therapist.firstName : "Not provided"} {therapist.lastName ? therapist.lastName : "Not provided"}  <i class="fa-regular fa-pen-to-square"></i>
+              Ron Dumalagon<i class="fa-regular fa-pen-to-square"></i>
               </h1>
 
               <img src={profile_img} alt="Your Image" class="round-image" />
@@ -209,4 +182,4 @@ function Psychologist() {
   );
 }
 
-export default Psychologist;
+export default PsychologistView;

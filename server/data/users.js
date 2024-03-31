@@ -27,6 +27,8 @@ const createUser = async (uid, email) => {
     occupation: null,
     concerns: [],
     chatLog: [],
+    patients: [],
+    therapist: null
   };
   const insertInfo = await userCollection.insertOne(user);
   if (!insertInfo.acknowledged || !insertInfo.insertedId) {
@@ -199,12 +201,15 @@ const getAllTherapists = async() => {
 }
 
 
+
+
 module.exports = {
   createUser,
   updateUserInfo,
   updateProfile,
   getUserById,
   getUserByUsername,
-  getAllTherapists
+  getAllTherapists,
+  gettingStarted
 };
 
