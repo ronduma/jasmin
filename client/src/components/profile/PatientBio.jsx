@@ -82,8 +82,9 @@ function PatientBio({bio, concerns}) {
         spacing={2}
         style={{textAlign:"left"}}
       >
-        <Grid item xs={12}>
-          <Paper style={{height: '18vh', padding: '2vh', position:"relative"}}>
+        <Grid item xs={12} 
+        >
+          <Paper style={{height: '175px', padding: '2vh', position:"relative"}}>
             <div style={{alignItems: 'flex-start', display: 'flex', justifyContent: 'space-between'}}>
               <Typography variant='h5'>
                 About Me
@@ -122,7 +123,7 @@ function PatientBio({bio, concerns}) {
           </Paper>
         </Grid>
         <Grid item xs={12}>
-          <Paper style={{height: '32vh', padding: '2vh', position: "relative"}}>
+          <Paper style={{height: '325px', padding: '2vh', position: "relative"}}>
             <div style={{alignItems: 'flex-start', display: 'flex', justifyContent: 'space-between'}}>
               <Typography variant='h5'>
                 Core Concerns
