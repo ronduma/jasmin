@@ -10,43 +10,40 @@ import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined';
 
 const Stats = () => {
   return (
-    <div style={{
-      display: 'flex', 
-      justifyContent: 'center',
-      padding: '10vh 15vw 10vh 15vw',
-      fontSize: '3rem',
-      color: '#005241'
-    }}>
+    <div className="section green">
       <Grid 
         container 
         justifyContent="center"
         spacing={2}
-        style={{
-          textAlign:"left",
-          width: 'fit-content'
-        }}
+        className="stats-container"
       > 
         <Grid item xs={3}>
-          <UsersRound style={{height:"2.5rem", width:"auto"}}/>
+          <UsersRound className="stats-icon"/>
           <div>10K+</div>
-          <div style={{fontSize:'1.5rem'}}>
+          <div className="stats-desc">
             Clients began to work with therapist
           </div>
         </Grid>
         <Grid item xs={3}>
-          <WavingHandOutlinedIcon style={{height:"2.5rem", width:"auto"}}/>
+          <WavingHandOutlinedIcon className="stats-icon"/>
           <div>95%</div>
-          <div style={{fontSize:'1.5rem'}}>Clients found their therapist</div>
+          <div className="stats-desc">
+            Clients found their therapist
+          </div>
         </Grid>
         <Grid item xs={3}>
-          <AccessTimeOutlinedIcon style={{height:"2.5rem", width:"auto"}}/>
+          <AccessTimeOutlinedIcon className="stats-icon"/>
           <div>5 min</div>
-          <div style={{fontSize:'1.5rem'}}>Average specialist search time</div>
+          <div className="stats-desc">
+            Average specialist search time
+          </div>
         </Grid>
         <Grid item xs={3}>
-          <VerifiedOutlinedIcon style={{height:"2.5rem", width:"auto"}}/>
+          <VerifiedOutlinedIcon className="stats-icon"/>
           <div>100%</div>
-          <div style={{fontSize:'1.5rem'}}>Privacy and respect for customers</div>
+          <div className="stats-desc">
+            Privacy and respect for customers
+          </div>
         </Grid>
       </Grid>
     </div>

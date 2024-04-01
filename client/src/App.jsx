@@ -13,8 +13,6 @@ import Register from './components/authentication/Register';
 import GettingStarted from './components/profile/GettingStarted';
 import Profile from './components/profile/Profile';
 import EditProfile from './components/profile/EditProfile';
-import Psychologist from './components/Psychologist';
-import Feedback from './components/Feedback';
 import Footer from './components/Footer';
 import NotFound from './components/NotFound';
 
@@ -45,8 +43,6 @@ function App() {
               <Route path='/register' element={<Register />} />
 
               <Route path="/about" element={<About/>} />
-              <Route path="/psychologist" element={<Psychologist/>} /> 
-              <Route path="/feedback" element={<Feedback/>} /> 
               <Route path="*" element={<NotFound/>} />
             </Routes>
           </main>

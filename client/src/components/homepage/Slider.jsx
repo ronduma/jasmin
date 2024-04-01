@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import './styles.css';
+import './slider-styles.css';
 
 import Button from '@mui/material/Button';
 
