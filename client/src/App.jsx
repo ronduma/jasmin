@@ -8,6 +8,7 @@ import About from './components/About';
 import Login from './components/authentication/Login';
 import Register from './components/authentication/Register';
 import GettingStarted from './components/profile/GettingStarted';
+import MyProfile from './components/profile/MyProfile';
 import Profile from './components/profile/Profile';
 import EditProfile from './components/profile/EditProfile';
 import PsychologistView from './components/PsychologistView';
@@ -33,7 +34,7 @@ function App() {
               <Route path="/getting-started" element={<GettingStarted/>} /> 
             </Route>
             <Route path='/profile' element={<PrivateRoute />}>
-              <Route path='/profile' element={<Profile />} />
+              <Route path='/profile' element={<MyProfile />} />
             </Route>
             <Route path='/edit-profile' element={<PrivateRoute />}>
               <Route path='/edit-profile' element={<EditProfile />} />
@@ -45,7 +46,7 @@ function App() {
             <Route path="/psychologist" element={<PsychologistView/>} /> 
             <Route path="/feedback" element={<Feedback/>} /> 
             <Route path='/matching' element={<Matching />} />
-            <Route path="/matching/:id" element={<Psychologist/>} />
+            <Route path="/matching/:id" element={<Profile />} />
             <Route path='/speciallist' element={<SpecialList />} />
             <Route path="*" element={<NotFound/>} />
           </Routes>
