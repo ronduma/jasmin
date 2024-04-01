@@ -10,35 +10,43 @@ import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined';
 
 const Stats = () => {
   return (
-    <div style={{display: 'flex', justifyContent: 'center'}}>
+    <div style={{
+      display: 'flex', 
+      justifyContent: 'center',
+      padding: '10vh 15vw 10vh 15vw',
+      fontSize: '3rem',
+      color: '#005241'
+    }}>
       <Grid 
         container 
         justifyContent="center"
         spacing={2}
-        style={{width: 'fit-content'}}
-        color="green"
+        style={{
+          textAlign:"left",
+          width: 'fit-content'
+        }}
       > 
-        <Grid item xs={3} color="green">
-          <UsersRound/>
+        <Grid item xs={3}>
+          <UsersRound style={{height:"2.5rem", width:"auto"}}/>
           <div>10K+</div>
-          <div>
+          <div style={{fontSize:'1.5rem'}}>
             Clients began to work with therapist
           </div>
         </Grid>
         <Grid item xs={3}>
-          <WavingHandOutlinedIcon/>
+          <WavingHandOutlinedIcon style={{height:"2.5rem", width:"auto"}}/>
           <div>95%</div>
-          <div>Clients found their therapist</div>
+          <div style={{fontSize:'1.5rem'}}>Clients found their therapist</div>
         </Grid>
         <Grid item xs={3}>
-          <AccessTimeOutlinedIcon/>
+          <AccessTimeOutlinedIcon style={{height:"2.5rem", width:"auto"}}/>
           <div>5 min</div>
-          <div>Average specialist search time</div>
+          <div style={{fontSize:'1.5rem'}}>Average specialist search time</div>
         </Grid>
         <Grid item xs={3}>
-          <VerifiedOutlinedIcon/>
+          <VerifiedOutlinedIcon style={{height:"2.5rem", width:"auto"}}/>
           <div>100%</div>
-          <div>Privacy and respect for customers</div>
+          <div style={{fontSize:'1.5rem'}}>Privacy and respect for customers</div>
         </Grid>
       </Grid>
     </div>

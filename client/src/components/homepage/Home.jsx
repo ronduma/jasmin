@@ -5,6 +5,7 @@ import '../../App.css';
 
 import Slider from './Slider'
 import Stats from './Stats'
+import Types from './Types'
 
 import Grid from '@mui/material/Grid';
 
@@ -14,13 +15,13 @@ function Home() {
       <Grid 
         container 
         justifyContent="center"
-        style={{marginBottom: '20px'}}
+        style={{margin: '1vh 0 0 0'}}
       >
         <Slider/>
       </Grid>
       <Stats/>
-      {/* <Types/>
-      <Reviews/>
+      <Types/>
+      {/* <Reviews/>
       <Therapists/>
       <News/>
       <Subscribe/> */}

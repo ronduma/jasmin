@@ -4,9 +4,9 @@ import './styles.css';
 import Button from '@mui/material/Button';
 
 const images = [
-  { url: "/imgs/homepage/slide_img1.jpg" },
-  { url: "/imgs/homepage/slide_img2.jpg" },
-  { url: "/imgs/homepage/slide_img3.jpg" }
+  { url: "/imgs/homepage/slider/slide_img1.jpg" },
+  { url: "/imgs/homepage/slider/slide_img2.jpg" },
+  { url: "/imgs/homepage/slider/slide_img3.jpg" }
 ];
 
 const Slider = () => {
