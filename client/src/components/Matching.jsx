@@ -7,6 +7,8 @@ import searchbutton from "../images/search-button.png";
 import axios from 'axios';
 import {Card, Avatar, CardActionArea,CardMedia, CardContent, Grid, Typography} from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import "./matching.css";
+
 function Matching() {
   //   const {currentUser} = useContext(AuthContext);
   const [searchValue, setSearch] = useState("");
@@ -17,8 +19,16 @@ function Matching() {
   const [selectedSort, setSelectedSort] = useState("");
   const [therapists, setTherapists] = useState("");
   const [loading, setLoading] = useState(true);
+  const [hover, setHover] = useState(false);
   const handleSearch = (e) => {
     // Handle search functionality
+  };
+
+  const linkStyle = {
+    textDecoration: 'none',
+    borderRadius: 25,
+    boxShadow: hover ? '5px 5px 15px rgba(0,0,0,0.3)' : '',
+    transition: 'box-shadow 0.3s ease-in-out'
   };
 
   useEffect(() => {
@@ -38,16 +48,12 @@ function Matching() {
   
   const buildCard = (therapist) => {
     return(
-      
-        <Link to={`/matching/${therapist._id}`}>
+      <div className = "shadow" >
+        <Link to={`/matching/${therapist._id}`} >
           <Card variant ='outlined'
             sx = {{
                   flex: "1 0 auto",
-                  width: 350,
-                  height: 'auto',
-                  // margin: '1em',
-                  // marginLeft: 'auto',
-                  // marginRight: 'auto',
+                  width: 300,
                   paddingBottom: '20px',
                   borderRadius: 5,
                   border: '1px solid #1e8678',
@@ -55,22 +61,21 @@ function Matching() {
             
             {therapist.profile_img ?
               <Avatar
-                          alt="Profile Picture"
-                          src={`data:image/png;base64,${therapist.profile_img}`}
-                          sx={{ minWidth: 200, minHeight: 200, mx: 'auto'}}
-                          style={{marginTop: '1em'}}
-                        />
-              :
-              <AccountCircleIcon sx={{ width: "auto", height: 200 }} />
+              alt="Profile Picture"
+              src={`data:image/png;base64,${therapist.profile_img}`}
+              sx={{ width: 200, height: 200, mx: 'auto'}}
+              style={{marginTop: '1em'}}
+            />
+            :
+            <AccountCircleIcon 
+              sx={{width: 240, height: 'auto', marginBottom: '-24px'}}
+            />
             }
 
             
             <CardContent>
               <Typography>
-                {therapist.firstName}
-              </Typography>
-              <Typography>
-                {therapist.lastName}
+                {therapist.firstName + " "} {therapist.lastName}
               </Typography>
               <Typography>
                 {therapist.location}
@@ -84,6 +89,7 @@ function Matching() {
             </CardContent>
           </Card>
         </Link>
+      </div>
     )
   };
   // console.log(typeof therapists);
