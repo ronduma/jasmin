@@ -1,0 +1,8 @@
+.shadow {
+    border-radius: 25px;
+    text-decoration: none;
+}
+.shadow:hover {
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.6);
+    transition: box-shadow 0.3s ease-in-out;
+}

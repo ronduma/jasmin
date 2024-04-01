@@ -34,14 +34,14 @@ function TherapistBio() {
         style={{textAlign:"left"}}
       >
         <Grid item xs={12}>
-          <Paper style={{height: '18vh', padding: '2vh'}}>
+          <Paper style={{minHeight: '18vh', padding: '2vh'}}>
             <Typography variant='h5'>
               Reviews
             </Typography>
           </Paper>
         </Grid>
         <Grid item xs={12}>
-          <Paper style={{height: '40vh', padding: '2vh'}}>
+          <Paper style={{minHeight: '40vh', padding: '2vh'}}>
             <Typography variant='h5'>
               Upcoming Availability
             </Typography>

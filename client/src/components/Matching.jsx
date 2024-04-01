@@ -7,6 +7,8 @@ import searchbutton from "../images/search-button.png";
 import axios from 'axios';
 import {Card, Avatar, CardActionArea,CardMedia, CardContent, Grid, Typography} from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import "./matching.css";
+
 function Matching() {
   //   const {currentUser} = useContext(AuthContext);
   const [searchValue, setSearch] = useState("");
@@ -16,6 +18,8 @@ function Matching() {
   const [selectedPrice, setSelectedPrice] = useState("");
   const [selectedSort, setSelectedSort] = useState("");
   const [therapists, setTherapists] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [hover, setHover] = useState(false);
   const handleSearch = (e) => {
     // Handle search functionality
   };
@@ -23,9 +27,10 @@ function Matching() {
   useEffect(() => {
     const fetchTherapists = async () => {
       try{
-        const response = await axios.get(`http://localhost:5000/therapists`);
+        const response = await axios.get(`http://localhost:5173/therapists`);
         
         setTherapists(response.data);
+        setLoading(false);
 
       }catch(error){
         console.error(e);
@@ -36,45 +41,48 @@ function Matching() {
   
   const buildCard = (therapist) => {
     return(
-      <Grid item xs={3}>
-        <Link to={`/matching/${therapist._id}`}>
-        <Card variant ='outlined'
-        sx = {{maxWidth: 350,
-              height: 'auto',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              paddingBottom: '20px',
-              borderRadius: 5,
-              border: '1px solid #1e8678',
-        }}>
-        <Avatar
-            alt="Profile Picture"
-            src={therapist.profile_img}
-            sx={{ width: 24, height: 24 }}
-          />
-          <AccountCircleIcon
-            sx={{ width: "auto", height: 200 }}
-          />
-        <CardContent>
-          <Typography>
-            {therapist.firstName}
-          </Typography>
-          <Typography>
-            {therapist.lastName}
-          </Typography>
-          <Typography>
-            {therapist.location}
-          </Typography>
-          <Typography>
-            {therapist.age}
-          </Typography>
-          <Typography>
-            {therapist.gender}
-          </Typography>
-        </CardContent>
-        </Card>
+      <div className = "shadow" >
+        <Link to={`/matching/${therapist._id}`} >
+          <Card variant ='outlined'
+            sx = {{
+                  flex: "1 0 auto",
+                  width: 300,
+                  paddingBottom: '20px',
+                  borderRadius: 5,
+                  border: '1px solid #1e8678',
+            }}>
+            
+            {therapist.profile_img ?
+              <Avatar
+              alt="Profile Picture"
+              src={`data:image/png;base64,${therapist.profile_img}`}
+              sx={{ width: 200, height: 200, mx: 'auto'}}
+              style={{marginTop: '1em'}}
+            />
+            :
+            <AccountCircleIcon 
+              sx={{width: 240, height: 'auto', marginBottom: '-24px'}}
+            />
+            }
+
+            
+            <CardContent>
+              <Typography>
+                {therapist.firstName + " "} {therapist.lastName}
+              </Typography>
+              <Typography>
+                {therapist.location}
+              </Typography>
+              <Typography>
+                {therapist.age}
+              </Typography>
+              <Typography>
+                {therapist.gender}
+              </Typography>
+            </CardContent>
+          </Card>
         </Link>
-      </Grid>
+      </div>
     )
   };
   // console.log(typeof therapists);
@@ -148,9 +156,85 @@ function Matching() {
     <br/>
     </div>
     <div>
-    <Grid container spacing={6} justifyContent="center">
+    <div style={{ display: 'flex', flexWrap: 'wrap', 
+                  gap: "20px", alignItems:"flex-start", 
+                  margin: "20px", paddingBottom: "50px"}}>
+      {loading && <>
+        <Card variant ='outlined'
+        sx = {{
+              // flex: "1 0 auto",
+              width: 350,
+              height: 'auto',
+              paddingBottom: '20px',
+              borderRadius: 5,
+              border: '1px solid #1e8678',
+        }}>
+        <AccountCircleIcon sx={{ width: 300, height: 200 }} />
+        <CardContent>
+          <Typography>Loading...</Typography>
+          <Typography>Loading...</Typography>
+          <Typography>Loading...</Typography>
+          <Typography>Loading...</Typography>
+          <Typography>Loading...</Typography>
+        </CardContent>
+      </Card>
+       <Card variant ='outlined'
+       sx = {{
+             // flex: "1 0 auto",
+             width: 350,
+             height: 'auto',
+             paddingBottom: '20px',
+             borderRadius: 5,
+             border: '1px solid #1e8678',
+       }}>
+       <AccountCircleIcon sx={{ width: 300, height: 200 }} />
+       <CardContent>
+         <Typography>Loading...</Typography>
+         <Typography>Loading...</Typography>
+         <Typography>Loading...</Typography>
+         <Typography>Loading...</Typography>
+         <Typography>Loading...</Typography>
+       </CardContent>
+     </Card>
+      <Card variant ='outlined'
+      sx = {{
+            // flex: "1 0 auto",
+            width: 350,
+            height: 'auto',
+            paddingBottom: '20px',
+            borderRadius: 5,
+            border: '1px solid #1e8678',
+      }}>
+      <AccountCircleIcon sx={{ width: 300, height: 200 }} />
+      <CardContent>
+        <Typography>Loading...</Typography>
+        <Typography>Loading...</Typography>
+        <Typography>Loading...</Typography>
+        <Typography>Loading...</Typography>
+        <Typography>Loading...</Typography>
+      </CardContent>
+    </Card>
+     <Card variant ='outlined'
+     sx = {{
+           // flex: "1 0 auto",
+           width: 350,
+           height: 'auto',
+           paddingBottom: '20px',
+           borderRadius: 5,
+           border: '1px solid #1e8678',
+     }}>
+     <AccountCircleIcon sx={{ width: 300, height: 200 }} />
+     <CardContent>
+       <Typography>Loading...</Typography>
+       <Typography>Loading...</Typography>
+       <Typography>Loading...</Typography>
+       <Typography>Loading...</Typography>
+       <Typography>Loading...</Typography>
+     </CardContent>
+   </Card>
+   </>}
       {therapists && therapists.map((therapist) => buildCard(therapist))}
-    </Grid>
+    </div>
     </div>
     </div>
   );
