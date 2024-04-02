@@ -13,18 +13,16 @@ import Button from '@mui/material/Button';
 const Navigation = () => {
   const {currentUser} = useContext(AuthContext);
   return (
-    <AppBar position="static" style={{background:"#F2F0E1", margin:'2vh 0 1vh 0'}} elevation={0}>
-      <Toolbar>
-        <Button component = {NavLink} to='/' color='green' className="navlink" sx={{fontSize:"20pt", fontWeight:"800"}}>
+    <AppBar position='static' className='appbar' elevation={0}>
+      <Toolbar className='toolbar'>
+        <Button component = {NavLink} to='/' className='navlink' sx={{fontSize:'20pt', fontWeight:'800'}}>
           <img
             alt='google signin'
             src='/imgs/logo.png'
-            style={{
-              height:'2em'
-            }}
+            className='logo'
           />
         </Button>
-        <div style={{marginLeft:"auto"}}>
+        <div className='tabs'>
           {currentUser ? <NavigationAuth /> : <NavigationNonAuth />}
         </div>
       </Toolbar>
@@ -35,11 +33,11 @@ const Navigation = () => {
 const NavigationAuth = () => {
   return (
     <div>
-      <Button component = {NavLink} to='/' color='green' className="navlink">Personal Therapy</Button>
-      <Button component = {NavLink} to='/' color='green' className="navlink">Couples Therapy</Button>
-      <Button component = {NavLink} to='/' color='green' className="navlink">Children Therapy</Button>
-      <Button component = {NavLink} to='/profile' color='green' className="navlink"><CircleUserRound/></Button>
-      <LogOutButton style={{ height:'1em' }}/>
+      <Button component = {NavLink} to='/' color='green' className='navlink'>Personal Therapy</Button>
+      <Button component = {NavLink} to='/' color='green' className='navlink'>Couples Therapy</Button>
+      <Button component = {NavLink} to='/' color='green' className='navlink'>Children Therapy</Button>
+      <Button component = {NavLink} to='/profile' color='green' className='navlink'><CircleUserRound/></Button>
+      <LogOutButton className='logout'/>
     </div>
   );
 };
@@ -47,9 +45,9 @@ const NavigationAuth = () => {
 const NavigationNonAuth = () => {
   return (
     <div>
-        <Button component = {NavLink} to='/about' color="green">About Us</Button>
-        <Button component = {NavLink} to='/register' color="green">Register</Button>
-        <Button component = {NavLink} to='/login' color="green">Log In</Button>
+        <Button component = {NavLink} to='/about' color='green'>About Us</Button>
+        <Button component = {NavLink} to='/register' color='green'>Register</Button>
+        <Button component = {NavLink} to='/login' color='green'>Log In</Button>
     </div>
   );
 };

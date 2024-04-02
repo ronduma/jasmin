@@ -1,0 +1,20 @@
+.appbar{
+  background-color: #F2F0E1;
+  margin: 1vh 0 1vh 0;
+}
+
+.toolbar{
+  background-color: #F2F0E1;
+}
+
+.logo{
+  height: 2em;
+}
+
+.tabs{
+  margin: 0 0 0 auto;
+}
+
+.logout{
+  height:'1em';
+}
