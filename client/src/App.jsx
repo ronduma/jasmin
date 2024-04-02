@@ -11,7 +11,6 @@ import About from './components/About';
 import Login from './components/authentication/Login';
 import Register from './components/authentication/Register';
 import GettingStarted from './components/profile/GettingStarted';
-import MyProfile from './components/profile/MyProfile';
 import Profile from './components/profile/Profile';
 import EditProfile from './components/profile/EditProfile';
 import Footer from './components/Footer';
@@ -49,7 +48,7 @@ function App() {
             <Route path="/about" element={<About/>} />
             <Route path="/psychologist" element={<PsychologistView/>} /> 
             <Route path='/matching' element={<Matching />} />
-            <Route path="/matching/:id" element={<Profile />} />
+            <Route path="/matching/:id" element={<Psychologist/>} />
             <Route path='/speciallist' element={<SpecialList />} />
             <Route path="*" element={<NotFound/>} />
           </Routes>

@@ -37,7 +37,7 @@ function Register() {
         null // displayName.value
       );
       console.log("user created:", user)  
-      axios.post('http://localhost:5173/register', user)
+      axios.post('http://localhost:5000/register', user)
       .then(response => {
         console.log("user", user)
         console.log("response", response)

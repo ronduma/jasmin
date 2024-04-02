@@ -98,14 +98,14 @@ function GettingStarted() {
       occupation : occupation.value
     };
     try{
-      const checkDB = await axios.get(`http://localhost:5173/profile/${currentUser.uid}`);
+      const checkDB = await axios.get(`http://localhost:5000/profile/${currentUser.uid}`);
     } catch (error) {
-      await axios.post('http://localhost:5173/register', user);
+      await axios.post('http://localhost:5000/register', user);
     }
     try {
       console.log("UPDATING DATA")
       console.log("DATA:", user)
-      let updateUser = await axios.put('http://localhost:5173/profile/getting-started', user)
+      let updateUser = await axios.put('http://localhost:5000/profile/getting-started', user)
       console.log("updated data", updateUser)
       navigate('/profile');
     } catch (error) {
