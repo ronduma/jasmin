@@ -15,9 +15,10 @@ import PsychologistView from './components/PsychologistView';
 import Psychologist from './components/Psychologist';
 import Feedback from './components/Feedback';
 import NotFound from './components/NotFound';
-import Personal_Matching from './components/Personal_Matching';
-import Couple_Matching from './components/Couple_Matching';
-import Children_Matching from './components/Children_Matching';
+import Personal_Matching from './components/matching/Personal_Matching';
+import Couple_Matching from './components/matching/Couple_Matching';
+import All_Matching from './components/matching/All_Matching';
+import Children_Matching from './components/matching/Children_Matching';
 import SpecialList from './components/Specialist';
 import {AuthProvider} from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
@@ -50,6 +51,7 @@ function App() {
             <Route path='/personal_matching' element={<Personal_Matching />} />
             <Route path='/couple_matching' element={<Couple_Matching />} />
             <Route path='/children_matching' element={<Children_Matching />} />
+            <Route path='/all_matching' element={<All_Matching />} />
             <Route path="/matching/:id" element={<Profile />} />
             <Route path='/speciallist' element={<SpecialList />} />
             <Route path="*" element={<NotFound/>} />

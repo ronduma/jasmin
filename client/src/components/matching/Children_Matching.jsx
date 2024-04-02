@@ -1,15 +1,15 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import { Link } from 'react-router-dom';
-import "../App.css";
-import Navigation from "./Navigation";
-import searchbutton from "../images/search-button.png";
+import "../../App.css";
+import Navigation from "../Navigation";
+import searchbutton from "../../images/search-button.png";
 import axios from 'axios';
 import {Card, Avatar, CardActionArea,CardMedia, CardContent, Grid, Typography} from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import "./matching.css";
+import "../matching.css";
 
-    function Couple_Matching() {
+function Children_Matching() {
   //   const {currentUser} = useContext(AuthContext);
   const [searchValue, setSearch] = useState("");
   const [selectedTopic, setSelectedTopic] = useState("");
@@ -88,9 +88,9 @@ import "./matching.css";
   // console.log(typeof therapists);
   return (
     <div className="matching">
-      <h1 className="matching-title">Psychologist for Couple Therapy</h1>
+      <h1 className="matching-title">Psychologist for Children Therapy</h1>
       <div className="matching-container">
-      <div className="matching-category-choice">Couple Therapy</div>
+      <div className="matching-category-choice">Children Therapy</div>
       <div className="search-bar-container">
         <div className="search-bar">
           <input
@@ -112,13 +112,13 @@ import "./matching.css";
           onChange={(e) => setSelectedTopic(e.target.value)}
           className ="custom-select"
         >
-          <option value="">Couple Therapy Topics</option>
-          <option value="Difficulty in communication, crisis">Difficulty in communication, crisis</option>
-          <option value="Intimate Relations">Intimate Relations</option>
-          <option value="Breakup">Breakup</option>
-          <option value="Emotional abuse, abusive behavior">Emotional abuse, abusive behavior</option>
-          <option value="Child-rearing practices">Child-rearing practices</option>
-          <option value="Betrayal">Betrayal</option>
+          <option value="">Select Topic</option>
+          <option value="ADHD (Attention Deficit Hyperactivity Disorder)">ADHD (Attention Deficit Hyperactivity Disorder)</option>
+          <option value="Excessive Aggression">Excessive Aggression</option>
+          <option value="Children with Special Needs">Children with Special Needs</option>
+          <option value="Loss of Loved Ones">Loss of Loved Ones</option>
+          <option value="Adaptation">Adaptation</option>
+          <option value="Bullying">Bullying</option>
         </select>
         <select
           value={selectedApproach}
@@ -251,4 +251,4 @@ import "./matching.css";
   );
 }
 
-export default Couple_Matching;
+export default Children_Matching;

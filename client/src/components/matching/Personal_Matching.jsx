@@ -1,18 +1,21 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import { Link } from 'react-router-dom';
-import "../App.css";
-import Navigation from "./Navigation";
-import searchbutton from "../images/search-button.png";
+import "../../App.css";
+import Navigation from "../Navigation";
+import searchbutton from "../../images/search-button.png";
 import axios from 'axios';
 import {Card, Avatar, CardActionArea,CardMedia, CardContent, Grid, Typography} from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import "./matching.css";
+import "../matching.css";
 
-function Children_Matching() {
+function Personal_Matching() {
   //   const {currentUser} = useContext(AuthContext);
   const [searchValue, setSearch] = useState("");
-  const [selectedTopic, setSelectedTopic] = useState("");
+  const [selectedYourself, setYourself] = useState("");
+  const [selectedOthers, setOthers] = useState("");
+  const [selectedDevelopment, setDevelopment] = useState("");
+  const [selectedConditions, setConditions] = useState("");
   const [selectedApproach, setSelectedApproach] = useState("");
   const [selectedGender, setSelectedGender] = useState("");
   const [selectedPrice, setSelectedPrice] = useState("");
@@ -88,9 +91,9 @@ function Children_Matching() {
   // console.log(typeof therapists);
   return (
     <div className="matching">
-      <h1 className="matching-title">Psychologist for Children Therapy</h1>
+      <h1 className="matching-title">Psychologist for Personal Therapy</h1>
       <div className="matching-container">
-      <div className="matching-category-choice">Children Therapy</div>
+      <div className="matching-category-choice">Personal Therapy</div>
       <div className="search-bar-container">
         <div className="search-bar">
           <input
@@ -108,18 +111,60 @@ function Children_Matching() {
     <div className="filtersContainer">
       <div className="filters">
         <select
-          value={selectedTopic}
-          onChange={(e) => setSelectedTopic(e.target.value)}
+          value={selectedYourself}
+          onChange={(e) => setYourself(e.target.value)}
           className ="custom-select"
         >
-          <option value="">Select Topic</option>
-          <option value="ADHD (Attention Deficit Hyperactivity Disorder)">ADHD (Attention Deficit Hyperactivity Disorder)</option>
-          <option value="Excessive Aggression">Excessive Aggression</option>
-          <option value="Children with Special Needs">Children with Special Needs</option>
-          <option value="Loss of Loved Ones">Loss of Loved Ones</option>
-          <option value="Adaptation">Adaptation</option>
-          <option value="Bullying">Bullying</option>
+          <option value="">Relationship With Yourself Topics</option>
+          <option value="Anxiety">Anxiety</option>
+          <option value="Bipolar Disorder">Bipolar Disorder</option> 
+          <option value="Borderline Personality Disorder">Borderline Peronsality Disorder</option> 
+          <option value="Chemicals">Chemicals</option> 
+          <option value="Depression">Depression</option>
+          <option value="Fatigue">Fatigue</option>
+          <option value="Food Attitude">Food Attitude</option>
+          <option value="Irritability">Irritability</option>
+          <option value="Loneliness">Loneliness</option>
+          <option value="Obsessive thoughts and rituals">Obsessive thoughts and rituals</option>
+          <option value="Panic attacks">Panic attacks</option>
+          <option value="Psychosomatics">Psychosomatics</option>
+          <option value="Self-esteem">Self-esteem</option>
+          <option value="Suicide attempts">Suicide attempts</option>
         </select>
+        <select
+          value={selectedOthers}
+          onChange={(e) => setOthers(e.target.value)}
+          className ="custom-select"
+        >
+          <option value="">Relationships with Others</option>
+          <option value="Romantic relationship">Romantic relationship</option>
+          <option value="Relationship issues">Relationship issues</option>
+          <option value="Sexual relations">Sexual relations</option>
+          <option value="Codependency">Codependency</option>
+        </select>
+        <select
+          value={selectedDevelopment}
+          onChange={(e) => setDevelopment(e.target.value)}
+          className ="custom-select"
+        >
+          <option value="">Personal and Professional development</option>
+          <option value="Self-determination, job search">Self-determination, job search</option>
+          <option value="Burnout">Burnout</option>
+          <option value="Procrastination">Procrastination</option>
+          <option value="Attitude towards money">Attitude towards money</option>
+        </select>
+        <select
+          value={selectedConditions}
+          onChange={(e) => setConditions(e.target.value)}
+          className ="custom-select"
+        >
+          <option value="">New Living Conditions</option>
+          <option value="Adaptation, emigration">Adaptation, emigration</option>
+          <option value="Grief">Grief</option>
+          <option value="Disease diagnosis">Disease diagnosis</option>
+          <option value="PTSD">PTSD</option>
+        </select>
+        
         <select
           value={selectedApproach}
           onChange={(e) => setSelectedApproach(e.target.value)}
@@ -251,4 +296,4 @@ function Children_Matching() {
   );
 }
 
-export default Children_Matching;
+export default Personal_Matching;
