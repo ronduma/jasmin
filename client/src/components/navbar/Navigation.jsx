@@ -50,9 +50,9 @@ const NavigationAuth = () => {
 
 const NavigationNonAuth = () => {
   return (
-    <AppBar position="static" style={{background:"#F2F0E1"}} elevation={0}>
+    <AppBar position="static" style={{background:"#F2F0E1", margin:'2vh 0 0 0'}} elevation={0}>
     <Toolbar>
-      <Button component = {NavLink} to='/' color='green' className="navlink">
+      <Button component = {NavLink} to='/' color='green' className="navlink" sx={{fontSize:"20pt", fontWeight:"800"}}>
         <img
           alt='google signin'
           src='/imgs/logo.png'
