@@ -1,0 +1,24 @@
+h1{
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 700;
+  color: #01382E;
+}
+
+.form{
+  justify-content: center;
+}
+
+.form > div {
+  margin: 0 0 1rem 0;
+}
+
+.button {
+  background-color: white;
+  border: 1px solid #01382E;
+  color: #01382E;
+  font-weight:700
+}
+
+.button:hover {
+  background-color: white;
+}

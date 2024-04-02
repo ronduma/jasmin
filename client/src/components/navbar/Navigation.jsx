@@ -15,7 +15,7 @@ const Navigation = () => {
   return (
     <AppBar position='static' className='appbar' elevation={0}>
       <Toolbar className='toolbar'>
-        <Button component = {NavLink} to='/' className='navlink' sx={{fontSize:'20pt', fontWeight:'800'}}>
+        <Button component = {NavLink} to='/' className='navlink'>
           <img
             alt='google signin'
             src='/imgs/logo.png'
@@ -45,9 +45,9 @@ const NavigationAuth = () => {
 const NavigationNonAuth = () => {
   return (
     <div>
-        <Button component = {NavLink} to='/about' color='green'>About Us</Button>
-        <Button component = {NavLink} to='/register' color='green'>Register</Button>
-        <Button component = {NavLink} to='/login' color='green'>Log In</Button>
+      <Button component = {NavLink} to='/about' color='green'>About Us</Button>
+      <Button component = {NavLink} to='/register' color='green'>Register</Button>
+      <Button component = {NavLink} to='/login' color='green'>Log In</Button>
     </div>
   );
 };
