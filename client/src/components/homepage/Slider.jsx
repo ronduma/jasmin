@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import './slider-styles.css';
 
 import Button from '@mui/material/Button';
@@ -11,6 +11,15 @@ const images = [
 
 const Slider = () => {
   const [imageIndex, setImageIndex] = useState(0);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 3000); // Change image every 3 seconds
+
+    return () => {
+      clearInterval(timer); // Clear the timer when the component is unmounted
+    };
+  }, []);
 
   return (
     <section
