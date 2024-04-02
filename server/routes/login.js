@@ -23,7 +23,6 @@ router.post('/', async (req, res) => {
         console.error(e);
         return res.status(400).json({ error: e });
     }
-
     try {
         data.username = data.username.toLowerCase();
         const postRegister = await users.checkUser(data.username, data.password);
