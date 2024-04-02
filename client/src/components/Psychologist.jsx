@@ -16,7 +16,7 @@ function Psychologist() {
       try {
         console.log("getting therapist prof data");
         console.log(id);
-        const response = await axios.get(`http://localhost:5000/profile/${id}`);
+        const response = await axios.get(`http://localhost:5173/profile/${id}`);
         console.log("Therapist id");
         setTherapist(response.data);
         setLoading(false);

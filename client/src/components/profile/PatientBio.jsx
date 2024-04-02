@@ -46,7 +46,7 @@ function PatientBio({bio, concerns}) {
 
   const putBio = () => {
     // console.log("curentUser: ", currentUser);
-    axios.put('http://localhost:5000/profile/bio', {
+    axios.put('http://localhost:5173/profile/bio', {
       uid: currentUser.uid,
       bio: document.getElementById('textbox-bio').value
     })
@@ -62,7 +62,7 @@ function PatientBio({bio, concerns}) {
   const putConcerns = () => {
     // console.log("curentUser: ", currentUser);
     console.log("concerns: ", currConcerns);
-    axios.put('http://localhost:5000/profile/concerns', {
+    axios.put('http://localhost:5173/profile/concerns', {
       uid: currentUser.uid,
       concerns: currConcerns
     })

@@ -23,17 +23,10 @@ function Matching() {
     // Handle search functionality
   };
 
-  const linkStyle = {
-    textDecoration: 'none',
-    borderRadius: 25,
-    boxShadow: hover ? '5px 5px 15px rgba(0,0,0,0.3)' : '',
-    transition: 'box-shadow 0.3s ease-in-out'
-  };
-
   useEffect(() => {
     const fetchTherapists = async () => {
       try{
-        const response = await axios.get(`http://localhost:5000/therapists`);
+        const response = await axios.get(`http://localhost:5173/therapists`);
         
         setTherapists(response.data);
         setLoading(false);
