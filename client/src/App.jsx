@@ -53,6 +53,9 @@ function App() {
             <Route path="*" element={<NotFound/>} />
           </Routes>
         </main>
+        <footer>
+          <Footer />
+        </footer>
       </div>
     </AuthProvider>
     </ThemeProvider>
