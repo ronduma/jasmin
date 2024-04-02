@@ -9,7 +9,7 @@ import {Card, Avatar, CardActionArea,CardMedia, CardContent, Grid, Typography} f
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import "./matching.css";
 
-function Matching() {
+    function Couple_Matching() {
   //   const {currentUser} = useContext(AuthContext);
   const [searchValue, setSearch] = useState("");
   const [selectedTopic, setSelectedTopic] = useState("");
@@ -88,9 +88,9 @@ function Matching() {
   // console.log(typeof therapists);
   return (
     <div className="matching">
-      <h1 className="matching-title">Psychologist for Personal Therapy</h1>
+      <h1 className="matching-title">Psychologist for Couple Therapy</h1>
       <div className="matching-container">
-      <div className="matching-category-choice">Personal Therapy</div>
+      <div className="matching-category-choice">Couple Therapy</div>
       <div className="search-bar-container">
         <div className="search-bar">
           <input
@@ -112,17 +112,28 @@ function Matching() {
           onChange={(e) => setSelectedTopic(e.target.value)}
           className ="custom-select"
         >
-          <option value="">Select Topic</option>
-          <option value="Anxiety">Anxiety</option>
-          <option value="Depression">Depression</option>
-          <option value="Relationship Issues">Relationship Issues</option>
+          <option value="">Couple Therapy Topics</option>
+          <option value="Difficulty in communication, crisis">Difficulty in communication, crisis</option>
+          <option value="Intimate Relations">Intimate Relations</option>
+          <option value="Breakup">Breakup</option>
+          <option value="Emotional abuse, abusive behavior">Emotional abuse, abusive behavior</option>
+          <option value="Child-rearing practices">Child-rearing practices</option>
+          <option value="Betrayal">Betrayal</option>
         </select>
         <select
           value={selectedApproach}
           onChange={(e) => setSelectedApproach(e.target.value)}
           className ="custom-select"
         >
-          <option value="">Select Approach</option>
+          <option value="">Therapeutic Approaches</option>
+          <option value="Gestalt">Gestalt</option>
+          <option value="Existential">Existential</option>
+          <option value="Client-centered therapy">Client-centered therapy</option>
+          <option value="CBT (Cognitive Behavioral Therapy)">CBT (Cognitive Behavioral Therapy)</option>
+          <option value="Positive psychotherapy">Positive psychotherapy</option>
+          <option value="Psychoanalysis">Psychoanalysis</option>
+          <option value="Schema therapy">Schema therapy</option>
+          <option value="Transactional Analysis">Transactional Analysis</option>
         </select>
         <select
           value={selectedGender}
@@ -240,4 +251,4 @@ function Matching() {
   );
 }
 
-export default Matching;
+export default Couple_Matching;

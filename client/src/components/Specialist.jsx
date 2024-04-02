@@ -51,14 +51,14 @@ function Speciallists(){
                     <ThemeProvider theme={theme}>
                     <Button color="guga" 
                     variant='contained' 
-                    component= {NavLink} to='/matching'
+                    component= {NavLink} to='/personal_matching'
                     style={{
                         width: '250px',
                         height: '60px'
                     }}>Personal Therapy</Button>
                     </ThemeProvider>
                 </Card>
-                </Grid>
+                </Grid> 
                 <Grid item>
                 <Card sx={{maxWidth: 345}}>
                     <CardMedia
@@ -70,7 +70,7 @@ function Speciallists(){
                     <ThemeProvider theme={theme}>
                     <Button color="guga" 
                     variant='contained' 
-                    component= {NavLink} to='/matching'
+                    component= {NavLink} to='/couple_matching'
                     style={{
                         width: '250px',
                         height: '60px'
@@ -83,17 +83,17 @@ function Speciallists(){
                     <CardMedia
                         sx={{height: 140}}
                         image = {image7}
-                        title ="Personal Therapy"
+                        title ="Children Therapy"
                     
                     />
                     <ThemeProvider theme={theme}>
                     <Button color="guga" 
                     variant='contained' 
-                    component= {NavLink} to='/matching'
+                    component= {NavLink} to='/children_matching'
                     style={{
                         width: '250px',
                         height: '60px'
-                    }}>Personal Therapy</Button>
+                    }}>Children Therapy</Button>
                     </ThemeProvider>
                 </Card>
                 </Grid>
