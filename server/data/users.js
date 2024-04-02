@@ -203,6 +203,50 @@ const getAllTherapists = async () => {
 	return therapistCollection;
 };
 
+// Matching
+
+const match = async (currentUserID, TherapistID) => {
+  const userCollection = await users();
+  const currentUser = await getUserById(currentUserID);
+  const Therapist = await getUserById(TherapistID);
+
+  // Patient 
+  if (currentUser.isTherapist != true){
+    console.log(" BOTH Patient and Therapist Exist and Current User not Therapist")
+
+    //Update
+    const updatedUser = await userCollection.findOneAndUpdate(
+			{ _id: currentUserID },
+			{ $set: { therapist: TherapistID  } }
+		);
+  
+    if (!Therapist.patients.includes(currentUserID)) {
+      const updatedTherapist = await userCollection.findOneAndUpdate(
+        { _id: TherapistID },
+        { $push: { patients: TherapistID  } }
+      );
+      console.log("Patient should be added to therapist" + Therapist.patients)
+    }
+    else {
+      console.log("Therapist already in database")
+    }
+  }
+  // Therapist needs to confirm on their side later
+  else {
+    if (!Therapist.patients.includes(currentUserID)) {
+      Therapist.patients.push(currentUserID);
+      console.log("Patient should be added to therapist" + Therapist.patients)
+    }
+  }
+
+  return currentUser;
+}
+
+const unMatch = async (currentUserID, TherapistID) => {
+  return;
+}
+
+
 module.exports = {
 	createUser,
 	updateUserInfo,
@@ -211,4 +255,5 @@ module.exports = {
 	getUserByUsername,
 	getAllTherapists,
 	gettingStarted,
+  match,
 };
