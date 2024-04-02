@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import "../App.css";
-import Navigation from "./Navigation";
 import searchbutton from "../images/search-button.png";
 
 function Matching() {
