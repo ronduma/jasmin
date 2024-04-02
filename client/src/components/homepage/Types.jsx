@@ -3,6 +3,7 @@ import './styles.css';
 
 import Grid from '@mui/material/Grid';
 
+// NOTE: these are for demo purposes, to be populated with backend eventually
 const images = [
   { url: "/imgs/homepage/types/img1.jpg", text: "Embark on your individual healing journey with compassionate experts by your side.", label: "Personal therapy"},
   { url: "/imgs/homepage/types/img2.jpg", text: "Strengthen family bonds, resolve conflicts, and nurture well-being together.", label: "Family therapy"},

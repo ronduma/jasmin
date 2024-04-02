@@ -6,6 +6,10 @@ import '../../App.css';
 import Slider from './Slider'
 import Stats from './Stats'
 import Types from './Types'
+import Reviews from './Reviews'
+import Therapists from './Therapists'
+import News from './News'
+import Subscribe from './Subscribe'
 
 import Grid from '@mui/material/Grid';
 
@@ -21,10 +25,10 @@ function Home() {
       </Grid>
       <Stats/>
       <Types/>
-      {/* <Reviews/>
+      <Reviews/>
       <Therapists/>
       <News/>
-      <Subscribe/> */}
+      <Subscribe/>
     </div>
   );
 }
