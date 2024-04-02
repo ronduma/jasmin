@@ -57,9 +57,9 @@ const NavigationNonAuth = () => {
           alt='google signin'
           src='/imgs/logo.png'
           style={{
-            height:'1em'
+            height:'2em'
           }}
-        /> Jasmin
+        /> 
       </Button>
       <div
         style={{marginLeft:"auto"}}
