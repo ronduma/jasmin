@@ -14,9 +14,12 @@ import GettingStarted from './components/profile/GettingStarted';
 import Profile from './components/profile/Profile';
 import EditProfile from './components/profile/EditProfile';
 import Footer from './components/Footer';
+import PsychologistView from './components/PsychologistView';
+import Psychologist from './components/Psychologist';
+import Feedback from './components/Feedback';
 import NotFound from './components/NotFound';
 import Matching from './components/Matching';
-
+import SpecialList from './components/Speciallist';
 import {AuthProvider} from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 
@@ -43,16 +46,17 @@ function App() {
               <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />
 
-              <Route path="/about" element={<About/>} />
-              <Route path='/matching' element={<Matching />} />
-              <Route path="*" element={<NotFound/>} />
-            </Routes>
-          </main>
-          <footer>
-            <Footer/>
-          </footer>
-        </div>
-      </AuthProvider>
+            <Route path="/about" element={<About/>} />
+            <Route path="/psychologist" element={<PsychologistView/>} /> 
+            <Route path="/feedback" element={<Feedback/>} /> 
+            <Route path='/matching' element={<Matching />} />
+            <Route path="/matching/:id" element={<Psychologist/>} />
+            <Route path='/speciallist' element={<SpecialList />} />
+            <Route path="*" element={<NotFound/>} />
+          </Routes>
+        </main>
+      </div>
+    </AuthProvider>
     </ThemeProvider>
   );
 }

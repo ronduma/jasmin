@@ -18,20 +18,61 @@ import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
-function PatientBio() {
+function PatientBio({bio, concerns}) {
 
+  const {currentUser} = useContext(AuthContext);
   const [editAbout, setEditAbout] = useState(false);
   const [editConcerns, setEditConcerns] = useState(false);
+  const [currbio, setBio] = useState(bio);
+  const [currConcerns, setConcerns] = useState([
+    concerns[0] || null,
+    concerns[1] || null,
+    concerns[2] || null,
+  ]);
 
+  const setConcernsHelper = (concerns) => {
+    setConcerns([
+      concerns[0] || null,
+      concerns[1] || null,
+      concerns[2] || null,
+    ]);
+  }
   const allowEditAbout = () => {
     setEditAbout(true);
   }
-  const confirmEditAbout = () => {
+  const allowEditConcerns = () => {
+    setEditConcerns(true);
+  }
+
+  const putBio = () => {
+    // console.log("curentUser: ", currentUser);
+    axios.put('http://localhost:5000/profile/bio', {
+      uid: currentUser.uid,
+      bio: document.getElementById('textbox-bio').value
+    })
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
     setEditAbout(false);
   }
 
-  const allowEditConcerns = () => {
-    editConcerns(true);
+  const putConcerns = () => {
+    // console.log("curentUser: ", currentUser);
+    console.log("concerns: ", currConcerns);
+    axios.put('http://localhost:5000/profile/concerns', {
+      uid: currentUser.uid,
+      concerns: currConcerns
+    })
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+    setEditConcerns(false);
   }
 
   return (
@@ -41,8 +82,9 @@ function PatientBio() {
         spacing={2}
         style={{textAlign:"left"}}
       >
-        <Grid item xs={12}>
-          <Paper style={{height: '18vh', padding: '2vh'}}>
+        <Grid item xs={12} 
+        >
+          <Paper style={{height: '175px', padding: '2vh', position:"relative"}}>
             <div style={{alignItems: 'flex-start', display: 'flex', justifyContent: 'space-between'}}>
               <Typography variant='h5'>
                 About Me
@@ -51,38 +93,37 @@ function PatientBio() {
             </div>
             <TextField
               disabled={!editAbout}
-              // ref={aboutRef}
               inputRef={input => input && input.focus()}
               fullWidth
-              id="outlined-multiline-static"
+              id="textbox-bio"
               label="Tell us about yourself!"
+              value={currbio}
+              onChange={event => setBio(event.target.value)}
+              InputLabelProps={{
+                shrink: currbio || editAbout ? true : false,
+              }}
               multiline
               style={{margin: '2vh 0 1vh 0'}}
               rows={3}
               inputProps={{
                 maxLength:285
               }}
-              InputProps={{
-                endAdornment: (
-                  <React.Fragment>
-                    {editAbout && (
-                      <div style={{ position: 'absolute', bottom: 0, right: 0 }}>
-                        <IconButton onClick={confirmEditAbout}>
-                          <CheckCircleIcon></CheckCircleIcon>
-                        </IconButton>
-                        <IconButton>
-                          <CancelRoundedIcon></CancelRoundedIcon>
-                        </IconButton>
-                      </div>
-                    )}
-                  </React.Fragment>
-                ),
-              }}
             />
+            {editAbout && (
+              <div style={{ position: 'absolute', bottom: 0, right: 0 }}>
+                <IconButton>
+                  <CheckCircleIcon onClick={putBio}>
+                  </CheckCircleIcon>
+                </IconButton>
+                <IconButton>
+                  <CancelRoundedIcon onClick={ ()=> {setEditAbout(false); setBio(bio)}}></CancelRoundedIcon>
+                </IconButton>
+              </div>
+            )}
           </Paper>
         </Grid>
         <Grid item xs={12}>
-          <Paper style={{height: '32vh', padding: '2vh'}}>
+          <Paper style={{height: '325px', padding: '2vh', position: "relative"}}>
             <div style={{alignItems: 'flex-start', display: 'flex', justifyContent: 'space-between'}}>
               <Typography variant='h5'>
                 Core Concerns
@@ -90,86 +131,61 @@ function PatientBio() {
               {editConcerns ? "" : <IconButton onClick={allowEditConcerns}><EditIcon /></IconButton>}
             </div>
             <TextField
+              disabled={!editConcerns}
               fullWidth
-              id="outlined-multiline-static"
+              id="textbox-concern-one"
               label="Concern #1"
+              value = {currConcerns[0] || ""}
+              onChange={event => setConcerns([event.target.value, currConcerns[1], currConcerns[2]])}
+              InputLabelProps={{
+                shrink: currConcerns[0] || editConcerns ? true : false,
+              }}
               style={{margin: '2vh 0 1vh 0'}}
-              // onFocus={() => setFocused(true)}
-              // onBlur={() => setFocused(false)}
-              // inputProps={{
-              //   maxLength:90
-              // }}
-              // InputProps={{
-              //   endAdornment: (
-              //     <React.Fragment>
-              //       {isFocused && (
-              //         <div style={{ position: 'absolute', bottom: 0, right: 0 }}>
-              //           <IconButton>
-              //             <CheckCircleIcon></CheckCircleIcon>
-              //           </IconButton>
-              //           <IconButton>
-              //             <CancelRoundedIcon></CancelRoundedIcon>
-              //           </IconButton>
-              //         </div>
-              //       )}
-              //     </React.Fragment>
-              //   ),
-              // }}
+              inputProps={{
+                maxLength:90
+              }}
             />
             <TextField
+              disabled={!editConcerns}
               fullWidth
-              id="outlined-multiline-static"
+              id="textbox-concern-two"
               label="Concern #2"
+              value={currConcerns[1] || ""}
+              onChange={event => setConcerns([currConcerns[0], event.target.value, currConcerns[2]])}
+              InputLabelProps={{
+                shrink: currConcerns[1] || editConcerns ? true : false,
+              }}
               style={{margin: '2vh 0 1vh 0'}}
-              // onFocus={() => setFocused(true)}
-              // onBlur={() => setFocused(false)}
-              // inputProps={{
-              //   maxLength:80
-              // }}
-              // InputProps={{
-              //   endAdornment: (
-              //     <React.Fragment>
-              //       {isFocused && (
-              //         <div style={{ position: 'absolute', bottom: 0, right: 0 }}>
-              //           <IconButton>
-              //             <CheckCircleIcon></CheckCircleIcon>
-              //           </IconButton>
-              //           <IconButton>
-              //             <CancelRoundedIcon></CancelRoundedIcon>
-              //           </IconButton>
-              //         </div>
-              //       )}
-              //     </React.Fragment>
-              //   ),
-              // }}
+              inputProps={{
+                maxLength:90
+              }}
             />
             <TextField
+              disabled={!editConcerns}
               fullWidth
-              id="outlined-multiline-static"
+              id="textbox-concern-three"
               label="Concern #3"
+              value={currConcerns[2] || ""}
+              onChange={event => setConcerns([currConcerns[0], currConcerns[1], event.target.value])}
+              InputLabelProps={{
+                shrink: currConcerns[2] || editConcerns ? true : false,
+              }}
               style={{margin: '2vh 0 1vh 0'}}
-              // onFocus={() => setFocused(true)}
-              // onBlur={() => setFocused(false)}
-              // inputProps={{
-              //   maxLength:80
-              // }}
-              // InputProps={{
-              //   endAdornment: (
-              //     <React.Fragment>
-              //       {isFocused && (
-              //         <div style={{ position: 'absolute', bottom: 0, right: 0 }}>
-              //           <IconButton>
-              //             <CheckCircleIcon></CheckCircleIcon>
-              //           </IconButton>
-              //           <IconButton>
-              //             <CancelRoundedIcon></CancelRoundedIcon>
-              //           </IconButton>
-              //         </div>
-              //       )}
-              //     </React.Fragment>
-              //   ),
-              // }}
+              inputProps={{
+                maxLength:90
+              }}
             />
+            {editConcerns && (
+              <div style={{ position: 'absolute', bottom: 0, right: 0 }}>
+                <IconButton>
+                  <CheckCircleIcon onClick={putConcerns}>
+                  </CheckCircleIcon>
+                </IconButton>
+                <IconButton>
+                  <CancelRoundedIcon onClick={ ()=> {setEditConcerns(false); setConcernsHelper(concerns)}}></CancelRoundedIcon>
+                </IconButton>
+              </div>
+            )}
           </Paper>
         </Grid>
       </Grid>

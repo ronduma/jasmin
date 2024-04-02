@@ -96,14 +96,15 @@ function Profile() {
         container 
         justifyContent={"center"}
         spacing={2}
-        style={{padding:'2vh 0 0 0',minWidth: "1200px", minHeight: "500px" }}
+        alignItems={"stretch"}
+        style={{padding:'2vh 0 0 0',minWidth: "1200px", minHeight: "500px"}}
       >
         <Grid 
           fontSize={"14pt"}
           item 
           xs={3}
         >
-          <Paper style={{ minWidth: "200px",height: '59.65vh', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          <Paper style={{ height: "100%", minWidth: "200px", flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           <Typography 
                   variant='h4'
                   style={{padding: '1vh 0 0 0'}}
@@ -172,7 +173,11 @@ function Profile() {
           </Paper>
         </Grid>
         <Grid item xs={6}>
-          {profileData.isTherapist == true ? <TherapistBio /> : <PatientBio />}
+          {profileData.isTherapist == true ? 
+          <TherapistBio /> 
+          : <PatientBio 
+                bio = {profileData.bio} 
+                concerns = {profileData.concerns} />}
         </Grid>
       </Grid>
     </div>
