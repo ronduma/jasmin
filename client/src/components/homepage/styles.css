@@ -1,0 +1,238 @@
+.section {
+  display: flex; 
+  justify-content: center;
+  padding: 10vh 15vw 10vh 15vw;
+  font-size: 3rem;
+}
+
+.green {
+  color: #005241;
+}
+
+.green-text{
+  color: #32C58B;
+  font-family: "Libre Baskerville", serif;
+  font-style: italic;
+}
+
+.white {
+  background-color: #01382E;
+  color: white;
+}
+
+/* Stats section*/
+
+.stats-container {
+  text-align: left;
+  width: fit-content;
+}
+
+.stats-icon {
+  height: 2.5rem !important;
+  width: auto !important;
+}
+
+.stats-desc {
+  font-size:1.5rem !important;
+}
+
+/* Types section */
+
+.types-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.types-text {
+  margin: 0 0 10vh 0 !important;
+}
+
+.image-container {
+  position: relative;
+}
+
+.types-image {
+  width: 20rem; /* Ensure the image takes the full width of its container */
+  height: 20rem; /* Maintain aspect ratio */
+  max-width: 100%; /* Ensure the image doesn't exceed its container's width */
+  max-height: 100%; /* Ensure the image doesn't exceed its container's height */
+  object-fit: cover; /* Scale the image while preserving its aspect ratio */
+  border-radius: 1rem;
+  filter:brightness(80%);
+}
+
+.types-caption{
+  font-size:1.5rem;
+}
+
+.image-text {
+  position: absolute;
+  top: 75%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color:white;
+  font-size:2rem;
+  font-weight:500;
+}
+
+.types-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Reviews section */
+
+.reviews-text {
+  font-weight:500;
+  margin: 0 0 4vh 0 !important;
+  text-align: left;
+}
+
+.review-container {
+  padding: 0 1rem 0 1rem;
+  text-align: left;
+}
+
+.reviews-btns{
+  margin: 0 2rem 0 2rem;
+}
+
+.reviews-btn{
+  height: 2.5rem !important;
+  width: auto !important;
+}
+
+.reviews-btn{
+  cursor: pointer;
+}
+
+.review-rating{
+  font-size: 2rem;
+  text-align: left;
+  background-color:white;
+  width: max-content;
+  padding: 0 1rem 0 1rem;
+  margin: 1rem 0 1rem 0;
+  border-radius: 2rem;
+}
+
+.review-review{
+  font-size: 1.5rem;
+  margin: 1rem 0 1rem 0;
+}
+
+.review-date{
+  font-size: 1rem;
+}
+
+.review-name{
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+/* Therapists section */
+
+.therapists-text {
+  margin: 0 0 5vh 0 !important;
+}
+
+.therapists-image {
+  width: 12rem; /* Ensure the image takes the full width of its container */
+  height: 12rem; /* Maintain aspect ratio */
+  max-width: 100%; /* Ensure the image doesn't exceed its container's width */
+  max-height: 100%; /* Ensure the image doesn't exceed its container's height */
+  object-fit: cover; /* Scale the image while preserving its aspect ratio */
+  border-radius: 1rem;
+  filter:brightness(80%);
+}
+
+.therapist-name {
+  color: #32C58B;
+  text-align:left;
+  font-size:2rem;
+}
+
+.detail-container {
+  text-align: left;
+}
+
+.therapist-detail {
+  font-size:0.75rem;
+  background-color:#01382E;
+  border: 2px solid #008f72;
+  border-width:2px;
+  display: inline-block;
+  padding: 5px 10px; 
+  border-radius: 2rem; 
+  color: #008f72;
+  margin: 0 0.5rem 0 0.5rem;
+}
+
+.therapists-button{
+  font-size:1rem;
+  background-color:#01382E;
+  border: 2px solid #32C58B;
+  border-width:2px;
+  display: inline-block;
+  padding: 0.5rem 2rem 0.5rem 2rem; 
+  border-radius: 2rem; 
+  color: #32C58B;
+  margin: 3rem 0.5rem 0 0.5rem;
+  width: max-content;
+}
+
+/* News */
+
+.news-section{
+  background-color:white;
+}
+
+.news-button{
+  font-size:1rem;
+  background-color:white;
+  border: 2px solid black;
+  border-width:2px;
+  display: inline-block;
+  padding: 0.5rem 5rem 0.5rem 5rem; 
+  border-radius: 2rem; 
+  color: black;
+  margin: 3rem 0.5rem 0 0.5rem;
+  width: max-content;
+}
+
+.news-label {
+  font-size:0.75rem;
+  background-color:white;
+  border: 2px solid #008f72;
+  border-width:2px;
+  display: inline-block;
+  padding: 5px 10px; 
+  border-radius: 2rem; 
+  color: #008f72;
+  margin: 0 0.5rem 0 0.5rem;
+}
+
+.news-title{
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+/* Subscribe section */
+.reviews-text {
+  font-weight:500;
+  margin: 0 0 4vh 0 !important;
+  text-align: center;
+}
+
+.reviews-subtext{
+  font-size:1rem;
+  text-align: center;
+}
+
+.reviews-input{
+  background-color:white;
+}

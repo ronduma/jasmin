@@ -5,11 +5,8 @@ import Button from '@mui/material/Button';
 import '../App.css';
 
 const LogOutButton = () => {
-  const buttonStyle = {
-    color: 'white', // Set text color to white
-  };
   return (
-    <Button onClick={doSignOut} style={buttonStyle}>
+    <Button onClick={doSignOut} color='green'>
       Log Out
     </Button>
   );
