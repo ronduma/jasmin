@@ -15,6 +15,7 @@ import Profile from './components/profile/Profile';
 import EditProfile from './components/profile/EditProfile';
 import Footer from './components/Footer';
 import NotFound from './components/NotFound';
+import Matching from './components/Matching';
 
 import {AuthProvider} from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
@@ -43,6 +44,7 @@ function App() {
               <Route path='/register' element={<Register />} />
 
               <Route path="/about" element={<About/>} />
+              <Route path='/matching' element={<Matching />} />
               <Route path="*" element={<NotFound/>} />
             </Routes>
           </main>

@@ -165,10 +165,20 @@ const saveImgToDB = async (id, path) => {
   }
 };
 
+const getUserByUsername = async (username) => {
+  username = username.toLowerCase();
+  const userCollection = await users();
+  const user = await userCollection.findOne({ username: username });
+  if (!user) throw 'Error: There is no user with the given name';
+  return user;
+}
+
 module.exports = {
   createUser,
   updateUserInfo,
   getUserById,
   gettingStarted,
   saveImgToDB,
+  getUserByUsername
+  
 };
