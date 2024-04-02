@@ -41,7 +41,7 @@ function Profile() {
   const fetchData = async () => {
     try {
       console.log("getting prof data")
-      const response = await axios.get(`http://localhost:5000/profile/${currentUser.uid}`);
+      const response = await axios.get(`http://localhost:5173/profile/${currentUser.uid}`);
       setProfileData(response.data);
       setLoading(false);
     } catch (e) {
@@ -70,7 +70,7 @@ function Profile() {
     try {
       const formData = new FormData();
       formData.append('file', imgFile);
-      await axios.put(`http://localhost:5000/profile/${currentUser.uid}/profile-pic`, formData)
+      await axios.put(`http://localhost:5173/profile/${currentUser.uid}/profile-pic`, formData)
       .then(response => {
         if (response.data){
           console.log("RESPONSE", response);
