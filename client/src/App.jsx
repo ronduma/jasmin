@@ -16,7 +16,6 @@ import EditProfile from './components/profile/EditProfile';
 import Footer from './components/Footer';
 import PsychologistView from './components/PsychologistView';
 import Psychologist from './components/Psychologist';
-import Feedback from './components/Feedback';
 import NotFound from './components/NotFound';
 import Matching from './components/Matching';
 import SpecialList from './components/Speciallist';
@@ -48,7 +47,6 @@ function App() {
 
             <Route path="/about" element={<About/>} />
             <Route path="/psychologist" element={<PsychologistView/>} /> 
-            <Route path="/feedback" element={<Feedback/>} /> 
             <Route path='/matching' element={<Matching />} />
             <Route path="/matching/:id" element={<Psychologist/>} />
             <Route path='/speciallist' element={<SpecialList />} />
