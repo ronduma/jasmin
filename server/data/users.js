@@ -248,10 +248,11 @@ const unMatch = async (currentUserID, TherapistID) => {
 
 
 module.exports = {
-	createUser,
-	updateUserInfo,
+  createUser,
+  updateUserInfo,
+  getUserById,
+  saveImgToDB,
 	updateProfile,
-	getUserById,
 	getUserByUsername,
 	getAllTherapists,
 	gettingStarted,

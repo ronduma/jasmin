@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import React, {useState, useEffect, useContext} from 'react';
 
-import {useNavigate, NavLink, useParams} from 'react-router-dom';
+import {useNavigate, NavLink} from 'react-router-dom';
 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import UploadIcon from '@mui/icons-material/Upload';
@@ -22,8 +22,7 @@ import TherapistBio from "./TherapistBio";
 import PatientBio from "./PatientBio";
 
 function Profile() {
-  let { id } = useParams();
-  const currentUser = {uid : id};
+  const {currentUser} = useContext(AuthContext);
   const [profileData, setProfileData] = useState(null);
   const [isTherapist, setIsTherapist] = useState(null);
   const [imgFile, setImgFile] = useState(null);
