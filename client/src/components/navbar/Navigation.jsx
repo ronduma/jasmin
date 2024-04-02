@@ -23,7 +23,6 @@ const NavigationAuth = () => {
       <Toolbar>
         <Button component = {NavLink} to='/' color='green' className="navlink" sx={{fontSize:"20pt", fontWeight:"800"}}>
           <img
-            onClick={() => socialSignOn()}
             alt='google signin'
             src='/imgs/logo.png'
             style={{
@@ -55,7 +54,6 @@ const NavigationNonAuth = () => {
     <Toolbar>
       <Button component = {NavLink} to='/' color='green' className="navlink">
         <img
-          onClick={() => socialSignOn()}
           alt='google signin'
           src='/imgs/logo.png'
           style={{

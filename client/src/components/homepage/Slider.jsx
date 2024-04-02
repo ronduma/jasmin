@@ -38,10 +38,10 @@ const Slider = () => {
             style={{ transform: `translateX(-${100 * imageIndex}%)` }} // Adjusted here
           />
         ))}
-        <div class="gradient"></div>
-        <div class="caption">
+        <div className="gradient"></div>
+        <div className="caption">
           Mental health platform that brings patients and therapists together
-          <div class="image-btns">
+          <div className="image-btns">
             <Button color="white">Choose your specialist</Button>
             <Button color="white">See all</Button>
           </div>
