@@ -46,7 +46,7 @@ function EditProfile() {
     const fetchData = async () => {
       try {
         console.log("getting prof data")
-        const response = await axios.get(`http://localhost:5000/profile/${currentUser.uid}`);
+        const response = await axios.get(`http://localhost:5173/profile/${currentUser.uid}`);
         setProfileData(response.data);
         setLoading(false);
         console.log(response.data)
@@ -90,7 +90,7 @@ function EditProfile() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/profile/${currentUser.uid}`);
+        const response = await axios.get(`http://localhost:5173/profile/${currentUser.uid}`);
         console.log("IN USE EFFECT")
         setUser(response.data); // Update user state with fetched user data
         setGender(response.data.gender || ''); // Set gender based on fetched data
@@ -117,7 +117,7 @@ function EditProfile() {
     };
     try {
       console.log("UPDATING DATA")
-      let test = await axios.put('http://localhost:5000/profile', user)
+      let test = await axios.put('http://localhost:5173/profile', user)
       console.log("updated data", test)
       navigate('/profile');
     } catch (error) {

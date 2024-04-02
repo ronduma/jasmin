@@ -33,7 +33,7 @@ function Matching() {
   useEffect(() => {
     const fetchTherapists = async () => {
       try{
-        const response = await axios.get(`http://localhost:5000/therapists`);
+        const response = await axios.get(`http://localhost:5173/therapists`);
         
         setTherapists(response.data);
         setLoading(false);

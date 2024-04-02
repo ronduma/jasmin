@@ -58,7 +58,7 @@ function Login() {
     const fetchData = async () => {
       try{
         // console.log("1")
-        const response = await axios.get(`http://localhost:5000/profile/${currentUser.uid}`);
+        const response = await axios.get(`http://localhost:5173/profile/${currentUser.uid}`);
       } catch (e) {
         // console.log("2")
         setIsNewUser(true);
