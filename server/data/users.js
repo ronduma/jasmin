@@ -63,6 +63,7 @@ const gettingStarted = async ({
       isTherapist,
       gender,
       occupation,
+      bio
       // concerns,
       // chatLog
     })
