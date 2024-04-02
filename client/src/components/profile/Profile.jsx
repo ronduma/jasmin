@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import React, {useState, useEffect, useContext} from 'react';
 
-import {useNavigate, NavLink, useParams} from 'react-router-dom';
+import {useNavigate, NavLink} from 'react-router-dom';
 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import UploadIcon from '@mui/icons-material/Upload';
@@ -22,8 +22,7 @@ import TherapistBio from "./TherapistBio";
 import PatientBio from "./PatientBio";
 
 function Profile() {
-  let { id } = useParams();
-  const currentUser = {uid : id};
+  const {currentUser} = useContext(AuthContext);
   const [profileData, setProfileData] = useState(null);
   const [isTherapist, setIsTherapist] = useState(null);
   const [imgFile, setImgFile] = useState(null);
@@ -42,7 +41,7 @@ function Profile() {
   const fetchData = async () => {
     try {
       console.log("getting prof data")
-      const response = await axios.get(`http://localhost:5173/profile/${currentUser.uid}`);
+      const response = await axios.get(`http://localhost:5000/profile/${currentUser.uid}`);
       setProfileData(response.data);
       setLoading(false);
     } catch (e) {
@@ -71,7 +70,7 @@ function Profile() {
     try {
       const formData = new FormData();
       formData.append('file', imgFile);
-      await axios.put(`http://localhost:5173/profile/${currentUser.uid}/profile-pic`, formData)
+      await axios.put(`http://localhost:5000/profile/${currentUser.uid}/profile-pic`, formData)
       .then(response => {
         if (response.data){
           console.log("RESPONSE", response);

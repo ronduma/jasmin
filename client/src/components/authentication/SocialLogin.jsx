@@ -13,7 +13,7 @@ const SocialLogin = ({ onSignIn }) => {
       let additionalUserInfo = getAdditionalUserInfo(user)
       onSignIn(additionalUserInfo);
       if (additionalUserInfo.isNewUser){
-        axios.post('http://localhost:5173/register', user.user)
+        axios.post('http://localhost:5000/register', user.user)
         .then(response => {
           // console.log("user", user)
           // console.log("response", response)
@@ -24,7 +24,7 @@ const SocialLogin = ({ onSignIn }) => {
     }
     try {
       console.log(currentUser)
-      // let getUser = axios.get(`http://localhost:5173/profile/${currentUser.uid}`);
+      // let getUser = axios.get(`http://localhost:5000/profile/${currentUser.uid}`);
       // console.log(getUser, 'user exists');
     } catch (error) {
       alert(error);

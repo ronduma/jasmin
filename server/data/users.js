@@ -204,10 +204,11 @@ const getAllTherapists = async () => {
 };
 
 module.exports = {
-	createUser,
-	updateUserInfo,
+  createUser,
+  updateUserInfo,
+  getUserById,
+  saveImgToDB,
 	updateProfile,
-	getUserById,
 	getUserByUsername,
 	getAllTherapists,
 	gettingStarted,

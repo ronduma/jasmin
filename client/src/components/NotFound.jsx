@@ -1,5 +1,4 @@
 import '../App.css';
-import Navigation from './Navigation';
 
 function NotFound() {
   return (
