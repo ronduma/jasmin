@@ -91,7 +91,7 @@ function Profile() {
   }
 
   return (
-    <div>
+    <div style={{"marginBottom": 100}}>
       <Grid 
         container 
         justifyContent={"center"}

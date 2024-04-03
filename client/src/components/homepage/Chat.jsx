@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "../../chat.css";
+import { Fab } from "@mui/material";
+import AssistantIcon from '@mui/icons-material/Assistant';
 
 const Chat = () => {
   const [isOpen, setIsOpen] = useState(false); // isOpen state starts as false
@@ -37,7 +39,7 @@ const Chat = () => {
   };
 
   return (
-    <div>
+    <div >
       {isOpen && (
         <div className="chat-popup">
           <div className="chat-container">
@@ -72,9 +74,12 @@ const Chat = () => {
           </div>
         </div>
       )}
-      <button className="chat-button" onClick={togglePopup}>
+      {/* <button className="chat-button" onClick={togglePopup}>
         Chat
-      </button>
+      </button> */}
+      <Fab color="primary" size="large"  aria-label="add">
+        <AssistantIcon fontSize="large" className="chat-button" onClick={togglePopup} />
+      </Fab>
     </div>
   );
 };

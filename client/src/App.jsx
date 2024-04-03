@@ -47,9 +47,9 @@ function App() {
 
             <Route path="/about" element={<About/>} />
               
-            <Route path="/psychologist" element={<PsychologistView/>} /> 
+            {/* <Route path="/psychologist" element={<PsychologistView/>} />  */}
             <Route path='/matching' element={<Matching />} />
-            <Route path="/matching/:id" element={<Psychologist />} />
+            <Route path="/matching/:id" element={<PsychologistView />} />
 
             <Route path='/speciallist' element={<SpecialList />} />
             <Route path="*" element={<NotFound/>} />
