@@ -25,6 +25,7 @@ import Children_Matching from './components/matching/Children_Matching';
 import SpecialList from './components/Specialist';
 import {AuthProvider} from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
+// import Feedback from './components/Feedback';
 
 function App() {
   return (
@@ -51,13 +52,13 @@ function App() {
 
             <Route path="/about" element={<About/>} />
             <Route path="/psychologist" element={<PsychologistView/>} /> 
-            <Route path="/feedback" element={<Feedback/>} /> 
+            {/* <Route path="/feedback" element={<Feedback/>} />  */}
             <Route path='/personal_matching' element={<Personal_Matching />} />
             <Route path='/couple_matching' element={<Couple_Matching />} />
             <Route path='/children_matching' element={<Children_Matching />} />
             <Route path='/all_matching' element={<All_Matching />} />
             <Route path='/matching' element={<Matching/>} />
-            <Route path="/matching/:id" element={<Profile />} />
+            <Route path="/matching/:id" element={<PsychologistView />} />
             <Route path='/speciallist' element={<SpecialList />} />
             <Route path="*" element={<NotFound/>} />
           </Routes>
