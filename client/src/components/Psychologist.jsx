@@ -2,12 +2,31 @@ import "../App.css";
 import profile_img from "../images/profile.jpg";
 import { useParams} from 'react-router-dom';
 import React, { useContext, useState, useEffect } from 'react';
+import {AuthContext} from '../context/AuthContext';
 import axios from 'axios';
 
 function Psychologist() {
   const [isLoading, setLoading] = useState(true);
   const [therapist, setTherapist] = useState(null);
   const { id } = useParams();
+  const {currentUser} = useContext(AuthContext);
+  console.log("We are in Psychologist");
+
+
+  const handleClick = async () => {
+
+    try {
+
+      const response = await axios.post(`http://localhost:5173/matching`, {
+        currentUserID: currentUser.uid,
+        therapistID: id
+      });
+      console.log('Success Match Response:', response.data);
+    } catch (error) {
+      // Handle error
+      console.error('Error:', error);
+    }
+  };
   
   
   useEffect(() => {
@@ -39,8 +58,8 @@ function Psychologist() {
         <h1>Profile</h1>
       </div> */}
       {
-        <div class="boxes-container">
-          <div class="left-boxes">
+        <div className="boxes-container">
+          <div className="left-boxes">
             <div class="patient">
               <h1>
               {therapist.firstName ? therapist.firstName : "Not provided"} {therapist.lastName ? therapist.lastName : "Not provided"}  <i class="fa-regular fa-pen-to-square"></i>
@@ -48,8 +67,8 @@ function Psychologist() {
 
               <img src={profile_img} alt="Your Image" class="round-image" />
 
-              <div class="list-container">
-                <ul class="list">
+              <div className="list-container">
+                <ul className="list">
                   <li>Age</li>
 
                   <li>Gender</li>
@@ -65,8 +84,8 @@ function Psychologist() {
               </div>
             </div>
 
-            <button class="blue">Contact</button>
-            <button class="blue">Match</button>
+            <button className="blue">Contact</button>
+            <button className="blue" onClick={handleClick}>Match</button>
           </div>
 
           <div class="right-boxes">
