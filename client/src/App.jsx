@@ -17,6 +17,7 @@ import Feedback from './components/Feedback';
 import NotFound from './components/NotFound';
 import Personal_Matching from './components/matching/Personal_Matching';
 import Couple_Matching from './components/matching/Couple_Matching';
+import Matching from './components/Matching';
 import All_Matching from './components/matching/All_Matching';
 import Children_Matching from './components/matching/Children_Matching';
 import SpecialList from './components/Specialist';
@@ -52,6 +53,7 @@ function App() {
             <Route path='/couple_matching' element={<Couple_Matching />} />
             <Route path='/children_matching' element={<Children_Matching />} />
             <Route path='/all_matching' element={<All_Matching />} />
+            <Route path='/matching' element={<Matching/>} />
             <Route path="/matching/:id" element={<Profile />} />
             <Route path='/speciallist' element={<SpecialList />} />
             <Route path="*" element={<NotFound/>} />
