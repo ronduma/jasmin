@@ -51,7 +51,7 @@ function App() {
 
             <Route path="/about" element={<About/>} />
             <Route path="/psychologist" element={<PsychologistView/>} /> 
-            <Route path="/feedback" element={<Feedback/>} /> 
+            {/* <Route path="/feedback" element={<Feedback/>} />  */}
             <Route path='/personal_matching' element={<Personal_Matching />} />
             <Route path='/couple_matching' element={<Couple_Matching />} />
             <Route path='/children_matching' element={<Children_Matching />} />
