@@ -110,7 +110,7 @@ function Profile() {
                     <Avatar
                       alt="Profile Picture"
                       src={`data:image/png;base64,${profileData.profile_img}`}
-                      sx={{ minWidth: "10rem", minHeight: "10rem", mx: 'auto'}}
+                      sx={{ width: "10rem", height: "10rem", mx: 'auto'}}
                     /> :
                     <div sx={{mx:'auto'}}>
                       <div>
@@ -174,6 +174,13 @@ function Profile() {
               bio = {profileData.bio} 
               concerns = {profileData.concerns} 
             />}
+        </Grid>
+        <Grid item xs={9}>
+        {profileData.isTherapist == true ?
+          <Paper>
+            <div className="right-section-header">Reviews</div>
+          </Paper>
+          : <div></div>}
         </Grid>
       </Grid>
     </div>

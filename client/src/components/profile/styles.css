@@ -42,10 +42,10 @@ h1{
   font-size:2.5rem;
   font-weight:500;
   color:#01382E;
+  padding: 0 0 1rem 0;
 }
 
 .left-section-details{
-  text-align: center;
   display: inline-block;
   text-align: left;
 }
@@ -60,10 +60,11 @@ h1{
   font-size:1.5rem;
   font-weight:500;
   color:#01382E;
+  text-align: left;
 }
 
 .core-concerns{
-  height: 22rem;
+  height: 23rem;
   padding:2vh;
   position:relative;
 }
