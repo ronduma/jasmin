@@ -1,11 +1,9 @@
-import React, {useContext, useRef, useState} from 'react';
-import {redirect, useLocation, useNavigate, Navigate} from 'react-router-dom';
+import React, {useContext, useState} from 'react';
 import {AuthContext} from '../../context/AuthContext';
-import {doCreateUserWithEmailAndPassword} from '../../firebase/FirebaseFunctions';
 
 import axios from 'axios';
 
-import '../../App.css';
+import './styles.css';
 
 
 import CheckCircleIcon from '@mui/icons-material/CheckCircleOutlined';
@@ -78,15 +76,13 @@ function PatientBio({bio, concerns}) {
       <Grid 
         container 
         spacing={2}
-        style={{textAlign:"left"}}
       >
-        <Grid item xs={12} 
-        >
-          <Paper style={{height: '175px', padding: '2vh', position:"relative"}}>
+        <Grid item xs={12}>
+          <Paper className="about-me">
             <div style={{alignItems: 'flex-start', display: 'flex', justifyContent: 'space-between'}}>
-              <Typography variant='h5'>
+              <div className="right-section-header">
                 About Me
-              </Typography>
+              </div>
               {editAbout ? "" : <IconButton onClick={allowEditAbout}><EditIcon /></IconButton>}
             </div>
             <TextField
@@ -121,11 +117,11 @@ function PatientBio({bio, concerns}) {
           </Paper>
         </Grid>
         <Grid item xs={12}>
-          <Paper style={{height: '325px', padding: '2vh', position: "relative"}}>
+          <Paper className="core-concerns">
             <div style={{alignItems: 'flex-start', display: 'flex', justifyContent: 'space-between'}}>
-              <Typography variant='h5'>
+              <div className="right-section-header">
                 Core Concerns
-              </Typography>
+              </div>
               {editConcerns ? "" : <IconButton onClick={allowEditConcerns}><EditIcon /></IconButton>}
             </div>
             <TextField
@@ -138,7 +134,7 @@ function PatientBio({bio, concerns}) {
               InputLabelProps={{
                 shrink: currConcerns[0] || editConcerns ? true : false,
               }}
-              style={{margin: '2vh 0 1vh 0'}}
+              style={{margin: '2vh 0 2vh 0'}}
               inputProps={{
                 maxLength:90
               }}
@@ -153,7 +149,7 @@ function PatientBio({bio, concerns}) {
               InputLabelProps={{
                 shrink: currConcerns[1] || editConcerns ? true : false,
               }}
-              style={{margin: '2vh 0 1vh 0'}}
+              style={{margin: '2vh 0 2vh 0'}}
               inputProps={{
                 maxLength:90
               }}
@@ -168,7 +164,7 @@ function PatientBio({bio, concerns}) {
               InputLabelProps={{
                 shrink: currConcerns[2] || editConcerns ? true : false,
               }}
-              style={{margin: '2vh 0 1vh 0'}}
+              style={{margin: '2vh 0 2vh 0'}}
               inputProps={{
                 maxLength:90
               }}

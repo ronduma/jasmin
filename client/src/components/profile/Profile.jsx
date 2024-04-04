@@ -112,14 +112,12 @@ function Profile() {
                     <Avatar
                       alt="Profile Picture"
                       src={`data:image/png;base64,${profileData.profile_img}`}
-                      sx={{ minWidth: 200, minHeight: 200, mx: 'auto'}}
-                      className="pfp"
+                      sx={{ minWidth: "10rem", minHeight: "10rem", mx: 'auto'}}
                     /> :
                     <div sx={{mx:'auto'}}>
                       <div>
                         <AccountCircleIcon
-                          sx={{ width: "auto", height: 200 }}
-                          className="pfp"
+                          sx={{ width: "auto", height: "10rem" }}
                         />
                       </div> 
                     </div>

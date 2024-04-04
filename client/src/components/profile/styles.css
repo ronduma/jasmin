@@ -44,13 +44,30 @@ h1{
   color:#01382E;
 }
 
-.pfp{
-  margin: 1em 0 0 0;
-}
-
 .left-section-details{
-
   text-align: center;
   display: inline-block;
   text-align: left;
+}
+
+.about-me{
+  height:13rem;
+  padding:2vh;
+  position:relative;
+}
+
+.right-section-header{
+  font-size:1.5rem;
+  font-weight:500;
+  color:#01382E;
+}
+
+.core-concerns{
+  height: 22rem;
+  padding:2vh;
+  position:relative;
+}
+
+.concern-textbox{
+  margin: 2vh 0 2vh 0;
 }
