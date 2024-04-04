@@ -33,10 +33,11 @@ const Navigation = () => {
 const NavigationAuth = () => {
   return (
     <div>
-      <Button component = {NavLink} to='/' color='green' className='navlink'>Personal Therapy</Button>
-      <Button component = {NavLink} to='/' color='green' className='navlink'>Couples Therapy</Button>
-      <Button component = {NavLink} to='/' color='green' className='navlink'>Children Therapy</Button>
-      <Button component = {NavLink} to='/profile' color='green' className='navlink'><CircleUserRound/></Button>
+      <Button component = {NavLink} to='/personal_matching' color='green' className="navlink">Personal Therapy</Button>
+      <Button component = {NavLink} to='/couple_matching' color='green' className="navlink">Couples Therapy</Button>
+      <Button component = {NavLink} to='/children_matching' color='green' className="navlink">Children Therapy</Button>
+      <Button component = {NavLink} to='/matching' color='green' className="navlink">Matching</Button>
+      <Button component = {NavLink} to='/profile' color='green' className="navlink"><CircleUserRound/></Button>
       <LogOutButton className='logout'/>
     </div>
   );
