@@ -5,6 +5,10 @@ import {AuthContext} from '../../context/AuthContext';
 
 import '../../App.css';
 
+import axios from 'axios';
+import {Typography}  from '@mui/material';
+import TextField from '@mui/material/TextField';
+import IconButton from '@mui/material/IconButton';
 
 import CheckCircleIcon from '@mui/icons-material/CheckCircleOutlined';
 import CancelRoundedIcon from '@mui/icons-material/CancelOutlined';
@@ -137,14 +141,14 @@ function TherapistBio({bio, specialty}) {
         <Grid item xs={12}>
           <Paper style={{minHeight: '18vh', padding: '2vh'}}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: "space-between"}}>
-              <Typography variant='h5'> Expertise </Typography>
+              <div className='right-section-header' > Expertise </div>
               {editAbout ? "" : <IconButton onClick={() => setEditAbout(true)}><EditIcon /></IconButton>}
             </div>
 
             {editAbout ? editTopics()
-            : <p>{ selectedTopics.join(", ") || "No topics found. Please edit, and add topics of expertise."}</p> 
+            : <p align="left">{ selectedTopics.join(", ") || "No topics found. Please edit, and add topics of expertise."}</p> 
             }
-              <Typography variant='h5'> About Me </Typography>
+              <div className='right-section-header'> About Me </div>
               <TextField
               disabled={!editAbout}
               inputRef={input => input && input.focus()}
@@ -176,13 +180,7 @@ function TherapistBio({bio, specialty}) {
             )}
           </Paper>
         </Grid>
-        <Grid item xs={12}>
-          <Paper style={{minHeight: '18vh', padding: '2vh'}}>
-            <Typography variant='h5'>
-              Reviews
-            </Typography>
-          </Paper>
-        </Grid>
+        
         <Grid item xs={12}>
           <Paper style={{minHeight: '40vh', padding: '2vh'}}>
             <div className="right-section-header">
@@ -198,6 +196,12 @@ function TherapistBio({bio, specialty}) {
                 {selectedDate.$d.toString()}
               </Grid>
             </Grid>
+          </Paper>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Paper style={{minHeight: '18vh', padding: '2vh'}}>
+          <div className='right-section-header'> Reviews </div>
           </Paper>
         </Grid>
       </Grid>

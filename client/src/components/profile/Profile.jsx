@@ -177,13 +177,6 @@ function Profile() {
               concerns = {profileData.concerns} 
             />}
         </Grid>
-        <Grid item xs={9}>
-        {profileData.isTherapist == true ?
-          <Paper>
-            <div className="right-section-header">Reviews</div>
-          </Paper>
-          : <div></div>}
-        </Grid>
       </Grid>
     </div>
   );
