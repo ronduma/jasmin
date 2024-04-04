@@ -175,8 +175,8 @@ function Profile() {
         <Grid item xs={6}>
           {profileData.isTherapist == true ? 
           <TherapistBio 
-              bio = {""} 
-              topics={""}/> 
+              bio = {profileData.bio} 
+              specialty={[]}/> 
           : <PatientBio 
                 bio = {profileData.bio} 
                 concerns = {profileData.concerns} />}
