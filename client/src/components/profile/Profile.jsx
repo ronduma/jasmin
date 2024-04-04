@@ -13,8 +13,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import { styled } from '@mui/system';
-import Typography from '@mui/material/Typography';
 
 import {AuthContext} from '../../context/AuthContext';
 
