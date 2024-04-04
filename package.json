@@ -4,8 +4,7 @@
   "description": "Ron Dumalagan, Dylan Tran, Colleen Que, Jae Jang, Fenella Lachica, Bishawjit Saha",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./jasmin/server/app.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC"
