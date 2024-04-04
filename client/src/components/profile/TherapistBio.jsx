@@ -1,9 +1,7 @@
 import React, {useContext, useState} from 'react';
-import {redirect, useLocation, useNavigate, Navigate} from 'react-router-dom';
-import {AuthContext} from '../../context/AuthContext';
-import {doCreateUserWithEmailAndPassword} from '../../firebase/FirebaseFunctions';
+import dayjs from 'dayjs';
 
-import axios from 'axios';
+import {AuthContext} from '../../context/AuthContext';
 
 import '../../App.css';
 
@@ -22,10 +20,7 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
 
 function TherapistBio({bio, specialty}) {
   const {currentUser} = useContext(AuthContext);
@@ -34,6 +29,7 @@ function TherapistBio({bio, specialty}) {
   const [newBio, setNewBio] = useState(bio);
   if (bio = "") setBio(null);
   const [selectedTopics, setSelectedTopics] = useState(specialty);
+  let [selectedDate, setSelectedDate] = useState(dayjs());
 
   const [subtopics, setSubTopics] = useState([
   ["Relationship with Yourself", "Relationship with Others", "Personal and Professional development", "New Living Conditions"],
@@ -80,7 +76,7 @@ function TherapistBio({bio, specialty}) {
           <FormGroup row style={{marginLeft: "20px"}}>
             {topicList.map((currtopic, i) => (
               <FormControlLabel id={"Form-Control " + index}
-                control={<Checkbox id={`${index}-${i}`} defaultChecked={selectedTopics.includes(currtopic)} />} //gotta chagne defaultChanged based on DB
+                control={<Checkbox id={`${index}-${i}`} defaultChecked={selectedTopics.includes(currtopic)} />} 
                 label={index != 0 ? currtopic : 
                   <div style={{ display: 'flex', alignItems: 'center' }}>
                     {currtopic}
@@ -136,7 +132,7 @@ function TherapistBio({bio, specialty}) {
       <Grid 
         container 
         spacing={2}
-        style={{textAlign:"left"}}
+        // style={{textAlign:"left"}}
       >
         <Grid item xs={12}>
           <Paper style={{minHeight: '18vh', padding: '2vh'}}>
@@ -148,8 +144,6 @@ function TherapistBio({bio, specialty}) {
             {editAbout ? editTopics()
             : <p>{ selectedTopics.join(", ") || "No topics found. Please edit, and add topics of expertise."}</p> 
             }
-
-                 <p>{" "}</p>
               <Typography variant='h5'> About Me </Typography>
               <TextField
               disabled={!editAbout}
@@ -191,12 +185,19 @@ function TherapistBio({bio, specialty}) {
         </Grid>
         <Grid item xs={12}>
           <Paper style={{minHeight: '40vh', padding: '2vh'}}>
-            <Typography variant='h5'>
+            <div className="right-section-header">
               Upcoming Availability
-            </Typography>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DateCalendar />
-            </LocalizationProvider>
+            </div>
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DateCalendar defaultValue={dayjs()} onChange={(newValue) => setSelectedDate(newValue)} />
+                </LocalizationProvider>
+              </Grid>
+              <Grid item xs={6} style={{ display: 'flex', alignItems: 'flex-start' }}>
+                {selectedDate.$d.toString()}
+              </Grid>
+            </Grid>
           </Paper>
         </Grid>
       </Grid>
