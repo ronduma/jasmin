@@ -13,12 +13,44 @@ h1{
 }
 
 .button {
-  background-color: white;
-  border: 1px solid #01382E;
-  color: #01382E;
-  font-weight:700
+  background-color: white !important;
+  border: 1px solid #01382E !important;
+  color: #01382E !important;
+  font-weight:700 !important;
 }
 
 .button:hover {
   background-color: white;
+}
+
+#fileInputLabel:hover{
+  cursor:pointer;
+}
+
+.profile-container{
+  margin: 2vh 0 5vh 0;
+}
+
+.left-section {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 0 2rem 0;
+}
+
+.left-section-header{
+  font-size:2.5rem;
+  font-weight:500;
+  color:#01382E;
+}
+
+.pfp{
+  margin: 1em 0 0 0;
+}
+
+.left-section-details{
+
+  text-align: center;
+  display: inline-block;
+  text-align: left;
 }

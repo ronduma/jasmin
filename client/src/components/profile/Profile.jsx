@@ -1,4 +1,4 @@
-import "../../App.css";
+import "./styles.css";
 
 import axios from 'axios';
 
@@ -35,8 +35,6 @@ function Profile() {
   const toggleMode = () => {
     setUploadMode(prevMode => !prevMode);
   };
-
-  // console.log(profileData)
 
   const fetchData = async () => {
     try {
@@ -91,26 +89,22 @@ function Profile() {
   }
 
   return (
-    <div style={{"marginBottom": 100}}>
+    <div className="profile-container">
       <Grid 
         container 
         justifyContent={"center"}
         spacing={2}
         alignItems={"stretch"}
-        style={{padding:'2vh 0 0 0',minWidth: "1200px", minHeight: "500px"}}
       >
         <Grid 
           fontSize={"14pt"}
           item 
           xs={3}
         >
-          <Paper style={{ height: "100%", minWidth: "200px", flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <Typography 
-                  variant='h4'
-                  style={{padding: '1vh 0 0 0'}}
-                >
-                  {profileData.firstName} {profileData.lastName}
-                </Typography> 
+          <Paper className="left-section">
+            <div className="left-section-header">
+              {profileData.firstName} {profileData.lastName}
+            </div> 
             {profileData ? 
               <div>
                 <div id='profilePic'>
@@ -119,13 +113,13 @@ function Profile() {
                       alt="Profile Picture"
                       src={`data:image/png;base64,${profileData.profile_img}`}
                       sx={{ minWidth: 200, minHeight: 200, mx: 'auto'}}
-                      style={{marginTop: '1em'}}
+                      className="pfp"
                     /> :
                     <div sx={{mx:'auto'}}>
                       <div>
                         <AccountCircleIcon
                           sx={{ width: "auto", height: 200 }}
-                          style={{marginTop: '1em'}}
+                          className="pfp"
                         />
                       </div> 
                     </div>
@@ -133,51 +127,57 @@ function Profile() {
                   <br/>
                   <div>
                     {uploadMode ? 
-                    <Button 
-                    component="label"
-                    role={undefined}
-                    variant="contained"
-                    tabIndex={-1}
-                    startIcon={<UploadIcon />}>
-                      <input id="fileInput" type='file' onChange={handleFileUpload} style={{ display: "none" }} /><label htmlFor="fileInput">Edit Picture</label>
-                    </Button> 
-                    : <Button
-                    component="label"
-                    role={undefined}
-                    variant="contained"
-                    tabIndex={-1}
-                    startIcon={<UploadIcon />}
-                    onClick={ uploadMode? handleFileUpload : handleSubmitFileUpload}
-                    >
-                      Submit upload
-                    </Button>
+                      <Button 
+                        className="button"
+                        component="label"
+                        role={undefined}
+                        variant="contained"
+                        tabIndex={-1}
+                        startIcon={<UploadIcon />}
+                      >
+                        <input 
+                          id="fileInput" 
+                          type='file' 
+                          onChange={handleFileUpload} 
+                          style={{ display: "none" }} 
+                        />
+                        <label id="fileInputLabel" htmlFor="fileInput">Edit Picture</label>
+                      </Button> 
+                      : <Button
+                          className="button"
+                          component="label"
+                          role={undefined}
+                          variant="contained"
+                          tabIndex={-1}
+                          startIcon={<UploadIcon />}
+                          onClick={ uploadMode? handleFileUpload : handleSubmitFileUpload}
+                        >
+                          Submit upload
+                        </Button>
                     }
-
                   </div>
                 </div>
-                
                 <br/>
-                <div style={{width: "90%", margin: "0 auto", textAlign: "center"}}>
-                  <div style={{display: "inline-block" ,textAlign:'left'}}>
-                    <div>Age: {profileData.age}</div> 
-                    <div>Gender: {profileData.gender}</div> 
-                    <div>Location: {profileData.location}</div> 
-                    <div>Occupation: {profileData.occupation}</div> 
-                    <div>Email: {profileData.email}</div> 
-                  </div>
-                </div>                
+                <div className="left-section-details">
+                  <div>Age: {profileData.age}</div> 
+                  <div>Gender: {profileData.gender}</div> 
+                  <div>Location: {profileData.location}</div> 
+                  <div>Occupation: {profileData.occupation}</div> 
+                  <div>Email: {profileData.email}</div> 
+                </div>               
               </div>
               : <div>Missing Data</div>}
               <br/>
-              <Button component = {NavLink} to='/edit-profile' variant="contained">Edit Info</Button>
+              <Button className="button" component = {NavLink} to='/edit-profile' variant="contained">Edit Info</Button>
           </Paper>
         </Grid>
         <Grid item xs={6}>
           {profileData.isTherapist == true ? 
           <TherapistBio /> 
           : <PatientBio 
-                bio = {profileData.bio} 
-                concerns = {profileData.concerns} />}
+              bio = {profileData.bio} 
+              concerns = {profileData.concerns} 
+            />}
         </Grid>
       </Grid>
     </div>
