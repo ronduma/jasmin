@@ -169,18 +169,13 @@ function Profile() {
         </Grid>
         <Grid item xs={6}>
           {profileData.isTherapist == true ? 
-          <TherapistBio /> 
+          <TherapistBio 
+              bio = {profileData.bio} 
+              specialty={profileData.specialty}/> 
           : <PatientBio 
               bio = {profileData.bio} 
               concerns = {profileData.concerns} 
             />}
-        </Grid>
-        <Grid item xs={9}>
-        {profileData.isTherapist == true ?
-          <Paper>
-            <div className="right-section-header">Reviews</div>
-          </Paper>
-          : <div></div>}
         </Grid>
       </Grid>
     </div>
