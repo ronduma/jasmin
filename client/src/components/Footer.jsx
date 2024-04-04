@@ -81,7 +81,7 @@ const Footer = () => {
           Contact
         </div>
         <div>
-          Privacy Policy
+        <a href="/privacy_policy" style = {{textDecoration:'none',color: 'inherit' , cursor: 'pointer'}}>Privacy Policy</a> 
         </div>
         <div>
           Terms and Conditions
