@@ -76,7 +76,7 @@ function TherapistBio({bio, specialty}) {
     return (
       subtopics.map((topicList, index) => (
         <>
-          <Typography variant='h7'> {topicHeaders[index] + ": "} </Typography>
+          <Typography fontSize={18} align='left'> {topicHeaders[index] + ": "} </Typography>
           <FormGroup row style={{marginLeft: "20px"}}>
             {topicList.map((currtopic, i) => (
               <FormControlLabel id={"Form-Control " + index}
