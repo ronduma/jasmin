@@ -31,6 +31,7 @@ function TherapistBio({bio, specialty}) {
   const {currentUser} = useContext(AuthContext);
   const [editAbout, setEditAbout] = useState(false);
   const [currbio, setBio] = useState(bio);
+  const [newBio, setNewBio] = useState(bio);
   if (bio = "") setBio(null);
   const [selectedTopics, setSelectedTopics] = useState(specialty);
 
@@ -55,7 +56,7 @@ function TherapistBio({bio, specialty}) {
     ["Childbirth", "Adaptation, emigration", "Grief", "Disease diagnosis", "PTSD"]
   ]);
 
-  const putBio = () => {
+  const putBio = async () => {
     // console.log("curentUser: ", currentUser);
     axios.put('http://localhost:5173/profile/bio', {
       uid: currentUser.uid,
@@ -67,6 +68,7 @@ function TherapistBio({bio, specialty}) {
     .catch((error) => {
       console.log(error);
     });
+    setNewBio(document.getElementById('textbox-bio').value);
     setEditAbout(false);
   }
 
@@ -96,7 +98,7 @@ function TherapistBio({bio, specialty}) {
   }
 
   //checks ids and sees what is selected and stores that
-  const handleCheckboxChange = () => {
+  const handleCheckboxChange = async () => {
     let topicList = [];
     for (let i = 0; i < subtopics.length; i++) {
       for (let j = 0; j < subtopics[i].length; j++) {
@@ -174,7 +176,7 @@ function TherapistBio({bio, specialty}) {
                   </CheckCircleIcon>
                 </IconButton>
                 <IconButton>
-                  <CancelRoundedIcon onClick={ ()=> {setEditAbout(false); setBio(bio)}}></CancelRoundedIcon>
+                  <CancelRoundedIcon onClick={ ()=> {setEditAbout(false); setBio(newBio)}}></CancelRoundedIcon>
                 </IconButton>
               </div>
             )}
