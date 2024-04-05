@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const helpers = require("../helpers");
+// const helpers = require("../helpers");
 const users = require("../data/users");
 const path = require("path");
 const xss = require("xss");

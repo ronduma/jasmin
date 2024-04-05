@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const users = require('../data/users');
 const path = require('path');
-const helpers = require('../helpers');
+// const helpers = require('../helpers');
 const xss = require('xss');
 
 
