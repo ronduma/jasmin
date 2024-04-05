@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import './slider-styles.css';
-
+import {Link, NavLink} from 'react-router-dom';
 import Button from '@mui/material/Button';
 
 const images = [
@@ -51,8 +51,8 @@ const Slider = () => {
         <div className="caption">
           Mental health platform that brings patients and therapists together
           <div className="image-btns">
-            <Button color="white">Choose your specialist</Button>
-            <Button color="white">See all</Button>
+            <Button color="white"><Link to='/speciallist' className='link-button'>Choose your specialist  </Link></Button>
+            <Button color="white"><Link to='/all_matching' className='link-button'>See all</Link></Button>
           </div>
         </div>
       </div>
