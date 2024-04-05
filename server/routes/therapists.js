@@ -4,8 +4,6 @@ const helpers = require('../helpers');
 const users = require('../data/users');
 const path = require('path');
 const xss = require('xss');
-
-
 router.get('/', async(req, res) => {
     try{
         const therapistList = await users.getAllTherapists();

@@ -28,10 +28,8 @@ import "../matching.css";
     const fetchTherapists = async () => {
       try{
         const response = await axios.get(`http://localhost:5173/therapists`);
-        
         setTherapists(response.data);
         setLoading(false);
-
       }catch(error){
         console.error(e);
       }
@@ -88,9 +86,9 @@ import "../matching.css";
   // console.log(typeof therapists);
   return (
     <div className="matching">
-      <h1 className="matching-title">Psychologist for Couple Therapy</h1>
+      <h1 className="matching-title">Psychologist for Therapy</h1>
       <div className="matching-container">
-      <div className="matching-category-choice">Couple Therapy</div>
+      <div className="matching-category-choice">Therapist Options</div>
       <div className="search-bar-container">
         <div className="search-bar">
           <input

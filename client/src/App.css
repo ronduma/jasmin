@@ -61,6 +61,18 @@ html{
   padding: 10px;
   border: 1px;
 }
+.link-button{
+  text-decoration: none;
+  color: white;
+}
+.link-button:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+.link-button:focus {
+  outline: none;
+}
 .slide-button {
   background-color: #439873;
   width : 400px;
