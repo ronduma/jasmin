@@ -203,6 +203,12 @@ const getAllTherapists = async () => {
 	return therapistCollection;
 };
 
+const getFilteredTherapists = async(filters) => {
+	console.log('here');
+	console.log(filters);
+	
+}
+
 // Matching
 
 const match = async (currentUserID, TherapistID) => {
@@ -255,6 +261,7 @@ module.exports = {
 	updateProfile,
 	getUserByUsername,
 	getAllTherapists,
+	getFilteredTherapists,
 	gettingStarted,
   match,
 };
