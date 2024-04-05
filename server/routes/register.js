@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const users = require('../data/users');
-const helpers = require('../helpers');
+// const helpers = require('../helpers');
 const xss = require('xss');
 
 router.post('/', async(req,res) => {
