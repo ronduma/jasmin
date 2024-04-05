@@ -4,10 +4,14 @@ const helpers = require('../helpers');
 const users = require('../data/users');
 const path = require('path');
 const xss = require('xss');
+
+
 router.get('/', async(req, res) => {
     try{
-        const therapistList = await users.getFilteredTherapists(req.query);
+        const therapistList = await users.getAllTherapists();
         // const therapistID = req.params.therapistID;
+        // console.log("list of therapists");
+
         // Send a success response with the updated user data
         // return res.status(200).json({ success: true, message: 'User matched successfully', user: currentUser });
         return res.status(200).json(therapistList)
@@ -16,6 +20,5 @@ router.get('/', async(req, res) => {
         console.log(e);
     }
 });
-
 
 module.exports = router;

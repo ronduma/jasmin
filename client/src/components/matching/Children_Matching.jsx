@@ -27,13 +27,13 @@ function Children_Matching() {
   useEffect(() => {
     const fetchTherapists = async () => {
       try{
-        const response = await axios.get(`http://localhost:5173/therapists/?children_therapy_topic=${selectedTopic}&therapeutic_approach=${selectedApproach}&gender=${selectedGender}&price=${selectedPrice}&osort=${selectedSort}`);
+        const response = await axios.get(`http://localhost:5173/therapists`);
         
         setTherapists(response.data);
         setLoading(false);
 
       }catch(error){
-        console.error(error);
+        console.error(e);
       }
     };
     fetchTherapists();
