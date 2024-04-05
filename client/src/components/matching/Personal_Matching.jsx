@@ -34,12 +34,13 @@ function Personal_Matching() {
         const response = await axios.get(`http://localhost:5173/therapists/:selectedYourself=${selectedYourself}?`);
         setTherapists(response.data);
         setLoading(false);
+
       }catch(error){
-        console.error(error);
+        console.error(e);
       }
     };
     fetchTherapists();
-  });
+  })
   
   const buildCard = (therapist) => {
     return(
