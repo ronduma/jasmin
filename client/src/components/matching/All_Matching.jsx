@@ -31,7 +31,7 @@ import "../matching.css";
         setTherapists(response.data);
         setLoading(false);
       }catch(error){
-        console.error(error);
+        console.error(e);
       }
     };
     fetchTherapists();

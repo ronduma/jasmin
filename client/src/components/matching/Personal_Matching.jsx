@@ -31,7 +31,7 @@ function Personal_Matching() {
     const fetchTherapists = async () => {
       try{
         console.log(typeof selectedYourself);
-        const response = await axios.get(`http://localhost:5173/therapists/?relationship_with_yourself=${selectedYourself}&relationship_with_others=${selectedOthers}&personal_and_professional_development=${selectedDevelopment}&new_living_conditions=${selectedConditions}&therapeutic_approaches=${selectedApproach}&price=${selectedPrice}&sort=${selectedSort}`);
+        const response = await axios.get(`http://localhost:5173/therapists/:selectedYourself=${selectedYourself}?`);
         setTherapists(response.data);
         setLoading(false);
       }catch(error){
