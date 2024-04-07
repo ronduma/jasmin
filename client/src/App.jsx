@@ -25,6 +25,7 @@ import Children_Matching from './components/matching/Children_Matching';
 import SpecialList from './components/Specialist';
 import {AuthProvider} from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
+import Privacy from './components/Privacy';
 // import Feedback from './components/Feedback';
 
 function App() {
@@ -60,6 +61,7 @@ function App() {
             <Route path='/matching' element={<Matching/>} />
             <Route path="/matching/:id" element={<PsychologistView />} />
             <Route path='/speciallist' element={<SpecialList />} />
+            <Route path='/privacy_policy' element={<Privacy />} />
             <Route path="*" element={<NotFound/>} />
           </Routes>
         </main>

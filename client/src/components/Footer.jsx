@@ -1,5 +1,4 @@
 import React from 'react';
-// import './styles.css';
 
 import Grid from '@mui/material/Grid';
 
@@ -17,15 +16,15 @@ const Footer = () => {
         display: 'flex', 
         fontFamily:`"Nunito Sans", sans-serif`,
         backgroundColor: '#2C2C2C',
-        padding: '5vh 0 5vh 0',
+        padding: '4vh 0 2vh 0',
     }}>
-      <Grid item xs={6} 
+      <Grid item xs={7} 
         style={{
           color:'white',
           fontSize:'1.5rem',
           textAlign:'left',
-          display: 'flex', // Add this line
-          justifyContent: 'center', // Add this line
+          display: 'flex', 
+          justifyContent: 'center', 
           padding: '2.5% 3% 0 15%'
         }}
       >
@@ -37,13 +36,12 @@ const Footer = () => {
           holistic, and guided by genuine care.
         </div>
       </Grid>
-      <Grid item xs={6} 
+      <Grid item xs={1} 
         style={{
           color:'lightgray',
           textAlign:'left',
-          // display: 'flex', // Add this line
-          justifyContent: 'center', // Add this line
-          padding: '0 15% 0 10%'
+          justifyContent: 'center',
+          // padding: '0 10% 0 10%'
         }}
       >
         <div>
@@ -64,6 +62,15 @@ const Footer = () => {
         <div>
           Our Principles
         </div>
+      </Grid>
+      <Grid item xs={1} 
+        style={{
+          color:'lightgray',
+          textAlign:'left',
+          justifyContent: 'center',
+          // padding: '0 00 10%'
+        }}
+      >
         <div>
           Community
         </div>
@@ -74,11 +81,11 @@ const Footer = () => {
           Contact
         </div>
         <div>
-          Privacy Policy
+        <a href="/privacy_policy" style = {{textDecoration:'none',color: 'inherit' , cursor: 'pointer'}}>Privacy Policy</a> 
         </div>
         <div>
-          Services
-        </div>Terms and Conditions
+          Terms and Conditions
+        </div>
       </Grid>
       <Grid 
         item xs={12}

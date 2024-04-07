@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const helpers = require("../helpers");
+// const helpers = require("../helpers");
 const users = require("../data/users");
 const path = require("path");
 const xss = require("xss");
@@ -99,6 +99,23 @@ router.put("/concerns", async (req, res) => {
 			concerns: concerns,
 		});
 		return res.status(200).json(concernsReturn);
+	} catch (e) {
+		console.log(e);
+		return res.status(400).json(e);
+	}
+});
+
+router.put("/specialty", async (req, res) => {
+	try {
+		let uid = req.body.uid;
+		const specialty = [];
+		for (let i = 0; i < req.body.specialty.length; i++) {
+			specialty.push(xss(req.body.specialty[i]));
+		}
+		const specialtyReturn = await users.updateProfile(uid, {
+			specialty: specialty,
+		});
+		return res.status(200).json(specialtyReturn);
 	} catch (e) {
 		console.log(e);
 		return res.status(400).json(e);

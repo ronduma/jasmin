@@ -1,10 +1,11 @@
 import React, {useContext, useState} from 'react';
-import {redirect, useLocation, useNavigate, Navigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {AuthContext} from '../../context/AuthContext';
 
 import axios from 'axios';
 
-import '../../App.css';
+import './styles.css';
+
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -12,14 +13,12 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import FormGroup from '@mui/material/FormGroup';
 import FormLabel from '@mui/material/FormLabel';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import Select from '@mui/material/Select';
-import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 
 function GettingStarted() {
@@ -84,7 +83,6 @@ function GettingStarted() {
   const handleInfo = async (e) => {
     e.preventDefault();
     const {isTherapist, firstName, lastName, username, age, gender, location, occupation} = e.target.elements;
-    // console.log(isTherapist, isTherapist.value)
     let user = {
       uid : currentUser.uid, 
       email : currentUser.email,
@@ -119,12 +117,12 @@ function GettingStarted() {
       <CardContent>
         <h1>Getting Started</h1>
         <Box 
+          className="form"
           component="form"
           onSubmit={handleInfo}
-          sx={{'& > div': { marginBottom: '1rem' } }}
         >
           <FormControl>
-              <FormLabel id="demo-row-radio-buttons-group-label">I am a...</FormLabel>
+              <FormLabel>I am a...</FormLabel>
               <RadioGroup
                 row
                 name="isTherapist"
@@ -250,7 +248,9 @@ function GettingStarted() {
               Submit
             </Button>
           </div>
-          {alert ? <Alert severity="error" sx={{mx:"auto", width: "40ch"}}>{alert}</Alert> : <div></div>}
+          <div>
+            {alert ? <Alert severity="error" sx={{mx:"auto", width: "40ch"}}>{alert}</Alert> : <div></div>}
+          </div>
         </Box>
       </CardContent>
     </Card>
