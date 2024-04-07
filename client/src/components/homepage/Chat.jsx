@@ -68,7 +68,10 @@ const Chat = () => {
                   {" "}
                   Send{" "}
                 </button>{" "}
-                {/* Change type to submit */}
+
+                <a href="/video_chat" style = {{textDecoration:'none',color: 'inherit' , cursor: 'pointer'}}>Video</a> 
+
+
               </form>
             </div>
           </div>
