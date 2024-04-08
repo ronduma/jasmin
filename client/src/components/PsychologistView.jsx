@@ -1,6 +1,6 @@
 import "../App.css";
 import { useParams, useNavigate, NavLink } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -9,12 +9,34 @@ import Paper from '@mui/material/Paper';
 
 import Typography from '@mui/material/Typography';
 import TherapistBio from "./profile/TherapistBio";
+import TherapistBioFromPatientView from "./profile/TherapistBioFromPatientView";
+import {AuthContext} from '../context/AuthContext';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 
 function PsychologistView() {
   const { id } = useParams();
   const [profileData, setprofileData] = useState(null);
   const [isLoading, setLoading] = useState(true);
+  const {currentUser} = useContext(AuthContext);
+  console.log("We are in Psychologist");
+  const [therapist, setTherapist] = useState(null);
+
+  const handleClick = async () => {
+
+    try {
+
+      const response = await axios.post(`http://localhost:5173/matching`, {
+        currentUserID: currentUser.uid,
+        therapistID: id
+      });
+      console.log('Success Match Response:', response.data);
+    } catch (error) {
+      // Handle error
+      console.error('Error:', error);
+    }
+  };
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -88,12 +110,14 @@ function PsychologistView() {
               </div>
               : <div>Missing Data</div>}
               <br/>
-              <Button variant="contained"> Match </Button> {" "}
+              <Button variant="contained" onClick={handleClick} > Match </Button> {" "}
               <Button variant="contained"> Schedule </Button>
           </Paper>
         </Grid>
         <Grid item xs={6}>
-          <TherapistBio /> 
+          <TherapistBioFromPatientView 
+              bio = {profileData.bio} 
+              specialty={profileData.specialty}/> 
         </Grid>
       </Grid>
     </div>
