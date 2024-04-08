@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 
 import Typography from '@mui/material/Typography';
 import TherapistBio from "./profile/TherapistBio";
+import TherapistBioFromPatientView from "./profile/TherapistBioFromPatientView";
 import {AuthContext} from '../context/AuthContext';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
@@ -114,7 +115,9 @@ function PsychologistView() {
           </Paper>
         </Grid>
         <Grid item xs={6}>
-          <TherapistBio /> 
+          <TherapistBioFromPatientView 
+              bio = {profileData.bio} 
+              specialty={profileData.specialty}/> 
         </Grid>
       </Grid>
     </div>

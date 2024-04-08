@@ -220,33 +220,51 @@ const match = async (currentUserID, TherapistID) => {
   if (currentUser.isTherapist != true){
     console.log(" BOTH Patient and Therapist Exist and Current User not Therapist")
 
-    //Update
-    const updatedUser = await userCollection.findOneAndUpdate(
-			{ _id: currentUserID },
-			{ $set: { therapist: TherapistID  } }
-		);
-  
-    if (!Therapist.patients.includes(currentUserID)) {
+    //add patient if its not in therapist acc
+    if ((!Therapist.patients.includes(currentUserID)) && (currentUser.therapist == null || currentUser.therapist == "") ) {
       const updatedTherapist = await userCollection.findOneAndUpdate(
         { _id: TherapistID },
-        { $push: { patients: TherapistID  } }
+        { $push: { patients: currentUserID  } }
       );
       console.log("Patient should be added to therapist" + Therapist.patients)
+
+        //Update current user to add therapist
+      const updatedUser = await userCollection.findOneAndUpdate(
+        { _id: currentUserID },
+        { $set: { therapist: TherapistID  } }
+      );
+      console.log("Therapist should be added to patient" + currentUser.therapist)
+      return currentUser;
     }
-    else {
-      console.log("Therapist already in database")
+    //already matched call unmatch
+    else{
+      console.log("User already matched with therapist  " + currentUser.therapist);
+
+
+      console.log("Therapist should be removed from patient" + currentUser.therapist)
+      const updatedUser = await userCollection.findOneAndUpdate(
+        { _id: currentUserID },
+        { $set: { therapist: null  } }
+      );
+      const updatedTherapist = await userCollection.findOneAndUpdate(
+        { _id: TherapistID },
+        { $pull: { patients: currentUserID  } }
+      );
+      console.log("Patient should be removed from therapist" + currentUser.therapist)
+
+
+      return currentUser;
     }
   }
   // Therapist needs to confirm on their side later
   else {
-    if (!Therapist.patients.includes(currentUserID)) {
-      Therapist.patients.push(currentUserID);
-      console.log("Patient should be added to therapist" + Therapist.patients)
-    }
+    console.log("THERAPIST Acc can't match with a patient ")
   }
 
   return currentUser;
 }
+
+
 
 const unMatch = async (currentUserID, TherapistID) => {
   return;
