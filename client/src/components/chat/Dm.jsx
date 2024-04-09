@@ -3,8 +3,8 @@ import "./chat.css";
 
 import Grid from '@mui/material/Grid';
 
-const Dm = () => {
-  
+const Dm = (props) => {
+  const truncatedText = props.message.length > 20 ? `${props.message.slice(0, 20)}...` : props.message;
   return (
     <Grid 
       container 
@@ -15,14 +15,14 @@ const Dm = () => {
       <Grid item xs={2}>
         Pfp
       </Grid>
-      <Grid item xs={8}>
-        Name
+      <Grid item xs={6}>
+        {props.from}
       </Grid>
-      <Grid item xs={2}>
-        Time
+      <Grid item xs={4}>
+        {props.timestamp}
       </Grid>
       <Grid item xs={12}>
-        Message
+        {truncatedText}
       </Grid>
     </Grid>
   );
