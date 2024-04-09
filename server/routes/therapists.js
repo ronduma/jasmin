@@ -6,7 +6,8 @@ const path = require('path');
 const xss = require('xss');
 router.get('/', async(req, res) => {
     try{
-        const therapistList = await users.getAllTherapists()
+        // console.log(req.query);
+        const therapistList = await users.getFilteredTherapists(req.query);
         //  
         // const therapistID = req.params.therapistID;
         // Send a success response with the updated user data
