@@ -31,8 +31,11 @@ function Personal_Matching() {
     const fetchTherapists = async () => {
       try{
         console.log(typeof selectedYourself);
-        const response = await axios.get(`http://localhost:5173/therapists`);
+        const response = await axios.get(`http://localhost:5173/therapists/?relationship_with_yourself=${selectedYourself}&relationship_with_others=${selectedOthers}&personal_and_professional_development=${selectedDevelopment}&new_living_conditions=${selectedConditions}&therapeutic_approaches=${selectedApproach}&price=${selectedPrice}`);
+
+        // const response = await axios.get(`http://localhost:5173/therapists`);
         // const response = await axios.get(`http://localhost:5173/therapists/?relationship_with_yourself=${selectedYourself}&relationship_with_others=${selectedOthers}&personal_and_professional_development=${selectedDevelopment}&new_living_conditions=${selectedConditions}&therapeutic_approaches=${selectedApproach}&price=${selectedPrice}&sort=${selectedSort}`);
+
         setTherapists(response.data);
         setLoading(false);
       }catch(error){
@@ -81,6 +84,9 @@ function Personal_Matching() {
               </Typography>
               <Typography>
                 {therapist.gender}
+              </Typography>
+              <Typography>
+                {therapist.specialty}
               </Typography>
             </CardContent>
           </Card>
@@ -212,7 +218,7 @@ function Personal_Matching() {
     <br/>
     </div>
     <div>
-    <div style={{ display: 'flex', flexWrap: 'wrap', 
+    <div style={{ display: "flex", flexWrap: "wrap", 
                   gap: "20px", alignItems:"flex-start", 
                   margin: "20px", paddingBottom: "50px"}}>
       {loading && <>
