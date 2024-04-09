@@ -204,9 +204,22 @@ const getAllTherapists = async () => {
 };
 
 const getFilteredTherapists = async(filters) => {
-	console.log('here');
-	console.log(filters);
-	
+	for(let key in filters) {
+		if(filters[key] == ""){
+			delete filters[key];
+		}
+	}
+	if(Object.values(filters).length === 0 && filters.constructor === Object){
+		return getAllTherapists();
+	}
+	else{
+		const userCollection = await users();
+		const valuesToCheck = Object.values(filters);
+		const therapistCollection = await userCollection
+			.find({isTherapist: true, specialty : {$in: valuesToCheck}})
+			.toArray();
+		return therapistCollection;
+	}
 }
 
 // Matching
