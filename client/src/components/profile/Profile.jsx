@@ -18,6 +18,7 @@ import {AuthContext} from '../../context/AuthContext';
 
 import TherapistBio from "./TherapistBio";
 import PatientBio from "./PatientBio";
+import Loading from "../loading/Loading";
 
 function Profile() {
   const {currentUser} = useContext(AuthContext);
@@ -83,7 +84,7 @@ function Profile() {
   }
 
   if (isLoading) {
-    return <div className="App">Loading...</div>;
+    return <Loading />;
   }
 
   return (

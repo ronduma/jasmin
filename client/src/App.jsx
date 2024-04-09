@@ -26,6 +26,8 @@ import SpecialList from './components/Specialist';
 import {AuthProvider} from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 import Privacy from './components/Privacy';
+import Chat from './components/chat/Chat';
+
 // import Feedback from './components/Feedback';
 
 function App() {
@@ -64,6 +66,7 @@ function App() {
             <Route path='/privacy_policy' element={<Privacy />} />
             <Route path="*" element={<NotFound/>} />
           </Routes>
+          <Chat />
         </main>
         <footer>
           <Footer />

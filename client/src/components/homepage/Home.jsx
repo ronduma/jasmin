@@ -10,7 +10,7 @@ import Reviews from './Reviews'
 import Therapists from './Therapists'
 import News from './News'
 import Subscribe from './Subscribe'
-import Chat from './Chat'
+// import Chat from '../chat/Chat'
 
 import Grid from '@mui/material/Grid';
 
@@ -30,7 +30,7 @@ function Home() {
       <Therapists/>
       <News/>
       <Subscribe/>
-      <Chat/>
+      {/* <Chat/> */}
     </div>
   );
 }

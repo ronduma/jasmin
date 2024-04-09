@@ -28,6 +28,7 @@
     "fs": "^0.0.1-security",
     "mongodb": "^6.2.0",
     "multer": "^1.4.5-lts.1",
+    "socket.io": "^4.7.5",
     "xss": "^1.0.14"
   },
   "devDependencies": {
