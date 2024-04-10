@@ -1,5 +1,10 @@
-import * as React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+
+import axios from 'axios';
+
+import Autocomplete from '@mui/material/Autocomplete';
 import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -12,6 +17,8 @@ import EditIcon from '@mui/icons-material/Edit';
 
 function Search() {
   const [open, setOpen] = React.useState(false);
+  const [therapistList, setTherapistList] = React.useState(null);
+  const [selectedTherapist, setSelectedTherapist] = useState(null);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -20,6 +27,32 @@ function Search() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  useEffect(() => {
+    const getTherapists = async () => {
+      try{
+        const response = await axios.get("http://localhost:5173/therapists/all");
+        const therapists = response.data.map(therapist => therapist.firstName + " " + therapist.lastName);
+        console.log(therapists);
+        setTherapistList(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    getTherapists();
+  }, []); // Re-run effect whenever currentUser changes
+
+  useEffect(() => {
+    console.log(selectedTherapist);
+  }, [selectedTherapist])
+
+  useEffect(() => {
+    console.log("therapist list updated", therapistList);
+  }, [therapistList]); // Run this effect whenever therapistList changes
+
+  const handleChat = () => {
+    console.log("chatting with", selectedTherapist)
+  }
 
   return (
     <React.Fragment>
@@ -33,27 +66,38 @@ function Search() {
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
             const formJson = Object.fromEntries(formData.entries());
-            const email = formJson.email;
-            console.log(email);
+            console.log(formJson);
             handleClose();
           },
         }}
       >
         <DialogTitle>New Message</DialogTitle>
         <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            name="name"
-            label="Search users"
-            fullWidth
-            variant="standard"
-          />
+          <Stack spacing={2} sx={{ width: 500 }}>
+            <Autocomplete
+              freeSolo
+              id="free-solo-2-demo"
+              disableClearable
+              options={therapistList ? 
+                        therapistList.map(therapist => therapist.firstName + " " + therapist.lastName) : 
+                        "No users available."}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Search users"
+                  InputProps={{
+                    ...params.InputProps,
+                    type: 'search',
+                  }}
+                />
+              )}
+              onChange={(event, value) => setSelectedTherapist(value)}
+            />
+          </Stack>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit">Chat</Button>
+          <Button type="submit" onClick={handleChat}>Chat</Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>

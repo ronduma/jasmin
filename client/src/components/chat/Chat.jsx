@@ -13,13 +13,13 @@ import ChatIcon from '@mui/icons-material/Chat';
 
 import Loading from "../loading/Loading";
 import Search from "./Search";
-import Dm from './Dm';
+import DmPreview from './DmPreview';
 
 const Chat = () => {
   const {currentUser} = useContext(AuthContext);
   const [isLoading, setLoading] = useState(true);
   const [profileData, setProfileData] = useState(null);
-
+  const [isChatting, setIsChatting] = useState(false);
   const [isOpen, setIsOpen] = useState(false); // isOpen state starts as false
 
   const togglePopup = () => {
@@ -68,7 +68,7 @@ const Chat = () => {
                   <Search />
                 </Grid>
                 <Grid item xs={12}>
-                  <div>Messages</div>
+                  <div className="messages-header">Messages</div>
                 </Grid>
                 <Grid item xs={12}>
                   {
@@ -76,11 +76,13 @@ const Chat = () => {
                     <div>No messages to show.</div>
                     :
                     <div>
-                      {profileData.chatLog.map((dm, index)=> (
-                        <div key={index}>
-                          <Dm from={dm.messages[0].from} timestamp={dm.messages[0].timestamp} message={dm.messages[0].message}/>
-                        </div>
-                      ))}
+                     
+                        {profileData.chatLog.map((dm, index)=> (
+                          <div key={index}>
+                            <DmPreview from={dm.messages[0].from} timestamp={dm.messages[0].timestamp} message={dm.messages[0].message}/>
+                          </div>
+                        ))} 
+                      
                     </div>
                   }
                 </Grid>
