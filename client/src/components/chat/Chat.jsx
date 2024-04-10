@@ -75,11 +75,11 @@ const Chat = () => {
                   </div>
                 </Grid>
                 <Grid item xs={1}>
-                  <Search />
+                  <Search id={currentUser.uid}/>
                 </Grid>
                 {
                   isChatting ? 
-                  <Dm/>
+                  <Dm onMessage={handleMessageFromChild}/>
                   :
                   <div>
                     <Grid item xs={12}>

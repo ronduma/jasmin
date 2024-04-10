@@ -139,6 +139,19 @@ const updateUserInfo = async ({
 	);
 };
 
+
+const addChatLog = async ({
+	uid,
+	chatLog
+}) => {
+  const user = await userCollection.findOneAndUpdate(
+		{ _id: uid },
+		{ $push: chatLog },
+		{ returnDocument: "after" }
+	);
+	console.log(user)
+}
+
 const updateProfile = async (uid, updated) => {
 	// Patient profile update
 	// Error handling in routes
@@ -279,4 +292,5 @@ module.exports = {
 	getFilteredTherapists,
 	gettingStarted,
   match,
+	addChatLog,
 };

@@ -15,7 +15,7 @@ import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 
 
-function Search() {
+function Search(props) {
   const [open, setOpen] = React.useState(false);
   const [therapistList, setTherapistList] = React.useState(null);
   const [selectedTherapist, setSelectedTherapist] = useState(null);
@@ -50,8 +50,19 @@ function Search() {
     console.log("therapist list updated", therapistList);
   }, [therapistList]); // Run this effect whenever therapistList changes
 
-  const handleChat = () => {
+  const handleChat = async () => {
     console.log("chatting with", selectedTherapist)
+    let dm = {
+      id: 1,
+      to: selectedTherapist,
+      messages: []
+    }
+    try {
+      const response = await axios.put(`http://localhost:5173/chat/${props.id}`, dm)
+      console.log(response)
+    } catch(e){
+      console.log(e);
+    }
   }
 
   return (
