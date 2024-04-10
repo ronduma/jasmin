@@ -14,6 +14,7 @@ import ChatIcon from '@mui/icons-material/Chat';
 import Loading from "../loading/Loading";
 import Search from "./Search";
 import DmPreview from './DmPreview';
+import Dm from './Dm';
 
 const Chat = () => {
   const {currentUser} = useContext(AuthContext);
@@ -36,6 +37,10 @@ const Chat = () => {
     }
   };
 
+  const handleMessageFromChild = (data) => {
+    setIsChatting(data);
+  };
+
   useEffect(() => {
     if (currentUser && currentUser.uid) {
       fetchData(); // Trigger fetchData when currentUser.uid is available
@@ -47,6 +52,11 @@ const Chat = () => {
     // This useEffect will run every time profileData changes
     console.log("Updated profileData:", profileData);
   }, [profileData]); // Only re-run if profileData changes
+
+  useEffect(() => {
+    // This useEffect will run every time isChatting changes
+    console.log("Updated isChatting:", isChatting);
+  }, [isChatting]); // Only re-run if isChatting changes
 
   return (
     <div >
@@ -67,25 +77,35 @@ const Chat = () => {
                 <Grid item xs={1}>
                   <Search />
                 </Grid>
-                <Grid item xs={12}>
-                  <div className="messages-header">Messages</div>
-                </Grid>
-                <Grid item xs={12}>
-                  {
-                    profileData.chatLog.length == [] ?
-                    <div>No messages to show.</div>
-                    :
-                    <div>
-                     
-                        {profileData.chatLog.map((dm, index)=> (
-                          <div key={index}>
-                            <DmPreview from={dm.messages[0].from} timestamp={dm.messages[0].timestamp} message={dm.messages[0].message}/>
-                          </div>
-                        ))} 
-                      
-                    </div>
-                  }
-                </Grid>
+                {
+                  isChatting ? 
+                  <Dm/>
+                  :
+                  <div>
+                    <Grid item xs={12}>
+                      <div className="messages-header">Messages</div>
+                    </Grid>
+                    <Grid item xs={12}>
+                      {
+                        profileData.chatLog.length == [] ?
+                        <div>No messages to show.</div>
+                        :
+                        <div>
+                            {profileData.chatLog.map((dm, index)=> (
+                              <div key={index}>
+                                <DmPreview 
+                                  from={dm.messages[0].from} 
+                                  timestamp={dm.messages[0].timestamp} 
+                                  message={dm.messages[0].message}
+                                  onMessage={handleMessageFromChild} 
+                                />
+                              </div>
+                            ))} 
+                        </div>
+                      }
+                    </Grid>
+                  </div>
+                }
               </Grid>
             </div>
           }

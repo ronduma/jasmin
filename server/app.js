@@ -67,7 +67,7 @@ io.on('connection', (socket) => {
 
 configRoutes(app);
 
-app.listen(5173, () => {
+http.listen(5173, () => {
   console.log("We've now got a server!");
   console.log('Your routes will be running on http://localhost:5173');
   console.log();

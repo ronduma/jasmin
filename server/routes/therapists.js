@@ -23,7 +23,7 @@ router.get('/all', async(req, res) => {
       // const therapistID = req.params.therapistID;
       // Send a success response with the updated user data
       // return res.status(200).json({ success: true, message: 'User matched successfully', user: currentUser });
-      console.log(therapistList);
+      // console.log(therapistList);
       return res.status(200).json(therapistList);
   }
   catch(e){

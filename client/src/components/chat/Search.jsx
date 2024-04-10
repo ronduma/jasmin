@@ -78,11 +78,14 @@ function Search() {
               freeSolo
               id="free-solo-2-demo"
               disableClearable
-              options={therapistList ? 
-                        therapistList.map(therapist => therapist.firstName + " " + therapist.lastName) : 
-                        "No users available."}
+              options={therapistList ? therapistList.map(therapist => ({
+                id: therapist._id,
+                name: therapist.firstName + " " + therapist.lastName
+              })) : []}
+              getOptionLabel={(option) => option.name + " (" + option.id + ")"}
               renderInput={(params) => (
                 <TextField
+                  sx={{margin:"1rem 0 0 0"}}
                   {...params}
                   label="Search users"
                   InputProps={{

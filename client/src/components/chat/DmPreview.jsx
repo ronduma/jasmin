@@ -11,10 +11,18 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 
 const DmPreview = (props) => {
+  const sendMessageToParent = () => {
+    // Invoke the callback function passed from the parent with data
+    props.onMessage(true);
+  };
+
   const truncatedText = props.message.length > 20 ? `${props.message.slice(0, 20)}...` : props.message;
   return (
     <Card sx={{ display: 'flex' }}>
-      <CardActionArea sx={{ display: 'flex', alignItems: 'left' }}>
+      <CardActionArea 
+        onClick={sendMessageToParent}
+        sx={{ display: 'flex', alignItems: 'left' }}
+      >
         <CardMedia
           component="img"
           sx={{ width: '5rem', height: '5rem'}}
