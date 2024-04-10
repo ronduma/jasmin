@@ -29,6 +29,7 @@ const createUser = async (uid, email) => {
 		chatLog: [],
 		patients: [],
 		therapist: null,
+		specialty: []
 	};
 	const insertInfo = await userCollection.insertOne(user);
 	if (!insertInfo.acknowledged || !insertInfo.insertedId) {
