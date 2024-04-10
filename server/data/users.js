@@ -42,6 +42,9 @@ const createUser = async (uid, email) => {
 		patients: [],
 		therapist: null,
 	};
+
+	console.log("inserting user:", user)
+
 	const insertInfo = await userCollection.insertOne(user);
 	if (!insertInfo.acknowledged || !insertInfo.insertedId) {
 		throw "Could not add user";

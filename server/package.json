@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon app.js",
-    "start": "node app.js",
+    "start": "nodemon app.js",
     "seed": "node seed/seed.js"
   },
   "repository": {
@@ -33,6 +33,6 @@
     "xss": "^1.0.14"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.1.0"
   }
 }
