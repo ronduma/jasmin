@@ -1,0 +1,1 @@
+This directory needs to be exist for pfp image uploads
