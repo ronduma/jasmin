@@ -42,6 +42,7 @@ const createUser = async (uid, email) => {
 		chatLog: [kaiChat],
 		patients: [],
 		therapist: null,
+		specialty: []
 	};
 
 	console.log("inserting user:", user)
