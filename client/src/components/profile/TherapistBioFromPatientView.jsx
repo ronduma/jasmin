@@ -50,10 +50,40 @@ function TherapistBioFromPatientView({bio, specialty}) {
     };
     fetchData();
   }, [id]);
+  
 
 //   insert Matching Button
-  const handleTimeSelection = () => {
-    
+  const format = (date, index) => {
+    let updatedtime;
+    let time = index + 9;
+    let afternoon=false;
+    if (time > 12){
+        time -= 12;
+        afternoon=true;
+    }
+    updatedtime = time.toString();
+    return dayjs(date).format('MM/DD/YYYY') + ' '+ updatedtime + ':00' + (afternoon ? ' PM' : ' AM');
+  }
+  const handleTimeSelection = async (index) => {
+    try {
+        console.log("Time was selected")
+        console.log(selectedDate.$d);
+        console.log(index  + 9)
+        let updatedtime = format(selectedDate.$d, index)
+        console.log(updatedtime)
+
+    //     const response = await axios.post(`http://localhost:5173/matching`, {
+    //     currentUserID: currentUser.uid,
+    //     therapistID: id
+    //   });
+        
+    //    
+        // console.log('Success Match Response:', response.data);
+      } catch (error) {
+        // Handle error
+        console.error('Error:', error);
+      }
+
   }
 
   return (
@@ -121,9 +151,9 @@ function TherapistBioFromPatientView({bio, specialty}) {
         <div style={{ marginBottom: '10px' }}>
           <strong>Available Times:</strong>
         </div>
-        {[...Array(17).keys()].map(index => (
+        {[...Array(9).keys()].map(index => (
           <Button key={index} onClick={() => handleTimeSelection(index)}>
-            {dayjs(selectedDate).startOf('day').add(9, 'hours').add(30 * index, 'minutes').format('h:mm A')}
+            {dayjs(selectedDate).startOf('day').add(9, 'hours').add(index, 'hours').format('h:mm A')}
           </Button>
         ))}
       </Grid>
