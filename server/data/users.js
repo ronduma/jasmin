@@ -15,6 +15,7 @@ const createUser = async (uid, email) => {
 
 	const kaiChat = {
 		id: "0",
+		to: "0",
 		messages: [
 			{
 				from: "kAI",
@@ -140,13 +141,14 @@ const updateUserInfo = async ({
 };
 
 
-const addChatLog = async ({
+const addChatLog = async (
 	uid,
-	chatLog
-}) => {
+	log
+) => {
+	const userCollection = await users();
   const user = await userCollection.findOneAndUpdate(
 		{ _id: uid },
-		{ $push: chatLog },
+		{ $push: {chatLog : log} },
 		{ returnDocument: "after" }
 	);
 	console.log(user)

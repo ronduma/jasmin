@@ -23,7 +23,10 @@ router.put('/', async(req,res) => {
 
 router.put('/:id', async(req,res) => {
   try {
-    let user = await users.addChatLog(req.body);
+    let uid = req.params.id;
+    let chatLog = req.body; 
+    console.log(uid, chatLog)
+    let user = await users.addChatLog(uid, chatLog);
     return res.status(200).json(user);
   } catch (e) {
     console.log(e)

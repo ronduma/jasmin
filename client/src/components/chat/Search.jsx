@@ -53,7 +53,6 @@ function Search(props) {
   const handleChat = async () => {
     console.log("chatting with", selectedTherapist)
     let dm = {
-      id: 1,
       to: selectedTherapist,
       messages: []
     }
