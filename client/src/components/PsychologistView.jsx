@@ -45,7 +45,7 @@ function PsychologistView() {
         setprofileData(response.data);
         setLoading(false);
       } catch (e) {
-        console.log("yo")
+        // console.log("yo")
       }
     };
     fetchData();

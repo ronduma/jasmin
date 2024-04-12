@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../../chat.css";
 import { Fab } from "@mui/material";
 import AssistantIcon from '@mui/icons-material/Assistant';
+import Video from '../video/Video';
 
 const Chat = () => {
   const [isOpen, setIsOpen] = useState(false); // isOpen state starts as false
@@ -68,7 +69,10 @@ const Chat = () => {
                   {" "}
                   Send{" "}
                 </button>{" "}
-                {/* Change type to submit */}
+
+                <a href="/video_chat" style = {{textDecoration:'none',color: 'inherit' , cursor: 'pointer'}}>Video</a> 
+
+
               </form>
             </div>
           </div>

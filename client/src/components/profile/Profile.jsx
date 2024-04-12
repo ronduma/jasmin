@@ -41,7 +41,7 @@ function Profile() {
       setProfileData(response.data);
       setLoading(false);
     } catch (e) {
-      console.log("yo")
+      // console.log("yo")
       navigate('/getting-started')
     }
   };
