@@ -90,6 +90,7 @@ const Chat = () => {
                   <Search 
                     id={currentUser.uid}
                     onMessage={handleSearchResponse}
+                    isTherapist={profileData.isTherapist}
                   />
                 </Grid>
                 <Grid item xs={1}>

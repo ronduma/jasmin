@@ -17,7 +17,7 @@ import EditIcon from '@mui/icons-material/Edit';
 
 function Search(props) {
   const [open, setOpen] = React.useState(false);
-  const [therapistList, setTherapistList] = React.useState(null);
+  const [searchList, setSearchList] = React.useState(null);
   const [selectedTherapist, setSelectedTherapist] = useState(null);
 
   const handleClickOpen = () => {
@@ -34,12 +34,26 @@ function Search(props) {
         const response = await axios.get("http://localhost:5173/therapists/all");
         const therapists = response.data.map(therapist => therapist.firstName + " " + therapist.lastName);
         console.log(therapists);
-        setTherapistList(response.data);
+        setSearchList(response.data);
       } catch (e) {
         console.log(e);
       }
     }
-    getTherapists();
+    const getPatients = async () => {
+      try{
+        const response = await axios.get("http://localhost:5173/patients/all");
+        const patients = response.data.map(patient => patient.firstName + " " + patient.lastName);
+        console.log(patients);
+        setSearchList(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    if (props.isTherapist){
+      getPatients();
+    } else{
+      getTherapists();
+    }
   }, []); // Re-run effect whenever currentUser changes
 
   useEffect(() => {
@@ -47,8 +61,8 @@ function Search(props) {
   }, [selectedTherapist])
 
   useEffect(() => {
-    console.log("therapist list updated", therapistList);
-  }, [therapistList]); // Run this effect whenever therapistList changes
+    console.log("search list updated", searchList);
+  }, [searchList]); // Run this effect whenever searchList changes
 
   const handleChat = async () => {
     console.log("chatting with", selectedTherapist)
@@ -87,9 +101,9 @@ function Search(props) {
               freeSolo
               id="free-solo-2-demo"
               disableClearable
-              options={therapistList ? therapistList.map(therapist => ({
-                id: therapist._id,
-                name: therapist.firstName + " " + therapist.lastName
+              options={searchList ? searchList.map(search => ({
+                id: search._id,
+                name: search.firstName + " " + search.lastName
               })) : []}
               getOptionLabel={(option) => option.name + " (" + option.id + ")"}
               renderInput={(params) => (

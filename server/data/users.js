@@ -222,6 +222,14 @@ const getAllTherapists = async () => {
 	return therapistCollection;
 };
 
+const getAllPatients = async () => {
+	const userCollection = await users();
+	const patientCollection = await userCollection
+		.find({ isTherapist: false })
+		.toArray();
+	return patientCollection;
+};
+
 const getFilteredTherapists = async(filters) => {
 	console.log('here');
 	console.log(filters);
@@ -280,6 +288,7 @@ module.exports = {
 	updateProfile,
 	getUserByUsername,
 	getAllTherapists,
+	getAllPatients,
 	getFilteredTherapists,
 	gettingStarted,
   match,

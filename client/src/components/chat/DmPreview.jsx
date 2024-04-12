@@ -13,6 +13,7 @@ import Grid from '@mui/material/Grid';
 const DmPreview = (props) => {
   const sendMessageToParent = () => {
     // Invoke the callback function passed from the parent with data
+    console.log("yo")
     props.onMessage({isChatting: true, id: props.id});
   };
 

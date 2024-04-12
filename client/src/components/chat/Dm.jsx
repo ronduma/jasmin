@@ -6,6 +6,8 @@ import axios from 'axios';
 import io from 'socket.io-client'
 const socket = io.connect("http://localhost:5173")
 
+import Loading from "../loading/Loading";
+
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SendIcon from '@mui/icons-material/Send';
 
@@ -14,8 +16,9 @@ import TextField from '@mui/material/TextField';
 
 function Dm(props) {
   const [message, setMessage] = useState("");
-  const [messageReceived, setMessageReceived] = useState("");
-  const [history, setHistory] = useState("");
+  const [messageReceived, setMessageReceived] = useState(""); //debugging state
+  const [history, setHistory] = useState(null);
+  const [isLoading, setLoading] = useState(true);
 
   const sendMessageToParent = () => {
     // Invoke the callback function passed from the parent with data
@@ -23,14 +26,18 @@ function Dm(props) {
   };
   
   const getChat = async () => {
-    const response = await axios.get(`http://localhost:5173/chats/${props.chat_id}`)
-    return response.data
+    try {
+      console.log("getting chat log")
+      const response = await axios.get(`http://localhost:5173/chats/${props.chat_id}`);
+      setHistory(response.data);
+    } catch(e){
+      console.log("yo")
+    } finally {
+      setLoading(false);
+    }
   };
 
   const sendMessage = async () => {
-    const chat = await getChat();
-    setHistory(chat);
-    console.log("chat", chat);
     const msg = {
       id: props.chat_id,
       sender: props.sender,
@@ -38,26 +45,47 @@ function Dm(props) {
     }
     socket.emit("send_message", {message})
     const response = await axios.put(`http://localhost:5173/chats/message/${props.chat_id}`, msg)
-    console.log(response);
+    const chat = await getChat();
+
+    setMessage("");
   };
 
   useEffect(()=> {
+    getChat();
+  }, [])
+
+  useEffect(()=> {
+    getChat();
+  }, [history])
+
+  useEffect(()=> {
     socket.on("receive_message", (data) => {
+      getChat();
       setMessageReceived(data.message)
     })
   }, [socket])
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div>
       <IconButton onClick={sendMessageToParent}>
         <ArrowBackIcon/>
       </IconButton>
-      <div>
-        {messageReceived}
+      <div className="history">
+        {history.chatLog.map((message, index)=> (
+          <div key={index}>
+            <div>{message.message}</div>
+          </div>
+        ))} 
+        {/* {messageReceived} */}
       </div>
       <div className="input">
         <TextField 
           placeholder="Message..." 
+          value={message}
           onChange={(event) => {
             setMessage(event.target.value);
           }}
