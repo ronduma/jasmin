@@ -13,12 +13,12 @@ import Grid from '@mui/material/Grid';
 const DmPreview = (props) => {
   const sendMessageToParent = () => {
     // Invoke the callback function passed from the parent with data
-    props.onMessage(true);
+    props.onMessage({isChatting: true, id: props.id});
   };
 
   const truncatedText = props.message.length > 20 ? `${props.message.slice(0, 20)}...` : props.message;
   return (
-    <Card sx={{ display: 'flex' }}>
+    <Card sx={{ display: 'flex', margin: "1rem 0 0 0"}}>
       <CardActionArea 
         onClick={sendMessageToParent}
         sx={{ display: 'flex', alignItems: 'left' }}

@@ -14,8 +14,10 @@ const createUser = async (uid, email) => {
 	}
 
 	const kaiChat = {
-		id: "0",
-		to: "0",
+		to: {
+			id: "0",
+			name: "kAI"
+		},
 		messages: [
 			{
 				from: "kAI",
@@ -140,20 +142,6 @@ const updateUserInfo = async ({
 		{ returnDocument: "after" }
 	);
 };
-
-
-const addChatLog = async (
-	uid,
-	log
-) => {
-	const userCollection = await users();
-  const user = await userCollection.findOneAndUpdate(
-		{ _id: uid },
-		{ $push: {chatLog : log} },
-		{ returnDocument: "after" }
-	);
-	console.log(user)
-}
 
 const updateProfile = async (uid, updated) => {
 	// Patient profile update
@@ -295,5 +283,4 @@ module.exports = {
 	getFilteredTherapists,
 	gettingStarted,
   match,
-	addChatLog,
 };

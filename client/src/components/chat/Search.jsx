@@ -52,13 +52,12 @@ function Search(props) {
 
   const handleChat = async () => {
     console.log("chatting with", selectedTherapist)
-    let dm = {
-      to: selectedTherapist,
-      messages: []
-    }
+    let user2_id = selectedTherapist.id;
+    console.log(user2_id)
     try {
-      const response = await axios.put(`http://localhost:5173/chat/${props.id}`, dm)
+      const response = await axios.put(`http://localhost:5173/chats/${props.id}`, {user2_id})
       console.log(response)
+      props.onMessage({isChatting: true, id: response.data.insertedId});
     } catch(e){
       console.log(e);
     }

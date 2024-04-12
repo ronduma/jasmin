@@ -1,41 +1,71 @@
+const { MongoClient, ObjectId } = require('mongodb');
 const mongoCollections = require("../config/mongoCollections");
-const chats = mongoCollections.chat;
+const chats = mongoCollections.chats;
+const users = mongoCollections.users;
 
-const createChat = async (username1, username2, sender, message) => {
-  const chatCollection = await chats();
+const usersData = require('../data/users');
 
-  //make sure that username1 < username2
-  if (username1 > username2) {
-    let temp = username1;
-    username1 = username2;
-    username2 = temp;
+const createChatLog = async (
+	user1_id,
+  user2_id
+) => {
+  const userCollection = await users();
+	const chatCollection = await chats();
+  const log = {
+    user1_id: user1_id,
+    user2_id: user2_id,
+    chatLog: []
   }
+  const insertInfo = await chatCollection.insertOne(log);
+  if (!insertInfo.acknowledged || !insertInfo.insertedId) {
+		throw "Could not add chat";
+	}
 
-  const chatId = await chatCollection.findOne({
-    username1: username1,
-    username2: username2,
-  });
+  const user1_data = await usersData.getUserById(user1_id);
+  const user2_data = await usersData.getUserById(user2_id);
 
-  var chatLog = chatId.chatLog;
-  const newChat = { sender, message };
-  chatLog.push(chatLog);
-  //array of {sender, message}
+  const user1_name = user1_data.firstName + " " + user1_data.lastName;
+  const user2_name = user2_data.firstName + " " + user2_data.lastName;
 
-  const chat = {
-    _id: cid,
-    username1: username1,
-    username2: username2,
-    chatLog: chatLog,
-  };
-  const query = { _id: cid }; // Assuming cid is the _id of the chat document you want to update
-  const update = { $push: { chatLog: newChat } }; // Assuming newChat contains the new chat message
-  const options = { returnOriginal: false }; // This will return the modified document
+  const user1 = await userCollection.findOneAndUpdate(
+		{ _id: user1_id },
+		{ $push: {chatLog : {id : insertInfo.insertedId, name : user2_name}} },
+		{ returnDocument: "after" }
+	);
+  const user2 = await userCollection.findOneAndUpdate(
+		{ _id: user2_id },
+		{ $push: {chatLog : {id : insertInfo.insertedId, name : user1_name}} },
+		{ returnDocument: "after" }
+	);
 
-  await chatCollection.updateOne(query, update, options);
+	return { insertedUser: true, insertedId: insertInfo.insertedId };
+}
 
-  return { chat };
-};
+const createMsg = async (
+  id,
+  sender,
+  message
+) => {
+  const msg = {sender: sender, message: message};
+  console.log(id, msg)
+  const chatCollection = await chats();
+  const insertInfo = await chatCollection.findOneAndUpdate(
+		{ _id: new ObjectId(id) },
+		{ $push: {chatLog : msg} },
+		{ returnDocument: "after" }
+	);
+  console.log(insertInfo)
+}
+
+const getChatByID = async (uid) => {
+  const chatCollection = await chats();
+	const chat = await chatCollection.findOne({ _id: new ObjectId(uid) });
+	if (!chat) throw "Chat not found";
+	return chat;
+}
 
 module.exports = {
-  createChat,
+	createChatLog,
+  createMsg,
+  getChatByID
 };

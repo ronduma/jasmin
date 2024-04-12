@@ -4,7 +4,7 @@ const logoutRoutes = require('./logout');
 const profileRoutes = require('./profile');
 const therapistRoutes = require('./therapists');
 const matchingRoutes = require('./matching');
-const chatRoutes = require('./chat');
+const chatsRoutes = require('./chats');
 
 const constructorMethod = (app) => {
   // app.use('/', (req, res) => {
@@ -18,7 +18,7 @@ const constructorMethod = (app) => {
   app.use('/logout', logoutRoutes);
   app.use('/therapists', therapistRoutes);
   app.use('/matching', matchingRoutes);
-  app.use('/chat', chatRoutes);
+  app.use('/chats', chatsRoutes);
 
   app.use('*', (req, res) => {
     console.log('yo')

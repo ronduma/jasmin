@@ -7,9 +7,10 @@ import axios from 'axios';
 
 import Fab from "@mui/material/Fab";
 import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
 
 import ChatIcon from '@mui/icons-material/Chat';
+import CloseIcon from '@mui/icons-material/Close';
+import IconButton from '@mui/material/IconButton';
 
 import Loading from "../loading/Loading";
 import Search from "./Search";
@@ -21,6 +22,7 @@ const Chat = () => {
   const [isLoading, setLoading] = useState(true);
   const [profileData, setProfileData] = useState(null);
   const [isChatting, setIsChatting] = useState(false);
+  const [selectedChat, setSelectedChat] = useState(null);
   const [isOpen, setIsOpen] = useState(false); // isOpen state starts as false
 
   const togglePopup = () => {
@@ -37,49 +39,71 @@ const Chat = () => {
     }
   };
 
-  const handleMessageFromChild = (data) => {
-    setIsChatting(data);
+  const handleDmResponse = (data) => {
+    console.log(data)
+    setIsChatting(data.isChatting);
+    setSelectedChat(data.id);
+  };
+
+  const handleSearchResponse = (data) => {
+    setLoading(true);
+    fetchData();
+    setIsChatting(data.isChatting);
+    setSelectedChat(data.id);
+    setLoading(false);
   };
 
   useEffect(() => {
     if (currentUser && currentUser.uid) {
-      fetchData(); // Trigger fetchData when currentUser.uid is available
+      fetchData(); 
+      setLoading(false);
+    } else{
+      console.log(currentUser)
       setLoading(false);
     }
-  }, [currentUser]); // Re-run effect whenever currentUser changes
+  }, [currentUser]);
 
   useEffect(() => {
-    // This useEffect will run every time profileData changes
-    console.log("Updated profileData:", profileData);
-  }, [profileData]); // Only re-run if profileData changes
-
-  useEffect(() => {
-    // This useEffect will run every time isChatting changes
     console.log("Updated isChatting:", isChatting);
-  }, [isChatting]); // Only re-run if isChatting changes
+  }, [isChatting]); 
 
   return (
     <div >
       {isOpen && (
         <div className="chat-popup">
           {isLoading ? <Loading/>
-          :
+          : 
+            (currentUser == null ? 
+              <div>Not signed in.</div>
+              :
             <div className="chat-container">
               <Grid
                 container
                 justifyContent="left"
               >
-                <Grid item xs={11}>
+                <Grid item xs={10}>
                   <div className="chat-header">
                     Chat 
                   </div>
                 </Grid>
                 <Grid item xs={1}>
-                  <Search id={currentUser.uid}/>
+                  <Search 
+                    id={currentUser.uid}
+                    onMessage={handleSearchResponse}
+                  />
+                </Grid>
+                <Grid item xs={1}>
+                  <IconButton onClick={togglePopup}>
+                    <CloseIcon/>
+                  </IconButton>
                 </Grid>
                 {
                   isChatting ? 
-                  <Dm onMessage={handleMessageFromChild}/>
+                  <Dm 
+                    onMessage={handleDmResponse} 
+                    chat_id={selectedChat}
+                    sender={{id: currentUser.uid, name: profileData.firstName + " " + profileData.lastName}}
+                  />
                   :
                   <div>
                     <Grid item xs={12}>
@@ -87,20 +111,21 @@ const Chat = () => {
                     </Grid>
                     <Grid item xs={12}>
                       {
-                        profileData.chatLog.length == [] ?
+                        profileData.chatLog.length == 0 ?
                         <div>No messages to show.</div>
                         :
                         <div>
-                            {profileData.chatLog.map((dm, index)=> (
-                              <div key={index}>
-                                <DmPreview 
-                                  from={dm.messages[0].from} 
-                                  timestamp={dm.messages[0].timestamp} 
-                                  message={dm.messages[0].message}
-                                  onMessage={handleMessageFromChild} 
-                                />
-                              </div>
-                            ))} 
+                          {profileData.chatLog.map((dm, index)=> (
+                            <div key={index}>
+                              <DmPreview 
+                                from={dm.name}
+                                id={dm.id}
+                                timestamp=""
+                                message=""
+                                onMessage={handleDmResponse}
+                              />
+                            </div>
+                          ))} 
                         </div>
                       }
                     </Grid>
@@ -108,6 +133,7 @@ const Chat = () => {
                 }
               </Grid>
             </div>
+            )
           }
         </div>
       )}
