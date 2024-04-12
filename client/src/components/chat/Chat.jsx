@@ -137,15 +137,19 @@ const Chat = () => {
           }
         </div>
       )}
-      <Fab 
-        color="green" 
-        size="large"  
-        className="chat-button" 
-        aria-label="add"
-        onClick={togglePopup}
-      >
-        <ChatIcon fontSize="large"  />
-      </Fab>
+      {isOpen ? 
+        <div></div> :
+        <Fab 
+          color="green" 
+          size="large"  
+          className="chat-button" 
+          aria-label="add"
+          onClick={togglePopup}
+        >
+          <ChatIcon fontSize="large"  />
+        </Fab>
+      }
+      
     </div>
   );
 };

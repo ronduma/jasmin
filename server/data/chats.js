@@ -1,5 +1,6 @@
 const { MongoClient, ObjectId } = require('mongodb');
 const mongoCollections = require("../config/mongoCollections");
+const dayjs = require('dayjs');
 const chats = mongoCollections.chats;
 const users = mongoCollections.users;
 
@@ -46,7 +47,7 @@ const createMsg = async (
   sender,
   message
 ) => {
-  const msg = {sender: sender, message: message};
+  const msg = {sender: sender, message: message, timestamp: dayjs()};
   console.log(id, msg)
   const chatCollection = await chats();
   const insertInfo = await chatCollection.findOneAndUpdate(
