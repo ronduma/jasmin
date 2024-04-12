@@ -27,7 +27,7 @@ import {AuthProvider} from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 import Privacy from './components/Privacy';
 import Chat from './components/chat/Chat';
-
+import Video from './components/video/Video';
 // import Feedback from './components/Feedback';
 
 function App() {
@@ -64,6 +64,7 @@ function App() {
             <Route path="/matching/:id" element={<PsychologistView />} />
             <Route path='/speciallist' element={<SpecialList />} />
             <Route path='/privacy_policy' element={<Privacy />} />
+            <Route path='/video_chat' element={<Video />} />
             <Route path="*" element={<NotFound/>} />
           </Routes>
           <Chat />

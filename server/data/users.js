@@ -231,9 +231,100 @@ const getAllPatients = async () => {
 };
 
 const getFilteredTherapists = async(filters) => {
-	console.log('here');
-	console.log(filters);
+	let selectedPrice = '';
+	let selectedGender = '';
+	let selectedOrder= '';
+	const userCollection = await users();
+	let therapistCollection;
+	// console.log(filters);
+	for(let key in filters) {
+		if(filters[key] == ""){
+			delete filters[key];
+		}
+		else{
+			if(key ==='price'){
+				selectedPrice = filters[key];
+				delete filters[key];
+			}
+			if(key ==='gender'){
+				selectedGender= filters[key];
+				delete filters[key];
+			}
+			if(key ==='sort'){
+				selectedOrder = filters[key];
+				delete filters[key];
+			}
+		}
+	}
+	const valuesToCheck = Object.values(filters);
+	// console.log(valuesToCheck.length);
+	if(valuesToCheck.length == 0 && filters.constructor === Object && selectedPrice == '' && selectedGender == ''){
+		// console.log('here1');
+		therapistCollection = await getAllTherapists();
+	}
+	if(valuesToCheck.length != 0){
+		if(selectedGender == '' && selectedPrice != '') {
+			therapistCollection = await userCollection
+			.find({isTherapist: true, specialty : {$in: valuesToCheck}, price : selectedPrice})
+			.toArray();
+
+		}
+		else if(selectedGender != '' && selectedPrice == ''){
+			// console.log(selectedGender);
+			therapistCollection = await userCollection
+			.find({isTherapist: true, specialty : {$in: valuesToCheck}, gender: selectedGender})
+			.toArray();
+			
+		}
+		else if(selectedGender != '' && selectedPrice != ''){
+			// console.log('here4');
+			therapistCollection = await userCollection
+			.find({isTherapist: true, specialty : {$in: valuesToCheck}, gender: selectedGender, price: selectedPrice})
+			.toArray();
+			
+		}
+		else {
+			// console.log('here5');
+			therapistCollection = await userCollection
+			.find({isTherapist: true, specialty : {$in: valuesToCheck}})
+			.toArray();
+			
+		}
+	}
+
+	else{
+		if(selectedGender == '' && selectedPrice != ''){
+			// console.log('here6');
+			therapistCollection = await userCollection
+			.find({isTherapist: true, price : selectedPrice})
+			.toArray();
+			
+		}
+		
+		else if(selectedGender != '' && selectedPrice == ''){
+			// console.log('here7');
+			therapistCollection = await userCollection
+			.find({isTherapist: true, gender : selectedGender})
+			.toArray();
+			
+		}
+		else if(selectedGender != '' && selectedPrice != ''){
+			// console.log('here8');
+			therapistCollection = await userCollection
+			.find({isTherapist: true, gender : selectedGender, price: selectedPrice})
+			.toArray();
+		}
+	}
 	
+	if(selectedOrder == "first_name_order"){
+		// console.log('here9');
+		return therapistCollection.sort((a, b) => (a.firstName > b.firstName) ? 1 : ((b.firstName > a.firstName) ? -1: 0))
+	}
+	if(selectedOrder == "last_name_order")  {
+		// console.log('here10');
+		return therapistCollection.sort((a, b) => (a.lastName > b.lastName) ? 1 : ((b.lastName > a.lastName) ? -1: 0))
+	}
+	else return therapistCollection
 }
 
 // Matching

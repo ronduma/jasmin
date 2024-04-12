@@ -121,5 +121,19 @@ router.put("/specialty", async (req, res) => {
 		return res.status(400).json(e);
 	}
 });
-
+router.put("/price", async (req, res) => {
+	try{
+		let uid = req.body.uid;
+		console.log('bruh');
+		console.log(req.body.price);
+		const priceReturn = await users.updateProfile(uid,  {
+			price: req.body.price
+		})
+		return res.status(200).json(priceReturn);
+	}
+	catch(e){
+		console.log(e);
+		return res.status(400).json(e);
+	}
+})
 module.exports = router;

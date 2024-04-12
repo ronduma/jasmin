@@ -160,6 +160,7 @@ import "../matching.css";
           className ="custom-select"
         >
           <option value="">No sorting</option>
+          <option value="Alphabetical">Alphabetical Order</option>
         </select>
       </div>
       {/* Render psychologist profiles filtered */}

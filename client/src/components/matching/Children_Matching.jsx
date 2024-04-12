@@ -27,8 +27,7 @@ function Children_Matching() {
   useEffect(() => {
     const fetchTherapists = async () => {
       try{
-        const response = await axios.get(`http://localhost:5173/therapists/?children_therapy_topic=${selectedTopic}&therapeutic_approach=${selectedApproach}&gender=${selectedGender}&price=${selectedPrice}&osort=${selectedSort}`);
-        
+        const response = await axios.get(`http://localhost:5173/therapists/?children_therapy_topic=${selectedTopic}&therapeutic_approach=${selectedApproach}&gender=${selectedGender}&price=${selectedPrice}&sort=${selectedSort}`);
         setTherapists(response.data);
         setLoading(false);
 
@@ -161,6 +160,8 @@ function Children_Matching() {
           className ="custom-select"
         >
           <option value="">No sorting</option>
+          <option value="first_name_order">Order By First Name</option>
+          <option value="last_name_order">Order By Last Name</option>
         </select>
       </div>
       {/* Render psychologist profiles filtered */}
