@@ -61,6 +61,16 @@ const Chat = () => {
       console.log(currentUser)
       setLoading(false);
     }
+  }, []);
+
+  useEffect(() => {
+    if (currentUser && currentUser.uid) {
+      fetchData(); 
+      setLoading(false);
+    } else{
+      console.log(currentUser)
+      setLoading(false);
+    }
   }, [currentUser]);
 
   useEffect(() => {

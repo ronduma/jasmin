@@ -47,7 +47,11 @@ const createMsg = async (
   sender,
   message
 ) => {
-  const msg = {sender: sender, message: message, timestamp: dayjs()};
+  const msg = {
+    sender: sender, 
+    message: message, 
+    timestamp: dayjs().format('MM-DD-YYYY HH:mm:ss')
+  };
   console.log(id, msg)
   const chatCollection = await chats();
   const insertInfo = await chatCollection.findOneAndUpdate(

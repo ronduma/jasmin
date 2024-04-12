@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import "./dm.css";
 
 import axios from 'axios';
+import dayjs from 'dayjs';
 
 import io from 'socket.io-client'
 const socket = io.connect("http://localhost:5173")
@@ -27,7 +28,6 @@ function Dm(props) {
   
   const getChat = async () => {
     try {
-      console.log("getting chat log")
       const response = await axios.get(`http://localhost:5173/chats/${props.chat_id}`);
       setHistory(response.data);
     } catch(e){
@@ -77,7 +77,11 @@ function Dm(props) {
       <div className="history">
         {history.chatLog.map((message, index)=> (
           <div key={index}>
-            <div>{message.message}</div>
+            <div style={{margin:"0 0 1rem 0"}}>
+              <div>{message.timestamp}</div>
+              <span>{message.sender.name}: </span>
+              {message.message}
+            </div>
           </div>
         ))} 
         {/* {messageReceived} */}
