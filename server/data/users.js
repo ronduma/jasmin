@@ -204,13 +204,12 @@ const getAllTherapists = async () => {
 };
 
 const getFilteredTherapists = async(filters) => {
-
 	let selectedPrice = '';
 	let selectedGender = '';
 	let selectedOrder= '';
 	const userCollection = await users();
 	let therapistCollection;
-	console.log(filters);
+	// console.log(filters);
 	for(let key in filters) {
 		if(filters[key] == ""){
 			delete filters[key];
@@ -231,35 +230,34 @@ const getFilteredTherapists = async(filters) => {
 		}
 	}
 	const valuesToCheck = Object.values(filters);
-	console.log(valuesToCheck.length);
+	// console.log(valuesToCheck.length);
 	if(valuesToCheck.length == 0 && filters.constructor === Object && selectedPrice == '' && selectedGender == ''){
-		console.log('here1');
+		// console.log('here1');
 		therapistCollection = await getAllTherapists();
 	}
 	if(valuesToCheck.length != 0){
-		console.log('here2');
 		if(selectedGender == '' && selectedPrice != '') {
 			therapistCollection = await userCollection
 			.find({isTherapist: true, specialty : {$in: valuesToCheck}, price : selectedPrice})
 			.toArray();
 
 		}
-		if(selectedGender != '' && selectedPrice == ''){
-			console.log('here3');
+		else if(selectedGender != '' && selectedPrice == ''){
+			// console.log(selectedGender);
 			therapistCollection = await userCollection
 			.find({isTherapist: true, specialty : {$in: valuesToCheck}, gender: selectedGender})
 			.toArray();
 			
 		}
-		if(selectedGender != '' && selectedPrice != ''){
-			console.log('here4');
+		else if(selectedGender != '' && selectedPrice != ''){
+			// console.log('here4');
 			therapistCollection = await userCollection
 			.find({isTherapist: true, specialty : {$in: valuesToCheck}, gender: selectedGender, price: selectedPrice})
 			.toArray();
 			
 		}
 		else {
-			console.log('here5');
+			// console.log('here5');
 			therapistCollection = await userCollection
 			.find({isTherapist: true, specialty : {$in: valuesToCheck}})
 			.toArray();
@@ -269,22 +267,22 @@ const getFilteredTherapists = async(filters) => {
 
 	else{
 		if(selectedGender == '' && selectedPrice != ''){
-			console.log('here6');
+			// console.log('here6');
 			therapistCollection = await userCollection
 			.find({isTherapist: true, price : selectedPrice})
 			.toArray();
 			
 		}
 		
-		if(selectedGender != '' && selectedPrice == ''){
-			console.log('here7');
+		else if(selectedGender != '' && selectedPrice == ''){
+			// console.log('here7');
 			therapistCollection = await userCollection
 			.find({isTherapist: true, gender : selectedGender})
 			.toArray();
 			
 		}
-		if(selectedGender != '' && selectedPrice != ''){
-			console.log('here8');
+		else if(selectedGender != '' && selectedPrice != ''){
+			// console.log('here8');
 			therapistCollection = await userCollection
 			.find({isTherapist: true, gender : selectedGender, price: selectedPrice})
 			.toArray();
@@ -292,11 +290,11 @@ const getFilteredTherapists = async(filters) => {
 	}
 	
 	if(selectedOrder == "first_name_order"){
-		console.log('here9');
+		// console.log('here9');
 		return therapistCollection.sort((a, b) => (a.firstName > b.firstName) ? 1 : ((b.firstName > a.firstName) ? -1: 0))
 	}
 	if(selectedOrder == "last_name_order")  {
-		console.log('here10');
+		// console.log('here10');
 		return therapistCollection.sort((a, b) => (a.lastName > b.lastName) ? 1 : ((b.lastName > a.lastName) ? -1: 0))
 	}
 	else return therapistCollection
