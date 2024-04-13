@@ -51,7 +51,7 @@ function EditProfile() {
         setLoading(false);
         console.log(response.data)
       } catch (e) {
-        console.log("yo")
+        // console.log("yo")
         navigate('/not-found')
       }
     };
