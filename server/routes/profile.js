@@ -135,5 +135,37 @@ router.put("/price", async (req, res) => {
 		console.log(e);
 		return res.status(400).json(e);
 	}
-})
+});
+
+router.put("/:id/upload-pdf", upload.single("file"), async (req, res) => {
+	const id = req.params.id;
+	const file = req.file;
+	if (!file) {
+		return res.status(400).json({ error: "No pdf" });
+	}
+	if (!file.originalname.match(/\.(pdf)$/)) {
+		return res
+			.status(400)
+			.json({ error: "Please upload a valid image file (jpg or png)" });
+	}
+	console.log("saving file to /uploads");
+	await users.savePdfToDB(id, file.path);
+	return res.status(200).json("");
+});
+
+router.get("/download-pdf/:id/:index", async (req, res) => {
+	const id = req.params.id;
+	const index = req.params.index;
+	const pdf = await users.getPdf(id, index);
+	res.download(pdf);
+	await users.emptyUploadsFolder();
+});
+
+router.delete("/delete-pdf/:id/:index", async (req, res) => {
+	const id = req.params.id;
+	const index = req.params.index;
+	await users.deletePdf(id, index);
+	return res.status(200).json("");
+});
+
 module.exports = router;
