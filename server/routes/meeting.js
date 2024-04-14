@@ -5,10 +5,18 @@ const meetings = require('../data/meetings')
 const path = require('path');
 
 router.get('/therapist/:id', async (req, res) => {
-    const { currentUserID, therapistID, time } = req.body;
-    const therapist = await meetings.getMeetingsByTimeTherapist(id)
-    console.log(req.session.user)
-    return res.status(200).json(req.session.user);
+    const therapistId = req.params.id;
+    try {
+      const therapist = await meetings.getMeetingsByTimeTherapist(therapistId)
+      console.log("GET: therapist id")
+      console.log(therapist)
+      return res.status(200).json(therapist);
+      
+    } catch (error) {
+      return res.status(404).json(error);
+      
+    }
+    
 });
 
 

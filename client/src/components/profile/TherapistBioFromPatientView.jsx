@@ -33,7 +33,11 @@ function TherapistBioFromPatientView({bio, specialty}) {
   const {currentUser} = useContext(AuthContext);
   const [editAbout, setEditAbout] = useState(false);
   const [currbio, setBio] = useState(bio);
+  const [profileData, setProfileData] = useState(null);
+  const [Appointments, setAppointments]= useState(null)
   const [newBio, setNewBio] = useState(bio);
+  const [isLoading, setLoading] = useState(true);
+  
   const { id } = useParams();
   if (bio = "") setBio(null);
   const [selectedTopics, setSelectedTopics] = useState(specialty);
@@ -42,10 +46,16 @@ function TherapistBioFromPatientView({bio, specialty}) {
     const fetchData = async () => {
       try {
         const response = await axios.get(`http://localhost:5173/profile/${id}`);
-        setprofileData(response.data);
+        setProfileData(response.data);
+
+        const responseMeeting = await axios.get(`http://localhost:5173/meeting/therapist/${id}`)
+        setAppointments(responseMeeting.data);
+        console.log("Appointments")
+        console.log(Appointments)
         setLoading(false);
       } catch (e) {
         console.log("yo")
+        console.log(e)
       }
     };
     fetchData();
@@ -80,6 +90,11 @@ function TherapistBioFromPatientView({bio, specialty}) {
         
        
         console.log('Success Match Response:', response.data);
+
+        const responseMeeting = await axios.get(`http://localhost:5173/meeting/therapist/${id}`)
+        console.log(responseMeeting)
+        setAppointments(responseMeeting.data);
+        
       } catch (error) {
         // Handle error
         console.error('Error:', error);
@@ -164,7 +179,18 @@ function TherapistBioFromPatientView({bio, specialty}) {
         <Grid item xs={12}>
           <Paper style={{minHeight: '18vh', padding: '2vh'}}>
           <div className='right-section-header'> Upcoming Appointments </div>
-
+          {Appointments === null ? (
+              <Typography> No upcoming appointments.</Typography>
+            ) : (
+              <div>
+                {Appointments.map((appointment, index) => (
+                  <div key={index}>
+                    <Typography variant="body1">{appointment.time} with {appointment.patientName}</Typography>
+                    {/* Add additional details about the appointment if needed */}
+                  </div>
+                ))}
+                </div>
+            )}
           </Paper>
         </Grid>
 

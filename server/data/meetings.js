@@ -24,9 +24,12 @@ const getMeetingByTimeTherapist = async (userID1, time) => {
 
 const getMeetingsByTimeTherapist = async (userID1) => {
   const meetingCollection = await meetings();
-  const meetings = await meetingCollection.find({ therapist: userID1}).toArray();
-  if (!meetings || meetings.length === 0) throw new Error('Error: There are no meetings from the given therapist ' + userID1);
-  return meetings;
+  const meetingList = await meetingCollection.find({ therapist: userID1}).toArray();
+  if (!meetingList || meetingList.length === 0){
+    console.log('Error: There are no meetings from the given therapist ' + userID1);
+    return [];
+  }
+  return meetingList;
 }
 
 
@@ -103,9 +106,13 @@ const createMeeting = async (userID1, userID2, time) => {
   }
 
   //check if time is already chosen for patient or therapist
-  await ifMeetingExistByTimePatient(userID1,time);
-  await ifMeetingExistByTimeTherapist(userID2,time);
-  
+  await ifMeetingExistByTimePatient(tempPatientID,time);
+  await ifMeetingExistByTimeTherapist(tempTherapistID,time);
+
+  let patientObject = await user.getUserById(tempPatientID);
+  let therapistObject = await user.getUserById(tempTherapistID);
+  let patientName = patientObject.username;
+  let therapistName = therapistObject.username;
   
 
 
@@ -113,6 +120,8 @@ const createMeeting = async (userID1, userID2, time) => {
     _id: new ObjectId(),
     patient: tempPatientID,
     therapist: tempTherapistID,
+    patientName: patientName,
+    therapistName: therapistName,
     time: time,
 };
 
@@ -126,5 +135,6 @@ if (!insertMeeting.acknowledged || !insertMeeting.insertedId) {
 
 module.exports = {
   createMeeting,
-  isMatched
+  isMatched,
+  getMeetingsByTimeTherapist
 };
