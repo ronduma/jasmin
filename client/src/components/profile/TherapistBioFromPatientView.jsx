@@ -72,13 +72,14 @@ function TherapistBioFromPatientView({bio, specialty}) {
         let updatedtime = format(selectedDate.$d, index)
         console.log(updatedtime)
 
-    //     const response = await axios.post(`http://localhost:5173/matching`, {
-    //     currentUserID: currentUser.uid,
-    //     therapistID: id
-    //   });
+        const response = await axios.post(`http://localhost:5173/meeting`, {
+        currentUserID: currentUser.uid,
+        therapistID: id,
+        time: updatedtime
+      });
         
-    //    
-        // console.log('Success Match Response:', response.data);
+       
+        console.log('Success Match Response:', response.data);
       } catch (error) {
         // Handle error
         console.error('Error:', error);
@@ -158,6 +159,12 @@ function TherapistBioFromPatientView({bio, specialty}) {
         ))}
       </Grid>
             </Grid>
+          </Paper>
+        </Grid>
+        <Grid item xs={12}>
+          <Paper style={{minHeight: '18vh', padding: '2vh'}}>
+          <div className='right-section-header'> Upcoming Appointments </div>
+
           </Paper>
         </Grid>
 

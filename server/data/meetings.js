@@ -22,6 +22,14 @@ const getMeetingByTimeTherapist = async (userID1, time) => {
   return meeting;
 }
 
+const getMeetingsByTimeTherapist = async (userID1) => {
+  const meetingCollection = await meetings();
+  const meetings = await meetingCollection.find({ therapist: userID1}).toArray();
+  if (!meetings || meetings.length === 0) throw new Error('Error: There are no meetings from the given therapist ' + userID1);
+  return meetings;
+}
+
+
 const ifMeetingExistByTimePatient = async (userID1, time) => {
 
   const meetingCollection = await meetings();
@@ -39,24 +47,59 @@ const ifMeetingExistByTimeTherapist = async (userID1, time) => {
 
 
 
-const isMatched = async (patient, therapist) => {
+const isMatched = async (userID1, userID2) => {
   // Check if user1 is a therapist and user2 is in their patients array
   const userCollection = await users();
-  let user1 = await user.getUserById(patient);
-  let user2 = await user.getUserById(therapist);
+  
+  let therapist = await user.checkUserifTherapist(userID1);
+  let tempPatientID;
+  let tempTherapistID;
+  if (therapist == true){
+    tempTherapistID=userID1;
+    tempPatientID=userID2;
+    
+  }
+  else {
+    tempTherapistID=userID2;
+    tempPatientID=userID1;
 
-  if ((!user1.isTherapist && user1.therapist === user1._id) && (user2.isTherapist && user2.patients.includes(user2._id))) {
+
+  }
+  let user1 = await user.getUserById(tempPatientID);
+  let user2 = await user.getUserById(tempTherapistID);
+
+  //if patient is not therapist & patient therapist = therapist && user2.istherapist && user2.includes the patient
+  if ((!user1.isTherapist && user1.therapist === user2._id) && (user2.isTherapist && user2.patients.includes(user1._id))) {
     return true;
   }
   return false;
 };
 
 
-const createMeeting = async (userID1, userID2, date, time) => {
+const createMeeting = async (userID1, userID2, time) => {
   const meetingCollection = await meetings();
+
+  let account = await user.getUserById(userID1);
+	if (!account) throw "User not found";
   
-  if (!(await isMatched(userID1, userID2))){
+  
+  if ((await isMatched(userID1, userID2) == false)){
     throw 'Patient and Therapist not Matched. Can not create meeting';
+  }
+
+  let therapist = await user.checkUserifTherapist(userID1);
+  let tempPatientID;
+  let tempTherapistID;
+  if (therapist == true){
+    tempTherapistID=userID1;
+    tempPatientID=userID2;
+    
+  }
+  else {
+    tempTherapistID=userID2;
+    tempPatientID=userID1;
+
+
   }
 
   //check if time is already chosen for patient or therapist
@@ -68,8 +111,8 @@ const createMeeting = async (userID1, userID2, date, time) => {
 
   let newMeeting = {
     _id: new ObjectId(),
-    patient: userID1,
-    therapist: userID2,
+    patient: tempPatientID,
+    therapist: tempTherapistID,
     time: time,
 };
 

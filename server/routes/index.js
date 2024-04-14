@@ -4,6 +4,7 @@ const logoutRoutes = require('./logout');
 const profileRoutes = require('./profile');
 const therapistRoutes = require('./therapists');
 const matchingRoutes = require('./matching')
+const meetingRoutes = require('./meeting')
 const constructorMethod = (app) => {
   // app.use('/', (req, res) => {
   //   res.status(200).json("Hello World!")
@@ -16,6 +17,7 @@ const constructorMethod = (app) => {
   app.use('/logout', logoutRoutes);
   app.use('/therapists', therapistRoutes);
   app.use('/matching', matchingRoutes);
+  app.use('/meeting', meetingRoutes);
 
   app.use('*', (req, res) => {
     console.log('yo')

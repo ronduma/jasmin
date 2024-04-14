@@ -225,6 +225,17 @@ const getFilteredTherapists = async(filters) => {
 
 // Matching
 
+const checkUserifTherapist = async (userID) => {
+	const userCollection = await users();
+	const currentUser = await getUserById(userID);
+	if (currentUser.isTherapist == true){
+		console.log("User is Therapist")
+		return true;
+	}
+	console.log("User is NOT Therapist")
+	return false;
+};
+
 const match = async (currentUserID, TherapistID) => {
   const userCollection = await users();
   const currentUser = await getUserById(currentUserID);
@@ -240,6 +251,7 @@ const match = async (currentUserID, TherapistID) => {
         { _id: TherapistID },
         { $push: { patients: currentUserID  } }
       );
+
       console.log("Patient should be added to therapist" + Therapist.patients)
 
         //Update current user to add therapist
@@ -295,4 +307,5 @@ module.exports = {
 	getFilteredTherapists,
 	gettingStarted,
   match,
+  checkUserifTherapist,
 };
