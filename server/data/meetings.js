@@ -117,7 +117,7 @@ const createMeeting = async (userID1, userID2, time) => {
 
 
   let newMeeting = {
-    _id: new ObjectId(),
+    _id: new ObjectId().toString(),
     patient: tempPatientID,
     therapist: tempTherapistID,
     patientName: patientName,

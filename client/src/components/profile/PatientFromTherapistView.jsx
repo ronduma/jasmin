@@ -29,14 +29,13 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 
 
-function TherapistBioFromPatientView({bio, specialty}) {
+function PatientFromTherapistView({bio, specialty}) {
   const {currentUser} = useContext(AuthContext);
   const [editAbout, setEditAbout] = useState(false);
   const [currbio, setBio] = useState(bio);
   const [profileData, setProfileData] = useState(null);
   const [Appointments, setAppointments]= useState(null)
   const [newBio, setNewBio] = useState(bio);
-
 
   const [availableTimes, setAvailableTimes] = useState([...Array(9).keys()]);
   const [isLoading, setLoading] = useState(true);
@@ -45,20 +44,6 @@ function TherapistBioFromPatientView({bio, specialty}) {
   if (bio = "") setBio(null);
   const [selectedTopics, setSelectedTopics] = useState(specialty);
   let [selectedDate, setSelectedDate] = useState(dayjs());
-
-  const format = (date, index) => {
-    let updatedtime;
-    let time = index + 9;
-    let afternoon=false;
-    if (time > 12){
-        time -= 12;
-        afternoon=true;
-    }
-    updatedtime = time.toString();
-    return dayjs(date).format('MM/DD/YYYY') + ' '+ updatedtime + ':00' + (afternoon ? ' PM' : ' AM');
-  }
-
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -66,25 +51,9 @@ function TherapistBioFromPatientView({bio, specialty}) {
         setProfileData(response.data);
 
         const responseMeeting = await axios.get(`http://localhost:5173/meeting/therapist/${id}`)
-        const fetchedAppointments = responseMeeting.data;
-        // Set appointments
-        setAppointments(fetchedAppointments);
-        
-
-        // set Calender 
-        console.log("bookedTimes")
-        const bookedTimes = fetchedAppointments.map(appointment => {
-          // Extract hour from appointment time and return as integer
-          console.log(appointment)
-          return parseInt(appointment.time.split(' ')[1].split(':')[0]);
-      });
-      // Filter out the times that are not booked
-      const availableTimes = [...Array(9).keys()].filter(index => !bookedTimes.includes(index + 9));
-      setAvailableTimes(availableTimes);
-
-        console.log("avaialbletimes")
-        console.log(availableTimes)
-
+        setAppointments(responseMeeting.data);
+        console.log("Appointments")
+        console.log(Appointments)
         setLoading(false);
       } catch (e) {
         console.log("yo")
@@ -96,21 +65,36 @@ function TherapistBioFromPatientView({bio, specialty}) {
   
 
 //   insert Matching Button
-
+  const format = (date, index) => {
+    let updatedtime;
+    let time = index + 9;
+    let afternoon=false;
+    if (time > 12){
+        time -= 12;
+        afternoon=true;
+    }
+    updatedtime = time.toString();
+    return dayjs(date).format('MM/DD/YYYY') + ' '+ updatedtime + ':00' + (afternoon ? ' PM' : ' AM');
+  }
   const handleTimeSelection = async (index) => {
     try {
 
         let updatedtime = format(selectedDate.$d, index)
+        console.log(updatedtime)
 
         const response = await axios.post(`http://localhost:5173/meeting`, {
         currentUserID: currentUser.uid,
         therapistID: id,
         time: updatedtime
       });
+        
+       
         console.log('Success Match Response:', response.data);
 
         const responseMeeting = await axios.get(`http://localhost:5173/meeting/therapist/${id}`)
+        console.log(responseMeeting)
         setAppointments(responseMeeting.data);
+        setAvailableTimes(availableTimes.filter((time) => time !== index));
         
       } catch (error) {
         // Handle error
@@ -177,11 +161,7 @@ function TherapistBioFromPatientView({bio, specialty}) {
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DateCalendar value={selectedDate} onChange={(newValue) => setSelectedDate(newValue)} 
-                  minDate={dayjs().startOf('month')}
-                  maxDate={dayjs().add(1, 'month').endOf('month')}
-                  />
-                  
+                  <DateCalendar defaultValue={dayjs()} onChange={(newValue) => setSelectedDate(newValue)} />
                 </LocalizationProvider>
               </Grid>
               <Grid item xs={6} style={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
@@ -225,4 +205,4 @@ function TherapistBioFromPatientView({bio, specialty}) {
   );
 }
 
-export default TherapistBioFromPatientView;
+export default PatientFromTherapistView;
