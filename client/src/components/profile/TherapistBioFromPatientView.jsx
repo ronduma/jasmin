@@ -64,7 +64,7 @@ function TherapistBioFromPatientView({bio, specialty}) {
       try {
         const response = await axios.get(`http://localhost:5173/profile/${id}`);
         setProfileData(response.data);
-
+        
         const responseMeeting = await axios.get(`http://localhost:5173/meeting/therapist/${id}`)
         const fetchedAppointments = responseMeeting.data;
         // Set appointments
