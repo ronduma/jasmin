@@ -9,11 +9,14 @@ import axios from 'axios';
 import {Typography}  from '@mui/material';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
-
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
 import CheckCircleIcon from '@mui/icons-material/CheckCircleOutlined';
 import CancelRoundedIcon from '@mui/icons-material/CancelOutlined';
 import EditIcon from '@mui/icons-material/Edit';
 import FormGroup from '@mui/material/FormGroup';
+import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
@@ -26,7 +29,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 
-function TherapistBio({bio, specialty}) {
+function TherapistBio({bio, specialty, price}) {
   const {currentUser} = useContext(AuthContext);
   const [editAbout, setEditAbout] = useState(false);
   const [currbio, setBio] = useState(bio);
@@ -34,7 +37,9 @@ function TherapistBio({bio, specialty}) {
   if (bio = "") setBio(null);
   const [selectedTopics, setSelectedTopics] = useState(specialty);
   let [selectedDate, setSelectedDate] = useState(dayjs());
-
+  const[selectedPrice, setSelectPrice] = useState(price);
+  const[newPrice, setNewPrice] = useState(price);
+  if (price = "") setSelectPrice("");
   const [subtopics, setSubTopics] = useState([
   ["Relationship with Yourself", "Relationship with Others", "Personal and Professional development", "New Living Conditions"],
   ["Difficulty in communication, crisis", "Intimate Relations", "Breakup", "Emotional abuse, abusive behavior", 
@@ -71,7 +76,20 @@ function TherapistBio({bio, specialty}) {
     setNewBio(document.getElementById('textbox-bio').value);
     setEditAbout(false);
   }
-
+  const handlePriceChange = async () => {
+    axios.put('http://localhost:5173/profile/price', {
+      uid:currentUser.uid,
+      price: selectedPrice
+    })
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+    setNewPrice(selectedPrice);
+    setEditAbout(false);
+  }
   const editTopics = () => {
     return (
       subtopics.map((topicList, index) => (
@@ -129,8 +147,6 @@ function TherapistBio({bio, specialty}) {
     setEditAbout(false);
   }
 
-
-
   return (
     <div>
       <Grid 
@@ -167,14 +183,32 @@ function TherapistBio({bio, specialty}) {
                 maxLength:285
               }}
             />
+            <div className='right-section-header'>Price</div>
+            <FormControl fullWidth>
+              <Select
+                onChange = {event => setSelectPrice(event.target.value)}
+                id ="therapist-price"
+                value ={selectedPrice}
+                disabled={!editAbout}
+                InputLabelProps={{
+                  shrink: selectedPrice || editAbout ? true : false,
+                }}
+              >
+                <MenuItem value=""><em>Free</em></MenuItem>
+                <MenuItem value="Low">$ - Low</MenuItem>
+                <MenuItem value="Medium">$$ - Medium</MenuItem>
+                <MenuItem value="High">$$$ - High</MenuItem>
+              </Select>
+            </FormControl>
+
             {editAbout && (
               <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <IconButton>
-                  <CheckCircleIcon onClick={() => { putBio(); handleCheckboxChange();}}>
+                  <CheckCircleIcon onClick={() => { putBio(); handleCheckboxChange(); handlePriceChange();}}>
                   </CheckCircleIcon>
                 </IconButton>
                 <IconButton>
-                  <CancelRoundedIcon onClick={ ()=> {setEditAbout(false); setBio(newBio)}}></CancelRoundedIcon>
+                  <CancelRoundedIcon onClick={ ()=> {setEditAbout(false); setBio(newBio); setSelectPrice(newPrice);}}></CancelRoundedIcon>
                 </IconButton>
               </div>
             )}

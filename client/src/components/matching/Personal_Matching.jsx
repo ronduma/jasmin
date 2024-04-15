@@ -31,11 +31,7 @@ function Personal_Matching() {
     const fetchTherapists = async () => {
       try{
         console.log(typeof selectedYourself);
-        const response = await axios.get(`http://localhost:5173/therapists/?relationship_with_yourself=${selectedYourself}&relationship_with_others=${selectedOthers}&personal_and_professional_development=${selectedDevelopment}&new_living_conditions=${selectedConditions}&therapeutic_approaches=${selectedApproach}&price=${selectedPrice}`);
-
-        // const response = await axios.get(`http://localhost:5173/therapists`);
-        // const response = await axios.get(`http://localhost:5173/therapists/?relationship_with_yourself=${selectedYourself}&relationship_with_others=${selectedOthers}&personal_and_professional_development=${selectedDevelopment}&new_living_conditions=${selectedConditions}&therapeutic_approaches=${selectedApproach}&price=${selectedPrice}&sort=${selectedSort}`);
-
+        const response = await axios.get(`http://localhost:5173/therapists/?relationship_with_yourself=${selectedYourself}&relationship_with_others=${selectedOthers}&personal_and_professional_development=${selectedDevelopment}&new_living_conditions=${selectedConditions}&therapeutic_approaches=${selectedApproach}&gender=${selectedGender}&price=${selectedPrice}&sort=${selectedSort}`);
         setTherapists(response.data);
         setLoading(false);
       }catch(error){
@@ -84,6 +80,9 @@ function Personal_Matching() {
               </Typography>
               <Typography>
                 {therapist.gender}
+              </Typography>
+              <Typography>
+                {therapist.price}
               </Typography>
               <Typography>
                 {therapist.specialty}
@@ -212,6 +211,8 @@ function Personal_Matching() {
           className ="custom-select"
         >
           <option value="">No sorting</option>
+          <option value="first_name_order">Order By First Name</option>
+          <option value="last_name_order">Order By Last Name</option>
         </select>
       </div>
       {/* Render psychologist profiles filtered */}
