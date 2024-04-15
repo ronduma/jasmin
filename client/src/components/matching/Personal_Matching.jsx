@@ -42,10 +42,22 @@ function Personal_Matching() {
   });
   
   const buildCard = (therapist) => {
+    const personalSpecialty = ["Relationship with Yourself", "Relationship with Others", "Personal and Professional development", "New Living Conditions"];
+    
+    function checkSpecialty(arr1, arr2){
+      const count = arr1.filter(value => arr2.includes(value)).length;
+      return count >= 2
+    }
+
+    function getSpecialty(arr1, arr2){
+      return arr1.filter(value => arr2.includes(value));
+    }
+
     return(
       <div className = "shadow" >
         <Link to={`/matching/${therapist._id}`} >
           <Card variant ='outlined'
+          style ={{backgroundColor : "#01382E"}}
             sx = {{
                   flex: "1 0 auto",
                   width: 300,
@@ -69,23 +81,32 @@ function Personal_Matching() {
 
             
             <CardContent>
-              <Typography>
+              <Typography className="therapist-name" fontSize={36}>
                 {therapist.firstName + " "} {therapist.lastName}
               </Typography>
-              <Typography>
+              <Typography className='detail-container'>
+                <div className='therapist-detail'>
                 {therapist.location}
-              </Typography>
-              <Typography>
-                {therapist.age}
-              </Typography>
-              <Typography>
+                </div>
+                <div className='therapist-detail'>
+                {"Age: " + therapist.age}
+                </div>
+                <div className='therapist-detail'>
                 {therapist.gender}
-              </Typography>
-              <Typography>
-                {therapist.price}
-              </Typography>
-              <Typography>
-                {therapist.specialty}
+                </div>
+                {therapist.price ? 
+                <div className='therapist-detail'>
+                  {therapist.price}
+                </div> :
+                <div className='therapist-detail'>
+                  Free
+                </div>
+                }
+                {checkSpecialty(therapist.specialty, personalSpecialty) ? 
+                <div className = 'therapist-detail'>Personal Therapist</div> :
+                getSpecialty(therapist.specialty, personalSpecialty).map((detail) => (
+                  <div className = 'therapist-detail'>{detail}</div>
+                ))}
               </Typography>
             </CardContent>
           </Card>
