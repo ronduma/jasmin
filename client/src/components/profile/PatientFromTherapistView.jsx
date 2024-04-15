@@ -29,7 +29,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 
 
-function TherapistBioFromPatientView({bio, specialty}) {
+function PatientFromTherapistView({bio, specialty}) {
   const {currentUser} = useContext(AuthContext);
   const [editAbout, setEditAbout] = useState(false);
   const [currbio, setBio] = useState(bio);
@@ -37,55 +37,23 @@ function TherapistBioFromPatientView({bio, specialty}) {
   const [Appointments, setAppointments]= useState(null)
   const [newBio, setNewBio] = useState(bio);
 
-
-  const [availableTimes, setAvailableTimes] = useState({});
+  const [availableTimes, setAvailableTimes] = useState([...Array(9).keys()]);
   const [isLoading, setLoading] = useState(true);
   
   const { id } = useParams();
   if (bio = "") setBio(null);
   const [selectedTopics, setSelectedTopics] = useState(specialty);
   let [selectedDate, setSelectedDate] = useState(dayjs());
-
-  const format = (date, index) => {
-    let updatedtime;
-    let time = index + 9;
-    let afternoon=false;
-    if (time > 12){
-        time -= 12;
-        afternoon=true;
-    }
-    updatedtime = time.toString();
-    return dayjs(date).format('MM/DD/YYYY') + ' ' + index;
-  }
-
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`http://localhost:5173/profile/${id}`);
         setProfileData(response.data);
-        
-        const responseMeeting = await axios.get(`http://localhost:5173/meeting/therapist/${id}`)
-        const fetchedAppointments = responseMeeting.data;
-        // Set appointments
-        setAppointments(fetchedAppointments);
-        console.log(fetchedAppointments)
-        
 
-        // set Calender 
-        console.log("bookedTimes")
-        const bookedTimes = fetchedAppointments.reduce((acc, appointment) => {
-          const date = dayjs(appointment.time).format('MM/DD/YYYY');
-          const time = dayjs(appointment.time).format('h:mm A');
-          if (!acc[date]) {
-            acc[date] = [];
-          }
-          acc[date].push(time);
-          return acc;
-        }, {});
-        setAvailableTimes(bookedTimes);
-        console.log("avaialbletimes:")
-        console.log(availableTimes)
+        const responseMeeting = await axios.get(`http://localhost:5173/meeting/therapist/${id}`)
+        setAppointments(responseMeeting.data);
+        console.log("Appointments")
+        console.log(Appointments)
         setLoading(false);
       } catch (e) {
         console.log("yo")
@@ -97,38 +65,37 @@ function TherapistBioFromPatientView({bio, specialty}) {
   
 
 //   insert Matching Button
-
+  const format = (date, index) => {
+    let updatedtime;
+    let time = index + 9;
+    let afternoon=false;
+    if (time > 12){
+        time -= 12;
+        afternoon=true;
+    }
+    updatedtime = time.toString();
+    return dayjs(date).format('MM/DD/YYYY') + ' '+ updatedtime + ':00' + (afternoon ? ' PM' : ' AM');
+  }
   const handleTimeSelection = async (index) => {
     try {
+
         let updatedtime = format(selectedDate.$d, index)
+        console.log(updatedtime)
+
         const response = await axios.post(`http://localhost:5173/meeting`, {
         currentUserID: currentUser.uid,
         therapistID: id,
         time: updatedtime
       });
-      console.log('Success Match Response:', response.data);
+        
+       
+        console.log('Success Match Response:', response.data);
 
-        const responseMeeting = await axios.get(`http://localhost:5173/meeting/therapist/${id}`);
-        const fetchedAppointments = responseMeeting.data;
-    setAppointments(responseMeeting.data);
-
-    const updatedAvailableTimes = { ...availableTimes };
-   
-    const selectedDateFormatted = updatedtime.$d;
-    // Filter out the selectedTime from the availableTimes for the selectedDate
-    console.log("updated")
-    const bookedTimes = fetchedAppointments.reduce((acc, appointment) => {
-      const date = dayjs(appointment.time).format('MM/DD/YYYY');
-      const time = dayjs(appointment.time).format('h:mm A');
-      if (!acc[date]) {
-        acc[date] = [];
-      }
-      acc[date].push(time);
-      return acc;
-    }, {});
-    setAvailableTimes(bookedTimes);
-    // setAvailableTimes(updatedAvailableTimes);
-
+        const responseMeeting = await axios.get(`http://localhost:5173/meeting/therapist/${id}`)
+        console.log(responseMeeting)
+        setAppointments(responseMeeting.data);
+        setAvailableTimes(availableTimes.filter((time) => time !== index));
+        
       } catch (error) {
         // Handle error
         console.error('Error:', error);
@@ -194,34 +161,18 @@ function TherapistBioFromPatientView({bio, specialty}) {
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DateCalendar value={selectedDate} onChange={(newValue) => setSelectedDate(newValue)} 
-                  minDate={dayjs().startOf('month')}
-                  maxDate={dayjs().add(1, 'month').endOf('month')}
-                  />
-                  
+                  <DateCalendar defaultValue={dayjs()} onChange={(newValue) => setSelectedDate(newValue)} />
                 </LocalizationProvider>
               </Grid>
               <Grid item xs={6} style={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
         <div style={{ marginBottom: '10px' }}>
           <strong>Available Times:</strong>
         </div>
-        {[...Array(9).keys()].map((index) => {
-  const time = dayjs(selectedDate).startOf('day').add(9, 'hours').add(index, 'hours').format('h:mm A');
-  if (!availableTimes[selectedDate.format('MM/DD/YYYY')] || !availableTimes[selectedDate.format('MM/DD/YYYY')].includes(time)) {
-    return (
-      <Button key={index} className='timeCalender' onClick={() => handleTimeSelection(time)}>
-        {time}
-      </Button>
-    );
-  }
-  return null;
-})}
-{/* 
         {availableTimes.map((index) => (
-                  <Button className='timeCalender' key={index} onClick={() => handleTimeSelection(index)}>
+                  <Button key={index} onClick={() => handleTimeSelection(index)}>
                     {dayjs(selectedDate).startOf('day').add(9, 'hours').add(index, 'hours').format('h:mm A')}
                   </Button>
-                ))} */}
+                ))}
       </Grid>
             </Grid>
           </Paper>
@@ -254,4 +205,4 @@ function TherapistBioFromPatientView({bio, specialty}) {
   );
 }
 
-export default TherapistBioFromPatientView;
+export default PatientFromTherapistView;
