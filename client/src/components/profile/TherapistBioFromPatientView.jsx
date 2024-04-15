@@ -64,7 +64,7 @@ function TherapistBioFromPatientView({bio, specialty}) {
       try {
         const response = await axios.get(`http://localhost:5173/profile/${id}`);
         setProfileData(response.data);
-        
+
         const responseMeeting = await axios.get(`http://localhost:5173/meeting/therapist/${id}`)
         const fetchedAppointments = responseMeeting.data;
         // Set appointments
@@ -201,21 +201,25 @@ function TherapistBioFromPatientView({bio, specialty}) {
                   
                 </LocalizationProvider>
               </Grid>
-              <Grid item xs={6} style={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
+              <Grid item xs={6} style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
         <div style={{ marginBottom: '10px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <strong>Available Times:</strong>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         </div>
         {[...Array(9).keys()].map((index) => {
   const time = dayjs(selectedDate).startOf('day').add(9, 'hours').add(index, 'hours').format('h:mm A');
   if (!availableTimes[selectedDate.format('MM/DD/YYYY')] || !availableTimes[selectedDate.format('MM/DD/YYYY')].includes(time)) {
     return (
-      <Button key={index} className='timeCalender' onClick={() => handleTimeSelection(time)}>
+      <button className='timeCalender' key={index} onClick={() => handleTimeSelection(time)}>
         {time}
-      </Button>
+      </button>
     );
   }
   return null;
 })}
+</div>
+</div>
 {/* 
         {availableTimes.map((index) => (
                   <Button className='timeCalender' key={index} onClick={() => handleTimeSelection(index)}>
