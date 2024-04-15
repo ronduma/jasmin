@@ -27,7 +27,7 @@ function Children_Matching() {
   useEffect(() => {
     const fetchTherapists = async () => {
       try{
-        const response = await axios.get(`http://localhost:5173/therapists/?children_therapy_topic=${selectedTopic}&therapeutic_approach=${selectedApproach}&gender=${selectedGender}&price=${selectedPrice}&sort=${selectedSort}`);
+        const response = await axios.get(`http://localhost:5173/therapists/?children_therapy_topic=${selectedTopic}&therapeutic_approach=${selectedApproach}&gender=${selectedGender}&price=${selectedPrice}&sort=${selectedSort}&type=children`);
         setTherapists(response.data);
         setLoading(false);
 

@@ -27,7 +27,7 @@ import "../matching.css";
   useEffect(() => {
     const fetchTherapists = async () => {
       try{
-        const response = await axios.get(`http://localhost:5173/therapists`);
+        const response = await axios.get(`http://localhost:5173/therapists/?therapeutic_approaches=${selectedApproach}&gender=${selectedGender}&price=${selectedPrice}&sort=${selectedSort}`);
         setTherapists(response.data);
         setLoading(false);
       }catch(error){
@@ -105,20 +105,6 @@ import "../matching.css";
       </div>
     <div className="filtersContainer">
       <div className="filters">
-        <select
-          value={selectedProfessional}
-          onChange={(e) => setSelectedProfessional(e.target.value)}
-          className ="custom-select"
-        >
-          <option value="">Select Professional</option>
-          <option value="Clinical Psychologist">Clinical Psychologist</option>
-          <option value="Psychiatrist">Psychiatrist</option>
-          <option value="Psychologist">Psychologist</option>
-          <option value="Consulting psychologist">Consulting psychologist</option>
-          <option value="Psychotherapist">Psychotherapist</option>
-          <option value="Sexologist">Sexologist</option>
-          <option value="Coach">Coach</option>
-        </select>
         <select
           value={selectedApproach}
           onChange={(e) => setSelectedApproach(e.target.value)}
