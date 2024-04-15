@@ -126,7 +126,7 @@ function PsychologistView() {
               : <div>Missing Data</div>}
               <br/>
               {isMatched ? (
-              <Button variant="contained" onClick={handleClick}>
+              <Button variant="primary" onClick={handleClick}>
                 Unmatch with Therapist
               </Button>
             ) : (

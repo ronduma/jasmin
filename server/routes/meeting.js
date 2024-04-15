@@ -38,4 +38,22 @@ router.post('/', async (req, res) => {
 
 });
 
+router.delete('/:id', async (req, res) => {
+
+  try {
+      // Extract data from the request body
+      const { currentUserID, therapistID, time } = req.body;
+      console.log("Matching: Req Body")
+      console.log(req.body)
+      // Call the match function
+      const currentUser = await meetings.deleteMeeting(currentUserID, therapistID, time);
+      return res.status(200).json({ success: true, message: 'User deleted meeting successfully', user: currentUser });
+    } catch (error) {
+      // Handle errors
+      console.error('Error deleting meeting:', error);
+      return res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+
+});
+
 module.exports = router;

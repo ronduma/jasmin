@@ -133,8 +133,42 @@ if (!insertMeeting.acknowledged || !insertMeeting.insertedId) {
 };
 
 
+const deleteMeeting = async (userID1, userID2, time) => {
+  const meetingCollection = await meetings();
+
+
+  if ((await isMatched(userID1, userID2) == false)){
+    throw 'Patient and Therapist not Matched. Can not delete meeting';
+  }
+
+  let therapist = await user.checkUserifTherapist(userID1);
+  let tempPatientID;
+  let tempTherapistID;
+  if (therapist == true){
+    tempTherapistID=userID1;
+    tempPatientID=userID2;
+    
+  }
+  else {
+    tempTherapistID=userID2;
+    tempPatientID=userID1;
+
+
+  }
+
+  //check if time is already chosen for patient or therapist
+  await ifMeetingExistByTimePatient(tempPatientID,time);
+  await ifMeetingExistByTimeTherapist(tempTherapistID,time);
+
+
+const deleteMeeting = await meetingCollection.deleteOne({patient: tempPatientID, therapist:tempTherapistID, time: time});
+  return deleteMeeting;
+};
+
+
 module.exports = {
   createMeeting,
+  deleteMeeting,
   isMatched,
   getMeetingsByTimeTherapist
 };
