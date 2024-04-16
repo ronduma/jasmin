@@ -27,7 +27,7 @@ import "../matching.css";
   useEffect(() => {
     const fetchTherapists = async () => {
       try{
-        const response = await axios.get(`http://localhost:5173/therapists`);
+        const response = await axios.get(`http://localhost:5173/therapists/?therapeutic_approaches=${selectedApproach}&gender=${selectedGender}&price=${selectedPrice}&sort=${selectedSort}`);
         setTherapists(response.data);
         setLoading(false);
       }catch(error){
@@ -38,10 +38,22 @@ import "../matching.css";
   })
   
   const buildCard = (therapist) => {
+    const personalSpecialty = ["Relationship with Yourself", "Relationship with Others", "Personal and Professional development", "New Living Conditions"];
+	  const coupleSpecialty = ["Difficulty in communication, crisis", "Intimate Relations", "Breakup", "Emotional abuse, abusive behavior", "Child-rearing practices", "Betrayal"];
+	  const childrenSpecialty = ["ADHD (Attention Deficit Hyperactivity Disorder)", "Excessive Aggression", "Children with Special Needs", "Loss of Loved Ones", "Adaptation", "Bullying"];
+    function checkSpecialty(arr1, arr2){
+      const count = arr1.filter(value => arr2.includes(value)).length;
+      return count > 2
+    }
+
+    function getSpecialty(arr1, arr2){
+      return arr1.filter(value => arr2.includes(value));
+    }
     return(
       <div className = "shadow" >
-        <Link to={`/matching/${therapist._id}`} >
+        <Link to={`/matching/${therapist._id}`}>
           <Card variant ='outlined'
+          style ={{backgroundColor : "#01382E"}}
             sx = {{
                   flex: "1 0 auto",
                   width: 300,
@@ -64,18 +76,43 @@ import "../matching.css";
             }
 
             
-            <CardContent>
-              <Typography>
+            <CardContent> 
+            <Typography className='therapist-name' fontSize={36}>
                 {therapist.firstName + " "} {therapist.lastName}
               </Typography>
-              <Typography>
+              <Typography className='detail-container'>
+                <div className='therapist-detail'>
                 {therapist.location}
-              </Typography>
-              <Typography>
-                {therapist.age}
-              </Typography>
-              <Typography>
+                </div>
+                <div className='therapist-detail'>
+                {"Age: " + therapist.age}
+                </div>
+                <div className='therapist-detail'>
                 {therapist.gender}
+                </div>
+                {therapist.price ? 
+                <div className='therapist-detail'>
+                  {therapist.price}
+                </div> :
+                <div className='therapist-detail'>
+                  Free
+                </div>
+                }
+                {checkSpecialty(therapist.specialty, personalSpecialty) ? 
+                <div className = 'therapist-detail'>Personal Therapist</div> :
+                getSpecialty(therapist.specialty, personalSpecialty).map((detail) => (
+                  <div className = 'therapist-detail'>{detail}</div>
+                ))}
+                {checkSpecialty(therapist.specialty, coupleSpecialty) ? 
+                <div className = 'therapist-detail'>Couple Therapist</div> :
+                getSpecialty(therapist.specialty, coupleSpecialty).map((detail) => (
+                  <div className = 'therapist-detail'>{detail}</div>
+                ))}
+                {checkSpecialty(therapist.specialty, childrenSpecialty) ? 
+                <div className = 'therapist-detail'>Children Therapist</div> :
+                getSpecialty(therapist.specialty, childrenSpecialty).map((detail) => (
+                  <div className = 'therapist-detail'>{detail}</div>
+                ))}
               </Typography>
             </CardContent>
           </Card>
@@ -105,20 +142,6 @@ import "../matching.css";
       </div>
     <div className="filtersContainer">
       <div className="filters">
-        <select
-          value={selectedProfessional}
-          onChange={(e) => setSelectedProfessional(e.target.value)}
-          className ="custom-select"
-        >
-          <option value="">Select Professional</option>
-          <option value="Clinical Psychologist">Clinical Psychologist</option>
-          <option value="Psychiatrist">Psychiatrist</option>
-          <option value="Psychologist">Psychologist</option>
-          <option value="Consulting psychologist">Consulting psychologist</option>
-          <option value="Psychotherapist">Psychotherapist</option>
-          <option value="Sexologist">Sexologist</option>
-          <option value="Coach">Coach</option>
-        </select>
         <select
           value={selectedApproach}
           onChange={(e) => setSelectedApproach(e.target.value)}
