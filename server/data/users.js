@@ -366,6 +366,17 @@ const getFilteredTherapists = async(filters) => {
 
 // Matching
 
+const checkUserifTherapist = async (userID) => {
+	const userCollection = await users();
+	const currentUser = await getUserById(userID);
+	if (currentUser.isTherapist == true){
+		console.log("User is Therapist")
+		return true;
+	}
+	console.log("User is NOT Therapist")
+	return false;
+};
+
 const match = async (currentUserID, TherapistID) => {
   const userCollection = await users();
   const currentUser = await getUserById(currentUserID);
@@ -381,6 +392,7 @@ const match = async (currentUserID, TherapistID) => {
         { _id: TherapistID },
         { $push: { patients: currentUserID  } }
       );
+
       console.log("Patient should be added to therapist" + Therapist.patients)
 
         //Update current user to add therapist
@@ -406,17 +418,15 @@ const match = async (currentUserID, TherapistID) => {
         { $pull: { patients: currentUserID  } }
       );
       console.log("Patient should be removed from therapist" + currentUser.therapist)
-
+		
 
       return currentUser;
     }
   }
   // Therapist needs to confirm on their side later
   else {
-    console.log("THERAPIST Acc can't match with a patient ")
+    throw" 'THERAPIST Acc can't match with a patient '"
   }
-
-  return currentUser;
 }
 
 
@@ -425,56 +435,6 @@ const unMatch = async (currentUserID, TherapistID) => {
   return;
 }
 
-const toggleMatch = async (currentUserID, TherapistID, match) => {
-  const userCollection = await users();
-  const currentUser = await getUserById(currentUserID);
-  const Therapist = await getUserById(TherapistID);
-
-  if (currentUser.isTherapist !== true) {
-    if (match) {
-      console.log("Both Patient and Therapist Exist and Current User not Therapist - Matching");
-      const updatedUser = await userCollection.findOneAndUpdate(
-        { _id: currentUserID },
-        { $set: { therapist: TherapistID } }
-      );
-      // 
-      if (!Therapist.patients.includes(currentUserID)) {
-        const updatedTherapist = await userCollection.findOneAndUpdate(
-          { _id: TherapistID },
-          { $push: { patients: currentUserID } }
-        );
-        console.log("Patient should be added to therapist" + Therapist.patients);
-      } else {
-        console.log("Therapist already has this patient.");
-      }
-    } else {
-      console.log("Both Patient and Therapist Exist and Current User not Therapist - Unmatching");
-      const updatedUser = await userCollection.findOneAndUpdate(
-        { _id: currentUserID },
-        { $set: { therapist: null } }
-      );
-
-      if (Therapist.patients.includes(currentUserID)) {
-        const updatedTherapist = await userCollection.findOneAndUpdate(
-          { _id: TherapistID },
-          { $pull: { patients: currentUserID } }
-        );
-        console.log("Patient should be removed from therapist" + Therapist.patients);
-      } else {
-        console.log("Therapist and Patient are not matched.");
-        
-      }
-    }
-  } else {
-    if (!Therapist.patients.includes(currentUserID)) {
-      console.log("Therapist needs to confirm on their side later.");
-      Therapist.patients.push(currentUserID);
-      console.log("Patient should be added to therapist" + Therapist.patients);
-    }
-  }
-
-  return currentUser;
-};
 
 
 module.exports = {
@@ -492,5 +452,5 @@ module.exports = {
 	getFilteredTherapists,
 	gettingStarted,
   match,
-  toggleMatch,
+  checkUserifTherapist,
 };

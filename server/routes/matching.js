@@ -18,7 +18,6 @@ router.post('/', async (req, res) => {
         console.log(req.body)
         // Call the match function
         const currentUser = await users.match(currentUserID, therapistID);
-        console.log("CurrentUser has been updated")
         return res.status(200).json({ success: true, message: 'User matched/unmatched successfully', user: currentUser });
       } catch (error) {
         // Handle errors
