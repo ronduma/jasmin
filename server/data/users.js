@@ -29,7 +29,8 @@ const createUser = async (uid, email) => {
 		chatLog: [],
 		patients: [],
 		therapist: null,
-		specialty: []
+		specialty: [],
+		pdf_files: [],
 	};
 	const insertInfo = await userCollection.insertOne(user);
 	if (!insertInfo.acknowledged || !insertInfo.insertedId) {
@@ -189,7 +190,7 @@ const saveImgToDB = async (id, path) => {
 	}
 };
 
-const savePdfToDB = async (id, path) => {
+const savePdfToDB = async (id, path, filename) => {
 	const pdf = fs.readFileSync(path);
   
 	try {
@@ -197,11 +198,11 @@ const savePdfToDB = async (id, path) => {
 	  const userExists = await userCollection.findOne({ _id: id });
 	  if (!userExists) throw "Error: User not found";
 	  if (!userExists.pdf_files) throw "Error: User has no pdf files";
-
+  
 	  const currPdf = userExists.pdf_files;
 	  if (currPdf.length > 2) throw "Error: User has reached the maximum number of pdf files";
-	  currPdf.push(pdf);
-
+	  currPdf.push({ filename, content: pdf });
+  
 	  const updatedUser = await userCollection.findOneAndUpdate(
 		{ _id: id },
 		{ $set: { pdf_files: currPdf } },
@@ -217,7 +218,7 @@ const savePdfToDB = async (id, path) => {
 	} catch (err) {
 	  console.error(err);
 	}
-};
+  };
 
 const getPdfFromDB = async (id, index) => {
 	if (index > 2 || index < 0) throw "Error: Index out of bounds";
@@ -226,11 +227,14 @@ const getPdfFromDB = async (id, index) => {
 	if (!user) throw "Error: There is no user with the given name";
 	if (!user.pdf_files) throw "Error: There are no pdf files";
 	if (!user.pdf_files[index]) throw "Error: There is no pdf file with the given index";
-  	fs.writeFileSync('./uploads', user.pdf_files[req.params.pdfIndex]);
-	// await emptyUploadsFolder();
-	console.log("PDF file sent.");
-};
 
+	const tempFilePath = `./uploads/${user.pdf_files[index].filename}`;
+	fs.writeFileSync(tempFilePath, user.pdf_files[index].content);
+
+	console.log("PDF file ready for download.");
+	return tempFilePath;
+};
+  
 const deletePdfFromDB = async (id, index) => {
 	if (index > 2 || index < 0) throw "Error: Index out of bounds";
 	const userCollection = await users();

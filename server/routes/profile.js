@@ -146,20 +146,24 @@ router.put("/:id/upload-pdf", upload.single("file"), async (req, res) => {
 	if (!file.originalname.match(/\.(pdf)$/)) {
 		return res
 			.status(400)
-			.json({ error: "Please upload a valid image file (jpg or png)" });
+			.json({ error: "Please upload a valid pdf file (.pdf)" });
 	}
 	console.log("saving file to /uploads");
-	await users.savePdfToDB(id, file.path);
+	await users.savePdfToDB(id, file.path, file.originalname);
 	return res.status(200).json("");
 });
 
 router.get("/download-pdf/:id/:index", async (req, res) => {
 	const id = req.params.id;
 	const index = req.params.index;
-	const pdf = await users.getPdf(id, index);
-	res.download(pdf);
-	await users.emptyUploadsFolder();
-});
+	const pdfPath = await users.getPdfFromDB(id, index);
+	res.download(pdfPath, (err) => {
+	  if (err) {
+		console.error(err);
+	  }
+	  fs.unlinkSync(pdfPath); // Delete the temporary file
+	});
+  });
 
 router.delete("/delete-pdf/:id/:index", async (req, res) => {
 	const id = req.params.id;
