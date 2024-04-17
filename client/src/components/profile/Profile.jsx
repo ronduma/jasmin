@@ -23,7 +23,6 @@ import Loading from "../loading/Loading";
 function Profile() {
   const {currentUser} = useContext(AuthContext);
   const [profileData, setProfileData] = useState(null);
-  const [isTherapist, setIsTherapist] = useState(null);
   const [imgFile, setImgFile] = useState(null);
 
   const navigate = useNavigate();
@@ -42,7 +41,6 @@ function Profile() {
       setProfileData(response.data);
       setLoading(false);
     } catch (e) {
-      // console.log("yo")
       navigate('/getting-started')
     }
   };
