@@ -94,9 +94,10 @@ function Profile() {
         alignItems={"stretch"}
       >
         <Grid 
-          fontSize={"14pt"}
           item 
-          xs={3}
+          xs={12}
+          md={6}
+          lg={4}
         >
           <Paper className="left-section">
             <div className="left-section-header">
@@ -166,7 +167,11 @@ function Profile() {
               <Button className="button" component = {NavLink} to='/edit-profile' variant="contained">Edit Info</Button>
           </Paper>
         </Grid>
-        <Grid item xs={6}>
+        <Grid 
+          item
+          xs={12}
+          md={6}
+        >
           {profileData.isTherapist == true ? 
           <TherapistBio 
               bio = {profileData.bio} 

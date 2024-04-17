@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import './slider-styles.css';
-import {Link, NavLink} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import Button from '@mui/material/Button';
 
 const images = [

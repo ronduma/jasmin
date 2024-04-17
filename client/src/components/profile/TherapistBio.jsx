@@ -1,12 +1,16 @@
 import React, {useContext, useState} from 'react';
 import dayjs from 'dayjs';
+import PropTypes from 'prop-types'
 
 import {AuthContext} from '../../context/AuthContext';
 
-import '../../App.css';
+// import './styles.css';
 
 import axios from 'axios';
 import {Typography}  from '@mui/material';
+import Box from '@mui/material/Box';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import Select from '@mui/material/Select';
@@ -28,6 +32,25 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
+
+function CustomTabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <Grid 
+      item 
+      hidden={value !== index}
+    >
+      {value === index && (
+        <Box sx={{ p: 3}}>
+          {children}
+        </Box>
+      )}
+    </Grid>
+  );
+}
+
+
 
 function TherapistBio({bio, specialty, price}) {
   const {currentUser} = useContext(AuthContext);
@@ -147,99 +170,95 @@ function TherapistBio({bio, specialty, price}) {
     setEditAbout(false);
   }
 
+  const [value, setValue] = useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+    console.log(value)
+  };
+
   return (
-    <div>
-      <Grid 
-        container 
-        spacing={2}
-        // style={{textAlign:"left"}}
-      >
-        <Grid item xs={12}>
-          <Paper style={{minHeight: '18vh', padding: '2vh'}}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: "space-between"}}>
-              <div className='right-section-header' > Expertise </div>
-              {editAbout ? "" : <IconButton onClick={() => setEditAbout(true)}><EditIcon /></IconButton>}
-            </div>
-
-            {editAbout ? editTopics()
-            : <p align="left">{ selectedTopics.join(", ") || "No topics found. Please edit, and add topics of expertise."}</p> 
-            }
-              <div className='right-section-header'> About Me </div>
-              <TextField
+    <Paper style={{padding: '2vh', height:'100%'}}>
+        <Tabs value={value} onChange={handleChange} variant="fullWidth">
+          <Tab label="Details" />
+          <Tab label="Availability"  />
+          <Tab label="Reviews" />
+        </Tabs>
+        <CustomTabPanel value={value} index={0}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: "space-between"}}>
+            <div className='right-section-header' > Expertise </div>
+            {editAbout ? "" : <IconButton onClick={() => setEditAbout(true)}><EditIcon /></IconButton>}
+          </div>
+          {editAbout ? editTopics()
+          : <p align="left">{ selectedTopics.join(", ") || "No topics found. Please edit, and add topics of expertise."}</p> 
+          }
+          <div className='right-section-header'> About Me </div>
+          <TextField
+            disabled={!editAbout}
+            inputRef={input => input && input.focus()}
+            fullWidth
+            id="textbox-bio"
+            label="Tell us about yourself!"
+            value={currbio}
+            onChange={event => setBio(event.target.value)}
+            InputLabelProps={{
+              shrink: currbio || editAbout ? true : false,
+            }}
+            multiline
+            style={{margin: '2vh 0 1vh 0'}}
+            rows={3}
+            inputProps={{
+              maxLength:285
+            }}
+          />
+          <div className='right-section-header'>Price</div>
+          <FormControl fullWidth>
+            <Select
+              onChange = {event => setSelectPrice(event.target.value)}
+              id ="therapist-price"
+              value ={selectedPrice}
               disabled={!editAbout}
-              inputRef={input => input && input.focus()}
-              fullWidth
-              id="textbox-bio"
-              label="Tell us about yourself!"
-              value={currbio}
-              onChange={event => setBio(event.target.value)}
               InputLabelProps={{
-                shrink: currbio || editAbout ? true : false,
+                shrink: selectedPrice || editAbout ? true : false,
               }}
-              multiline
-              style={{margin: '2vh 0 1vh 0'}}
-              rows={3}
-              inputProps={{
-                maxLength:285
-              }}
-            />
-            <div className='right-section-header'>Price</div>
-            <FormControl fullWidth>
-              <Select
-                onChange = {event => setSelectPrice(event.target.value)}
-                id ="therapist-price"
-                value ={selectedPrice}
-                disabled={!editAbout}
-                InputLabelProps={{
-                  shrink: selectedPrice || editAbout ? true : false,
-                }}
-              >
-                <MenuItem value=""><em>Free</em></MenuItem>
-                <MenuItem value="Low">$ - Low</MenuItem>
-                <MenuItem value="Medium">$$ - Medium</MenuItem>
-                <MenuItem value="High">$$$ - High</MenuItem>
-              </Select>
-            </FormControl>
-
-            {editAbout && (
-              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <IconButton>
-                  <CheckCircleIcon onClick={() => { putBio(); handleCheckboxChange(); handlePriceChange();}}>
-                  </CheckCircleIcon>
-                </IconButton>
-                <IconButton>
-                  <CancelRoundedIcon onClick={ ()=> {setEditAbout(false); setBio(newBio); setSelectPrice(newPrice);}}></CancelRoundedIcon>
-                </IconButton>
-              </div>
-            )}
-          </Paper>
-        </Grid>
-        
-        <Grid item xs={12}>
-          <Paper style={{minHeight: '40vh', padding: '2vh'}}>
-            <div className="right-section-header">
-              Upcoming Availability
+            >
+              <MenuItem value=""><em>Free</em></MenuItem>
+              <MenuItem value="Low">$ - Low</MenuItem>
+              <MenuItem value="Medium">$$ - Medium</MenuItem>
+              <MenuItem value="High">$$$ - High</MenuItem>
+            </Select>
+          </FormControl>
+          {editAbout && (
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <IconButton>
+                <CheckCircleIcon onClick={() => { putBio(); handleCheckboxChange(); handlePriceChange();}}>
+                </CheckCircleIcon>
+              </IconButton>
+              <IconButton>
+                <CancelRoundedIcon onClick={ ()=> {setEditAbout(false); setBio(newBio); setSelectPrice(newPrice);}}></CancelRoundedIcon>
+              </IconButton>
             </div>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DateCalendar defaultValue={dayjs()} onChange={(newValue) => setSelectedDate(newValue)} />
-                </LocalizationProvider>
-              </Grid>
-              <Grid item xs={6} style={{ display: 'flex', alignItems: 'flex-start' }}>
-                {selectedDate.$d.toString()}
-              </Grid>
-            </Grid>
-          </Paper>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Paper style={{minHeight: '18vh', padding: '2vh'}}>
+          )}
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={1}>
+          <div className="right-section-header">
+            Upcoming Availability
+          </div>
+          <div>
+            <div>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DateCalendar defaultValue={dayjs()} onChange={(newValue) => setSelectedDate(newValue)} />
+              </LocalizationProvider>
+            </div>
+            <div>
+              {selectedDate.$d.toString()}
+            </div>
+          </div>
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={2}>
           <div className='right-section-header'> Reviews </div>
-          </Paper>
-        </Grid>
-      </Grid>
-    </div>
+        </CustomTabPanel>
+      </Paper>
   );
 }
 
