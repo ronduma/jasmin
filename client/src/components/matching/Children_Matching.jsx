@@ -36,7 +36,7 @@ function Children_Matching() {
       }
     };
     fetchTherapists();
-  })
+  }, [selectedTopic, selectedApproach, selectedGender, selectedPrice, selectedSort])
   
   const buildCard = (therapist) => {
     const childrenSpecialty = ["ADHD (Attention Deficit Hyperactivity Disorder)", "Excessive Aggression", "Children with Special Needs", "Loss of Loved Ones", "Adaptation", "Bullying"];

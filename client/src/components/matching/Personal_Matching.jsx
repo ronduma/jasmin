@@ -8,6 +8,7 @@ import axios from 'axios';
 import {Card, Avatar, CardActionArea,CardMedia, CardContent, Grid, Typography} from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import "../matching.css";
+import { search } from '../../../../server/routes/therapists';
 
 function Personal_Matching() {
   //   const {currentUser} = useContext(AuthContext);
@@ -23,15 +24,23 @@ function Personal_Matching() {
   const [therapists, setTherapists] = useState("");
   const [loading, setLoading] = useState(true);
   const [hover, setHover] = useState(false);
-  const handleSearch = (e) => {
+  const handleSearch = (event) => {
     // Handle search functionality
+    console.log(searchValue)  
+    setSearch(event.target.value);
   };
 
   useEffect(() => {
     const fetchTherapists = async () => {
       try{
-        console.log(typeof selectedYourself);
-        const response = await axios.get(`http://localhost:5173/therapists/?relationship_with_yourself=${selectedYourself}&relationship_with_others=${selectedOthers}&personal_and_professional_development=${selectedDevelopment}&new_living_conditions=${selectedConditions}&therapeutic_approaches=${selectedApproach}&gender=${selectedGender}&price=${selectedPrice}&sort=${selectedSort}&type=personal`);
+        let response;
+        console.log(searchValue);
+        if(searchValue == ''){
+          response = await axios.get(`http://localhost:5173/therapists/?relationship_with_yourself=${selectedYourself}&relationship_with_others=${selectedOthers}&personal_and_professional_development=${selectedDevelopment}&new_living_conditions=${selectedConditions}&therapeutic_approaches=${selectedApproach}&gender=${selectedGender}&price=${selectedPrice}&sort=${selectedSort}&type=personal`);
+        }
+        else{
+          response = await axios.get(`http://localhost:5173/therapists/${searchValue}`)
+        }        
         setTherapists(response.data);
         setLoading(false);
       }catch(error){
@@ -39,7 +48,7 @@ function Personal_Matching() {
       }
     };
     fetchTherapists();
-  });
+  }, [selectedYourself, selectedOthers, selectedDevelopment,selectedConditions,  selectedApproach, selectedGender, selectedPrice, selectedSort]);
   
   const buildCard = (therapist) => {
     const personalSpecialty = ["Relationship with Yourself", "Relationship with Others", "Personal and Professional development", "New Living Conditions"];
@@ -125,7 +134,7 @@ function Personal_Matching() {
           <input
             type="text"
             value={searchValue}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={handleSearch} 
             placeholder="Search..."
           />
           <button className="search-button" onClick={handleSearch}>

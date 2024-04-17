@@ -36,7 +36,7 @@ import "../matching.css";
       }
     };
     fetchTherapists();
-  })
+  }, [selectedTopic, selectedApproach, selectedGender, selectedPrice, selectedSort])
   
   const buildCard = (therapist) => {
     const coupleSpecialty = ["Difficulty in communication, crisis", "Intimate Relations", "Breakup", "Emotional abuse, abusive behavior", "Child-rearing practices", "Betrayal"];

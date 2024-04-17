@@ -189,7 +189,7 @@ const saveImgToDB = async (id, path) => {
 };
 
 const getUserByUsername = async (username) => {
-	username = username.toLowerCase();
+	// username = username.toLowerCase();
 	const userCollection = await users();
 	const user = await userCollection.findOne({ username: username });
 	if (!user) throw "Error: There is no user with the given name";
@@ -298,26 +298,23 @@ const getFilteredTherapists = async(filters) => {
 	}
 
 	else{
+
 		if(selectedGender == '' && selectedPrice != ''){
 			// console.log('here6');
-			therapistCollection = await userCollection
-			.find({isTherapist: true, price : selectedPrice})
-			.toArray();
-			
+			therapistCollection = await getAllTherapists(selectedType);
+			therapistCollection = therapistCollection.filter(value => value.price == selectedPrice);
 		}
 		
 		else if(selectedGender != '' && selectedPrice == ''){
 			// console.log('here7');
-			therapistCollection = await userCollection
-			.find({isTherapist: true, gender : selectedGender})
-			.toArray();
+			therapistCollection = await getAllTherapists(selectedType);
+			therapistCollection = therapistCollection.filter(value => value.gender == selectedGender);
 			
 		}
 		else if(selectedGender != '' && selectedPrice != ''){
 			// console.log('here8');
-			therapistCollection = await userCollection
-			.find({isTherapist: true, gender : selectedGender, price: selectedPrice})
-			.toArray();
+			therapistCollection = await getAllTherapists(selectedType);
+			therapistCollection = therapistCollection.filter(value => value.gender == selectedGender && value.price == selectedPrice);
 		}
 	}
 	
