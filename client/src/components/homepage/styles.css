@@ -139,6 +139,11 @@
 .therapists-text {
   margin: 0 0 5vh 0 !important;
 }
+.therapist-tag {
+  border: 2px solid black; /* This sets the border around the anchor tag */
+  padding: 5px 10px; /* Optional: Adds some padding inside the border for better readability */
+  text-decoration: none; /* Optional: Removes underline from the link */
+}
 .anchor-tag {
   color:#008f72;
   text-decoration: none;
