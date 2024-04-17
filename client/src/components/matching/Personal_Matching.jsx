@@ -44,9 +44,16 @@ function Personal_Matching() {
   };
   const handleSubmit = async () => {
     try{
-      const response = await axios.get(`http://localhost:5173/therapists/${searchValue}`)
-      const value = [response.data];
-      setTherapists(value);
+      if(searchValue != ''){
+        const response = await axios.get(`http://localhost:5173/therapists/${searchValue}`)
+        const value = [response.data];
+        setTherapists(value);
+      }
+      else {
+        const response = await axios.get(`http://localhost:5173/therapists/?relationship_with_yourself=${selectedYourself}&relationship_with_others=${selectedOthers}&personal_and_professional_development=${selectedDevelopment}&new_living_conditions=${selectedConditions}&therapeutic_approaches=${selectedApproach}&gender=${selectedGender}&price=${selectedPrice}&sort=${selectedSort}&type=personal`);
+        setTherapists(response.data);
+        setLoading(false);
+      }
     }
     catch(e){
       console.log(error);
