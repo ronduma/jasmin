@@ -6,3 +6,9 @@
     box-shadow: 5px 5px 15px rgba(0,0,0,0.6);
     transition: box-shadow 0.3s ease-in-out;
 }
+.custom-select {
+    background-color:#01382E;
+    border: 2px solid #008f72;
+    color: #008f72;
+    border-radius: 100px;
+}

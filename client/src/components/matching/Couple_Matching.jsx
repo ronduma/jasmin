@@ -27,7 +27,7 @@ import "../matching.css";
   useEffect(() => {
     const fetchTherapists = async () => {
       try{
-        const response = await axios.get(`http://localhost:5173/therapists/?couple_therapy_topics=${selectedTopic}&therapeutic_approaches=${selectedApproach}&gender=${selectedGender}&price=${selectedPrice}&sort=${selectedSort}`);
+        const response = await axios.get(`http://localhost:5173/therapists/?couple_therapy_topics=${selectedTopic}&therapeutic_approaches=${selectedApproach}&gender=${selectedGender}&price=${selectedPrice}&sort=${selectedSort}&type=couple`);
         setTherapists(response.data);
         setLoading(false);
 
@@ -39,10 +39,23 @@ import "../matching.css";
   })
   
   const buildCard = (therapist) => {
+    const coupleSpecialty = ["Difficulty in communication, crisis", "Intimate Relations", "Breakup", "Emotional abuse, abusive behavior", "Child-rearing practices", "Betrayal"];
+    function checkSpecialty(arr1, arr2){
+      const count = arr1.filter(value => arr2.includes(value)).length;
+      return count > 2
+    }
+
+    function getSpecialty(arr1, arr2){
+      return arr1.filter(value => arr2.includes(value));
+    }
+
+    
+
     return(
       <div className = "shadow" >
         <Link to={`/matching/${therapist._id}`} >
           <Card variant ='outlined'
+            style ={{backgroundColor : "#01382E"}}
             sx = {{
                   flex: "1 0 auto",
                   width: 300,
@@ -66,17 +79,32 @@ import "../matching.css";
 
             
             <CardContent>
-              <Typography>
+            <Typography className='therapist-name' fontSize={36}>
                 {therapist.firstName + " "} {therapist.lastName}
               </Typography>
-              <Typography>
+              <Typography className='detail-container'>
+                <div className='therapist-detail'>
                 {therapist.location}
-              </Typography>
-              <Typography>
-                {therapist.age}
-              </Typography>
-              <Typography>
+                </div>
+                <div className='therapist-detail'>
+                {"Age: " + therapist.age}
+                </div>
+                <div className='therapist-detail'>
                 {therapist.gender}
+                </div>
+                {therapist.price ? 
+                <div className='therapist-detail'>
+                  {therapist.price}
+                </div> :
+                <div className='therapist-detail'>
+                  Free
+                </div>
+                }
+                {checkSpecialty(therapist.specialty, coupleSpecialty) ? 
+                <div className = 'therapist-detail'>Couple Therapist</div> :
+                getSpecialty(therapist.specialty, coupleSpecialty).map((detail) => (
+                  <div className = 'therapist-detail'>{detail}</div>
+                ))}
               </Typography>
             </CardContent>
           </Card>

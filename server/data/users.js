@@ -196,21 +196,48 @@ const getUserByUsername = async (username) => {
 	return user;
 };
 
-const getAllTherapists = async () => {
-	const userCollection = await users();
-	const therapistCollection = await userCollection
-		.find({ isTherapist: true })
-		.toArray();
-	return therapistCollection;
+const getAllTherapists = async (type) => {
+	const personalSpecialty = ["Relationship with Yourself", "Relationship with Others", "Personal and Professional development", "New Living Conditions"];
+	const coupleSpecialty = ["Difficulty in communication, crisis", "Intimate Relations", "Breakup", "Emotional abuse, abusive behavior", "Child-rearing practices", "Betrayal"];
+	const childrenSpecialty = ["ADHD (Attention Deficit Hyperactivity Disorder)", "Excessive Aggression", "Children with Special Needs", "Loss of Loved Ones", "Adaptation", "Bullying"];
+	if(type === 'personal'){
+		const userCollection = await users();
+		const therapistCollection = await userCollection
+			.find({ isTherapist: true, specialty: {$in :personalSpecialty}})
+			.toArray();
+		return therapistCollection;
+
+	}
+	if(type === 'couple'){
+		const userCollection = await users();
+		const therapistCollection = await userCollection
+			.find({ isTherapist: true, specialty: {$in :coupleSpecialty}})
+			.toArray();
+		return therapistCollection;
+	}
+	if(type === 'children'){
+		const userCollection = await users();
+		const therapistCollection = await userCollection
+			.find({ isTherapist: true, specialty: {$in: childrenSpecialty}})
+			.toArray();
+		return therapistCollection;
+	}
+	else {
+		const userCollection = await users();
+		const therapistCollection = await userCollection
+			.find({isTherapist : true})
+			.toArray();
+		return therapistCollection;
+	}
 };
 
 const getFilteredTherapists = async(filters) => {
 	let selectedPrice = '';
 	let selectedGender = '';
 	let selectedOrder= '';
+	let selectedType = '';
 	const userCollection = await users();
 	let therapistCollection;
-	// console.log(filters);
 	for(let key in filters) {
 		if(filters[key] == ""){
 			delete filters[key];
@@ -228,13 +255,17 @@ const getFilteredTherapists = async(filters) => {
 				selectedOrder = filters[key];
 				delete filters[key];
 			}
+			if(key ==='type'){
+				selectedType = filters[key];
+				delete filters[key];
+			}
 		}
 	}
 	const valuesToCheck = Object.values(filters);
 	// console.log(valuesToCheck.length);
 	if(valuesToCheck.length == 0 && filters.constructor === Object && selectedPrice == '' && selectedGender == ''){
 		// console.log('here1');
-		therapistCollection = await getAllTherapists();
+		therapistCollection = await getAllTherapists(selectedType);
 	}
 	if(valuesToCheck.length != 0){
 		if(selectedGender == '' && selectedPrice != '') {

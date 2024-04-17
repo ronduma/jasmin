@@ -65,12 +65,13 @@ function TherapistBioFromPatientView({ bio, specialty }) {
           `http://localhost:5173/meeting/therapist/${id}`
         );
         const fetchedAppointments = responseMeeting.data;
-        // Set appointments
+        // filter appointments
         const filteredAppointments = fetchedAppointments.filter(appointment =>
           appointment.patient === currentUser.uid && appointment.therapist === id
         );
         setAppointments(filteredAppointments);
         console.log(fetchedAppointments);
+
 
         // set Calender
         console.log("bookedTimes");
@@ -292,10 +293,7 @@ function TherapistBioFromPatientView({ bio, specialty }) {
               <div>
                 {Appointments.map((appointment, index) => (
                   <div key={index}>
-                    <Typography variant="body1">
-                      {appointment.time} with 
-                      {appointment.patientName}
-                    </Typography>
+                    <Typography variant="body1"><a href={appointment.roomUrl}>{appointment.time} with {appointment.patientName}</a></Typography>
                     {/* Add additional details about the appointment if needed */}
                   </div>
                 ))}
