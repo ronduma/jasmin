@@ -11,10 +11,11 @@ import Typography from '@mui/material/Typography';
 import TherapistBioFromPatientView from "./profile/TherapistBioFromPatientView";
 import {AuthContext} from '../context/AuthContext';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import PatientBio from "./profile/PatientBio";
+import PatientBioFromTherapistView from "./profile/PatientBioFromTherapistView";
 
-
-function PsychologistView() {
-  const { id } = useParams();
+function PatientView() {
+    const { id } = useParams();
   const [profileData, setprofileData] = useState(null);
   const [isLoading, setLoading] = useState(true);
   const {currentUser} = useContext(AuthContext);
@@ -23,21 +24,6 @@ function PsychologistView() {
   const [therapist, setTherapist] = useState(null);
   
 
-  const handleClick = async () => {
-
-    try {
-
-      const response = await axios.post(`http://localhost:5173/matching`, {
-        currentUserID: currentUser.uid,
-        therapistID: id
-      });
-      console.log('Success Match Response:', response.data);
-      setIsMatched(!isMatched)
-    } catch (error) {
-      // Handle error
-      console.error('Error:', error);
-    }
-  };
 
 
   useEffect(() => {
@@ -56,7 +42,7 @@ function PsychologistView() {
   useEffect(() => {
     if (profileData && currentUser) {
       // Check if currentUser.uid is included in profileData.patients
-      if (profileData.patients && profileData.patients.includes(currentUser.uid)) {
+      if (profileData.therapist && profileData.therapist == currentUser.uid) {
         setIsMatched(true);
       }
       else{
@@ -64,6 +50,22 @@ function PsychologistView() {
       }
     }
   }, [profileData, currentUser]);
+
+  const handleClick = async () => {
+
+    try {
+
+      const response = await axios.post(`http://localhost:5173/matching`, {
+        currentUserID: currentUser.uid,
+        therapistID: id
+      });
+      console.log('Success Match Response:', response.data);
+      setIsMatched(!isMatched)
+    } catch (error) {
+      // Handle error
+      console.error('Error:', error);
+    }
+  };
 
   if (isLoading) {
     return <div className="App">Loading...</div>;
@@ -138,13 +140,15 @@ function PsychologistView() {
           </Paper>
         </Grid>
         <Grid item xs={6}>
-          <TherapistBioFromPatientView 
+          <PatientBioFromTherapistView 
               bio = {profileData.bio} 
-              specialty={profileData.specialty}/> 
+              specialty={profileData.concerns}/> 
         </Grid>
       </Grid>
     </div>
   );
 
 }
-export default PsychologistView;
+
+
+export default PatientView;

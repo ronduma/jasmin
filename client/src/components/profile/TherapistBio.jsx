@@ -28,6 +28,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
+import TherapistCalender from './TherapistCalender';
 
 function TherapistBio({bio, specialty, price}) {
   const {currentUser} = useContext(AuthContext);
@@ -215,7 +216,7 @@ function TherapistBio({bio, specialty, price}) {
           </Paper>
         </Grid>
         
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <Paper style={{minHeight: '40vh', padding: '2vh'}}>
             <div className="right-section-header">
               Upcoming Availability
@@ -231,6 +232,9 @@ function TherapistBio({bio, specialty, price}) {
               </Grid>
             </Grid>
           </Paper>
+        </Grid> */}
+        <Grid item xs={12}>
+              <TherapistCalender></TherapistCalender>
         </Grid>
 
         <Grid item xs={12}>

@@ -27,6 +27,7 @@ import {AuthProvider} from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 import Privacy from './components/Privacy';
 import Video from './components/video/Video';
+import PatientFromTherapistView from './components/PatientViewFromTherapist';
 // import Feedback from './components/Feedback';
 
 function App() {
@@ -61,6 +62,8 @@ function App() {
             <Route path='/all_matching' element={<All_Matching />} />
             <Route path='/matching' element={<Matching/>} />
             <Route path="/matching/:id" element={<PsychologistView />} />
+            <Route path="/patient/:id" element={<PatientFromTherapistView />} />
+
             <Route path='/speciallist' element={<SpecialList />} />
             <Route path='/privacy_policy' element={<Privacy />} />
             <Route path='/video_chat' element={<Video />} />

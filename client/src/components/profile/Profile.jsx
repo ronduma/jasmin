@@ -18,6 +18,7 @@ import {AuthContext} from '../../context/AuthContext';
 
 import TherapistBio from "./TherapistBio";
 import PatientBio from "./PatientBio";
+import TherapistCalender from "./TherapistCalender";
 
 function Profile() {
   const {currentUser} = useContext(AuthContext);
@@ -177,6 +178,7 @@ function Profile() {
               concerns = {profileData.concerns} 
             />}
         </Grid>
+      
       </Grid>
     </div>
   );

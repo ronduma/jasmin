@@ -5,6 +5,7 @@ const meetings = require('../data/meetings')
 const path = require('path');
 
 router.get('/therapist/:id', async (req, res) => {
+
     const therapistId = req.params.id;
     try {
       const therapist = await meetings.getMeetingsByTimeTherapist(therapistId)
@@ -18,6 +19,23 @@ router.get('/therapist/:id', async (req, res) => {
     }
     
 });
+
+router.get('/patient/:id', async (req, res) => {
+
+  const patientId = req.params.id;
+  try {
+    const patient = await meetings.getMeetingByTimePatients(patientId)
+    console.log("GET: patient id")
+    console.log(patient)
+    return res.status(200).json(patient);
+    
+  } catch (error) {
+    return res.status(404).json(error);
+    
+  }
+  
+});
+
 
 
 router.post('/', async (req, res) => {
