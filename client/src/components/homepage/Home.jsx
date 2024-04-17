@@ -22,7 +22,7 @@ function Home() {
         justifyContent="center"
         style={{margin: '1vh 0 0 0'}}
       >
-        <Slider/>
+      <Slider/>
       </Grid>
       <Stats/>
       <Types/>

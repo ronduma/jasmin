@@ -20,13 +20,26 @@ function Children_Matching() {
   const [therapists, setTherapists] = useState("");
   const [loading, setLoading] = useState(true);
   const [hover, setHover] = useState(false);
-  const handleSearch = (e) => {
+  const handleSearch = (event) => {
     // Handle search functionality
+    setSearch(event);
+    console.log(searchValue)  
   };
+  const handleSubmit = async () => {
+    try{
+      const response = await axios.get(`http://localhost:5173/therapists/${searchValue}`)
+      const value = [response.data];
+      setTherapists(value);
+    }
+    catch(e){
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
     const fetchTherapists = async () => {
       try{
+        setSearch("");
         const response = await axios.get(`http://localhost:5173/therapists/?children_therapy_topic=${selectedTopic}&therapeutic_approach=${selectedApproach}&gender=${selectedGender}&price=${selectedPrice}&sort=${selectedSort}&type=children`);
         setTherapists(response.data);
         setLoading(false);
@@ -120,10 +133,10 @@ function Children_Matching() {
           <input
             type="text"
             value={searchValue}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => handleSearch(e.target.value)}
             placeholder="Search..."
           />
-          <button className="search-button" onClick={handleSearch}>
+          <button className="search-button" onClick={handleSubmit}>
             <img src={searchbutton} alt="Search"/>
           </button>
         </div>

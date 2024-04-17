@@ -139,7 +139,10 @@
 .therapists-text {
   margin: 0 0 5vh 0 !important;
 }
-
+.anchor-tag {
+  color:#008f72;
+  text-decoration: none;
+}
 .therapists-image {
   width: 12rem; /* Ensure the image takes the full width of its container */
   height: 12rem; /* Maintain aspect ratio */

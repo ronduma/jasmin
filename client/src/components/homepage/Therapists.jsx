@@ -69,7 +69,9 @@ const Reviews = () => {
           ))}
         </Grid>
         <div className="therapists-button">
+          <a href='/speciallist'className='anchor-tag'>
           Choose your specialist
+          </a>
         </div>
       </Grid>
     </div>

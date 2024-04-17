@@ -20,13 +20,28 @@ import "../matching.css";
   const [therapists, setTherapists] = useState("");
   const [loading, setLoading] = useState(true);
   const [hover, setHover] = useState(false);
-  const handleSearch = (e) => {
+  const handleSearch = (event) => {
     // Handle search functionality
+    setSearch(event);
+    console.log(searchValue)  
   };
+  const handleSubmit = async () => {
+    try{
+      console.log(searchValue);
+      const response = await axios.get(`http://localhost:5173/therapists/${searchValue}`)
+      const value = [response.data];
+      console.log(value);
+      setTherapists(value);
+    }
+    catch(e){
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
     const fetchTherapists = async () => {
       try{
+        setSearch("");
         const response = await axios.get(`http://localhost:5173/therapists/?couple_therapy_topics=${selectedTopic}&therapeutic_approaches=${selectedApproach}&gender=${selectedGender}&price=${selectedPrice}&sort=${selectedSort}&type=couple`);
         setTherapists(response.data);
         setLoading(false);
@@ -123,10 +138,10 @@ import "../matching.css";
           <input
             type="text"
             value={searchValue}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => handleSearch(e.target.value)}
             placeholder="Search..."
           />
-          <button className="search-button" onClick={handleSearch}>
+          <button className="search-button" onClick={handleSubmit}>
             <img src={searchbutton} alt="Search"/>
           </button>
         </div>

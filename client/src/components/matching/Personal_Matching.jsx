@@ -8,7 +8,6 @@ import axios from 'axios';
 import {Card, Avatar, CardActionArea,CardMedia, CardContent, Grid, Typography} from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import "../matching.css";
-import { search } from '../../../../server/routes/therapists';
 
 function Personal_Matching() {
   //   const {currentUser} = useContext(AuthContext);
@@ -26,21 +25,24 @@ function Personal_Matching() {
   const [hover, setHover] = useState(false);
   const handleSearch = (event) => {
     // Handle search functionality
+    setSearch(event);
     console.log(searchValue)  
-    setSearch(event.target.value);
   };
-
+  const handleSubmit = async () => {
+    try{
+      const response = await axios.get(`http://localhost:5173/therapists/${searchValue}`)
+      const value = [response.data];
+      setTherapists(value);
+    }
+    catch(e){
+      console.log(error);
+    }
+  }
   useEffect(() => {
     const fetchTherapists = async () => {
       try{
-        let response;
-        console.log(searchValue);
-        if(searchValue == ''){
-          response = await axios.get(`http://localhost:5173/therapists/?relationship_with_yourself=${selectedYourself}&relationship_with_others=${selectedOthers}&personal_and_professional_development=${selectedDevelopment}&new_living_conditions=${selectedConditions}&therapeutic_approaches=${selectedApproach}&gender=${selectedGender}&price=${selectedPrice}&sort=${selectedSort}&type=personal`);
-        }
-        else{
-          response = await axios.get(`http://localhost:5173/therapists/${searchValue}`)
-        }        
+        setSearch("");
+        const response = await axios.get(`http://localhost:5173/therapists/?relationship_with_yourself=${selectedYourself}&relationship_with_others=${selectedOthers}&personal_and_professional_development=${selectedDevelopment}&new_living_conditions=${selectedConditions}&therapeutic_approaches=${selectedApproach}&gender=${selectedGender}&price=${selectedPrice}&sort=${selectedSort}&type=personal`);
         setTherapists(response.data);
         setLoading(false);
       }catch(error){
@@ -134,10 +136,10 @@ function Personal_Matching() {
           <input
             type="text"
             value={searchValue}
-            onChange={handleSearch} 
+            onChange={(e) => handleSearch(e.target.value)} 
             placeholder="Search..."
           />
-          <button className="search-button" onClick={handleSearch}>
+          <button className="search-button" onClick={handleSubmit}>
             <img src={searchbutton} alt="Search"/>
           </button>
         </div>
