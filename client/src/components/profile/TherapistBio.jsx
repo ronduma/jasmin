@@ -25,6 +25,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import Tooltip from '@mui/material/Tooltip';
+import OutlinedInput from '@mui/material/OutlinedInput';
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
@@ -113,18 +114,37 @@ function TherapistBio({bio, specialty, price}) {
     setNewPrice(selectedPrice);
     setEditAbout(false);
   }
+
   const editTopics = () => {
     return (
       subtopics.map((topicList, index) => (
         <>
           <Typography fontSize={18} align='left'> {topicHeaders[index] + ": "} </Typography>
+          <FormControl>
+            <InputLabel>{topicHeaders[index]}</InputLabel>
+          </FormControl>
+          {/* <Select
+            multiple
+            input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+          >
+            {topicList.map((currtopic, i) => (
+              <>
+                <MenuItem
+                  key={currtopic}
+                  value={currtopic}
+                > 
+                  {currtopic}
+                </MenuItem>
+              </>
+            ))}
+          </Select> */}
           <FormGroup row style={{marginLeft: "20px"}}>
             {topicList.map((currtopic, i) => (
               <FormControlLabel id={"Form-Control " + index}
                 control={<Checkbox id={`${index}-${i}`} defaultChecked={selectedTopics.includes(currtopic)} />} 
                 label={index != 0 ? currtopic : 
                   <div style={{ display: 'flex', alignItems: 'center' }}>
-                    {currtopic}
+                    {currtopic + " yo"}
                     <Tooltip title={personalTherapySubtopics[i].join(", ")}>
                       <InfoOutlinedIcon style={{ marginLeft: '5px' }} />
                     </Tooltip>
@@ -179,86 +199,93 @@ function TherapistBio({bio, specialty, price}) {
 
   return (
     <Paper style={{padding: '2vh', height:'100%'}}>
-        <Tabs value={value} onChange={handleChange} variant="fullWidth">
-          <Tab label="Details" />
-          <Tab label="Availability"  />
-          <Tab label="Reviews" />
-        </Tabs>
-        <CustomTabPanel value={value} index={0}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: "space-between"}}>
-            <div className='right-section-header' > Expertise </div>
-            {editAbout ? "" : <IconButton onClick={() => setEditAbout(true)}><EditIcon /></IconButton>}
+      <Tabs value={value} onChange={handleChange} variant="fullWidth">
+        <Tab label="Details" />
+        <Tab label="Availability"  />
+        <Tab label="Reviews" />
+      </Tabs>
+
+      <CustomTabPanel value={value} index={0}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: "space-between"}}>
+          <div className='right-section-header'> 
+            Expertise 
           </div>
-          {editAbout ? editTopics()
-          : <p align="left">{ selectedTopics.join(", ") || "No topics found. Please edit, and add topics of expertise."}</p> 
-          }
-          <div className='right-section-header'> About Me </div>
-          <TextField
+          {editAbout ? "" : <IconButton onClick={() => setEditAbout(true)}><EditIcon /></IconButton>}
+        </div>
+        {editAbout ? editTopics()
+        : <p align="left">{ selectedTopics.join(", ") || "No topics found. Please edit, and add topics of expertise."}</p> 
+        }
+        <div className='right-section-header'> 
+          About Me 
+        </div>
+        <TextField
+          disabled={!editAbout}
+          inputRef={input => input && input.focus()}
+          fullWidth
+          id="textbox-bio"
+          label="Tell us about yourself!"
+          value={currbio}
+          onChange={event => setBio(event.target.value)}
+          InputLabelProps={{
+            shrink: currbio || editAbout ? true : false,
+          }}
+          multiline
+          style={{margin: '2vh 0 1vh 0'}}
+          rows={3}
+          inputProps={{
+            maxLength:285
+          }}
+        />
+        <div className='right-section-header'>Price</div>
+        <FormControl fullWidth>
+          <Select
+            onChange = {event => setSelectPrice(event.target.value)}
+            id ="therapist-price"
+            value ={selectedPrice}
             disabled={!editAbout}
-            inputRef={input => input && input.focus()}
-            fullWidth
-            id="textbox-bio"
-            label="Tell us about yourself!"
-            value={currbio}
-            onChange={event => setBio(event.target.value)}
             InputLabelProps={{
-              shrink: currbio || editAbout ? true : false,
+              shrink: selectedPrice || editAbout ? true : false,
             }}
-            multiline
-            style={{margin: '2vh 0 1vh 0'}}
-            rows={3}
-            inputProps={{
-              maxLength:285
-            }}
-          />
-          <div className='right-section-header'>Price</div>
-          <FormControl fullWidth>
-            <Select
-              onChange = {event => setSelectPrice(event.target.value)}
-              id ="therapist-price"
-              value ={selectedPrice}
-              disabled={!editAbout}
-              InputLabelProps={{
-                shrink: selectedPrice || editAbout ? true : false,
-              }}
-            >
-              <MenuItem value=""><em>Free</em></MenuItem>
-              <MenuItem value="Low">$ - Low</MenuItem>
-              <MenuItem value="Medium">$$ - Medium</MenuItem>
-              <MenuItem value="High">$$$ - High</MenuItem>
-            </Select>
-          </FormControl>
-          {editAbout && (
-            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <IconButton>
-                <CheckCircleIcon onClick={() => { putBio(); handleCheckboxChange(); handlePriceChange();}}>
-                </CheckCircleIcon>
-              </IconButton>
-              <IconButton>
-                <CancelRoundedIcon onClick={ ()=> {setEditAbout(false); setBio(newBio); setSelectPrice(newPrice);}}></CancelRoundedIcon>
-              </IconButton>
-            </div>
-          )}
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={1}>
-          <div className="right-section-header">
-            Upcoming Availability
+          >
+            <MenuItem value=""><em>Free</em></MenuItem>
+            <MenuItem value="Low">$ - Low</MenuItem>
+            <MenuItem value="Medium">$$ - Medium</MenuItem>
+            <MenuItem value="High">$$$ - High</MenuItem>
+          </Select>
+        </FormControl>
+        {editAbout && (
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <IconButton>
+              <CheckCircleIcon onClick={() => { putBio(); handleCheckboxChange(); handlePriceChange();}}>
+              </CheckCircleIcon>
+            </IconButton>
+            <IconButton>
+              <CancelRoundedIcon onClick={ ()=> {setEditAbout(false); setBio(newBio); setSelectPrice(newPrice);}}></CancelRoundedIcon>
+            </IconButton>
+          </div>
+        )}
+      </CustomTabPanel>
+
+      <CustomTabPanel value={value} index={1}>
+        <div className="right-section-header">
+          Upcoming Availability
+        </div>
+        <div>
+          <div>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DateCalendar defaultValue={dayjs()} onChange={(newValue) => setSelectedDate(newValue)} />
+            </LocalizationProvider>
           </div>
           <div>
-            <div>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DateCalendar defaultValue={dayjs()} onChange={(newValue) => setSelectedDate(newValue)} />
-              </LocalizationProvider>
-            </div>
-            <div>
-              {selectedDate.$d.toString()}
-            </div>
+            {selectedDate.$d.toString()}
           </div>
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={2}>
-          <div className='right-section-header'> Reviews </div>
-        </CustomTabPanel>
-      </Paper>
+        </div>
+      </CustomTabPanel>
+
+      <CustomTabPanel value={value} index={2}>
+        <div className='right-section-header'> Reviews </div>
+      </CustomTabPanel>
+    </Paper>
   );
 }
 

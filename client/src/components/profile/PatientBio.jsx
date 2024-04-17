@@ -72,118 +72,113 @@ function PatientBio({bio, concerns}) {
   }
 
   return (
-    <div>
-      <Grid 
-        container 
-        spacing={2}
-      >
-        <Grid item xs={12}>
-          <Paper className="about-me">
-            <div style={{alignItems: 'flex-start', display: 'flex', justifyContent: 'space-between'}}>
-              <div className="right-section-header">
-                About Me
-              </div>
-              {editAbout ? "" : <IconButton onClick={allowEditAbout}><EditIcon /></IconButton>}
+    <Paper style={{padding: '2vh', height:'100%'}}>
+      <Grid item xs={12}>
+        <div className="about-me">
+          <div style={{alignItems: 'flex-start', display: 'flex', justifyContent: 'space-between'}}>
+            <div className="right-section-header">
+              About Me
             </div>
-            <TextField
-              disabled={!editAbout}
-              inputRef={input => input && input.focus()}
-              fullWidth
-              id="textbox-bio"
-              label="Tell us about yourself!"
-              value={currbio}
-              onChange={event => setBio(event.target.value)}
-              InputLabelProps={{
-                shrink: currbio || editAbout ? true : false,
-              }}
-              multiline
-              style={{margin: '2vh 0 1vh 0'}}
-              rows={3}
-              inputProps={{
-                maxLength:285
-              }}
-            />
-            {editAbout && (
-              <div style={{ position: 'absolute', bottom: 0, right: 0 }}>
-                <IconButton>
-                  <CheckCircleIcon onClick={putBio}>
-                  </CheckCircleIcon>
-                </IconButton>
-                <IconButton>
-                  <CancelRoundedIcon onClick={ ()=> {setEditAbout(false); setBio(bio)}}></CancelRoundedIcon>
-                </IconButton>
-              </div>
-            )}
-          </Paper>
-        </Grid>
-        <Grid item xs={12}>
-          <Paper className="core-concerns">
-            <div style={{alignItems: 'flex-start', display: 'flex', justifyContent: 'space-between'}}>
-              <div className="right-section-header">
-                Core Concerns
-              </div>
-              {editConcerns ? "" : <IconButton onClick={allowEditConcerns}><EditIcon /></IconButton>}
+            {editAbout ? "" : <IconButton onClick={allowEditAbout}><EditIcon /></IconButton>}
+          </div>
+          <TextField
+            disabled={!editAbout}
+            inputRef={input => input && input.focus()}
+            fullWidth
+            id="textbox-bio"
+            label="Tell us about yourself!"
+            value={currbio}
+            onChange={event => setBio(event.target.value)}
+            InputLabelProps={{
+              shrink: currbio || editAbout ? true : false,
+            }}
+            multiline
+            style={{margin: '2vh 0 1vh 0'}}
+            rows={3}
+            inputProps={{
+              maxLength:285
+            }}
+          />
+          {editAbout && (
+            <div style={{ position: 'absolute', bottom: 0, right: 0 }}>
+              <IconButton>
+                <CheckCircleIcon onClick={putBio}>
+                </CheckCircleIcon>
+              </IconButton>
+              <IconButton>
+                <CancelRoundedIcon onClick={ ()=> {setEditAbout(false); setBio(bio)}}></CancelRoundedIcon>
+              </IconButton>
             </div>
-            <TextField
-              disabled={!editConcerns}
-              fullWidth
-              id="textbox-concern-one"
-              label="Concern #1"
-              value = {currConcerns[0] || ""}
-              onChange={event => setConcerns([event.target.value, currConcerns[1], currConcerns[2]])}
-              InputLabelProps={{
-                shrink: currConcerns[0] || editConcerns ? true : false,
-              }}
-              style={{margin: '2vh 0 2vh 0'}}
-              inputProps={{
-                maxLength:90
-              }}
-            />
-            <TextField
-              disabled={!editConcerns}
-              fullWidth
-              id="textbox-concern-two"
-              label="Concern #2"
-              value={currConcerns[1] || ""}
-              onChange={event => setConcerns([currConcerns[0], event.target.value, currConcerns[2]])}
-              InputLabelProps={{
-                shrink: currConcerns[1] || editConcerns ? true : false,
-              }}
-              style={{margin: '2vh 0 2vh 0'}}
-              inputProps={{
-                maxLength:90
-              }}
-            />
-            <TextField
-              disabled={!editConcerns}
-              fullWidth
-              id="textbox-concern-three"
-              label="Concern #3"
-              value={currConcerns[2] || ""}
-              onChange={event => setConcerns([currConcerns[0], currConcerns[1], event.target.value])}
-              InputLabelProps={{
-                shrink: currConcerns[2] || editConcerns ? true : false,
-              }}
-              style={{margin: '2vh 0 2vh 0'}}
-              inputProps={{
-                maxLength:90
-              }}
-            />
-            {editConcerns && (
-              <div style={{ position: 'absolute', bottom: 0, right: 0 }}>
-                <IconButton>
-                  <CheckCircleIcon onClick={putConcerns}>
-                  </CheckCircleIcon>
-                </IconButton>
-                <IconButton>
-                  <CancelRoundedIcon onClick={ ()=> {setEditConcerns(false); setConcernsHelper(concerns)}}></CancelRoundedIcon>
-                </IconButton>
-              </div>
-            )}
-          </Paper>
-        </Grid>
+          )}
+        </div>
       </Grid>
-    </div>
+      <Grid item xs={12}>
+        <div className="core-concerns">
+          <div style={{alignItems: 'flex-start', display: 'flex', justifyContent: 'space-between'}}>
+            <div className="right-section-header">
+              Core Concerns
+            </div>
+            {editConcerns ? "" : <IconButton onClick={allowEditConcerns}><EditIcon /></IconButton>}
+          </div>
+          <TextField
+            disabled={!editConcerns}
+            fullWidth
+            id="textbox-concern-one"
+            label="Concern #1"
+            value = {currConcerns[0] || ""}
+            onChange={event => setConcerns([event.target.value, currConcerns[1], currConcerns[2]])}
+            InputLabelProps={{
+              shrink: currConcerns[0] || editConcerns ? true : false,
+            }}
+            style={{margin: '2vh 0 2vh 0'}}
+            inputProps={{
+              maxLength:90
+            }}
+          />
+          <TextField
+            disabled={!editConcerns}
+            fullWidth
+            id="textbox-concern-two"
+            label="Concern #2"
+            value={currConcerns[1] || ""}
+            onChange={event => setConcerns([currConcerns[0], event.target.value, currConcerns[2]])}
+            InputLabelProps={{
+              shrink: currConcerns[1] || editConcerns ? true : false,
+            }}
+            style={{margin: '2vh 0 2vh 0'}}
+            inputProps={{
+              maxLength:90
+            }}
+          />
+          <TextField
+            disabled={!editConcerns}
+            fullWidth
+            id="textbox-concern-three"
+            label="Concern #3"
+            value={currConcerns[2] || ""}
+            onChange={event => setConcerns([currConcerns[0], currConcerns[1], event.target.value])}
+            InputLabelProps={{
+              shrink: currConcerns[2] || editConcerns ? true : false,
+            }}
+            style={{margin: '2vh 0 2vh 0'}}
+            inputProps={{
+              maxLength:90
+            }}
+          />
+          {editConcerns && (
+            <div style={{ position: 'absolute', bottom: 0, right: 0 }}>
+              <IconButton>
+                <CheckCircleIcon onClick={putConcerns}>
+                </CheckCircleIcon>
+              </IconButton>
+              <IconButton>
+                <CancelRoundedIcon onClick={ ()=> {setEditConcerns(false); setConcernsHelper(concerns)}}></CancelRoundedIcon>
+              </IconButton>
+            </div>
+          )}
+        </div>
+      </Grid>
+    </Paper>
   );
 }
 

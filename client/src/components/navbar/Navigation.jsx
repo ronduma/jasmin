@@ -124,7 +124,7 @@ const NavigationAuth = () => {
 
 const NavigationNonAuth = () => {
   return (
-    <div>
+    <div style={{ marginLeft: 'auto', display: 'flex'}}>
       <Button component = {NavLink} to='/about' color='green'>About Us</Button>
       <Button component = {NavLink} to='/register' color='green'>Register</Button>
       <Button component = {NavLink} to='/login' color='green'>Log In</Button>

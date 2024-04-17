@@ -93,8 +93,8 @@ router.put("/concerns", async (req, res) => {
 		for (let i = 0; i < 3; i++) {
 			concerns.push(xss(req.body.concerns[i]));
 		}
-		if (concerns[0] === "" && concerns[1] === "" && concerns[2] === "")
-			throw "No concerns";
+		// if (concerns[0] === "" && concerns[1] === "" && concerns[2] === "")
+		// 	throw "No concerns";
 		const concernsReturn = await users.updateProfile(uid, {
 			concerns: concerns,
 		});
@@ -124,8 +124,8 @@ router.put("/specialty", async (req, res) => {
 router.put("/price", async (req, res) => {
 	try{
 		let uid = req.body.uid;
-		console.log('bruh');
-		console.log(req.body.price);
+		// console.log('bruh');
+		// console.log(req.body.price);
 		const priceReturn = await users.updateProfile(uid,  {
 			price: req.body.price
 		})
