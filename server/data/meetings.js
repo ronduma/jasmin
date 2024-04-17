@@ -79,7 +79,7 @@ const isMatched = async (userID1, userID2) => {
 };
 
 
-const createMeeting = async (userID1, userID2, time) => {
+const createMeeting = async (userID1, userID2, time, hostRoomUrl,roomUrl) => {
   const meetingCollection = await meetings();
 
   let account = await user.getUserById(userID1);
@@ -123,6 +123,8 @@ const createMeeting = async (userID1, userID2, time) => {
     patientName: patientName,
     therapistName: therapistName,
     time: time,
+    hostRoomUrl:hostRoomUrl,
+    roomUrl:roomUrl
 };
 
 const insertMeeting = await meetingCollection.insertOne(newMeeting);

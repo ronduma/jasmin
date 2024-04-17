@@ -37,7 +37,6 @@ function TherapistBioFromPatientView({bio, specialty}) {
   const [Appointments, setAppointments]= useState(null)
   const [newBio, setNewBio] = useState(bio);
 
-
   const [availableTimes, setAvailableTimes] = useState({});
   const [isLoading, setLoading] = useState(true);
   
@@ -69,7 +68,7 @@ function TherapistBioFromPatientView({bio, specialty}) {
         const fetchedAppointments = responseMeeting.data;
         // Set appointments
         setAppointments(fetchedAppointments);
-        console.log(fetchedAppointments)
+
         
 
         // set Calender 
@@ -235,7 +234,7 @@ function TherapistBioFromPatientView({bio, specialty}) {
               <div>
                 {Appointments.map((appointment, index) => (
                   <div key={index}>
-                    <Typography variant="body1">{appointment.time} with {appointment.patientName}</Typography>
+                    <Typography variant="body1"><a href={appointment.roomUrl}>{appointment.time} with {appointment.patientName}</a></Typography>
                     {/* Add additional details about the appointment if needed */}
                   </div>
                 ))}
