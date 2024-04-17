@@ -15,6 +15,28 @@ function PsychologistView() {
   const { id } = useParams();
   const [profileData, setprofileData] = useState(null);
   const [isLoading, setLoading] = useState(true);
+  const {currentUser} = useContext(AuthContext);
+  const [isMatched, setIsMatched] = useState(false);
+  console.log("We are in Psychologist");
+  const [therapist, setTherapist] = useState(null);
+  
+
+  const handleClick = async () => {
+
+    try {
+
+      const response = await axios.post(`http://localhost:5173/matching`, {
+        currentUserID: currentUser.uid,
+        therapistID: id
+      });
+      console.log('Success Match Response:', response.data);
+      setIsMatched(!isMatched)
+    } catch (error) {
+      // Handle error
+      console.error('Error:', error);
+    }
+  };
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,6 +50,18 @@ function PsychologistView() {
     };
     fetchData();
   }, [id]);
+
+  useEffect(() => {
+    if (profileData && currentUser) {
+      // Check if currentUser.uid is included in profileData.patients
+      if (profileData.patients && profileData.patients.includes(currentUser.uid)) {
+        setIsMatched(true);
+      }
+      else{
+        setIsMatched(false);
+      }
+    }
+  }, [profileData, currentUser]);
 
   if (isLoading) {
     return <div className="App">Loading...</div>;
@@ -88,7 +122,16 @@ function PsychologistView() {
               </div>
               : <div>Missing Data</div>}
               <br/>
-              <Button variant="contained"> Match </Button> {" "}
+              {isMatched ? (
+              <Button variant="primary" onClick={handleClick}>
+                Unmatch with Therapist
+              </Button>
+            ) : (
+              <Button variant="contained" onClick={handleClick}>
+                Match
+              </Button>
+            )}
+            {" "}
               <Button variant="contained"> Schedule </Button>
           </Paper>
         </Grid>

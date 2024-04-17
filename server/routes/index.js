@@ -6,6 +6,7 @@ const therapistRoutes = require('./therapists');
 const patientRoutes = require('./patients');
 const matchingRoutes = require('./matching');
 const chatsRoutes = require('./chats');
+const meetingRoutes = require('./meeting')
 const videoRoutes = require('./video');
 
 const constructorMethod = (app) => {
@@ -22,6 +23,7 @@ const constructorMethod = (app) => {
   app.use('/patients', patientRoutes);
   app.use('/matching', matchingRoutes);
   app.use('/chats', chatsRoutes);
+  app.use('/meeting', meetingRoutes);
   app.use('/video',videoRoutes);
 
   app.use('*', (req, res) => {

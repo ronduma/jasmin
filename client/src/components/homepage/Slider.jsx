@@ -51,7 +51,7 @@ const Slider = () => {
         <div className="caption">
           Mental health platform that brings patients and therapists together
           <div className="image-btns">
-            <Button color="white"><Link to='/speciallist' className='link-button'>Choose your specialist  </Link></Button>
+            <Button color="white"><Link to='/speciallist' className='link-button'>Choose your specialist</Link></Button>
             <Button color="white"><Link to='/all_matching' className='link-button'>See all</Link></Button>
           </div>
         </div>

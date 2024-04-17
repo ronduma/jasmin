@@ -10,20 +10,21 @@ router.get('/', async (req, res) => {
 
 
 router.post('/', async (req, res) => {
-  try {
-    // Extract data from the request body
-    const { currentUserID, therapistID } = req.body;
-    console.log("Matching: Req Body")
-    console.log(req.body)
-    // Call the match function
-    const currentUser = await users.match(currentUserID, therapistID);
-    console.log("CurrentUser has been updated")
-    return res.status(200).json({ success: true, message: 'User matched successfully', user: currentUser });
-  } catch (error) {
-    // Handle errors
-    console.error('Error matching users:', error);
-    return res.status(500).json({ success: false, message: 'Internal server error' });
-  }
+
+    try {
+        // Extract data from the request body
+        const { currentUserID, therapistID } = req.body;
+        console.log("Matching: Req Body")
+        console.log(req.body)
+        // Call the match function
+        const currentUser = await users.match(currentUserID, therapistID);
+        return res.status(200).json({ success: true, message: 'User matched/unmatched successfully', user: currentUser });
+      } catch (error) {
+        // Handle errors
+        console.error('Error matching users:', error);
+        return res.status(500).json({ success: false, message: 'Internal server error' });
+      }
+
 });
 
 module.exports = router;
