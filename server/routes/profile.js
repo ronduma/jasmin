@@ -108,15 +108,16 @@ router.put("/concerns", async (req, res) => {
 router.put("/specialty", async (req, res) => {
 	try {
 		let uid = req.body.uid;
-		console.log(req.body)
-		const specialty = [];
-		for (let i = 0; i < req.body.specialty.length; i++) {
-			specialty.push(xss(req.body.specialty[i]));
+		if (req.body.specialty){
+			const specialty = [];
+			for (let i = 0; i < req.body.specialty.length; i++) {
+				specialty.push(xss(req.body.specialty[i]));
+			}
+			const specialtyReturn = await users.updateProfile(uid, {
+				specialty: specialty,
+			});
+			return res.status(200).json(specialtyReturn);
 		}
-		const specialtyReturn = await users.updateProfile(uid, {
-			specialty: specialty,
-		});
-		return res.status(200).json(specialtyReturn);
 	} catch (e) {
 		console.log(e);
 		return res.status(400).json(e);

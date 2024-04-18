@@ -89,21 +89,24 @@ function TherapistBio({bio, specialty, price}) {
     setEditAbout(false);
   }
 
-  //checks ids and sees what is selected and stores that
-  const handleCheckboxChange = async (data) => {
+  const handleSelectedTopics = (data) => {
     setSelectedTopics(data);
+  }
+
+  //checks ids and sees what is selected and stores that
+  const handleCheckboxChange = async () => {
     // axios call to add to database
     axios.put('http://localhost:5173/profile/specialty', {
       uid: currentUser.uid,
       specialty: selectedTopics
     })
-    // .then((response) => {
-    //   console.log(response);
-    // })
-    // .catch((error) => {
-    //   console.log(error);
-    // });
-    // setEditAbout(false);
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+    setEditAbout(false);
   }
 
   const [value, setValue] = useState(0);
@@ -112,10 +115,6 @@ function TherapistBio({bio, specialty, price}) {
     setValue(newValue);
     console.log(value)
   };
-
-  useEffect(() => {
-    console.log(selectedTopics)
-  }, [selectedTopics]);
 
   return (
     <Paper style={{padding: '2vh', height:'100%'}}>
@@ -132,7 +131,7 @@ function TherapistBio({bio, specialty, price}) {
           </div>
           {editAbout ? "" : <IconButton onClick={() => setEditAbout(true)}><EditIcon /></IconButton>}
         </div>
-        {editAbout ? <Expertise specialty={handleCheckboxChange}/>
+        {editAbout ? <Expertise specialty={handleSelectedTopics}/>
         : <p align="left">{"No topics found. Please edit, and add topics of expertise."}</p> 
         }
         <div className='right-section-header'> 
