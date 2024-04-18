@@ -50,18 +50,46 @@ const Expertise = (props) => {
     },
   };
 
-  const [personName1, setPersonName1] = useState([]);
-  const [personName2, setPersonName2] = useState([]);
-  const [personName3, setPersonName3] = useState([]);
-  const [personName4, setPersonName4] = useState([]);
-  const [personName5, setPersonName5] = useState([]);
+  let first = [];
+  let second = [];
+  let third = [];
+  let fourth = [];
+  let fifth = [];
+
+  for (let i = 0; i < subtopics.length; i++){
+    for (let j = 0; j < subtopics[i].length; j++){
+      for (let k = 0; k < props.display.length; k++){
+        if (props.display[k] == subtopics[i][j]){
+          if (i == 0){
+            first.push(props.display[k]);
+          } else if (i == 1){
+            second.push(props.display[k]);
+          } else if (i == 2){
+            third.push(props.display[k]);
+          } else if (i == 3){
+            fourth.push(props.display[k]);
+          } else if (i == 4){
+            fifth.push(props.display[k]);
+          }
+        }
+      }
+    }
+  }
+
+  console.log(first, second, third, fourth)
+
+  const [personName1, setPersonName1] = useState(first);
+  const [personName2, setPersonName2] = useState(second);
+  const [personName3, setPersonName3] = useState(third);
+  const [personName4, setPersonName4] = useState(fourth);
+  const [personName5, setPersonName5] = useState(fifth);
   const [selectedPersonal, setSelectedPersonal] = useState([]);
   const [selectedSubtopics, setSelectedSubtopics] = useState([]);
   const [specialty, setSpecialty] = useState([]);
 
   const sendMessageToParent = (specialty) => {
     // Invoke the callback function passed from the parent with data
-    props.specialty(specialty);
+    props.selected(specialty);
   };
 
   const handleChange = (event, setState) => {
@@ -103,7 +131,10 @@ const Expertise = (props) => {
   return (
     <div>
       {topics.map((topic, index) => (
-        <FormControl key={topic.label} sx={{ m: 1, width: "100%" }}>
+        <FormControl 
+          disabled={props.disabled}
+          key={topic.label} 
+          sx={{ m: 1, width: "100%" }}>
           <InputLabel id={`demo-multiple-chip-label-${topic.label}`}>{topic.label}</InputLabel>
           <Select
             multiple

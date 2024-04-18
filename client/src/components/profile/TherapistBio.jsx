@@ -131,9 +131,7 @@ function TherapistBio({bio, specialty, price}) {
           </div>
           {editAbout ? "" : <IconButton onClick={() => setEditAbout(true)}><EditIcon /></IconButton>}
         </div>
-        {editAbout ? <Expertise specialty={handleSelectedTopics}/>
-        : <p align="left">{"No topics found. Please edit, and add topics of expertise."}</p> 
-        }
+        <Expertise disabled={!editAbout} selected={handleSelectedTopics} display={specialty}/>
         <div className='right-section-header'> 
           About Me 
         </div>
