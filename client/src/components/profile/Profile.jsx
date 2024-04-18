@@ -18,6 +18,7 @@ import {AuthContext} from '../../context/AuthContext';
 
 import TherapistBio from "./TherapistBio";
 import PatientBio from "./PatientBio";
+import TherapistCalender from "./TherapistCalender";
 import Loading from "../loading/Loading";
 
 function Profile() {
@@ -181,6 +182,7 @@ function Profile() {
               concerns = {profileData.concerns} 
             />}
         </Grid>
+      
       </Grid>
     </div>
   );

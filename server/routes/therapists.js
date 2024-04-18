@@ -31,5 +31,15 @@ router.get('/all', async(req, res) => {
   }
 });
 
+router.get("/:name", async(req, res) => {
+    try{
+        const therapist = await users.getUserByUsername(req.params.name);
+        return res.status(200).json(therapist);
+    }
+    catch(e){
+        console.log(e);
+    }
+})
+
 
 module.exports = router;

@@ -207,7 +207,7 @@ const saveImgToDB = async (id, path) => {
 };
 
 const getUserByUsername = async (username) => {
-	username = username.toLowerCase();
+	// username = username.toLowerCase();
 	const userCollection = await users();
 	const user = await userCollection.findOne({ username: username });
 	if (!user) throw "Error: There is no user with the given name";
@@ -324,36 +324,33 @@ const getFilteredTherapists = async(filters) => {
 	}
 
 	else{
+
 		if(selectedGender == '' && selectedPrice != ''){
 			// console.log('here6');
-			therapistCollection = await userCollection
-			.find({isTherapist: true, price : selectedPrice})
-			.toArray();
-			
+			therapistCollection = await getAllTherapists(selectedType);
+			therapistCollection = therapistCollection.filter(value => value.price == selectedPrice);
 		}
 		
 		else if(selectedGender != '' && selectedPrice == ''){
 			// console.log('here7');
-			therapistCollection = await userCollection
-			.find({isTherapist: true, gender : selectedGender})
-			.toArray();
+			therapistCollection = await getAllTherapists(selectedType);
+			therapistCollection = therapistCollection.filter(value => value.gender == selectedGender);
 			
 		}
 		else if(selectedGender != '' && selectedPrice != ''){
 			// console.log('here8');
-			therapistCollection = await userCollection
-			.find({isTherapist: true, gender : selectedGender, price: selectedPrice})
-			.toArray();
+			therapistCollection = await getAllTherapists(selectedType);
+			therapistCollection = therapistCollection.filter(value => value.gender == selectedGender && value.price == selectedPrice);
 		}
 	}
 	
 	if(selectedOrder == "first_name_order"){
 		// console.log('here9');
-		return therapistCollection.sort((a, b) => (a.firstName > b.firstName) ? 1 : ((b.firstName > a.firstName) ? -1: 0))
+		return therapistCollection.sort((a, b) => (a.firstName.toLowerCase() > b.firstName.toLowerCase()) ? 1 : ((b.firstName.toLowerCase() > a.firstName. toLowerCase()) ? -1: 0))
 	}
 	if(selectedOrder == "last_name_order")  {
 		// console.log('here10');
-		return therapistCollection.sort((a, b) => (a.lastName > b.lastName) ? 1 : ((b.lastName > a.lastName) ? -1: 0))
+		return therapistCollection.sort((a, b) => (a.lastName.toLowerCase() > b.lastName.toLowerCase()) ? 1 : ((b.lastName.toLowerCase() > a.lastName.toLowerCase()) ? -1: 0))
 	}
 	else return therapistCollection
 }
