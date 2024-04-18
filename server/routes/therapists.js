@@ -6,18 +6,23 @@ const path = require('path');
 const xss = require('xss');
 router.get('/', async(req, res) => {
     try{
-        // console.log(req.query);
         const therapistList = await users.getFilteredTherapists(req.query);
-        //  
-        // const therapistID = req.params.therapistID;
-        // Send a success response with the updated user data
-        // return res.status(200).json({ success: true, message: 'User matched successfully', user: currentUser });
         return res.status(200).json(therapistList)
     }
     catch(e){
         console.log(e);
     }
 });
+
+router.get("/:name", async(req, res) => {
+    try{
+        const therapist = await users.getUserByUsername(req.params.name);
+        return res.status(200).json(therapist);
+    }
+    catch(e){
+        console.log(e);
+    }
+})
 
 
 module.exports = router;
