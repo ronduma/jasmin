@@ -105,7 +105,7 @@ function Search(props) {
                 id: search._id,
                 name: search.firstName + " " + search.lastName
               })) : []}
-              getOptionLabel={(option) => option.name + " (" + option.id + ")"}
+              getOptionLabel={(option) => option.name}
               renderInput={(params) => (
                 <TextField
                   sx={{margin:"1rem 0 0 0"}}

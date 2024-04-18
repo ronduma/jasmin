@@ -26,6 +26,7 @@ import Checkbox from '@mui/material/Checkbox';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import Tooltip from '@mui/material/Tooltip';
 import OutlinedInput from '@mui/material/OutlinedInput';
+import Chip from '@mui/material/Chip';
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
@@ -50,8 +51,6 @@ function CustomTabPanel(props) {
     </Grid>
   );
 }
-
-
 
 function TherapistBio({bio, specialty, price}) {
   const {currentUser} = useContext(AuthContext);
@@ -115,46 +114,161 @@ function TherapistBio({bio, specialty, price}) {
     setEditAbout(false);
   }
 
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
+  const [personName, setPersonName] = useState([]);
+
   const editTopics = () => {
+     const handleChange = (event) => {
+      const {
+        target: { value },
+      } = event;
+      setPersonName(
+        // On autofill we get a stringified value.
+        typeof value === 'string' ? value.split(',') : value
+      );
+    };
     return (
-      subtopics.map((topicList, index) => (
-        <>
-          <Typography fontSize={18} align='left'> {topicHeaders[index] + ": "} </Typography>
-          <FormControl>
-            <InputLabel>{topicHeaders[index]}</InputLabel>
-          </FormControl>
-          {/* <Select
+      <div>
+        <FormControl sx={{ m: 1, width: "100%"}}>
+          <InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
+          <Select
             multiple
+            value={personName}
+            onChange={handleChange}
             input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+            renderValue={(selected) => (
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                {selected.map((value) => (
+                  <Chip key={value} label={value} />
+                ))}
+              </Box>
+            )}
+            MenuProps={MenuProps}
           >
-            {topicList.map((currtopic, i) => (
-              <>
-                <MenuItem
-                  key={currtopic}
-                  value={currtopic}
-                > 
-                  {currtopic}
-                </MenuItem>
-              </>
+            {subtopics[0].map((name) => (
+              <MenuItem
+                key={name}
+                value={name}
+              >
+                {name}
+              </MenuItem>
             ))}
-          </Select> */}
-          <FormGroup row style={{marginLeft: "20px"}}>
-            {topicList.map((currtopic, i) => (
-              <FormControlLabel id={"Form-Control " + index}
-                control={<Checkbox id={`${index}-${i}`} defaultChecked={selectedTopics.includes(currtopic)} />} 
-                label={index != 0 ? currtopic : 
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    {currtopic + " yo"}
-                    <Tooltip title={personalTherapySubtopics[i].join(", ")}>
-                      <InfoOutlinedIcon style={{ marginLeft: '5px' }} />
-                    </Tooltip>
-                  </div>
-                }
-              />
+          </Select>
+        </FormControl>
+        <FormControl sx={{ m: 1, width: "100%"}}>
+          <InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
+          <Select
+            multiple
+            value={personName}
+            onChange={handleChange}
+            input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+            renderValue={(selected) => (
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                {selected.map((value) => (
+                  <Chip key={value} label={value} />
+                ))}
+              </Box>
+            )}
+            MenuProps={MenuProps}
+          >
+            {subtopics[0].map((name) => (
+              <MenuItem
+                key={name}
+                value={name}
+              >
+                {name}
+              </MenuItem>
             ))}
-          </FormGroup>
-        </>
-      ))
+          </Select>
+        </FormControl>
+        <FormControl sx={{ m: 1, width: "100%"}}>
+          <InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
+          <Select
+            multiple
+            value={personName}
+            onChange={handleChange}
+            input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+            renderValue={(selected) => (
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                {selected.map((value) => (
+                  <Chip key={value} label={value} />
+                ))}
+              </Box>
+            )}
+            MenuProps={MenuProps}
+          >
+            {subtopics[0].map((name) => (
+              <MenuItem
+                key={name}
+                value={name}
+              >
+                {name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl sx={{ m: 1, width: "100%"}}>
+          <InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
+          <Select
+            multiple
+            value={personName}
+            onChange={handleChange}
+            input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+            renderValue={(selected) => (
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                {selected.map((value) => (
+                  <Chip key={value} label={value} />
+                ))}
+              </Box>
+            )}
+            MenuProps={MenuProps}
+          >
+            {subtopics[0].map((name) => (
+              <MenuItem
+                key={name}
+                value={name}
+              >
+                {name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </div>
+      
+      // subtopics.map((topicList, index) => (
+      //   <>
+          
+      //     <Typography fontSize={18} align='left'> {topicHeaders[index] + ": "} </Typography>
+      //     <FormControl>
+      //       <InputLabel>{topicHeaders[index]}</InputLabel>
+      //     </FormControl>
+      //     <FormGroup row style={{marginLeft: "20px"}}>
+      //       {topicList.map((currtopic, i) => (
+      //         <FormControlLabel id={"Form-Control " + index}
+      //           control={<Checkbox id={`${index}-${i}`} defaultChecked={selectedTopics.includes(currtopic)} />} 
+      //           label={index != 0 ? 
+      //             currtopic : 
+      //             <div style={{ display: 'flex', alignItems: 'center' }}>
+      //               {currtopic}
+      //               <Tooltip title={personalTherapySubtopics[i].join(", ")}>
+      //                 <InfoOutlinedIcon style={{ marginLeft: '5px' }} />
+      //               </Tooltip>
+      //             </div>
+      //           }
+      //         />
+      //       ))}
+      //     </FormGroup>
+      //   </>
+      // ))
     );
   }
 
