@@ -21,7 +21,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import Tooltip from '@mui/material/Tooltip';
-import Button from '@mui/material';
+// import Button from '@mui/material';
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
@@ -240,10 +240,6 @@ function TherapistBio({ bio, specialty, price }) {
 
         <Grid item xs={12}>
           <Paper style={{ minHeight: '18vh', padding: '2vh' }}>
-            <div className='right-section-header'> Credentials </div>
-            <div>
-              <Button variant="contained" color="primary" style={{ margin: '1vh' }}>Add Credentials</Button>
-            </div>
             <div className='right-section-header'> Reviews </div>
           </Paper>
         </Grid>

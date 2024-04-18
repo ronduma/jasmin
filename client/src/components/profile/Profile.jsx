@@ -16,6 +16,7 @@ import Paper from '@mui/material/Paper';
 
 import { AuthContext } from '../../context/AuthContext';
 
+import Credentials from "./Credentials";
 import TherapistBio from "./TherapistBio";
 import PatientBio from "./PatientBio";
 import TherapistCalender from "./TherapistCalender";
@@ -167,6 +168,10 @@ function Profile() {
               : <div>Missing Data</div>}
             <br />
             <Button className="button" component={NavLink} to='/edit-profile' variant="contained">Edit Info</Button>
+            <br />
+
+            {profileData.isTherapist ? <Credentials pdf_files={profileData.pdf_files} /> : null}
+
           </Paper>
         </Grid>
         <Grid item xs={6}>
@@ -179,7 +184,7 @@ function Profile() {
               concerns={profileData.concerns}
             />}
         </Grid>
-      
+
       </Grid>
     </div>
   );
