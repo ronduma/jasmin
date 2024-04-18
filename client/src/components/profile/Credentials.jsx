@@ -15,7 +15,7 @@ function Credentials({ uid, pdf_files }) {
     const [pdfFile, setPdfFile] = useState(null);
     const [pdfFiles, setPdfFiles] = useState(pdf_files);
 
-    const handleFileUpload = async (event) => {
+    const handlePDFFileUpload = async (event) => {
         event.preventDefault();
         const selectedFile = event.target.files[0];
         console.log(selectedFile)
@@ -23,7 +23,7 @@ function Credentials({ uid, pdf_files }) {
         setPDFuploadMode(!PDFuploadMode);
     }
 
-    const handleSubmitFileUpload = async (event, directory) => {
+    const handleSubmitPDFFileUpload = async (event, directory) => {
         try {
             event.preventDefault();
             const formData = new FormData();
@@ -45,7 +45,7 @@ function Credentials({ uid, pdf_files }) {
         }
     }
 
-    const handleFileDownload = async (event, index) => {
+    const handlePDFFileDownload = async (event, index) => {
         event.preventDefault();
         console.log("DOWNLOADING PDF", index);
         try {
@@ -67,7 +67,7 @@ function Credentials({ uid, pdf_files }) {
 
     }
 
-    const handleFileDelete = async (event, index) => {
+    const handlePDFFileDelete = async (event, index) => {
         event.preventDefault();
         await axios.delete(`http://localhost:5173/profile/delete-pdf/${uid}/${index}`)
             .then(response => {
@@ -101,7 +101,7 @@ function Credentials({ uid, pdf_files }) {
                             variant="contained"
                             tabIndex={-1}
                             endIcon={<FileDownloadIcon />}
-                            onClick={(event) => handleFileDownload(event, index)}
+                            onClick={(event) => handlePDFFileDownload(event, index)}
                         >
                             {file.filename}
                         </Button>
@@ -112,7 +112,7 @@ function Credentials({ uid, pdf_files }) {
                             role={undefined}
                             variant="contained"
                             tabIndex={-1}
-                            onClick={(event) => handleFileDelete(event, index)}
+                            onClick={(event) => handlePDFFileDelete(event, index)}
                         >
                             <DeleteIcon />
                         </Button>
@@ -133,12 +133,12 @@ function Credentials({ uid, pdf_files }) {
                             startIcon={<UploadIcon />}
                         >
                             <input
-                                id="fileInput"
+                                id="PDFfileInput"
                                 type='file'
-                                onChange={handleFileUpload}
+                                onChange={handlePDFFileUpload}
                                 style={{ display: "none" }}
                             />
-                            <label id="fileInputLabel" htmlFor="fileInput">Upload PDF</label>
+                            <label id="PDFInputLabel" htmlFor="PDFfileInput">Upload PDF</label>
                         </Button>
                         : <Button
                             className="button"
@@ -148,7 +148,7 @@ function Credentials({ uid, pdf_files }) {
                             variant="contained"
                             tabIndex={-1}
                             startIcon={<UploadIcon />}
-                            onClick={(event) => handleSubmitFileUpload(event, 'upload-pdf')}
+                            onClick={(event) => handlePDFSubmitFileUpload(event, 'upload-pdf')}
                         >
                             Submit Upload
                         </Button>
