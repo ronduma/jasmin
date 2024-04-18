@@ -148,7 +148,7 @@ function Credentials({ uid, pdf_files }) {
                             variant="contained"
                             tabIndex={-1}
                             startIcon={<UploadIcon />}
-                            onClick={(event) => handlePDFSubmitFileUpload(event, 'upload-pdf')}
+                            onClick={(event) => handleSubmitPDFFileUpload(event, 'upload-pdf')}
                         >
                             Submit Upload
                         </Button>
