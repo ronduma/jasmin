@@ -36,6 +36,7 @@ function Credentials({ uid, pdf_files }) {
                 .catch(error => {
                     console.log(error);
                 });
+            setPdfLength(pdfLength + 1);
             setPDFuploadMode(!PDFuploadMode);
         } catch (error) {
             console.error('Error uploading profile picture:', error);
@@ -66,8 +67,10 @@ function Credentials({ uid, pdf_files }) {
             .catch(error => {
                 console.log(error);
             });
+        setPdfLength(pdfLength - 1);
     }
 
+    const [pdfLength, setPdfLength] = useState(pdf_files.length);
 
     return (
         <div className="left-section-details" style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
@@ -77,7 +80,7 @@ function Credentials({ uid, pdf_files }) {
 
 
 
-            {pdf_files.length < 3 ? <p>No PDFs uploaded</p> : pdf_files.map((file, index) => {
+            {pdfLength < 3 ? <p>No PDFs uploaded</p> : pdf_files.map((file, index) => {
                 <div className='pdf-list'>
                     <Button
                         className="button"
@@ -105,38 +108,38 @@ function Credentials({ uid, pdf_files }) {
             })}
             <br />
             <div>
-                {PDFuploadMode ?
-                    <Button
-                        className="button"
-                        style={{ "marginTop": 20 }}
-                        component="label"
-                        role={undefined}
-                        variant="contained"
-                        tabIndex={-1}
-                        startIcon={<UploadIcon />}
-                    >
-                        <input
-                            id="fileInput"
-                            type='file'
-                            onChange={handleFileUpload}
-                            style={{ display: "none" }}
-                        />
-                        <label id="fileInputLabel" htmlFor="fileInput">Upload PDF</label>
-                    </Button>
-                    : <Button
-                        className="button"
-                        style={{ "marginTop": 20 }}
-                        component="label"
-                        role={undefined}
-                        variant="contained"
-                        tabIndex={-1}
-                        startIcon={<UploadIcon />}
-                        onClick={(event) => handleSubmitFileUpload(event, 'upload-pdf')}
-                    >
-                        Submit Upload
-                    </Button>
-
-                }
+                {pdfLength < 3 ?
+                    PDFuploadMode ?
+                        <Button
+                            className="button"
+                            style={{ "marginTop": 20 }}
+                            component="label"
+                            role={undefined}
+                            variant="contained"
+                            tabIndex={-1}
+                            startIcon={<UploadIcon />}
+                        >
+                            <input
+                                id="fileInput"
+                                type='file'
+                                onChange={handleFileUpload}
+                                style={{ display: "none" }}
+                            />
+                            <label id="fileInputLabel" htmlFor="fileInput">Upload PDF</label>
+                        </Button>
+                        : <Button
+                            className="button"
+                            style={{ "marginTop": 20 }}
+                            component="label"
+                            role={undefined}
+                            variant="contained"
+                            tabIndex={-1}
+                            startIcon={<UploadIcon />}
+                            onClick={(event) => handleSubmitFileUpload(event, 'upload-pdf')}
+                        >
+                            Submit Upload
+                        </Button>
+                    : null}
             </div>
         </div>
     );
