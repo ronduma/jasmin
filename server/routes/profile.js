@@ -21,7 +21,7 @@ const upload = multer({ storage: storage });
 router.get("/:id", async (req, res) => {
 	try {
 		const userObject = await users.getUserById(req.params.id);
-		console.log("user:", userObject);
+		// console.log("user:", userObject);
 		return res.status(200).json(userObject);
 	} catch (e) {
 		console.log(e);
@@ -94,8 +94,8 @@ router.put("/concerns", async (req, res) => {
 		for (let i = 0; i < 3; i++) {
 			concerns.push(xss(req.body.concerns[i]));
 		}
-		if (concerns[0] === "" && concerns[1] === "" && concerns[2] === "")
-			throw "No concerns";
+		// if (concerns[0] === "" && concerns[1] === "" && concerns[2] === "")
+		// 	throw "No concerns";
 		const concernsReturn = await users.updateProfile(uid, {
 			concerns: concerns,
 		});
@@ -109,14 +109,16 @@ router.put("/concerns", async (req, res) => {
 router.put("/specialty", async (req, res) => {
 	try {
 		let uid = req.body.uid;
-		const specialty = [];
-		for (let i = 0; i < req.body.specialty.length; i++) {
-			specialty.push(xss(req.body.specialty[i]));
+		if (req.body.specialty){
+			const specialty = [];
+			for (let i = 0; i < req.body.specialty.length; i++) {
+				specialty.push(xss(req.body.specialty[i]));
+			}
+			const specialtyReturn = await users.updateProfile(uid, {
+				specialty: specialty,
+			});
+			return res.status(200).json(specialtyReturn);
 		}
-		const specialtyReturn = await users.updateProfile(uid, {
-			specialty: specialty,
-		});
-		return res.status(200).json(specialtyReturn);
 	} catch (e) {
 		console.log(e);
 		return res.status(400).json(e);
@@ -125,8 +127,8 @@ router.put("/specialty", async (req, res) => {
 router.put("/price", async (req, res) => {
 	try{
 		let uid = req.body.uid;
-		console.log('bruh');
-		console.log(req.body.price);
+		// console.log('bruh');
+		// console.log(req.body.price);
 		const priceReturn = await users.updateProfile(uid,  {
 			price: req.body.price
 		})

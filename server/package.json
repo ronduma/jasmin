@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon app.js",
-    "start": "node app.js",
+    "start": "nodemon app.js",
     "seed": "node seed/seed.js"
   },
   "repository": {
@@ -19,19 +19,23 @@
   },
   "homepage": "https://github.com/ronduma/jasmin#readme",
   "dependencies": {
+    "@google/generative-ai": "^0.6.0",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "cross-fetch": "^4.0.0",
+    "dayjs": "^1.11.10",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "firebase-admin": "^12.1.0",
     "fs": "^0.0.1-security",
     "mongodb": "^6.2.0",
     "multer": "^1.4.5-lts.1",
+    "node-fetch": "^3.3.2",
+    "socket.io": "^4.7.5",
     "xss": "^1.0.14"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.1.0"
   }
 }

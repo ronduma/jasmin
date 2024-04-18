@@ -2,6 +2,7 @@ const { ObjectId } = require("mongodb");
 const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
 const fs = require("fs");
+const dayjs = require("dayjs");
 
 const validation = require("./validation");
 
@@ -10,6 +11,20 @@ const createUser = async (uid, email) => {
 	const userExists = await userCollection.findOne({ uid: uid });
 	if (userExists) {
 		throw "User with email already exists.";
+	}
+
+	const kaiChat = {
+		to: {
+			id: "0",
+			name: "kAI"
+		},
+		messages: [
+			{
+				from: "kAI",
+				message: "Hello! I'm kAI, your personal AI assistant. Let me know if you have any questions about Jasmin.",
+				timestamp: dayjs().format('DD-MM-YYYY HH:mm:ss')
+			}
+		]
 	}
 
 	const user = {
@@ -26,12 +41,15 @@ const createUser = async (uid, email) => {
 		bio: null,
 		occupation: null,
 		concerns: [],
-		chatLog: [],
+		chatLog: [kaiChat],
 		patients: [],
 		therapist: null,
 		specialty: [],
 		pdf_files: [],
 	};
+
+	console.log("inserting user:", user)
+
 	const insertInfo = await userCollection.insertOne(user);
 	if (!insertInfo.acknowledged || !insertInfo.insertedId) {
 		throw "Could not add user";
@@ -267,7 +285,7 @@ const deletePdfFromDB = async (id, index) => {
 };
 
 const getUserByUsername = async (username) => {
-	username = username.toLowerCase();
+	// username = username.toLowerCase();
 	const userCollection = await users();
 	const user = await userCollection.findOne({ username: username });
 	if (!user) throw "Error: There is no user with the given name";
@@ -307,6 +325,14 @@ const getAllTherapists = async (type) => {
 			.toArray();
 		return therapistCollection;
 	}
+};
+
+const getAllPatients = async () => {
+	const userCollection = await users();
+	const patientCollection = await userCollection
+		.find({ isTherapist: false })
+		.toArray();
+	return patientCollection;
 };
 
 const getFilteredTherapists = async(filters) => {
@@ -376,36 +402,33 @@ const getFilteredTherapists = async(filters) => {
 	}
 
 	else{
+
 		if(selectedGender == '' && selectedPrice != ''){
 			// console.log('here6');
-			therapistCollection = await userCollection
-			.find({isTherapist: true, price : selectedPrice})
-			.toArray();
-			
+			therapistCollection = await getAllTherapists(selectedType);
+			therapistCollection = therapistCollection.filter(value => value.price == selectedPrice);
 		}
 		
 		else if(selectedGender != '' && selectedPrice == ''){
 			// console.log('here7');
-			therapistCollection = await userCollection
-			.find({isTherapist: true, gender : selectedGender})
-			.toArray();
+			therapistCollection = await getAllTherapists(selectedType);
+			therapistCollection = therapistCollection.filter(value => value.gender == selectedGender);
 			
 		}
 		else if(selectedGender != '' && selectedPrice != ''){
 			// console.log('here8');
-			therapistCollection = await userCollection
-			.find({isTherapist: true, gender : selectedGender, price: selectedPrice})
-			.toArray();
+			therapistCollection = await getAllTherapists(selectedType);
+			therapistCollection = therapistCollection.filter(value => value.gender == selectedGender && value.price == selectedPrice);
 		}
 	}
 	
 	if(selectedOrder == "first_name_order"){
 		// console.log('here9');
-		return therapistCollection.sort((a, b) => (a.firstName > b.firstName) ? 1 : ((b.firstName > a.firstName) ? -1: 0))
+		return therapistCollection.sort((a, b) => (a.firstName.toLowerCase() > b.firstName.toLowerCase()) ? 1 : ((b.firstName.toLowerCase() > a.firstName. toLowerCase()) ? -1: 0))
 	}
 	if(selectedOrder == "last_name_order")  {
 		// console.log('here10');
-		return therapistCollection.sort((a, b) => (a.lastName > b.lastName) ? 1 : ((b.lastName > a.lastName) ? -1: 0))
+		return therapistCollection.sort((a, b) => (a.lastName.toLowerCase() > b.lastName.toLowerCase()) ? 1 : ((b.lastName.toLowerCase() > a.lastName.toLowerCase()) ? -1: 0))
 	}
 	else return therapistCollection
 }
@@ -432,22 +455,19 @@ const match = async (currentUserID, TherapistID) => {
   if (currentUser.isTherapist != true){
     console.log(" BOTH Patient and Therapist Exist and Current User not Therapist")
 
-    //add patient if its not in therapist acc
-    if ((!Therapist.patients.includes(currentUserID)) && (currentUser.therapist == null || currentUser.therapist == "") ) {
+    //Update
+    const updatedUser = await userCollection.findOneAndUpdate(
+			{ _id: currentUserID },
+			{ $set: { therapist: TherapistID  } }
+		);
+  
+    if (!Therapist.patients.includes(currentUserID)) {
       const updatedTherapist = await userCollection.findOneAndUpdate(
         { _id: TherapistID },
-        { $push: { patients: currentUserID  } }
+        { $push: { patients: TherapistID  } }
       );
 
       console.log("Patient should be added to therapist" + Therapist.patients)
-
-        //Update current user to add therapist
-      const updatedUser = await userCollection.findOneAndUpdate(
-        { _id: currentUserID },
-        { $set: { therapist: TherapistID  } }
-      );
-      console.log("Therapist should be added to patient" + currentUser.therapist)
-      return currentUser;
     }
     //already matched call unmatch
     else{
@@ -475,12 +495,9 @@ const match = async (currentUserID, TherapistID) => {
   }
 }
 
-
-
 const unMatch = async (currentUserID, TherapistID) => {
   return;
 }
-
 
 
 module.exports = {
@@ -495,6 +512,7 @@ module.exports = {
 	updateProfile,
 	getUserByUsername,
 	getAllTherapists,
+	getAllPatients,
 	getFilteredTherapists,
 	gettingStarted,
   match,

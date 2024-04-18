@@ -1,6 +1,6 @@
 import "../App.css";
 import { useParams, useNavigate, NavLink } from 'react-router-dom';
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -9,9 +9,8 @@ import Paper from '@mui/material/Paper';
 
 import Typography from '@mui/material/Typography';
 import TherapistBioFromPatientView from "./profile/TherapistBioFromPatientView";
-import {AuthContext} from '../context/AuthContext';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
+import {AuthContext} from '../context/AuthContext';
 
 function PsychologistView() {
   const { id } = useParams();
@@ -139,8 +138,9 @@ function PsychologistView() {
         </Grid>
         <Grid item xs={6}>
           <TherapistBioFromPatientView 
-              bio = {profileData.bio} 
-              specialty={profileData.specialty}/> 
+            bio = {profileData.bio} 
+            specialty={profileData.specialty}
+          /> 
         </Grid>
       </Grid>
     </div>
