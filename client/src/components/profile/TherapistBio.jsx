@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import dayjs from 'dayjs';
 import PropTypes from 'prop-types'
 
@@ -90,35 +90,20 @@ function TherapistBio({bio, specialty, price}) {
   }
 
   //checks ids and sees what is selected and stores that
-  const handleCheckboxChange = async () => {
-    let topicList = [];
-    for (let i = 0; i < subtopics.length; i++) {
-      for (let j = 0; j < subtopics[i].length; j++) {
-        const checkbox = document.getElementById(`${i}-${j}`);
-        if (checkbox && checkbox.checked) {
-          if (i == 0) {
-            topicList.push(subtopics[i][j]);
-            topicList.push(...personalTherapySubtopics[j]);
-          }
-          else topicList.push(subtopics[i][j]);
-        }
-      }
-    }
-
+  const handleCheckboxChange = async (data) => {
+    setSelectedTopics(data);
     // axios call to add to database
     axios.put('http://localhost:5173/profile/specialty', {
       uid: currentUser.uid,
-      specialty: topicList
+      specialty: selectedTopics
     })
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-
-    setSelectedTopics(topicList);
-    setEditAbout(false);
+    // .then((response) => {
+    //   console.log(response);
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    // });
+    // setEditAbout(false);
   }
 
   const [value, setValue] = useState(0);
@@ -127,6 +112,10 @@ function TherapistBio({bio, specialty, price}) {
     setValue(newValue);
     console.log(value)
   };
+
+  useEffect(() => {
+    console.log(selectedTopics)
+  }, [selectedTopics]);
 
   return (
     <Paper style={{padding: '2vh', height:'100%'}}>
@@ -143,7 +132,7 @@ function TherapistBio({bio, specialty, price}) {
           </div>
           {editAbout ? "" : <IconButton onClick={() => setEditAbout(true)}><EditIcon /></IconButton>}
         </div>
-        {editAbout ? <Expertise />
+        {editAbout ? <Expertise specialty={handleCheckboxChange}/>
         : <p align="left">{"No topics found. Please edit, and add topics of expertise."}</p> 
         }
         <div className='right-section-header'> 

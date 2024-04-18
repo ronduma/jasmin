@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   FormControl,
   InputLabel,
@@ -12,7 +12,7 @@ import {
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
-const Expertise = () => {
+const Expertise = (props) => {
   const subtopics = [
     ["Relationship with Yourself", "Relationship with Others", "Personal and Professional development", "New Living Conditions"],
     ["Difficulty in communication, crisis", "Intimate Relations", "Breakup", "Emotional abuse, abusive behavior", "Child-rearing practices", "Betrayal"],
@@ -55,11 +55,50 @@ const Expertise = () => {
   const [personName3, setPersonName3] = useState([]);
   const [personName4, setPersonName4] = useState([]);
   const [personName5, setPersonName5] = useState([]);
+  const [selectedPersonal, setSelectedPersonal] = useState([]);
+  const [selectedSubtopics, setSelectedSubtopics] = useState([]);
+  const [specialty, setSpecialty] = useState([]);
+
+  const sendMessageToParent = (specialty) => {
+    // Invoke the callback function passed from the parent with data
+    props.specialty(specialty);
+  };
 
   const handleChange = (event, setState) => {
     const { value } = event.target;
+  
+    if (setState === setPersonName1) {
+      const updatedIndices = [];
+  
+      // Iterate over each selected value
+      for (let i = 0; i < value.length; i++) {
+        const selectedValue = value[i];
+        const selectedIndex = subtopics[0].indexOf(selectedValue);
+        updatedIndices.push(selectedIndex);
+      }
+  
+      // Update selectedPersonal by spreading the existing state and appending new indices
+      setSelectedPersonal(updatedIndices);
+    }
     setState(value);
   };
+
+  useEffect(() => {
+    let items = [];
+    for (let i = 0; i < selectedPersonal.length; i++){
+      items.push(personalTherapySubtopics[selectedPersonal[i]]);
+    }
+    setSelectedSubtopics(items)
+  }, [selectedPersonal]);
+
+  useEffect(() => {
+    let combined = personName1.concat(personName2.concat(personName3.concat(personName4.concat(personName5.concat(selectedSubtopics.flat())))));
+    setSpecialty(combined);
+  }, [personName1, personName2, personName3, personName4, personName5, selectedSubtopics]);
+
+  useEffect(() => {
+    sendMessageToParent(specialty);
+  }, [specialty]);
 
   return (
     <div>
