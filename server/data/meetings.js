@@ -32,6 +32,14 @@ const getMeetingsByTimeTherapist = async (userID1) => {
   return meetingList;
 }
 
+const getMeetingByTimePatients = async (userID1) => {
+
+  const meetingCollection = await meetings();
+  const meetingList = await meetingCollection.find({ patient: userID1}).toArray();
+  if (!meetingList  || meetingList.length === 0 ) throw 'Error: There is no meeting with the given patient ' + userID1 ;
+  return meetingList;
+}
+
 
 const ifMeetingExistByTimePatient = async (userID1, time) => {
 
@@ -79,7 +87,7 @@ const isMatched = async (userID1, userID2) => {
 };
 
 
-const createMeeting = async (userID1, userID2, time) => {
+const createMeeting = async (userID1, userID2, time, hostRoomUrl,roomUrl) => {
   const meetingCollection = await meetings();
 
   let account = await user.getUserById(userID1);
@@ -123,6 +131,8 @@ const createMeeting = async (userID1, userID2, time) => {
     patientName: patientName,
     therapistName: therapistName,
     time: time,
+    hostRoomUrl:hostRoomUrl,
+    roomUrl:roomUrl
 };
 
 const insertMeeting = await meetingCollection.insertOne(newMeeting);
@@ -170,5 +180,6 @@ module.exports = {
   createMeeting,
   deleteMeeting,
   isMatched,
-  getMeetingsByTimeTherapist
+  getMeetingsByTimeTherapist,
+  getMeetingByTimePatients
 };
