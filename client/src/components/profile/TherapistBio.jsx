@@ -14,19 +14,12 @@ import Tab from '@mui/material/Tab';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import Select from '@mui/material/Select';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import CheckCircleIcon from '@mui/icons-material/CheckCircleOutlined';
 import CancelRoundedIcon from '@mui/icons-material/CancelOutlined';
 import EditIcon from '@mui/icons-material/Edit';
-import FormGroup from '@mui/material/FormGroup';
 import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import Tooltip from '@mui/material/Tooltip';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import Chip from '@mui/material/Chip';
+
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
@@ -34,6 +27,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
+
+import Expertise from './Expertise';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -63,26 +58,6 @@ function TherapistBio({bio, specialty, price}) {
   const[selectedPrice, setSelectPrice] = useState(price);
   const[newPrice, setNewPrice] = useState(price);
   if (price = "") setSelectPrice("");
-  const [subtopics, setSubTopics] = useState([
-  ["Relationship with Yourself", "Relationship with Others", "Personal and Professional development", "New Living Conditions"],
-  ["Difficulty in communication, crisis", "Intimate Relations", "Breakup", "Emotional abuse, abusive behavior", 
-  "Child-rearing practices", "Betrayal"], ["ADHD (Attention Deficit Hyperactivity Disorder)", "Excessive Aggression",
-  "Children with Special Needs", "Loss of Loved Ones", "Adaptation", "Bullying"], ["Gestalt", "Existential",
-  "Client-centered therapy", "CBT (Cognitive Behavioral Therapy)", "Positive psychotherapy", "Psychoanalysis",
-  "Schema therapy", "Transactional Analysis"], ["Clinical Psychologist", "Psychiatrist", "Psychologist",
-  "Consulting psychologist", "Psychotherapist", "Sexologist", "Coach", "Transactional Analysis"]]);
-
-  const [topicHeaders, setTopicHeaders] = useState(["Personal Therapy Topics","Couple Therapy", "Children Therapy", 
-    "Therapeutic Approaches", "Types of Professionals in Mental Health"]);
-
-  const [personalTherapySubtopics, setPersonalTherapySubtopics] = useState([
-    ["Fatigue", "Depression", "Irritability", "Anxiety", "Panic attacks", "Self-esteem",
-    "Loneliness", "Chemical", "Suicide attempts", "Psychosomatics", "Bipolar disorder",
-    "Food attitude", "Obsessive thoughts and rituals", "Borderline personality disorder" ], 
-    ["Romantic relationship", "Relationship issues", "Sexual relations", "Codependency"], 
-    ["Self-determination, job search", "Burnout", "Procrastination", "Attitude towards money"], 
-    ["Childbirth", "Adaptation, emigration", "Grief", "Disease diagnosis", "PTSD"]
-  ]);
 
   const putBio = async () => {
     // console.log("curentUser: ", currentUser);
@@ -112,164 +87,6 @@ function TherapistBio({bio, specialty, price}) {
     });
     setNewPrice(selectedPrice);
     setEditAbout(false);
-  }
-
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
-      },
-    },
-  };
-  const [personName, setPersonName] = useState([]);
-
-  const editTopics = () => {
-     const handleChange = (event) => {
-      const {
-        target: { value },
-      } = event;
-      setPersonName(
-        // On autofill we get a stringified value.
-        typeof value === 'string' ? value.split(',') : value
-      );
-    };
-    return (
-      <div>
-        <FormControl sx={{ m: 1, width: "100%"}}>
-          <InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
-          <Select
-            multiple
-            value={personName}
-            onChange={handleChange}
-            input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-            renderValue={(selected) => (
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                {selected.map((value) => (
-                  <Chip key={value} label={value} />
-                ))}
-              </Box>
-            )}
-            MenuProps={MenuProps}
-          >
-            {subtopics[0].map((name) => (
-              <MenuItem
-                key={name}
-                value={name}
-              >
-                {name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <FormControl sx={{ m: 1, width: "100%"}}>
-          <InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
-          <Select
-            multiple
-            value={personName}
-            onChange={handleChange}
-            input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-            renderValue={(selected) => (
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                {selected.map((value) => (
-                  <Chip key={value} label={value} />
-                ))}
-              </Box>
-            )}
-            MenuProps={MenuProps}
-          >
-            {subtopics[0].map((name) => (
-              <MenuItem
-                key={name}
-                value={name}
-              >
-                {name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <FormControl sx={{ m: 1, width: "100%"}}>
-          <InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
-          <Select
-            multiple
-            value={personName}
-            onChange={handleChange}
-            input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-            renderValue={(selected) => (
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                {selected.map((value) => (
-                  <Chip key={value} label={value} />
-                ))}
-              </Box>
-            )}
-            MenuProps={MenuProps}
-          >
-            {subtopics[0].map((name) => (
-              <MenuItem
-                key={name}
-                value={name}
-              >
-                {name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <FormControl sx={{ m: 1, width: "100%"}}>
-          <InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
-          <Select
-            multiple
-            value={personName}
-            onChange={handleChange}
-            input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-            renderValue={(selected) => (
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                {selected.map((value) => (
-                  <Chip key={value} label={value} />
-                ))}
-              </Box>
-            )}
-            MenuProps={MenuProps}
-          >
-            {subtopics[0].map((name) => (
-              <MenuItem
-                key={name}
-                value={name}
-              >
-                {name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </div>
-      
-      // subtopics.map((topicList, index) => (
-      //   <>
-          
-      //     <Typography fontSize={18} align='left'> {topicHeaders[index] + ": "} </Typography>
-      //     <FormControl>
-      //       <InputLabel>{topicHeaders[index]}</InputLabel>
-      //     </FormControl>
-      //     <FormGroup row style={{marginLeft: "20px"}}>
-      //       {topicList.map((currtopic, i) => (
-      //         <FormControlLabel id={"Form-Control " + index}
-      //           control={<Checkbox id={`${index}-${i}`} defaultChecked={selectedTopics.includes(currtopic)} />} 
-      //           label={index != 0 ? 
-      //             currtopic : 
-      //             <div style={{ display: 'flex', alignItems: 'center' }}>
-      //               {currtopic}
-      //               <Tooltip title={personalTherapySubtopics[i].join(", ")}>
-      //                 <InfoOutlinedIcon style={{ marginLeft: '5px' }} />
-      //               </Tooltip>
-      //             </div>
-      //           }
-      //         />
-      //       ))}
-      //     </FormGroup>
-      //   </>
-      // ))
-    );
   }
 
   //checks ids and sees what is selected and stores that
@@ -326,8 +143,8 @@ function TherapistBio({bio, specialty, price}) {
           </div>
           {editAbout ? "" : <IconButton onClick={() => setEditAbout(true)}><EditIcon /></IconButton>}
         </div>
-        {editAbout ? editTopics()
-        : <p align="left">{ selectedTopics.join(", ") || "No topics found. Please edit, and add topics of expertise."}</p> 
+        {editAbout ? <Expertise />
+        : <p align="left">{"No topics found. Please edit, and add topics of expertise."}</p> 
         }
         <div className='right-section-header'> 
           About Me 
