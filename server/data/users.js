@@ -320,11 +320,11 @@ const getFilteredTherapists = async(filters) => {
 	
 	if(selectedOrder == "first_name_order"){
 		// console.log('here9');
-		return therapistCollection.sort((a, b) => (a.firstName > b.firstName) ? 1 : ((b.firstName > a.firstName) ? -1: 0))
+		return therapistCollection.sort((a, b) => (a.firstName.toLowerCase() > b.firstName.toLowerCase()) ? 1 : ((b.firstName.toLowerCase() > a.firstName. toLowerCase()) ? -1: 0))
 	}
 	if(selectedOrder == "last_name_order")  {
 		// console.log('here10');
-		return therapistCollection.sort((a, b) => (a.lastName > b.lastName) ? 1 : ((b.lastName > a.lastName) ? -1: 0))
+		return therapistCollection.sort((a, b) => (a.lastName.toLowerCase() > b.lastName.toLowerCase()) ? 1 : ((b.lastName.toLowerCase() > a.lastName.toLowerCase()) ? -1: 0))
 	}
 	else return therapistCollection
 }
