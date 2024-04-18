@@ -26,6 +26,7 @@ import SpecialList from './components/Specialist';
 import {AuthProvider} from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 import Privacy from './components/Privacy';
+import Chat from './components/chat/Chat';
 import Video from './components/video/Video';
 import PatientFromTherapistView from './components/PatientViewFromTherapist';
 // import Feedback from './components/Feedback';
@@ -69,6 +70,7 @@ function App() {
             <Route path='/video_chat' element={<Video />} />
             <Route path="*" element={<NotFound/>} />
           </Routes>
+          <Chat />
         </main>
         <footer>
           <Footer />

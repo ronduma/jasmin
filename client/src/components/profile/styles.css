@@ -28,14 +28,14 @@ h1{
 }
 
 .profile-container{
-  margin: 3rem 0 10rem 0;
+  margin: 2rem 0 10rem 0;
 }
 
 .left-section {
-  flex-direction: column;
+  /* flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 2rem 0 2rem 0;
+  justify-content: center; */
+  padding: 2rem;
 }
 
 .left-section-header{
@@ -48,10 +48,11 @@ h1{
 .left-section-details{
   display: inline-block;
   text-align: left;
+  font-size:1.25rem;
 }
 
 .about-me{
-  height:13rem;
+  /* height:13rem; */
   padding:2vh;
   position:relative;
 }
@@ -61,10 +62,11 @@ h1{
   font-weight:500;
   color:#01382E;
   text-align: left;
+  padding: 1rem 0 0 0;
 }
 
 .core-concerns{
-  height: 23rem;
+  /* height: 23rem; */
   padding:2vh;
   position:relative;
 }

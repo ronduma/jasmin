@@ -19,11 +19,11 @@ import {AuthContext} from '../../context/AuthContext';
 import TherapistBio from "./TherapistBio";
 import PatientBio from "./PatientBio";
 import TherapistCalender from "./TherapistCalender";
+import Loading from "../loading/Loading";
 
 function Profile() {
   const {currentUser} = useContext(AuthContext);
   const [profileData, setProfileData] = useState(null);
-  const [isTherapist, setIsTherapist] = useState(null);
   const [imgFile, setImgFile] = useState(null);
 
   const navigate = useNavigate();
@@ -42,7 +42,6 @@ function Profile() {
       setProfileData(response.data);
       setLoading(false);
     } catch (e) {
-      // console.log("yo")
       navigate('/getting-started')
     }
   };
@@ -84,7 +83,7 @@ function Profile() {
   }
 
   if (isLoading) {
-    return <div className="App">Loading...</div>;
+    return <Loading />;
   }
 
   return (
@@ -96,9 +95,10 @@ function Profile() {
         alignItems={"stretch"}
       >
         <Grid 
-          fontSize={"14pt"}
           item 
-          xs={3}
+          xs={12}
+          md={6}
+          lg={4}
         >
           <Paper className="left-section">
             <div className="left-section-header">
@@ -168,7 +168,11 @@ function Profile() {
               <Button className="button" component = {NavLink} to='/edit-profile' variant="contained">Edit Info</Button>
           </Paper>
         </Grid>
-        <Grid item xs={6}>
+        <Grid 
+          item
+          xs={12}
+          md={6}
+        >
           {profileData.isTherapist == true ? 
           <TherapistBio 
               bio = {profileData.bio} 

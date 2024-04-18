@@ -1,12 +1,12 @@
 const { ObjectId } = require("mongodb");
 
 function validateUserUpdate(updated) {
-  console.log(updated);
+  // console.log(updated);
   if (updated == {}) {
     throw "Fields cannot be empty.";
   }
   for (let value in updated) {
-    console.log("Attempting to update: ", updated[value]);
+    // console.log("Attempting to update: ", updated[value]);
     if (
       updated[value] === undefined ||
       updated[value] === null ||
@@ -17,7 +17,7 @@ function validateUserUpdate(updated) {
       } else if (value === "lastName") {
         throw `Last name cannot be empty.`;
       } else if (value === "isTherapist") {
-        console.log(updated[value]);
+        // console.log(updated[value]);
         throw `Are you a patient, or a therapist?`;
       } else
         throw `${

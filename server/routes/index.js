@@ -3,7 +3,9 @@ const loginRoutes = require('./login');
 const logoutRoutes = require('./logout');
 const profileRoutes = require('./profile');
 const therapistRoutes = require('./therapists');
-const matchingRoutes = require('./matching')
+const patientRoutes = require('./patients');
+const matchingRoutes = require('./matching');
+const chatsRoutes = require('./chats');
 const meetingRoutes = require('./meeting')
 const videoRoutes = require('./video');
 
@@ -18,12 +20,14 @@ const constructorMethod = (app) => {
   app.use('/profile', profileRoutes);
   app.use('/logout', logoutRoutes);
   app.use('/therapists', therapistRoutes);
+  app.use('/patients', patientRoutes);
   app.use('/matching', matchingRoutes);
+  app.use('/chats', chatsRoutes);
   app.use('/meeting', meetingRoutes);
   app.use('/video',videoRoutes);
 
   app.use('*', (req, res) => {
-    console.log('yo')
+    // console.log('yo')
     res.status(400).json("Error: Page not found.")
   });
 };

@@ -431,7 +431,7 @@ function Personal_Matching() {
     <br/>
     </div>
     <div>
-    <div style={{ display: "flex", flexWrap: "wrap", 
+    <div style={{ display: 'flex', flexWrap: 'wrap', 
                   gap: "20px", alignItems:"flex-start", 
                   margin: "20px", paddingBottom: "50px"}}>
       {loading && <>

@@ -1,0 +1,30 @@
+.loading-icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10rem 0;
+}
+
+.loading-icon {
+  transform-origin: center;
+  height: 5rem;
+  pointer-events: none;
+  margin: 2rem 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .loading-icon{
+    animation: roll infinite 5s linear;
+    transform-origin: center;
+  }
+}
+
+@keyframes roll {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
