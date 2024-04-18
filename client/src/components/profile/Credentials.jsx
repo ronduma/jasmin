@@ -11,6 +11,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 function Credentials({ uid, pdf_files }) {
 
+    console.log("PDF FILES", pdf_files);
+
     const [PDFuploadMode, setPDFuploadMode] = useState(true);
     const [pdfFile, setPdfFile] = useState(null);
 
@@ -25,6 +27,7 @@ function Credentials({ uid, pdf_files }) {
 
     const handleSubmitFileUpload = async (event, directory) => {
         try {
+            event.preventDefault();
             const formData = new FormData();
             formData.append('file', pdfFile);
             await axios.put(`http://localhost:5173/profile/${uid}/${directory}`, formData)
@@ -45,15 +48,24 @@ function Credentials({ uid, pdf_files }) {
 
     const handleFileDownload = async (event, index) => {
         event.preventDefault();
-        await axios.get(`http://localhost:5173/profile/${uid}/download-pdf/${index}`)
-            .then(response => {
-                if (response.data) {
-                    console.log("RESPONSE", response);
-                }
-            })
-            .catch(error => {
-                console.log(error);
+        console.log("DOWNLOADING PDF", index);
+        try {
+            await axios({
+                url: `http://localhost:5173/profile/download-pdf/${uid}/${index}`,
+                method: 'GET',
+                responseType: 'blob', // important
+            }).then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', pdf_files[index].filename); // or any other filename you want
+                document.body.appendChild(link);
+                link.click();
             });
+        } catch (error) {
+            console.log("ERROR DOWNLOADING PDF", error)
+        }
+
     }
 
     const handleFileDelete = async (event, index) => {
@@ -79,32 +91,34 @@ function Credentials({ uid, pdf_files }) {
             <br />
 
 
+            <p>Upload up to 3 PDFs {pdfLength}</p>
+            {pdfLength < 1 ? <p>No PDFs uploaded</p> : pdf_files.map((file, index) => {
+                return (
+                    <div className='pdf-list'>
+                        <Button
+                            className="button"
+                            component="label"
+                            role={undefined}
+                            variant="contained"
+                            tabIndex={-1}
+                            endIcon={<FileDownloadIcon />}
+                            onClick={(event) => handleFileDownload(event, index)}
+                        >
+                            {file.filename}
+                        </Button>
 
-            {pdfLength < 3 ? <p>No PDFs uploaded</p> : pdf_files.map((file, index) => {
-                <div className='pdf-list'>
-                    <Button
-                        className="button"
-                        component="label"
-                        role={undefined}
-                        variant="contained"
-                        tabIndex={-1}
-                        endIcon={<FileDownloadIcon />}
-                        onClick={(event) => handleFileDownload(event, index)}
-                    >
-                        Test
-                    </Button>
-
-                    <Button
-                        className="button"
-                        component="label"
-                        role={undefined}
-                        variant="contained"
-                        tabIndex={-1}
-                        onClick={(event) => handleFileDelete(event, index)}
-                    >
-                        <DeleteIcon />
-                    </Button>
-                </div>
+                        <Button
+                            className="button"
+                            component="label"
+                            role={undefined}
+                            variant="contained"
+                            tabIndex={-1}
+                            onClick={(event) => handleFileDelete(event, index)}
+                        >
+                            <DeleteIcon />
+                        </Button>
+                    </div>
+                )
             })}
             <br />
             <div>

@@ -5,6 +5,7 @@ const users = require("../data/users");
 const path = require("path");
 const xss = require("xss");
 const multer = require("multer");
+const fs = require("fs");
 
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
@@ -138,6 +139,8 @@ router.put("/price", async (req, res) => {
 });
 
 router.put("/:id/upload-pdf", upload.single("file"), async (req, res) => {
+	console.log(req.file);
+	console.log(req.params.id);
 	const id = req.params.id;
 	const file = req.file;
 	if (!file) {
@@ -153,11 +156,12 @@ router.put("/:id/upload-pdf", upload.single("file"), async (req, res) => {
 	return res.status(200).json("");
 });
 
-router.get(":id/download-pdf/:index", async (req, res) => {
+router.get("/download-pdf/:id/:index", async (req, res) => {
+	console.log("downloading pdf", req.params.id, req.params.index);
 	const id = req.params.id;
 	const index = req.params.index;
 	const pdfPath = await users.getPdfFromDB(id, index);
-	res.download(pdfPath, (err) => {
+	return res.download(pdfPath, (err) => {
 	  if (err) {
 		console.error(err);
 	  }

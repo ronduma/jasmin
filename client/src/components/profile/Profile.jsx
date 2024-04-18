@@ -65,8 +65,9 @@ function Profile() {
     console.log('Updated imgFile:', imgFile);
   }, [imgFile]);
 
-  const handleSubmitFileUpload = async (directory) => {
+  const handleSubmitFileUpload = async (event, directory) => {
     try {
+      event.preventDefault();
       const formData = new FormData();
       formData.append('file', imgFile);
       await axios.put(`http://localhost:5173/profile/${currentUser.uid}/${directory}`, formData)
@@ -149,7 +150,7 @@ function Profile() {
                         variant="contained"
                         tabIndex={-1}
                         startIcon={<UploadIcon />}
-                        onClick={handleSubmitFileUpload('profile-pic')}
+                        onClick={(event) => handleSubmitFileUpload(event, 'profile-pic')}
                       >
                         Submit Upload
                       </Button>
@@ -170,7 +171,7 @@ function Profile() {
             <Button className="button" component={NavLink} to='/edit-profile' variant="contained">Edit Info</Button>
             <br />
 
-            {profileData.isTherapist ? <Credentials uid={profileData.uid} pdf_files={profileData.pdf_files} /> : null}
+            {profileData.isTherapist ? <Credentials uid={profileData._id} pdf_files={profileData.pdf_files} /> : null}
 
           </Paper>
         </Grid>

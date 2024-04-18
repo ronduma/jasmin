@@ -220,19 +220,29 @@ const savePdfToDB = async (id, path, filename) => {
 	}
   };
 
-const getPdfFromDB = async (id, index) => {
-	if (index > 2 || index < 0) throw "Error: Index out of bounds";
-	const userCollection = await users();
-	const user = await userCollection.findOne({ _id: id });
-	if (!user) throw "Error: There is no user with the given name";
-	if (!user.pdf_files) throw "Error: There are no pdf files";
-	if (!user.pdf_files[index]) throw "Error: There is no pdf file with the given index";
+  const getPdfFromDB = async (id, index) => {
+    if (index > 2 || index < 0) throw "Error: Index out of bounds";
+    const userCollection = await users();
+    const user = await userCollection.findOne({ _id: id });
+    if (!user) throw "Error: There is no user with the given name";
+    if (!user.pdf_files) throw "Error: There are no pdf files";
+    if (!user.pdf_files[index]) throw "Error: There is no pdf file with the given index";
 
-	const tempFilePath = `./uploads/${user.pdf_files[index].filename}`;
-	fs.writeFileSync(tempFilePath, user.pdf_files[index].content);
+    const tempFilePath = `./uploads/${user.pdf_files[index].filename}`;
 
-	console.log("PDF file ready for download.");
-	return tempFilePath;
+    // Check if content is a Buffer
+    if (Buffer.isBuffer(user.pdf_files[index].content)) {
+        fs.writeFileSync(tempFilePath, user.pdf_files[index].content);
+    } else if (user.pdf_files[index].content.read) { // Check if content is a Binary instance
+        // Convert Binary to Buffer and write to file
+        const buffer = Buffer.from(user.pdf_files[index].content.read(0, user.pdf_files[index].content.length()));
+        fs.writeFileSync(tempFilePath, buffer);
+    } else {
+        throw "Error: Unknown file content type";
+    }
+
+    console.log("PDF file ready for download.");
+    return tempFilePath;
 };
   
 const deletePdfFromDB = async (id, index) => {
