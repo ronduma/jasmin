@@ -170,7 +170,7 @@ function Profile() {
             <Button className="button" component={NavLink} to='/edit-profile' variant="contained">Edit Info</Button>
             <br />
 
-            {profileData.isTherapist ? <Credentials pdf_files={profileData.pdf_files} /> : null}
+            {profileData.isTherapist ? <Credentials uid={profileData.uid} pdf_files={profileData.pdf_files} /> : null}
 
           </Paper>
         </Grid>

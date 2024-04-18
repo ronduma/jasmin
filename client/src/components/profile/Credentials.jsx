@@ -9,9 +9,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 // import { currentUser } from '../../context/AuthContext';
 
-function Credentials({ pdf_files }) {
+function Credentials({ uid, pdf_files }) {
 
-    const [uploadMode, setUploadMode] = useState(true);
+    const [PDFuploadMode, setPDFuploadMode] = useState(true);
     const [pdfFile, setPdfFile] = useState(null);
 
     const handleFileUpload = async (event) => {
@@ -20,14 +20,14 @@ function Credentials({ pdf_files }) {
         console.log(selectedFile)
         setPdfFile(selectedFile);
         console.log("HELLO")
-        setUploadMode(!uploadMode);
+        setPDFuploadMode(!PDFuploadMode);
     }
 
-    const handleSubmitFileUpload = async (directory) => {
+    const handleSubmitFileUpload = async (event, directory) => {
         try {
             const formData = new FormData();
             formData.append('file', pdfFile);
-            await axios.put(`http://localhost:5173/profile/${currentUser.uid}/${directory}`, formData)
+            await axios.put(`http://localhost:5173/profile/${uid}/${directory}`, formData)
                 .then(response => {
                     if (response.data) {
                         console.log("RESPONSE", response);
@@ -36,7 +36,7 @@ function Credentials({ pdf_files }) {
                 .catch(error => {
                     console.log(error);
                 });
-            setUploadMode(!uploadMode);
+            setPDFuploadMode(!PDFuploadMode);
         } catch (error) {
             console.error('Error uploading profile picture:', error);
         }
@@ -44,7 +44,20 @@ function Credentials({ pdf_files }) {
 
     const handleFileDownload = async (event, index) => {
         event.preventDefault();
-        await axios.get(`http://localhost:5173/profile/${currentUser.uid}/download-pdf/${index}`)
+        await axios.get(`http://localhost:5173/profile/${uid}/download-pdf/${index}`)
+            .then(response => {
+                if (response.data) {
+                    console.log("RESPONSE", response);
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
+    const handleFileDelete = async (event, index) => {
+        event.preventDefault();
+        await axios.delete(`http://localhost:5173/profile/${uid}/delete-pdf/${index}`)
             .then(response => {
                 if (response.data) {
                     console.log("RESPONSE", response);
@@ -57,52 +70,45 @@ function Credentials({ pdf_files }) {
 
 
     return (
-        <div className="left-section-details" style={{ "width": "100%" }}>
+        <div className="left-section-details" style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
             <br />
-            <div style={{ "textAlign": "center" }} > Credentials </div>
+            <div style={{ "marginTop": 20, "marginBottom": 10 }}> Credentials </div>
             <br />
 
-            <div className='pdf-list'>
-                <Button
-                    className="button"
-                    component="label"
-                    role={undefined}
-                    variant="contained"
-                    tabIndex={-1}
-                    endIcon={<FileDownloadIcon />}
-                >
-                    Test
-                </Button>
 
-                <Button
-                    className="button"
-                    component="label"
-                    role={undefined}
-                    variant="contained"
-                    tabIndex={-1}
-                >
-                    <DeleteIcon />
-                </Button>
-            </div>
 
-            {!pdf_files ? <p>No PDFs uploaded</p> : pdf_files.map((file, index) => {
-                <Button
-                    className="button"
-                    component="label"
-                    role={undefined}
-                    variant="contained"
-                    tabIndex={-1}
-                    endIcon={<FileDownloadIcon />}
-                    onClick={handleFileDownload(index)}
-                >
-                    {file.filename}
-                </Button>
+            {pdf_files.length < 3 ? <p>No PDFs uploaded</p> : pdf_files.map((file, index) => {
+                <div className='pdf-list'>
+                    <Button
+                        className="button"
+                        component="label"
+                        role={undefined}
+                        variant="contained"
+                        tabIndex={-1}
+                        endIcon={<FileDownloadIcon />}
+                        onClick={(event) => handleFileDownload(event, index)}
+                    >
+                        Test
+                    </Button>
+
+                    <Button
+                        className="button"
+                        component="label"
+                        role={undefined}
+                        variant="contained"
+                        tabIndex={-1}
+                        onClick={(event) => handleFileDelete(event, index)}
+                    >
+                        <DeleteIcon />
+                    </Button>
+                </div>
             })}
             <br />
             <div>
-                {uploadMode ?
+                {PDFuploadMode ?
                     <Button
                         className="button"
+                        style={{ "marginTop": 20 }}
                         component="label"
                         role={undefined}
                         variant="contained"
@@ -119,12 +125,13 @@ function Credentials({ pdf_files }) {
                     </Button>
                     : <Button
                         className="button"
+                        style={{ "marginTop": 20 }}
                         component="label"
                         role={undefined}
                         variant="contained"
                         tabIndex={-1}
                         startIcon={<UploadIcon />}
-                        onClick={handleSubmitFileUpload('upload-pdf')}
+                        onClick={(event) => handleSubmitFileUpload(event, 'upload-pdf')}
                     >
                         Submit Upload
                     </Button>

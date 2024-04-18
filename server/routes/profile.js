@@ -153,7 +153,7 @@ router.put("/:id/upload-pdf", upload.single("file"), async (req, res) => {
 	return res.status(200).json("");
 });
 
-router.get("/download-pdf/:id/:index", async (req, res) => {
+router.get(":id/download-pdf/:index", async (req, res) => {
 	const id = req.params.id;
 	const index = req.params.index;
 	const pdfPath = await users.getPdfFromDB(id, index);
@@ -165,7 +165,7 @@ router.get("/download-pdf/:id/:index", async (req, res) => {
 	});
   });
 
-router.delete("/delete-pdf/:id/:index", async (req, res) => {
+router.delete(":id/delete-pdf/:index", async (req, res) => {
 	const id = req.params.id;
 	const index = req.params.index;
 	await users.deletePdf(id, index);
