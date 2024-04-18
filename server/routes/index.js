@@ -27,7 +27,7 @@ const constructorMethod = (app) => {
   app.use('/video',videoRoutes);
 
   app.use('*', (req, res) => {
-    console.log('yo')
+    // console.log('yo')
     res.status(400).json("Error: Page not found.")
   });
 };

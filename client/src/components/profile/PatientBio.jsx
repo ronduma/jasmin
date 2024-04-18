@@ -72,7 +72,7 @@ function PatientBio({bio, concerns}) {
   }
 
   return (
-    <Paper style={{padding: '2vh', height:'100%'}}>
+    <Paper style={{height:'100%'}}>
       <Grid item xs={12}>
         <div className="about-me">
           <div style={{alignItems: 'flex-start', display: 'flex', justifyContent: 'space-between'}}>
