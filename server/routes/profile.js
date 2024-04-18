@@ -152,8 +152,8 @@ router.put("/:id/upload-pdf", upload.single("file"), async (req, res) => {
 			.json({ error: "Please upload a valid pdf file (.pdf)" });
 	}
 	console.log("saving file to /uploads");
-	await users.savePdfToDB(id, file.path, file.originalname);
-	return res.status(200).json("");
+	const ret = await users.savePdfToDB(id, file.path, file.originalname);
+	return res.status(200).json(ret);
 });
 
 router.get("/download-pdf/:id/:index", async (req, res) => {
@@ -169,10 +169,10 @@ router.get("/download-pdf/:id/:index", async (req, res) => {
 	});
   });
 
-router.delete(":id/delete-pdf/:index", async (req, res) => {
+router.delete("/delete-pdf/:id/:index", async (req, res) => {
 	const id = req.params.id;
 	const index = req.params.index;
-	await users.deletePdf(id, index);
+	await users.deletePdfFromDB(id, index);
 	return res.status(200).json("");
 });
 

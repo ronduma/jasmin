@@ -215,6 +215,7 @@ const savePdfToDB = async (id, path, filename) => {
   
 	  console.log("User updated.");
 	  await emptyUploadsFolder();
+	  return updatedUser.pdf_files;
 	} catch (err) {
 	  console.error(err);
 	}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import "./styles.css";
 import "./credentials.css";
 import axios from 'axios';
@@ -11,17 +11,15 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 function Credentials({ uid, pdf_files }) {
 
-    console.log("PDF FILES", pdf_files);
-
     const [PDFuploadMode, setPDFuploadMode] = useState(true);
     const [pdfFile, setPdfFile] = useState(null);
+    const [pdfFiles, setPdfFiles] = useState(pdf_files);
 
     const handleFileUpload = async (event) => {
         event.preventDefault();
         const selectedFile = event.target.files[0];
         console.log(selectedFile)
         setPdfFile(selectedFile);
-        console.log("HELLO")
         setPDFuploadMode(!PDFuploadMode);
     }
 
@@ -30,7 +28,7 @@ function Credentials({ uid, pdf_files }) {
             event.preventDefault();
             const formData = new FormData();
             formData.append('file', pdfFile);
-            await axios.put(`http://localhost:5173/profile/${uid}/${directory}`, formData)
+            const ret = await axios.put(`http://localhost:5173/profile/${uid}/${directory}`, formData)
                 .then(response => {
                     if (response.data) {
                         console.log("RESPONSE", response);
@@ -41,8 +39,9 @@ function Credentials({ uid, pdf_files }) {
                 });
             setPdfLength(pdfLength + 1);
             setPDFuploadMode(!PDFuploadMode);
+            setPdfFiles([...pdfFiles, { filename: pdfFile.name }]);
         } catch (error) {
-            console.error('Error uploading profile picture:', error);
+            console.log('Error uploading profile picture:', error);
         }
     }
 
@@ -70,7 +69,7 @@ function Credentials({ uid, pdf_files }) {
 
     const handleFileDelete = async (event, index) => {
         event.preventDefault();
-        await axios.delete(`http://localhost:5173/profile/${uid}/delete-pdf/${index}`)
+        await axios.delete(`http://localhost:5173/profile/delete-pdf/${uid}/${index}`)
             .then(response => {
                 if (response.data) {
                     console.log("RESPONSE", response);
@@ -80,6 +79,7 @@ function Credentials({ uid, pdf_files }) {
                 console.log(error);
             });
         setPdfLength(pdfLength - 1);
+        setPdfFiles(pdfFiles.filter((file, i) => i !== index));
     }
 
     const [pdfLength, setPdfLength] = useState(pdf_files.length);
@@ -91,8 +91,7 @@ function Credentials({ uid, pdf_files }) {
             <br />
 
 
-            <p>Upload up to 3 PDFs {pdfLength}</p>
-            {pdfLength < 1 ? <p>No PDFs uploaded</p> : pdf_files.map((file, index) => {
+            {pdfLength < 1 ? <p>No PDFs uploaded</p> : pdfFiles.map((file, index) => {
                 return (
                     <div className='pdf-list'>
                         <Button
