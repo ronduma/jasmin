@@ -44,7 +44,8 @@ const createUser = async (uid, email) => {
 		chatLog: [kaiChat],
 		patients: [],
 		therapist: null,
-		specialty: []
+		specialty: [],
+		pdf_files: [],
 	};
 
 	console.log("inserting user:", user)
@@ -176,6 +177,7 @@ const emptyUploadsFolder = async () => {
 	const files = await fs.promises.readdir(folderPath);
 
 	for (const file of files) {
+		if (file === "readme.txt") continue;
 		await fs.promises.unlink(`${folderPath}/${file}`);
 	}
 };
@@ -204,6 +206,82 @@ const saveImgToDB = async (id, path) => {
 	} catch (err) {
 		console.error(err);
 	}
+};
+
+const savePdfToDB = async (id, path, filename) => {
+	const pdf = fs.readFileSync(path);
+  
+	try {
+	  const userCollection = await users();
+	  const userExists = await userCollection.findOne({ _id: id });
+	  if (!userExists) throw "Error: User not found";
+	  if (!userExists.pdf_files) throw "Error: User has no pdf files";
+  
+	  const currPdf = userExists.pdf_files;
+	  if (currPdf.length > 2) throw "Error: User has reached the maximum number of pdf files";
+	  currPdf.push({ filename, content: pdf });
+  
+	  const updatedUser = await userCollection.findOneAndUpdate(
+		{ _id: id },
+		{ $set: { pdf_files: currPdf } },
+		{ returnOriginal: false }
+	  );
+  
+	  if (!updatedUser) {
+		throw `Error: User with id ${id} not found`;
+	  }
+  
+	  console.log("User updated.");
+	  await emptyUploadsFolder();
+	  return updatedUser.pdf_files;
+	} catch (err) {
+	  console.error(err);
+	}
+  };
+
+  const getPdfFromDB = async (id, index) => {
+    if (index > 2 || index < 0) throw "Error: Index out of bounds";
+    const userCollection = await users();
+    const user = await userCollection.findOne({ _id: id });
+    if (!user) throw "Error: There is no user with the given name";
+    if (!user.pdf_files) throw "Error: There are no pdf files";
+    if (!user.pdf_files[index]) throw "Error: There is no pdf file with the given index";
+
+    const tempFilePath = `./uploads/${user.pdf_files[index].filename}`;
+
+    // Check if content is a Buffer
+    if (Buffer.isBuffer(user.pdf_files[index].content)) {
+        fs.writeFileSync(tempFilePath, user.pdf_files[index].content);
+    } else if (user.pdf_files[index].content.read) { // Check if content is a Binary instance
+        // Convert Binary to Buffer and write to file
+        const buffer = Buffer.from(user.pdf_files[index].content.read(0, user.pdf_files[index].content.length()));
+        fs.writeFileSync(tempFilePath, buffer);
+    } else {
+        throw "Error: Unknown file content type";
+    }
+
+    console.log("PDF file ready for download.");
+    return tempFilePath;
+};
+  
+const deletePdfFromDB = async (id, index) => {
+	if (index > 2 || index < 0) throw "Error: Index out of bounds";
+	const userCollection = await users();
+	const user = await userCollection.findOne({ _id: id });
+	if (!user) throw "Error: There is no user with the given name";
+	if (!user.pdf_files) throw "Error: There are no pdf files";
+	if (!user.pdf_files[index]) throw "Error: There is no pdf file with the given index";
+	const updatedPdf = user.pdf_files;
+	updatedPdf.splice(index, 1);
+	const updatedUser = await userCollection.findOneAndUpdate(
+		{ _id: id },
+		{ $set: { pdf_files: updatedPdf } },
+		{ returnOriginal: false }
+	);
+	if (!updatedUser) {
+		throw `Error: User with id ${id} not found`;
+	}
+	console.log("PDF file deleted.");
 };
 
 const getUserByUsername = async (username) => {
@@ -426,7 +504,11 @@ module.exports = {
   createUser,
   updateUserInfo,
   getUserById,
+  emptyUploadsFolder,
   saveImgToDB,
+  savePdfToDB,
+  getPdfFromDB,
+  deletePdfFromDB,
 	updateProfile,
 	getUserByUsername,
 	getAllTherapists,

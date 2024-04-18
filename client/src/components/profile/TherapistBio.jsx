@@ -48,16 +48,16 @@ function CustomTabPanel(props) {
   );
 }
 
-function TherapistBio({bio, specialty, price}) {
-  const {currentUser} = useContext(AuthContext);
+function TherapistBio({ bio, specialty, price }) {
+  const { currentUser } = useContext(AuthContext);
   const [editAbout, setEditAbout] = useState(false);
   const [currbio, setBio] = useState(bio);
   const [newBio, setNewBio] = useState(bio);
   if (bio = "") setBio(null);
   const [selectedTopics, setSelectedTopics] = useState(specialty);
   let [selectedDate, setSelectedDate] = useState(dayjs());
-  const[selectedPrice, setSelectPrice] = useState(price);
-  const[newPrice, setNewPrice] = useState(price);
+  const [selectedPrice, setSelectPrice] = useState(price);
+  const [newPrice, setNewPrice] = useState(price);
   if (price = "") setSelectPrice("");
 
   const putBio = async () => {
