@@ -16,9 +16,9 @@ const therapists = [
     details: ["Personal therapy", "Family therapy", "10+ years"]
   },
   { url: "/imgs/homepage/therapists/img2.png",
-    id: "H3BwmZGNdGbaUvW7nRuR81wNirJ2",
-    first_name: "Justin",
-    last_name: "Fields",
+    id: "v7AB7BMoLQg5AEbncJWthZqnps43",
+    first_name: "Fenella",
+    last_name: "LaChica",
     details: ["Personal therapy", "Teen therapy", "15 years"]
   },
   { url: "/imgs/homepage/therapists/img3.png",

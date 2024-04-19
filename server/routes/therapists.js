@@ -16,7 +16,7 @@ router.get('/', async(req, res) => {
 
 router.get("/:name", async(req, res) => {
     try{
-        const therapist = await users.getUserByUsername(req.params.name);
+        const therapist = await users.getTherapistByName(req.params.name);
         return res.status(200).json(therapist);
     }
     catch(e){
