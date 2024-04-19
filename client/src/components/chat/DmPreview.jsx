@@ -27,7 +27,7 @@ const DmPreview = (props) => {
         <CardMedia
           component="img"
           sx={{ width: '5rem', height: '5rem'}}
-          image="/imgs/kAI.png"
+          image="/imgs/logo_flower.png"
         />
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <CardContent sx={{ flex: '1 0 auto' }}>

@@ -118,9 +118,6 @@ const Chat = () => {
                   :
                   <div>
                     <Grid item xs={12}>
-                      <div className="messages-header">Messages</div>
-                    </Grid>
-                    <Grid item xs={12}>
                       {
                         profileData.chatLog.length == 0 ?
                         <div>No messages to show.</div>
