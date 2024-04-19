@@ -24,6 +24,7 @@ const Chat = () => {
   const [isChatting, setIsChatting] = useState(false);
   const [selectedChat, setSelectedChat] = useState(null);
   const [isOpen, setIsOpen] = useState(false); // isOpen state starts as false
+  const [pfps, setPfps] = useState(null);
 
   const togglePopup = () => {
     setIsOpen(!isOpen); // Toggle the state to open/close the chat pop-up
@@ -39,8 +40,26 @@ const Chat = () => {
     }
   };
 
+  useEffect(() => {
+    if (profileData){
+      let pfpList = []
+      profileData.chatLog.map(async (log) => {
+        const response = await axios.get(`http://localhost:5173/chats/${log.id}`);
+        if (response.data.user1_id == currentUser.uid){
+          const user = await axios.get(`http://localhost:5173/profile/${response.data.user2_id}`);
+          pfpList.push(user.data.profile_img);
+        } else {
+          const user = await axios.get(`http://localhost:5173/profile/${response.data.user1_id}`);
+          pfpList.push(user.data.profile_img);
+        }
+      });
+      setPfps(pfpList);
+    }
+  }, [profileData]);
+
+
   const handleDmResponse = (data) => {
-    console.log(data)
+    // console.log(data)
     setIsChatting(data.isChatting);
     setSelectedChat(data.id);
   };
@@ -58,7 +77,6 @@ const Chat = () => {
       fetchData(); 
       setLoading(false);
     } else{
-      console.log(currentUser)
       setLoading(false);
     }
   }, []);
@@ -68,14 +86,9 @@ const Chat = () => {
       fetchData(); 
       setLoading(false);
     } else{
-      console.log(currentUser)
       setLoading(false);
     }
   }, [currentUser]);
-
-  useEffect(() => {
-    console.log("Updated isChatting:", isChatting);
-  }, [isChatting]); 
 
   return (
     <div >
@@ -128,6 +141,7 @@ const Chat = () => {
                               <DmPreview 
                                 from={dm.name}
                                 id={dm.id}
+                                pfp={pfps[index]}
                                 timestamp=""
                                 message=""
                                 onMessage={handleDmResponse}

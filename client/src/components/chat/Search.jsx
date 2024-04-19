@@ -35,15 +35,15 @@ function Search(props) {
         const response = await axios.get("http://localhost:5173/therapists/all");
         const therapists = response.data.map(therapist => therapist.firstName + " " + therapist.lastName);
         setSearchList(response.data.sort((a,b)=> {
-          const lastNameA = a.lastName.toUpperCase(); // Ignore case
-          const lastNameB = b.lastName.toUpperCase(); // Ignore case
+          const lastNameA = a.lastName.toUpperCase(); 
+          const lastNameB = b.lastName.toUpperCase(); 
           if (lastNameA < lastNameB) {
-              return -1; // 'a' should come before 'b' in sorted order
+              return -1; 
           }
           if (lastNameA > lastNameB) {
-              return 1; // 'a' should come after 'b' in sorted order
+              return 1; 
           }
-          return 0; // Names are equal
+          return 0; 
         }));
       } catch (e) {
         console.log(e);
@@ -54,15 +54,15 @@ function Search(props) {
         const response = await axios.get("http://localhost:5173/patients/all");
         const patients = response.data.map(patient => patient.firstName + " " + patient.lastName);
         setSearchList(response.data.sort((a,b)=> {
-          const lastNameA = a.lastName.toUpperCase(); // Ignore case
-          const lastNameB = b.lastName.toUpperCase(); // Ignore case
+          const lastNameA = a.lastName.toUpperCase(); 
+          const lastNameB = b.lastName.toUpperCase(); 
           if (lastNameA < lastNameB) {
-              return -1; // 'a' should come before 'b' in sorted order
+              return -1; 
           }
           if (lastNameA > lastNameB) {
-              return 1; // 'a' should come after 'b' in sorted order
+              return 1; 
           }
-          return 0; // Names are equal
+          return 0; 
         }));
       } catch (e) {
         console.log(e);
@@ -73,15 +73,7 @@ function Search(props) {
     } else{
       getTherapists();
     }
-  }, []); // Re-run effect whenever currentUser changes
-
-  // useEffect(() => {
-  //   console.log(selectedTherapist);
-  // }, [selectedTherapist])
-
-  // useEffect(() => {
-  //   console.log("search list updated", searchList);
-  // }, [searchList]); // Run this effect whenever searchList changes
+  }, []); 
 
   const handleChat = async () => {
     console.log("chatting with", selectedTherapist)
