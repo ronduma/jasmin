@@ -132,11 +132,19 @@ function TherapistBio({ bio, specialty, price }) {
             </Tabs>
 
             <CustomTabPanel value={value} index={0}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: "space-between"}}>
+              <div 
+                style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: "space-between"
+                  }}
+              >
                 <div className='right-section-header'> 
                   Expertise 
                 </div>
-                {editAbout ? "" : <IconButton onClick={() => setEditAbout(true)}><EditIcon /></IconButton>}
+                {editAbout ? 
+                  "" : 
+                  <IconButton onClick={() => setEditAbout(true)}><EditIcon /></IconButton>}
               </div>
               <Expertise disabled={!editAbout} selected={handleSelectedTopics} display={specialty}/>
               <div className='right-section-header'> 

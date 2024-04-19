@@ -86,10 +86,8 @@ function Credentials({ uid, pdf_files }) {
 
     return (
         <div className="left-section-details" style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
-            <br />
-            <div style={{ "marginTop": 20, "marginBottom": 10 }}> Credentials </div>
-            <br />
 
+            <div style={{ "marginTop": 20, "marginBottom": 10 }}> Credentials </div>
 
             {pdfLength < 1 ? <p>No PDFs uploaded</p> : pdfFiles.map((file, index) => {
                 return (

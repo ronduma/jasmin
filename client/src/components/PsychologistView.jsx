@@ -1,4 +1,4 @@
-import "../App.css";
+import "./profile/styles.css";
 import { useParams, useNavigate, NavLink } from 'react-router-dom';
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
@@ -69,26 +69,23 @@ function PsychologistView() {
   }
 
   return (
-    <div style={{"marginBottom": 100}}>
+    <div className="profile-container">
       <Grid 
         container 
         justifyContent={"center"}
         spacing={2}
         alignItems={"stretch"}
-        style={{padding:'2vh 0 0 0',minWidth: "1200px", minHeight: "500px"}}
       >
         <Grid 
-          fontSize={"14pt"}
           item 
-          xs={3}
+          xs={12}
+          md={6}
+          lg={4}
         >
-          <Paper style={{ height: "100%", minWidth: "200px", flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <Typography 
-                  variant='h4'
-                  style={{padding: '1vh 0 0 0'}}
-                >
-                  {profileData.firstName} {profileData.lastName}
-                </Typography> 
+          <Paper className="left-section">
+            <div className="left-section-header">
+              {profileData.firstName} {profileData.lastName}
+            </div>
             {profileData ? 
               <div>
                 <div id='profilePic'>
@@ -96,47 +93,49 @@ function PsychologistView() {
                     <Avatar
                       alt="Profile Picture"
                       src={`data:image/png;base64,${profileData.profile_img}`}
-                      sx={{ minWidth: 200, minHeight: 200, mx: 'auto'}}
-                      style={{marginTop: '1em'}}
+                      sx={{ width: "10rem", height: "10rem", mx: 'auto' }}
                     /> :
                     <div sx={{mx:'auto'}}>
                       <div>
                         <AccountCircleIcon
-                          sx={{ width: "auto", height: 200 }}
-                          style={{marginTop: '1em'}}
+                          sx={{ width: "auto", height: "10rem" }}
                         />
                       </div> 
                     </div>
                   }
                 </div>
-                
                 <br/>
-                <div style={{width: "90%", margin: "0 auto", textAlign: "center"}}>
-                  <div style={{display: "inline-block" ,textAlign:'left'}}>
-                    <div>Age: {profileData.age}</div> 
-                    <div>Gender: {profileData.gender}</div> 
-                    <div>Location: {profileData.location}</div> 
-                    <div>Occupation: {profileData.occupation}</div> 
-                    <div>Email: {profileData.email}</div> 
-                  </div>
+                <div className="left-section-details">
+                  <div>Age: {profileData.age}</div>
+                  <div>Gender: {profileData.gender}</div>
+                  <div>Location: {profileData.location}</div>
+                  <div>Occupation: {profileData.occupation}</div>
+                  <div>Email: {profileData.email}</div>
                 </div>                
               </div>
               : <div>Missing Data</div>}
               <br/>
-              {isMatched ? (
-              <Button variant="contained" onClick={handleClick}>
-                Unmatch with Therapist
-              </Button>
-            ) : (
-              <Button variant="contained" onClick={handleClick}>
-                Match
-              </Button>
-            )}
-            {" "}
-              <Button variant="contained"> Schedule </Button>
+              <div style={{margin: "2rem 0 0 0"}}>
+                {isMatched ? (
+                    <Button variant="contained" onClick={handleClick}>
+                      Unmatch with Therapist
+                    </Button>
+                  ) : (
+                    <Button variant="contained" onClick={handleClick}>
+                      Match
+                    </Button>
+                  )
+                }
+                {" "}
+                <Button variant="contained"> Schedule </Button>
+              </div>
           </Paper>
         </Grid>
-        <Grid item xs={6}>
+        <Grid 
+          item
+          xs={12}
+          md={6}
+        >
           <TherapistBioFromPatientView 
             bio = {profileData.bio} 
             specialty={profileData.specialty}
