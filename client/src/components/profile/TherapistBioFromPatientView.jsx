@@ -7,18 +7,14 @@ import "../../App.css";
 
 import axios from "axios";
 import { Typography } from "@mui/material";
+import Box from '@mui/material/Box';
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import { useParams } from "react-router-dom";
 import CheckCircleIcon from "@mui/icons-material/CheckCircleOutlined";
 import CancelRoundedIcon from "@mui/icons-material/CancelOutlined";
-import EditIcon from "@mui/icons-material/Edit";
-import Button from "@mui/material/Button";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import Tooltip from "@mui/material/Tooltip";
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
@@ -26,6 +22,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
+
+import Expertise from './Expertise';
 
 function TherapistBioFromPatientView({ bio, specialty }) {
   const { currentUser } = useContext(AuthContext);
@@ -37,6 +35,34 @@ function TherapistBioFromPatientView({ bio, specialty }) {
 
   const [availableTimes, setAvailableTimes] = useState({});
   const [isLoading, setLoading] = useState(true);
+
+  const [value, setValue] = useState(0);
+    
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+    console.log(value)
+  };
+
+  function CustomTabPanel(props) {
+    const { children, value, index, ...other } = props;
+  
+    return (
+      <Grid 
+        item 
+        hidden={value !== index}
+      >
+        {value === index && (
+          <Box sx={{ p: 3}}>
+            {children}
+          </Box>
+        )}
+      </Grid>
+    );
+  }
+
+  const handleSelectedTopics = (data) => {
+    setSelectedTopics(data);
+  }
 
   const { id } = useParams();
   if ((bio = "")) setBio(null);
@@ -146,165 +172,154 @@ function TherapistBioFromPatientView({ bio, specialty }) {
       <Grid
         container
         spacing={2}
-        // style={{textAlign:"left"}}
       >
         <Grid item xs={12}>
-          <Paper style={{ minHeight: "18vh", padding: "2vh" }}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <div className="right-section-header"> Expertise </div>
-              {editAbout ? (
-                ""
-              ) : (
-                <IconButton onClick={() => setEditAbout(true)}></IconButton>
-              )}
-            </div>
-
-            {editAbout ? (
-              editTopics()
-            ) : (
-              <p align="left">
-                {selectedTopics.join(", ") ||
-                  "No topics found. Please edit, and add topics of expertise."}
-              </p>
-            )}
-            <div className="right-section-header"> About Me </div>
-            <TextField
-              disabled={!editAbout}
-              inputRef={(input) => input && input.focus()}
-              fullWidth
-              id="textbox-bio"
-              label="Tell us about yourself!"
-              value={currbio}
-              onChange={(event) => setBio(event.target.value)}
-              InputLabelProps={{
-                shrink: currbio || editAbout ? true : false,
-              }}
-              multiline
-              style={{ margin: "2vh 0 1vh 0" }}
-              rows={3}
-              inputProps={{
-                maxLength: 285,
-              }}
-            />
-            {editAbout && (
-              <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                <IconButton>
-                  <CheckCircleIcon
-                    onClick={() => {
-                      putBio();
-                      handleCheckboxChange();
-                    }}
-                  ></CheckCircleIcon>
-                </IconButton>
-                <IconButton>
-                  <CancelRoundedIcon
-                    onClick={() => {
-                      setEditAbout(false);
-                      setBio(newBio);
-                    }}
-                  ></CancelRoundedIcon>
-                </IconButton>
-              </div>
-            )}
-          </Paper>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Paper style={{ minHeight: "40vh", padding: "2vh" }}>
-            <div className="right-section-header">Upcoming Availability</div>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DateCalendar
-                    value={selectedDate}
-                    onChange={(newValue) => setSelectedDate(newValue)}
-                    minDate={dayjs().startOf("month")}
-                    maxDate={dayjs().add(1, "month").endOf("month")}
-                  />
-                </LocalizationProvider>
-              </Grid>
-              <Grid
-                item
-                xs={6}
+          <Paper style={{ minHeight: "18vh", height:'100%' }}>
+            <Tabs value={value} onChange={handleChange} variant="fullWidth">
+              <Tab label="Details" />
+              <Tab label="Availability"  />
+              <Tab label="Reviews" />
+            </Tabs>
+            <CustomTabPanel value={value} index={0}>
+              <div
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  flexDirection: "column",
+                  justifyContent: "space-between",
                 }}
               >
-                <div style={{ marginBottom: "10px" }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                    }}
-                  >
-                    <strong>Available Times:</strong>
+                <div className="right-section-header"> 
+                  Expertise 
+                </div>
+              </div>
+              <Expertise disabled={!editAbout} selected={handleSelectedTopics} display={specialty}/>
+              <div className="right-section-header"> 
+                About Me 
+              </div>
+              <TextField
+                disabled={!editAbout}
+                inputRef={(input) => input && input.focus()}
+                fullWidth
+                id="textbox-bio"
+                label="Tell us about yourself!"
+                value={currbio}
+                onChange={(event) => setBio(event.target.value)}
+                InputLabelProps={{
+                  shrink: currbio || editAbout ? true : false,
+                }}
+                multiline
+                style={{ margin: "2vh 0 1vh 0" }}
+                rows={3}
+                inputProps={{
+                  maxLength: 285,
+                }}
+              />
+              {editAbout && (
+                <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                  <IconButton>
+                    <CheckCircleIcon
+                      onClick={() => {
+                        putBio();
+                        handleCheckboxChange();
+                      }}
+                    ></CheckCircleIcon>
+                  </IconButton>
+                  <IconButton>
+                    <CancelRoundedIcon
+                      onClick={() => {
+                        setEditAbout(false);
+                        setBio(newBio);
+                      }}
+                    ></CancelRoundedIcon>
+                  </IconButton>
+                </div>
+              )}
+            </CustomTabPanel>
+
+            <CustomTabPanel value={value} index={1}>
+              <div className="right-section-header">Upcoming Availability</div>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DateCalendar
+                      value={selectedDate}
+                      onChange={(newValue) => setSelectedDate(newValue)}
+                      minDate={dayjs().startOf("month")}
+                      maxDate={dayjs().add(1, "month").endOf("month")}
+                    />
+                  </LocalizationProvider>
+                </Grid>
+                <Grid
+                  item
+                  xs={6}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    flexDirection: "column",
+                  }}
+                >
+                  <div style={{ marginBottom: "10px" }}>
                     <div
                       style={{
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
                       }}
-                    ></div>
-                    {[...Array(9).keys()].map((index) => {
-                      const time = dayjs(selectedDate)
-                        .startOf("day")
-                        .add(9, "hours")
-                        .add(index, "hours")
-                        .format("h:mm A");
-                      if (
-                        !availableTimes[selectedDate.format("MM/DD/YYYY")] ||
-                        !availableTimes[
-                          selectedDate.format("MM/DD/YYYY")
-                        ].includes(time)
-                      ) {
-                        return (
-                          <button
-                            className="timeCalender"
-                            key={index}
-                            onClick={() => handleTimeSelection(time)}
-                          >
-                            {time}
-                          </button>
-                        );
-                      }
-                      return null;
-                    })}
+                    >
+                      <strong>Available Times:</strong>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                        }}
+                      ></div>
+                      {[...Array(9).keys()].map((index) => {
+                        const time = dayjs(selectedDate)
+                          .startOf("day")
+                          .add(9, "hours")
+                          .add(index, "hours")
+                          .format("h:mm A");
+                        if (
+                          !availableTimes[selectedDate.format("MM/DD/YYYY")] ||
+                          !availableTimes[
+                            selectedDate.format("MM/DD/YYYY")
+                          ].includes(time)
+                        ) {
+                          return (
+                            <button
+                              className="timeCalender"
+                              key={index}
+                              onClick={() => handleTimeSelection(time)}
+                            >
+                              {time}
+                            </button>
+                          );
+                        }
+                        return null;
+                      })}
+                    </div>
                   </div>
-                </div>
+                </Grid>
               </Grid>
-            </Grid>
-          </Paper>
-        </Grid>
-        <Grid item xs={12}>
-          <Paper style={{ minHeight: "18vh", padding: "2vh" }}>
-            <div className="right-section-header"> Upcoming Appointments </div>
-            {Appointments === null ? (
-              <Typography> No upcoming appointments.</Typography>
-            ) : (
-              <div>
-                {Appointments.map((appointment, index) => (
-                  <div key={index}>
-                    <Typography variant="body1"><a href={appointment.roomUrl}>{appointment.time} with {appointment.patientName}</a></Typography>
-                    {/* Add additional details about the appointment if needed */}
-                  </div>
-                ))}
-              </div>
-            )}
-          </Paper>
-        </Grid>
+              <div className="right-section-header"> Upcoming Appointments </div>
+              {Appointments === null ? (
+                <Typography> No upcoming appointments.</Typography>
+              ) : (
+                <div>
+                  {Appointments.map((appointment, index) => (
+                    <div key={index}>
+                      <Typography variant="body1"><a href={appointment.roomUrl}>{appointment.time} with {appointment.patientName}</a></Typography>
+                      {/* Add additional details about the appointment if needed */}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CustomTabPanel>
 
-        <Grid item xs={12}>
-          <Paper style={{ minHeight: "18vh", padding: "2vh" }}>
-            <div className="right-section-header"> Reviews </div>
+            <CustomTabPanel value={value} index={2}>
+              <div className='right-section-header'> Reviews </div>
+            </CustomTabPanel>
           </Paper>
         </Grid>
       </Grid>

@@ -122,89 +122,7 @@ function TherapistBio({ bio, specialty, price }) {
       <Grid 
         container 
         spacing={2}
-        // style={{textAlign:"left"}}
       >
-        {/* <Grid item xs={12}>
-          <Paper style={{minHeight: '18vh', padding: '2vh'}}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: "space-between"}}>
-              <div className='right-section-header' > Expertise </div>
-              {editAbout ? "" : <IconButton onClick={() => setEditAbout(true)}><EditIcon /></IconButton>}
-            </div>
-
-            {editAbout ? editTopics()
-            : <p align="left">{ selectedTopics.join(", ") || "No topics found. Please edit, and add topics of expertise."}</p> 
-            }
-              <div className='right-section-header'> About Me </div>
-              <TextField
-              disabled={!editAbout}
-              inputRef={input => input && input.focus()}
-              fullWidth
-              id="textbox-bio"
-              label="Tell us about yourself!"
-              value={currbio}
-              onChange={event => setBio(event.target.value)}
-              InputLabelProps={{
-                shrink: currbio || editAbout ? true : false,
-              }}
-              multiline
-              style={{margin: '2vh 0 1vh 0'}}
-              rows={3}
-              inputProps={{
-                maxLength:285
-              }}
-            />
-            <div className='right-section-header'>Price</div>
-            <FormControl fullWidth>
-              <Select
-                onChange = {event => setSelectPrice(event.target.value)}
-                id ="therapist-price"
-                value ={selectedPrice}
-                disabled={!editAbout}
-                InputLabelProps={{
-                  shrink: selectedPrice || editAbout ? true : false,
-                }}
-              >
-                <MenuItem value=""><em>Free</em></MenuItem>
-                <MenuItem value="Low">$ - Low</MenuItem>
-                <MenuItem value="Medium">$$ - Medium</MenuItem>
-                <MenuItem value="High">$$$ - High</MenuItem>
-              </Select>
-            </FormControl>
-
-            {editAbout && (
-              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <IconButton>
-                  <CheckCircleIcon onClick={() => { putBio(); handleCheckboxChange(); handlePriceChange();}}>
-                  </CheckCircleIcon>
-                </IconButton>
-                <IconButton>
-                  <CancelRoundedIcon onClick={ ()=> {setEditAbout(false); setBio(newBio); setSelectPrice(newPrice);}}></CancelRoundedIcon>
-                </IconButton>
-              </div>
-            )}
-          </Paper>
-        </Grid> */}
-        
-        {/* <Grid item xs={12}>
-          <Paper style={{minHeight: '40vh', padding: '2vh'}}>
-            <div className="right-section-header">
-              Upcoming Availability
-            </div>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DateCalendar defaultValue={dayjs()} onChange={(newValue) => setSelectedDate(newValue)} />
-                </LocalizationProvider>
-              </Grid>
-              <Grid item xs={6} style={{ display: 'flex', alignItems: 'flex-start' }}>
-                {selectedDate.$d.toString()}
-              </Grid>
-            </Grid>
-          </Paper>
-        </Grid> */}
-        {/* <Grid item xs={12}>
-              <TherapistCalender></TherapistCalender>
-        </Grid> */}
         <Grid item xs={12}>
           <Paper style={{padding: '2vh', height:'100%'}}>
             <Tabs value={value} onChange={handleChange} variant="fullWidth">
@@ -214,11 +132,19 @@ function TherapistBio({ bio, specialty, price }) {
             </Tabs>
 
             <CustomTabPanel value={value} index={0}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: "space-between"}}>
+              <div 
+                style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: "space-between"
+                  }}
+              >
                 <div className='right-section-header'> 
                   Expertise 
                 </div>
-                {editAbout ? "" : <IconButton onClick={() => setEditAbout(true)}><EditIcon /></IconButton>}
+                {editAbout ? 
+                  "" : 
+                  <IconButton onClick={() => setEditAbout(true)}><EditIcon /></IconButton>}
               </div>
               <Expertise disabled={!editAbout} selected={handleSelectedTopics} display={specialty}/>
               <div className='right-section-header'> 
@@ -276,7 +202,7 @@ function TherapistBio({ bio, specialty, price }) {
               <div className="right-section-header">
                 Upcoming Availability
               </div>
-              {/* <div>
+              <div>
                 <div>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DateCalendar defaultValue={dayjs()} onChange={(newValue) => setSelectedDate(newValue)} />
@@ -285,7 +211,7 @@ function TherapistBio({ bio, specialty, price }) {
                 <div>
                   {selectedDate.$d.toString()}
                 </div>
-              </div> */}
+              </div>
             </CustomTabPanel>
 
             <CustomTabPanel value={value} index={2}>
