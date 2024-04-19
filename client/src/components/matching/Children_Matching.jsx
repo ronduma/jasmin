@@ -5,7 +5,7 @@ import "../../App.css";
 import Navigation from "../Navigation";
 import searchbutton from "../../images/search-button.png";
 import axios from 'axios';
-import {Card, Avatar, CardActionArea,CardMedia, CardContent, Grid, Typography} from '@mui/material';
+import {Card, Avatar, CardActionArea,CardMedia, CardContent, Grid, Typography, Autocomplete} from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import "../matching.css";
 import MenuItem from '@mui/material/MenuItem';
@@ -22,6 +22,7 @@ function Children_Matching() {
   const [selectedPrice, setSelectedPrice] = useState("");
   const [selectedSort, setSelectedSort] = useState("");
   const [therapists, setTherapists] = useState("");
+  const [therapistList, setList] = useState("");
   const [loading, setLoading] = useState(true);
   const [hover, setHover] = useState(false);
 
@@ -32,23 +33,22 @@ function Children_Matching() {
       }
     }
   });
-
-  const handleSearch = (event) => {
-    // Handle search functionality
-    setSearch(event);
-    console.log(searchValue)  
-  };
-
-  const handleSubmit = async () => {
-    try{
-      const response = await axios.get(`http://localhost:5173/therapists/${searchValue}`)
-      const value = [response.data];
-      setTherapists(value);
-    }
-    catch(e){
-      console.log(error);
-    }
-  }
+  
+  useEffect(() => {
+    const handleSubmit = async () => {
+      try{
+        if(searchValue != ''){
+          const response = await axios.get(`http://localhost:5173/therapists/${searchValue}`)
+          const value = [response.data];
+          setTherapists(value);
+        }
+      }
+      catch(e){
+        console.log(error);
+      }
+    };
+    handleSubmit();
+  }, [searchValue]);
 
   useEffect(() => {
     const fetchTherapists = async () => {
@@ -65,6 +65,20 @@ function Children_Matching() {
     fetchTherapists();
   }, [selectedTopic, selectedApproach, selectedGender, selectedPrice, selectedSort])
   
+  useEffect(() => {
+    const createList = async () => {
+      try{
+        const response = await axios.get(`http://localhost:5173/therapists/?type=children`)
+        setList(response.data);
+        setLoading(false);
+      }
+      catch(error){
+        console.error(error);
+      }
+    };
+    createList();
+  })
+
   const buildCard = (therapist) => {
     const childrenSpecialty = ["ADHD (Attention Deficit Hyperactivity Disorder)", "Excessive Aggression", "Children with Special Needs", "Loss of Loved Ones", "Adaptation", "Bullying"];
     function checkSpecialty(arr1, arr2){
@@ -77,12 +91,13 @@ function Children_Matching() {
     }
     return(
       <div className = "shadow" >
-        <Link to={`/matching/${therapist._id}`} >
+        <Link to={`/matching/${therapist._id}`} style={{ textDecoration: 'none'}} >
           <Card variant ='outlined'
           style ={{backgroundColor : "#01382E"}}
             sx = {{
                   flex: "1 0 auto",
                   width: 300,
+                  height: 450,
                   paddingBottom: '20px',
                   borderRadius: 5,
                   border: '1px solid #1e8678',
@@ -138,22 +153,51 @@ function Children_Matching() {
   };
   // console.log(typeof therapists);
   return (
-    <div className="matching">
+    <div>
       <h1 className="matching-title">Psychologist for Children Therapy</h1>
       <div className="matching-container">
       <div className="matching-category-choice">Children Therapy</div>
       <div className="search-bar-container">
-        <div className="search-bar">
-          <input
-            type="text"
-            value={searchValue}
-            onChange={(e) => handleSearch(e.target.value)}
-            placeholder="Search..."
-          />
-          <button className="search-button" onClick={handleSubmit}>
-            <img src={searchbutton} alt="Search"/>
-          </button>
-        </div>
+      <ThemeProvider theme={theme}>
+        <Autocomplete
+          freeSolo
+          id ="searchTherapist"
+          disableClearable
+          options={therapistList ? therapistList.map(option => option.firstName + " " + option.lastName) : []}
+          getOptionLabel={(option) => option}
+          renderInput={(params) => (
+            <TextField
+              sx={{
+                margin:"1rem 0 0 0",
+                [`& fieldset`]:{
+                  borderRadius: 10,
+                  color: '#008f72',
+                  borderColor : '#008f72',
+                }
+              }}
+              {...params}
+              label = "Search Therapist"  
+              InputProps ={{
+                ...params.InputProps,
+                type: 'search',
+                style: { color: '#008f72'} // Change color here
+              }}
+              InputLabelProps={{ // Adding InputLabelProps prop to customize label styles
+                style: { color: '#008f72' } // Change color here
+              }}
+              
+            />
+          )}
+          value = {searchValue}
+          sx={{
+            width : 300, 
+          }}
+          onChange ={(event, newValue) => {
+            setSearch(newValue);
+          }}
+        >
+        </Autocomplete>
+        </ThemeProvider>
       </div>
       </div>
     <div className="filtersContainer">

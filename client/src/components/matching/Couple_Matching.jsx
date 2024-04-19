@@ -11,6 +11,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Autocomplete from '@mui/material/Autocomplete';
 import "../matching.css";
 
     function Couple_Matching() {
@@ -24,7 +25,7 @@ import "../matching.css";
   const [therapists, setTherapists] = useState("");
   const [loading, setLoading] = useState(true);
   const [hover, setHover] = useState(false);
-
+  const [therapistList, setList] = useState("");
   const theme = createTheme({
     palette: {
       primary : {
@@ -33,24 +34,21 @@ import "../matching.css";
     }
   })
 
-  const handleSearch = (event) => {
-    // Handle search functionality
-    setSearch(event);
-    console.log(searchValue)  
-  };
-
-  const handleSubmit = async () => {
-    try{
-      console.log(searchValue);
-      const response = await axios.get(`http://localhost:5173/therapists/${searchValue}`)
-      const value = [response.data];
-      console.log(value);
-      setTherapists(value);
+  useEffect(() => {
+    const handleSubmit = async () => {
+      try{
+        if(searchValue != ''){
+          const response = await axios.get(`http://localhost:5173/therapists/${searchValue}`)
+          const value = [response.data];
+          setTherapists(value);
+        }
+      }
+      catch(error){
+        console.log(error);
+      }
     }
-    catch(e){
-      console.log(error);
-    }
-  }
+    handleSubmit();
+  }, [searchValue]);
 
   useEffect(() => {
     const fetchTherapists = async () => {
@@ -67,8 +65,23 @@ import "../matching.css";
     fetchTherapists();
   }, [selectedTopic, selectedApproach, selectedGender, selectedPrice, selectedSort])
   
+  useEffect(() => {
+    const createList = async () => {
+      try{
+        const response = await axios.get(`http://localhost:5173/therapists/?type=couple`)
+        setList(response.data);
+        setLoading(false);
+      }
+      catch(error){
+        console.error(error);
+      }
+    };
+    createList();
+  })
+
   const buildCard = (therapist) => {
     const coupleSpecialty = ["Difficulty in communication, crisis", "Intimate Relations", "Breakup", "Emotional abuse, abusive behavior", "Child-rearing practices", "Betrayal"];
+    
     function checkSpecialty(arr1, arr2){
       const count = arr1.filter(value => arr2.includes(value)).length;
       return count > 2
@@ -78,16 +91,15 @@ import "../matching.css";
       return arr1.filter(value => arr2.includes(value));
     }
 
-    
-
     return(
       <div className = "shadow" >
-        <Link to={`/matching/${therapist._id}`} >
+        <Link to={`/matching/${therapist._id}`} style={{ textDecoration: 'none'}} >
           <Card variant ='outlined'
             style ={{backgroundColor : "#01382E"}}
             sx = {{
                   flex: "1 0 auto",
                   width: 300,
+                  height: 450,
                   paddingBottom: '20px',
                   borderRadius: 5,
                   border: '1px solid #1e8678',
@@ -143,22 +155,47 @@ import "../matching.css";
   };
   // console.log(typeof therapists);
   return (
-    <div className="matching">
+    <div>
       <h1 className="matching-title">Psychologist for Couple Therapy</h1>
       <div className="matching-container">
       <div className="matching-category-choice">Couple Therapy</div>
       <div className="search-bar-container">
-        <div className="search-bar">
-          <input
-            type="text"
-            value={searchValue}
-            onChange={(e) => handleSearch(e.target.value)}
-            placeholder="Search..."
-          />
-          <button className="search-button" onClick={handleSubmit}>
-            <img src={searchbutton} alt="Search"/>
-          </button>
-        </div>
+      <ThemeProvider theme={theme}>
+        <Autocomplete
+          freeSolo
+          id="searchTherapist"
+          disableClearable
+          options={therapistList ? therapistList.map(option => option.firstName + " " + option.lastName) : []}
+          renderInput={(params) => (
+            <TextField
+              sx={{
+                margin:"1rem 0 0 0",
+                [`& fieldset`]:{
+                  borderRadius: 10,
+                  color: '#008f72',
+                  borderColor : '#008f72',
+                }
+            }}
+              {...params}
+              label = "Search Therapist"  
+              InputProps ={{
+                ...params.InputProps,
+                type: 'search',
+                style: { color: '#008f72'} // Change color here
+              }}
+              InputLabelProps={{ // Adding InputLabelProps prop to customize label styles
+                style: { color: '#008f72' } // Change color here
+              }}
+            />
+          )}      
+          value = {searchValue}
+          sx= {{width: 300}}
+          onChange ={(event, newValue) => {
+            setSearch(newValue);
+          }} 
+        >
+        </Autocomplete>
+        </ThemeProvider>
       </div>
       </div>
     <div className="filtersContainer">
