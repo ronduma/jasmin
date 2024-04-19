@@ -292,6 +292,16 @@ const getUserByUsername = async (username) => {
 	return user;
 };
 
+const getTherapistByName = async (name) => {
+	const splitName = name.split(" ");
+	const first = splitName[0];
+	const last = splitName[1];
+	const userCollection = await users();
+	const user = await userCollection. findOne({isTherapist: true, firstName: first, lastName: last});
+	if(!user) throw "Error: There is no user by that first and last name";
+	return user;
+}
+
 const getAllTherapists = async (type) => {
 	const personalSpecialty = ["Relationship with Yourself", "Relationship with Others", "Personal and Professional development", "New Living Conditions"];
 	const coupleSpecialty = ["Difficulty in communication, crisis", "Intimate Relations", "Breakup", "Emotional abuse, abusive behavior", "Child-rearing practices", "Betrayal"];
@@ -514,6 +524,7 @@ module.exports = {
 	getAllTherapists,
 	getAllPatients,
 	getFilteredTherapists,
+	getTherapistByName,
 	gettingStarted,
   match,
   checkUserifTherapist,
