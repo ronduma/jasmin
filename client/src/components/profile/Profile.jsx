@@ -13,6 +13,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
+import VerifiedIcon from '@mui/icons-material/Verified';
 
 import { AuthContext } from '../../context/AuthContext';
 
@@ -97,8 +98,8 @@ function Profile() {
         spacing={2}
         alignItems={"stretch"}
       >
-        <Grid 
-          item 
+        <Grid
+          item
           xs={12}
           md={6}
           lg={4}
@@ -106,6 +107,8 @@ function Profile() {
           <Paper className="left-section">
             <div className="left-section-header">
               {profileData.firstName} {profileData.lastName}
+              {profileData.isTherapist && profileData.pdf_files.length > 0 ?
+                <span> <VerifiedIcon /> </span> : null}
             </div>
             {profileData ?
               <div>
@@ -175,18 +178,18 @@ function Profile() {
 
           </Paper>
         </Grid>
-        <Grid 
+        <Grid
           item
           xs={12}
           md={6}
         >
-          {profileData.isTherapist == true ? 
-          <TherapistBio 
-              bio = {profileData.bio} 
-              specialty={profileData.specialty}/> 
-          : <PatientBio 
-              bio = {profileData.bio} 
-              concerns = {profileData.concerns} 
+          {profileData.isTherapist == true ?
+            <TherapistBio
+              bio={profileData.bio}
+              specialty={profileData.specialty} />
+            : <PatientBio
+              bio={profileData.bio}
+              concerns={profileData.concerns}
             />}
         </Grid>
 
