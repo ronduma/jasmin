@@ -178,4 +178,18 @@ router.delete("/delete-pdf/:id/:index", async (req, res) => {
 	return res.status(200).json("");
 });
 
+router.get("/notifications/:id", async (req, res) => {
+	try {
+		const id = req.params.id;
+		const notifications = await users.getNotifications(id);
+		return res.status(200).json(notifications);
+	} catch (e) {
+		console.log(e);
+		return res.status(400).json(e);
+	}
+});
+
+//to add new notifications to the database and update unread notifications
+router.put("/notifications/:id", async (req, res) => {});
+
 module.exports = router;

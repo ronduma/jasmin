@@ -46,6 +46,8 @@ const createUser = async (uid, email) => {
 		therapist: null,
 		specialty: [],
 		pdf_files: [],
+		price: null,
+		noti: [],
 	};
 
 	console.log("inserting user:", user)
@@ -284,6 +286,25 @@ const deletePdfFromDB = async (id, index) => {
 	console.log("PDF file deleted.");
 };
 
+const getNotifications = async (uid) => {
+	const userCollection = await users();
+	const user = await userCollection.findOne({ _id: uid });
+	if (!user) throw "Error: There is no user with the given name";
+	//if noti doesnt exist add it as an empty array
+	if (!user.noti) {
+		const updatedUser = await userCollection.findOneAndUpdate(
+			{ _id: uid },
+			{ $set: { noti: {unread: 0, noti_str: [] } } },
+			{ returnDocument: "after" }
+		);
+		return [];
+	}
+	return user.noti;
+}
+
+//update databse with notifications
+const updateNotifications = async (uid, noti, unread) => {};
+
 const getUserByUsername = async (username) => {
 	// username = username.toLowerCase();
 	const userCollection = await users();
@@ -519,6 +540,7 @@ module.exports = {
   savePdfToDB,
   getPdfFromDB,
   deletePdfFromDB,
+	getNotifications,
 	updateProfile,
 	getUserByUsername,
 	getAllTherapists,
