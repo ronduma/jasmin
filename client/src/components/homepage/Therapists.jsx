@@ -67,8 +67,8 @@ const Reviews = () => {
                   {therapist.last_name}
                 </div>
                 <div className="detail-container">
-                  {therapist.details.map((detail) => (
-                    <div className="therapist-detail">{detail}</div>
+                  {therapist.details.map((detail, index) => (
+                    <div className="therapist-detail" key={index}>{detail}</div>
                   ))}
                 </div>
               </a>

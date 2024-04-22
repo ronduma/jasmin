@@ -17,8 +17,8 @@ import AddIcon from '@mui/icons-material/Add';
 
 
 function Search(props) {
-  const [open, setOpen] = React.useState(false);
-  const [searchList, setSearchList] = React.useState(null);
+  const [open, setOpen] = useState(false);
+  const [searchList, setSearchList] = useState(null);
   const [selectedTherapist, setSelectedTherapist] = useState(null);
 
   const handleClickOpen = () => {
