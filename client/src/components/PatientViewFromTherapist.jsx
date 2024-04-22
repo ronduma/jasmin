@@ -136,7 +136,7 @@ function PatientView() {
               </Button>
             )}
             {" "}
-              <Button variant="contained"> Schedule </Button>
+              <Button variant="contained"> Chat </Button>
           </Paper>
         </Grid>
         <Grid item xs={6}>
