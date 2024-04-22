@@ -5,6 +5,7 @@ const users = require("../data/users");
 const path = require("path");
 const xss = require("xss");
 const multer = require("multer");
+const fs = require("fs");
 
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
@@ -20,7 +21,7 @@ const upload = multer({ storage: storage });
 router.get("/:id", async (req, res) => {
 	try {
 		const userObject = await users.getUserById(req.params.id);
-		console.log("user:", userObject);
+		// console.log("user:", userObject);
 		return res.status(200).json(userObject);
 	} catch (e) {
 		console.log(e);
@@ -93,8 +94,8 @@ router.put("/concerns", async (req, res) => {
 		for (let i = 0; i < 3; i++) {
 			concerns.push(xss(req.body.concerns[i]));
 		}
-		if (concerns[0] === "" && concerns[1] === "" && concerns[2] === "")
-			throw "No concerns";
+		// if (concerns[0] === "" && concerns[1] === "" && concerns[2] === "")
+		// 	throw "No concerns";
 		const concernsReturn = await users.updateProfile(uid, {
 			concerns: concerns,
 		});
@@ -108,14 +109,16 @@ router.put("/concerns", async (req, res) => {
 router.put("/specialty", async (req, res) => {
 	try {
 		let uid = req.body.uid;
-		const specialty = [];
-		for (let i = 0; i < req.body.specialty.length; i++) {
-			specialty.push(xss(req.body.specialty[i]));
+		if (req.body.specialty){
+			const specialty = [];
+			for (let i = 0; i < req.body.specialty.length; i++) {
+				specialty.push(xss(req.body.specialty[i]));
+			}
+			const specialtyReturn = await users.updateProfile(uid, {
+				specialty: specialty,
+			});
+			return res.status(200).json(specialtyReturn);
 		}
-		const specialtyReturn = await users.updateProfile(uid, {
-			specialty: specialty,
-		});
-		return res.status(200).json(specialtyReturn);
 	} catch (e) {
 		console.log(e);
 		return res.status(400).json(e);
@@ -124,8 +127,8 @@ router.put("/specialty", async (req, res) => {
 router.put("/price", async (req, res) => {
 	try{
 		let uid = req.body.uid;
-		console.log('bruh');
-		console.log(req.body.price);
+		// console.log('bruh');
+		// console.log(req.body.price);
 		const priceReturn = await users.updateProfile(uid,  {
 			price: req.body.price
 		})
@@ -135,5 +138,44 @@ router.put("/price", async (req, res) => {
 		console.log(e);
 		return res.status(400).json(e);
 	}
-})
+});
+
+router.put("/:id/upload-pdf", upload.single("file"), async (req, res) => {
+	console.log(req.file);
+	console.log(req.params.id);
+	const id = req.params.id;
+	const file = req.file;
+	if (!file) {
+		return res.status(400).json({ error: "No pdf" });
+	}
+	if (!file.originalname.match(/\.(pdf)$/)) {
+		return res
+			.status(400)
+			.json({ error: "Please upload a valid pdf file (.pdf)" });
+	}
+	console.log("saving file to /uploads");
+	const ret = await users.savePdfToDB(id, file.path, file.originalname);
+	return res.status(200).json(ret);
+});
+
+router.get("/download-pdf/:id/:index", async (req, res) => {
+	console.log("downloading pdf", req.params.id, req.params.index);
+	const id = req.params.id;
+	const index = req.params.index;
+	const pdfPath = await users.getPdfFromDB(id, index);
+	return res.download(pdfPath, (err) => {
+	  if (err) {
+		console.error(err);
+	  }
+	  fs.unlinkSync(pdfPath); // Delete the temporary file
+	});
+  });
+
+router.delete("/delete-pdf/:id/:index", async (req, res) => {
+	const id = req.params.id;
+	const index = req.params.index;
+	await users.deletePdfFromDB(id, index);
+	return res.status(200).json("");
+});
+
 module.exports = router;

@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import './slider-styles.css';
-import {Link, NavLink} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import Button from '@mui/material/Button';
 
 const images = [
@@ -8,7 +8,11 @@ const images = [
   { url: "/imgs/homepage/slider/slide_img2.jpg" },
   { url: "/imgs/homepage/slider/slide_img3.jpg" }
 ];
-
+const messages = [
+  "Mental health platform that brings patients and therapists together",
+  "Assistance for mental health with just a click of a button",
+  "Start now and improve your mental strength"
+]
 const Slider = () => {
   const [imageIndex, setImageIndex] = useState(0);
   useEffect(() => {
@@ -49,7 +53,7 @@ const Slider = () => {
         ))}
         <div className="gradient"></div>
         <div className="caption">
-          Mental health platform that brings patients and therapists together
+         {messages[imageIndex]}
           <div className="image-btns">
             <Button color="white"><Link to='/speciallist' className='link-button'>Choose your specialist</Link></Button>
             <Button color="white"><Link to='/all_matching' className='link-button'>See all</Link></Button>

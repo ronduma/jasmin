@@ -222,6 +222,7 @@ html{
 }
 .matching-title{
   color: #439873;
+  font-size: 50px;
 }
 .bold-option {
   font-weight: bold;
@@ -239,7 +240,7 @@ html{
 .matching-category-choice{
   color: #439873;
   font-weight: bold;
-  font-size: 1000px;
+  font-size: 50px;
 }
 .matching-container {
   display: flex;
@@ -247,15 +248,9 @@ html{
   width: 100%;
 }
 
-.matching-category-choice {
-  margin: 0;
-  font-size: 18px;
-}
-
 .search-bar-container {
   margin-left: auto; /* Pushes the search bar to the right but it goes off screen*/
 }
-
 .search-bar input {
   padding: 8px;
   border-radius: 20px;

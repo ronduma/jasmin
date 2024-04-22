@@ -8,6 +8,8 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import Twitter from '@mui/icons-material/Twitter';
 
+import IconButton from '@mui/material/IconButton';
+
 const Footer = () => {
   return (
     <Grid 
@@ -108,10 +110,38 @@ const Footer = () => {
           padding: '2.5vh 0 0 0'
         }}
       >
-        <FacebookOutlinedIcon style={{margin: '0 1rem 0 1rem'}}/>
-        <LinkedInIcon style={{margin: '0 1rem 0 1rem'}}/>
-        <TwitterIcon style={{margin: '0 1rem 0 1rem'}}/>
-        <GitHubIcon style={{margin: '0 1rem 0 1rem'}}/>
+        <IconButton 
+          style={{margin: '0 1rem 0 1rem'}}
+          aria-label="linkedin.com" 
+          onClick={()=>window.open('https://www.linkedin.com/company/jasminhealth')}
+          color="white"
+        >  
+          <FacebookOutlinedIcon/>
+        </IconButton>
+        <IconButton 
+          style={{margin: '0 1rem 0 1rem'}}
+          aria-label="linkedin.com" 
+          onClick={()=>window.open('https://www.linkedin.com/company/jasminhealth')}
+          color="white"
+        >  
+          <LinkedInIcon/>
+        </IconButton>
+        <IconButton 
+          style={{margin: '0 1rem 0 1rem'}}
+          aria-label="linkedin.com" 
+          onClick={()=>window.open('https://www.linkedin.com/company/jasminhealth')}
+          color="white"
+        >  
+          <TwitterIcon/>
+        </IconButton>
+        <IconButton 
+          style={{margin: '0 1rem 0 1rem'}}
+          aria-label="linkedin.com" 
+          onClick={()=>window.open('https://www.linkedin.com/company/jasminhealth')}
+          color="white"
+        >  
+          <GitHubIcon/>
+        </IconButton>
       </Grid>
       <Grid 
         item xs={12}

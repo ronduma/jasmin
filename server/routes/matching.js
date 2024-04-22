@@ -4,8 +4,8 @@ const users = require('../data/users');
 const path = require('path');
 
 router.get('/', async (req, res) => {
-    console.log(req.session.user)
-    return res.status(200).json(req.session.user);
+  console.log(req.session.user)
+  return res.status(200).json(req.session.user);
 });
 
 
