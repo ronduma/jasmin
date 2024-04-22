@@ -1,6 +1,6 @@
 {
-    "mongoConfig": {
-      "serverUrl": "mongodb+srv://jasmin_admin:jasmin@jasmin.hz9fbcn.mongodb.net/",
-      "database": "jasmin"
-    }
+  "mongoConfig": {
+    "serverUrl": "mongodb+srv://jasmin_admin:jasmin@jasmin.hz9fbcn.mongodb.net/", //"mongodb://127.0.0.1:27017/",
+    "database": "jasmin"
   }
+}
