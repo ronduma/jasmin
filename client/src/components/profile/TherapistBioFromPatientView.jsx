@@ -10,7 +10,7 @@ import { Typography } from "@mui/material";
 import Box from '@mui/material/Box';
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import CheckCircleIcon from "@mui/icons-material/CheckCircleOutlined";
 import CancelRoundedIcon from "@mui/icons-material/CancelOutlined";
 import Tabs from '@mui/material/Tabs';
@@ -126,6 +126,7 @@ function TherapistBioFromPatientView({ bio, specialty }) {
 
   const handleTimeSelection = async (index) => {
     try {
+      
       let updatedtime = format(selectedDate.$d, index);
       const response = await axios.post(`http://localhost:5173/meeting`, {
         currentUserID: currentUser.uid,
@@ -302,6 +303,7 @@ function TherapistBioFromPatientView({ bio, specialty }) {
                   </div>
                 </Grid>
               </Grid>
+
               <div className="right-section-header"> Upcoming Appointments </div>
               {Appointments === null ? (
                 <Typography> No upcoming appointments.</Typography>
@@ -309,14 +311,13 @@ function TherapistBioFromPatientView({ bio, specialty }) {
                 <div>
                   {Appointments.map((appointment, index) => (
                     <div key={index}>
-                      <Typography variant="body1"><a href={appointment.roomUrl}>{appointment.time} with {appointment.patientName}</a></Typography>
+                     <Typography variant="body1">{appointment.time}: <a href={appointment.roomUrl} target="_blank">Meeting Link</a> </Typography>
                       {/* Add additional details about the appointment if needed */}
                     </div>
                   ))}
                 </div>
               )}
             </CustomTabPanel>
-
             <CustomTabPanel value={value} index={2}>
               <div className='right-section-header'> Reviews </div>
             </CustomTabPanel>

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import {AuthContext} from '../../context/AuthContext';
 
 // import './styles.css';
-
+import { useParams, Link } from "react-router-dom";
 import axios from 'axios';
 import {Typography}  from '@mui/material';
 import Box from '@mui/material/Box';
@@ -34,6 +34,7 @@ import Expertise from './Expertise';
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
+
   return (
     <Grid 
       item 
@@ -53,12 +54,40 @@ function TherapistBio({ bio, specialty, price }) {
   const [editAbout, setEditAbout] = useState(false);
   const [currbio, setBio] = useState(bio);
   const [newBio, setNewBio] = useState(bio);
+  
+  const [Appointments, setAppointments] = useState(null);
+
   if (bio = "") setBio(null);
   const [selectedTopics, setSelectedTopics] = useState(specialty);
   let [selectedDate, setSelectedDate] = useState(dayjs());
   const [selectedPrice, setSelectPrice] = useState(price);
   const [newPrice, setNewPrice] = useState(price);
   if (price = "") setSelectPrice("");
+
+
+  useEffect(() => {
+    
+    const fetchData = async () => {
+      try {
+        const id = currentUser.uid;
+        const response = await axios.get(`http://localhost:5173/profile/${id}`);
+
+
+        const responseMeeting = await axios.get(
+          `http://localhost:5173/meeting/therapist/${id}`
+        );
+        const fetchedAppointments = responseMeeting.data;
+        setAppointments(fetchedAppointments); //all appointments
+      } catch (e) {
+        console.log("yo");
+        console.log(e);
+      }
+    };
+    fetchData();
+  });
+
+
+
 
   const putBio = async () => {
     // console.log("curentUser: ", currentUser);
@@ -212,6 +241,27 @@ function TherapistBio({ bio, specialty, price }) {
                   {selectedDate.$d.toString()}
                 </div>
               </div>
+             
+
+                
+              <div className="right-section-header"> Upcoming Appointments </div>
+              {Appointments === null ? (
+                <Typography> No upcoming appointments.</Typography>
+              ) : (
+                <div>
+                  {Appointments.map((appointment, index) => (
+                    <div key={index}>
+                     <Typography variant="body1">{appointment.time} with <Link to={`/patient/${appointment.patient}`}>
+                {appointment.patientName}
+              </Link>: <a href={appointment.roomUrl} target="_blank">Meeting Link</a> </Typography>
+                      {/* Add additional details about the appointment if needed */}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+
+
             </CustomTabPanel>
 
             <CustomTabPanel value={value} index={2}>
