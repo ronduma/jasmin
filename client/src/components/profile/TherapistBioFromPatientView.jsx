@@ -293,7 +293,7 @@ function TherapistBioFromPatientView({ bio, specialty }) {
               <div>
                 {Appointments.map((appointment, index) => (
                   <div key={index}>
-                    <Typography variant="body1"><a href={appointment.roomUrl}>{appointment.time} with {appointment.patientName}</a></Typography>
+                    <Typography variant="body1">{appointment.time}  with {appointment.patientName}: <a href={appointment.roomUrl} target="_blank">Meeting Link</a> </Typography>
                     {/* Add additional details about the appointment if needed */}
                   </div>
                 ))}
