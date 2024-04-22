@@ -128,7 +128,7 @@ function PatientView() {
               <br/>
               {isMatched ? (
               <Button variant="contained" onClick={handleClick}>
-                Unmatch with Therapist
+                Unmatch with Patient
               </Button>
             ) : (
               <Button variant="contained" onClick={handleClick}>
