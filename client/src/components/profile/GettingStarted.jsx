@@ -98,6 +98,7 @@ function GettingStarted() {
     try{
       const checkDB = await axios.get(`http://localhost:5173/profile/${currentUser.uid}`);
     } catch (error) {
+      console.log(error)
       await axios.post('http://localhost:5173/register', user);
     }
     try {

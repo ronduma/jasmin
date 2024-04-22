@@ -2,6 +2,7 @@ const { ObjectId } = require("mongodb");
 const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
 const chats = mongoCollections.chats;
+const chatData = './chats.js';
 const fs = require("fs");
 const dayjs = require("dayjs");
 
@@ -14,20 +15,6 @@ const createUser = async (uid, email) => {
 	const userExists = await userCollection.findOne({ uid: uid });
 	if (userExists) {
 		throw "User with email already exists.";
-	}
-
-	const kaiChat = {
-		to: {
-			id: "0",
-			name: "kAI"
-		},
-		messages: [
-			{
-				from: "kAI",
-				message: "Hello! I'm kAI, your personal AI assistant. Let me know if you have any questions about Jasmin.",
-				timestamp: dayjs().format('DD-MM-YYYY HH:mm:ss')
-			}
-		]
 	}
 
 	const user = {
@@ -44,19 +31,22 @@ const createUser = async (uid, email) => {
 		bio: null,
 		occupation: null,
 		concerns: [],
-		chatLog: [0],
+		chatLog: [],
 		patients: [],
 		therapist: null,
 		specialty: [],
 		pdf_files: [],
 	};
 
-	console.log("inserting user:", user)
+	// console.log("inserting user:", user)
 
 	const insertInfo = await userCollection.insertOne(user);
 	if (!insertInfo.acknowledged || !insertInfo.insertedId) {
 		throw "Could not add user";
 	}
+
+	// const test = await chatData.createChatLog(1, uid);
+
 	return { insertedUser: true, insertedId: insertInfo.insertedId };
 };
 
@@ -93,7 +83,7 @@ const gettingStarted = async ({
 		})
 	);
 	validation.validateUserUpdate(updated);
-	console.log(validation.validateUserUpdate(updated));
+	// console.log(validation.validateUserUpdate(updated));
 	const userCollection = await users();
 
 	const user = await userCollection.findOneAndUpdate(
