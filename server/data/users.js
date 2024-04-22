@@ -474,7 +474,7 @@ const match = async (currentUserID, TherapistID) => {
     if (!Therapist.patients.includes(currentUserID)) {
       const updatedTherapist = await userCollection.findOneAndUpdate(
         { _id: TherapistID },
-        { $push: { patients: TherapistID  } }
+        { $push: { patients: currentUserID  } }
       );
 
       console.log("Patient should be added to therapist" + Therapist.patients)
@@ -505,9 +505,26 @@ const match = async (currentUserID, TherapistID) => {
   }
 }
 
-const unMatch = async (currentUserID, TherapistID) => {
-  return;
+// Chat
+const getTherapistByPatientID = async (patientid) => {
+	const userCollection = await users();
+	const user = await userCollection. findOne({_id: patientid});
+	if(!user) throw "Error: There is no user with patientID";
+	if (user.therapist == null){
+		throw 'Patient is not matched with Therapist'
+	}
+	return user.therapist;
 }
+const getPatientbyTherapistID = async (therapistid) => {
+	const userCollection = await users();
+	const user = await userCollection. findOne({_id: therapistid});
+	if(!user) throw "Error: There is no therapist";
+	if (user.patients == null || user.patients.length === 0){
+		throw 'Error therapist has no patients'
+	}
+	return user.patients;
+}
+
 
 
 module.exports = {
@@ -528,4 +545,6 @@ module.exports = {
 	gettingStarted,
   match,
   checkUserifTherapist,
+  getPatientbyTherapistID,
+  getTherapistByPatientID,
 };

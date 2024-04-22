@@ -20,6 +20,8 @@ function Search(props) {
   const [searchList, setSearchList] = React.useState(null);
   const [selectedTherapist, setSelectedTherapist] = useState(null);
 
+  console.log(id)
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -49,8 +51,31 @@ function Search(props) {
         console.log(e);
       }
     }
+    // 
+    const getPatientsbyTherapist = async (id) => {
+      try{
+        const response = await axios.get("http://localhost:5173/therapists/patients");
+        const patients = response.data.map(patient => patient.firstName + " " + patient.lastName);
+        console.log(patients);
+        setSearchList(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    const getTherapistbyPatient = async (id) => {
+      try{
+        const response = await axios.get("http://localhost:5173/patients/getTherapist");
+        const therapists = response.data.map(therapist => therapist.firstName + " " + therapist.lastName);
+        console.log(therapists);
+        setSearchList(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    }
     if (props.isTherapist){
       getPatients();
+      // getPatientsbyTherapist(currentUser)
+
     } else{
       getTherapists();
     }
