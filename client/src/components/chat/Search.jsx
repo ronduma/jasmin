@@ -20,7 +20,6 @@ function Search(props) {
   const [searchList, setSearchList] = React.useState(null);
   const [selectedTherapist, setSelectedTherapist] = useState(null);
 
-  console.log(id)
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -74,10 +73,11 @@ function Search(props) {
     }
     if (props.isTherapist){
       getPatients();
-      // getPatientsbyTherapist(currentUser)
+      // getPatientsbyTherapist(props.id)
 
     } else{
       getTherapists();
+      // getTherapistbyPatient(props.id)
     }
   }, []); // Re-run effect whenever currentUser changes
 
