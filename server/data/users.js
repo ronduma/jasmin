@@ -1,6 +1,7 @@
 const { ObjectId } = require("mongodb");
 const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
+const chats = mongoCollections.chats;
 const fs = require("fs");
 const dayjs = require("dayjs");
 
@@ -8,6 +9,8 @@ const validation = require("./validation");
 
 const createUser = async (uid, email) => {
 	const userCollection = await users();
+	const chatCollection = await chats();
+
 	const userExists = await userCollection.findOne({ uid: uid });
 	if (userExists) {
 		throw "User with email already exists.";
@@ -41,7 +44,7 @@ const createUser = async (uid, email) => {
 		bio: null,
 		occupation: null,
 		concerns: [],
-		chatLog: [kaiChat],
+		chatLog: [0],
 		patients: [],
 		therapist: null,
 		specialty: [],
