@@ -54,16 +54,6 @@ const Chat = () => {
   };
 
   useEffect(() => {
-    if (currentUser && currentUser.uid) {
-      fetchData(); 
-      setLoading(false);
-    } else{
-      console.log(currentUser)
-      setLoading(false);
-    }
-  }, [currentUser]);
-
-  useEffect(() => {
     console.log("Updated isChatting:", isChatting);
   }, [isChatting]); 
 
