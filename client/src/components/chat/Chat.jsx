@@ -61,108 +61,102 @@ const Chat = () => {
       console.log(currentUser)
       setLoading(false);
     }
-  }, []);
-
-  useEffect(() => {
-    if (currentUser && currentUser.uid) {
-      fetchData(); 
-      setLoading(false);
-    } else{
-      console.log(currentUser)
-      setLoading(false);
-    }
   }, [currentUser]);
 
   useEffect(() => {
     console.log("Updated isChatting:", isChatting);
   }, [isChatting]); 
 
-  return (
-    <div >
-      {isOpen && (
-        <div className="chat-popup">
-          {isLoading ? <Loading/>
-          : 
-            (currentUser == null ? 
-              <div>Not signed in.</div>
-              :
-            <div className="chat-container">
-              <Grid
-                container
-                justifyContent="left"
-              >
-                <Grid item xs={10}>
-                  <div className="chat-header">
-                    Chat 
-                  </div>
+  if (currentUser){
+    return (
+      <div >
+        {isOpen && (
+          <div className="chat-popup">
+            {isLoading ? <Loading/>
+            : 
+              (currentUser == null ? 
+                <div>Not signed in.</div>
+                :
+              <div className="chat-container">
+                <Grid
+                  container
+                  justifyContent="left"
+                >
+                  <Grid item xs={10}>
+                    <div className="chat-header">
+                      Chat 
+                    </div>
+                  </Grid>
+                  <Grid item xs={1}>
+                    <Search 
+                      id={currentUser.uid}
+                      onMessage={handleSearchResponse}
+                      isTherapist={profileData.isTherapist}
+                    />
+                  </Grid>
+                  <Grid item xs={1}>
+                    <IconButton onClick={togglePopup}>
+                      <CloseIcon/>
+                    </IconButton>
+                  </Grid>
+                  {
+                    isChatting ? 
+                    <Dm 
+                      onMessage={handleDmResponse} 
+                      chat_id={selectedChat}
+                      sender={{id: currentUser.uid, name: profileData.firstName + " " + profileData.lastName}}
+                    />
+                    :
+                    <div>
+                      <Grid item xs={12}>
+                        <div className="messages-header">Messages</div>
+                      </Grid>
+                      <Grid item xs={12}>
+                        {
+                          profileData.chatLog.length == 0 ?
+                          <div>No messages to show.</div>
+                          :
+                          <div>
+                            {profileData.chatLog.map((dm, index)=> (
+                              <div key={index}>
+                                <DmPreview 
+                                  from={dm.name}
+                                  id={dm.id}
+                                  timestamp=""
+                                  message=""
+                                  onMessage={handleDmResponse}
+                                />
+                              </div>
+                            ))} 
+                          </div>
+                        }
+                      </Grid>
+                    </div>
+                  }
                 </Grid>
-                <Grid item xs={1}>
-                  <Search 
-                    id={currentUser.uid}
-                    onMessage={handleSearchResponse}
-                    isTherapist={profileData.isTherapist}
-                  />
-                </Grid>
-                <Grid item xs={1}>
-                  <IconButton onClick={togglePopup}>
-                    <CloseIcon/>
-                  </IconButton>
-                </Grid>
-                {
-                  isChatting ? 
-                  <Dm 
-                    onMessage={handleDmResponse} 
-                    chat_id={selectedChat}
-                    sender={{id: currentUser.uid, name: profileData.firstName + " " + profileData.lastName}}
-                  />
-                  :
-                  <div>
-                    <Grid item xs={12}>
-                      <div className="messages-header">Messages</div>
-                    </Grid>
-                    <Grid item xs={12}>
-                      {
-                        profileData.chatLog.length == 0 ?
-                        <div>No messages to show.</div>
-                        :
-                        <div>
-                          {profileData.chatLog.map((dm, index)=> (
-                            <div key={index}>
-                              <DmPreview 
-                                from={dm.name}
-                                id={dm.id}
-                                timestamp=""
-                                message=""
-                                onMessage={handleDmResponse}
-                              />
-                            </div>
-                          ))} 
-                        </div>
-                      }
-                    </Grid>
-                  </div>
-                }
-              </Grid>
-            </div>
-            )
-          }
-        </div>
-      )}
-      {isOpen ? 
-        <div></div> :
-        <Fab 
-          color="green" 
-          size="large"  
-          className="chat-button" 
-          aria-label="add"
-          onClick={togglePopup}
-        >
-          <ChatIcon fontSize="large"  />
-        </Fab>
-      }
-      
-    </div>
-  );
+              </div>
+              )
+            }
+          </div>
+        )}
+        {isOpen ? 
+          <div></div> :
+          <Fab 
+            color="green" 
+            size="large"  
+            className="chat-button" 
+            aria-label="add"
+            onClick={togglePopup}
+          >
+            <ChatIcon fontSize="large"  />
+          </Fab>
+        }
+        
+      </div>
+    );
+  } else {
+    return <></>
+  }
 };
 
 export default Chat;
