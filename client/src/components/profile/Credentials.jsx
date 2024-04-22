@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import "./styles.css";
 import "./credentials.css";
 import axios from 'axios';
@@ -7,13 +7,13 @@ import UploadIcon from '@mui/icons-material/Upload';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-// import { currentUser } from '../../context/AuthContext';
+import { VerificationContext } from '../../context/VerificationContext';
 
-function Credentials({ uid, pdf_files }) {
+function Credentials({ uid }) {
 
     const [PDFuploadMode, setPDFuploadMode] = useState(true);
     const [pdfFile, setPdfFile] = useState(null);
-    const [pdfFiles, setPdfFiles] = useState(pdf_files);
+    const { pdfFiles, setPdfFiles } = useContext(VerificationContext);;
 
     const handlePDFFileUpload = async (event) => {
         event.preventDefault();
@@ -57,7 +57,7 @@ function Credentials({ uid, pdf_files }) {
                 const url = window.URL.createObjectURL(new Blob([response.data]));
                 const link = document.createElement('a');
                 link.href = url;
-                link.setAttribute('download', pdf_files[index].filename); // or any other filename you want
+                link.setAttribute('download', pdfFiles[index].filename); // or any other filename you want
                 document.body.appendChild(link);
                 link.click();
             });
@@ -82,7 +82,7 @@ function Credentials({ uid, pdf_files }) {
         setPdfFiles(pdfFiles.filter((file, i) => i !== index));
     }
 
-    const [pdfLength, setPdfLength] = useState(pdf_files.length);
+    const [pdfLength, setPdfLength] = useState(pdfFiles.length);
 
     return (
         <div className="left-section-details" style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
