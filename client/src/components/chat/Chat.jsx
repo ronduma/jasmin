@@ -5,10 +5,13 @@ import "./chat.css";
 
 import axios from 'axios';
 
+import Box from '@mui/material/Box';
 import Fab from "@mui/material/Fab";
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
 
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ChatIcon from '@mui/icons-material/Chat';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -102,78 +105,91 @@ const Chat = () => {
             {!profileData ? <Loading/>
             : 
             <div className="chat-container">
-              <Grid
-                container
-                justifyContent="flex-start"
-              >
-                <Grid item xs={10}>
-                  <div className="chat-header">
-                    Chat 
-                  </div>
-                </Grid>
-                <Grid item xs={1}>
-                  <Search 
-                    id={currentUser.uid}
-                    onMessage={handleSearchResponse}
-                    isTherapist={profileData.isTherapist}
-                  />
-                </Grid>
-                <Grid item xs={1}>
-                  <IconButton onClick={togglePopup}>
-                    <CloseIcon/>
-                  </IconButton>
-                </Grid>
-                {
-                  isChatting ? 
-                    <Dm 
-                      onMessage={handleDmResponse} 
-                      chat_id={selectedChat}
-                      sender={{id: currentUser.uid, name: profileData.firstName + " " + profileData.lastName}}
-                    />
-                  :
-                  <div>
-                    {previews.length == profileData.chatLog.length ? 
-                      <Grid item xs={12}>
-                        {
-                          profileData.chatLog.length == 0 ?
-                          <div>No messages to show.</div>
-                          :
-                          <div>
-                            {previews.map((dm)=> (
-                              dm[0] != 0 ? 
+              <Box>
+                <Stack>
+                  <Grid container>
+                    <Grid item xs={1}>
+                      {isChatting ? 
+                        <IconButton onClick={handleDmResponse}>
+                          <ArrowBackIcon/>
+                        </IconButton>
+                        :
+                        <></>  
+                      }
+                      
+                    </Grid>
+                    <Grid item xs={8}>
+                      <div 
+                        className="chat-header"
+                      >
+                        Chat 
+                      </div>
+                    </Grid>
+                    <Grid item xs={1.5}>
+                      <Search 
+                        id={currentUser.uid}
+                        onMessage={handleSearchResponse}
+                        isTherapist={profileData.isTherapist}
+                      />
+                    </Grid>
+                    <Grid item xs={1.5}>
+                      <IconButton onClick={togglePopup}>
+                        <CloseIcon/>
+                      </IconButton>
+                    </Grid>
+                  </Grid>
+                  {
+                    isChatting ? 
+                      <Dm 
+                        onMessage={handleDmResponse} 
+                        chat_id={selectedChat}
+                        sender={{id: currentUser.uid, name: profileData.firstName + " " + profileData.lastName}}
+                      />
+                    :
+                    <div>
+                      {previews.length == profileData.chatLog.length ? 
+                        <div xs={12}>
+                          {
+                            profileData.chatLog.length == 0 ?
+                            <div>No messages to show.</div>
+                            :
+                            <div>
+                              {previews.map((dm)=> (
+                                dm[0] != 0 ? 
+                                  <div key={dm[1]}>
+                                    <DmPreview 
+                                      from={dm[0].firstName + " " + dm[0].lastName}
+                                      id={dm[1]}
+                                      pfp={dm[0].profile_img}
+                                      timestamp=""
+                                      message=""
+                                      onMessage={handleDmResponse}
+                                    />
+                                  </div>
+                                : 
                                 <div key={dm[1]}>
-                                  <DmPreview 
-                                    from={dm[0].firstName + " " + dm[0].lastName}
+                                  <DmPreview
+                                    from={"kAI"}
                                     id={dm[1]}
-                                    pfp={dm[0].profile_img}
+                                    pfp={null}
                                     timestamp=""
                                     message=""
                                     onMessage={handleDmResponse}
                                   />
                                 </div>
-                              : 
-                              <div key={dm[1]}>
-                                <DmPreview
-                                  from={"kAI"}
-                                  id={dm[1]}
-                                  pfp={null}
-                                  timestamp=""
-                                  message=""
-                                  onMessage={handleDmResponse}
-                                />
-                              </div>
-                            ))} 
-                          </div>
-                        }
-                      </Grid>
-                      :
-                      <Grid item xs={12} className="test">
-                        <Loading />
-                      </Grid>
-                    }
-                  </div>
-                }
-              </Grid>
+                              ))} 
+                            </div>
+                          }
+                        </div>
+                        :
+                        <div xs={12} justifyContent="center">
+                          <Loading />
+                        </div>
+                      }
+                    </div>
+                  }
+                </Stack>
+              </Box>
             </div>
             }
           </div>

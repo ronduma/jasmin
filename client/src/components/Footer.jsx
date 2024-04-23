@@ -136,8 +136,8 @@ const Footer = () => {
         </IconButton>
         <IconButton 
           style={{margin: '0 1rem 0 1rem'}}
-          aria-label="linkedin.com" 
-          onClick={()=>window.open('https://www.linkedin.com/company/jasminhealth')}
+          aria-label="github.com" 
+          onClick={()=>window.open('https://github.com/ronduma/jasmin')}
           color="white"
         >  
           <GitHubIcon/>

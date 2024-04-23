@@ -19,10 +19,20 @@ const DmPreview = (props) => {
   const truncatedText = props.message.length > 20 ? `${props.message.slice(0, 20)}...` : props.message;
 
   return (
-    <Card sx={{ display: 'flex', margin: "1rem 0 0 0"}}>
+    <Card 
+      sx={{ 
+        display: 'flex', 
+        // margin: "1rem 0 0 0"
+      }}
+    >
       <CardActionArea 
         onClick={sendMessageToParent}
-        sx={{ display: 'flex', alignItems: 'left' }}
+        sx={{ 
+          display: 'flex', 
+          alignItems: 'flex-start', 
+          justifyContent: 'flex-start', 
+          width: '100%'
+        }}
       >
         <CardMedia
           component="img"

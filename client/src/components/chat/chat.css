@@ -15,13 +15,13 @@
 
 .chat-container {
   padding: 10px;
-  text-align: left;
+  /* text-align: left; */
 }
 
 .chat-header{
   font-weight:500;
   font-size:1.5rem;
-  margin: 0 0 2rem 0;
+  margin: 0rem 2rem 2rem 4rem;
 }
 
 /* Style the chat popup */

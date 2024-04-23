@@ -83,9 +83,6 @@ function Dm(props) {
 
   return (
     <div>
-      <IconButton onClick={sendMessageToParent}>
-        <ArrowBackIcon/>
-      </IconButton>
       <div className="history">
         {history.chatLog.map((message, index)=> (
           <div key={index}>
