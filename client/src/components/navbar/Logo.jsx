@@ -9,7 +9,7 @@ const Logo = (props) => {
       to='/' 
       className='navlink'
       sx={{
-        display: props.isHamburger ? { xs: 'flex', md: 'none' } : { xs: 'none', md: 'flex' },
+        display: props.isHamburger ? { xs: 'flex', lg: 'none' } : { xs: 'none', lg: 'flex' },
         flexGrow: props.isHamburger ? 1 : 0
       }}
     >

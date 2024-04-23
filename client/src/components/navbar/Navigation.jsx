@@ -48,7 +48,7 @@ const Navigation = () => {
     <AppBar position='static' className='appbar' elevation={0}>
       <Toolbar className='toolbar'>
         <Logo />
-        <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+        <Box sx={{ flexGrow: 1, display: { xs: 'flex', lg: 'none' } }}>
           <IconButton
             size="large"
             aria-haspopup="true"
@@ -72,7 +72,7 @@ const Navigation = () => {
             open={Boolean(anchorElNav)}
             onClose={handleCloseNavMenu}
             sx={{
-              display: { xs: 'block', md: 'none' },
+              display: { xs: 'block', lg: 'none' },
             }}
           >
             <MenuItem onClick={handleCloseNavMenu}>
@@ -108,7 +108,7 @@ const Navigation = () => {
 const NavigationAuth = () => {
   return (
     <div style={{ marginLeft: 'auto', display: 'flex' }}>
-      <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+      <Box sx={{ display: { xs: 'none', lg: 'block' } }}>
         <Button component={NavLink} to='/personal_matching' color='green' className="navlink">Personal Therapy</Button>
         <Button component={NavLink} to='/couple_matching' color='green' className="navlink">Couples Therapy</Button>
         <Button component={NavLink} to='/children_matching' color='green' className="navlink">Children Therapy</Button>

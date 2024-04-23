@@ -38,7 +38,7 @@ const Notis = () => {
   return (
     <div>
       <IconButton color="inherit" onClick={handleClick}>
-        <Badge badgeContent={unreadNotifications} color="secondary">
+        <Badge badgeContent={unreadNotifications} color="success">
           <NotificationsIcon />
         </Badge>
       </IconButton>
