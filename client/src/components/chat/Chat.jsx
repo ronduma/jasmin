@@ -67,7 +67,7 @@ const Chat = () => {
             const recipient = profileData._id === dm.user1_id ? dm.user2_id : dm.user1_id;
             const response = await axios.get(`http://localhost:5173/profile/${recipient}`);
             return [response.data, dm._id];
-          }
+          } else return [0, dm._id]
         })
       );
       setPreviews(previewResults);
@@ -125,11 +125,11 @@ const Chat = () => {
                 </Grid>
                 {
                   isChatting ? 
-                  <Dm 
-                    onMessage={handleDmResponse} 
-                    chat_id={selectedChat}
-                    sender={{id: currentUser.uid, name: profileData.firstName + " " + profileData.lastName}}
-                  />
+                    <Dm 
+                      onMessage={handleDmResponse} 
+                      chat_id={selectedChat}
+                      sender={{id: currentUser.uid, name: profileData.firstName + " " + profileData.lastName}}
+                    />
                   :
                   <div>
                     {previews.length == profileData.chatLog.length ? 
@@ -140,7 +140,7 @@ const Chat = () => {
                           :
                           <div>
                             {previews.map((dm)=> (
-                              dm ? 
+                              dm[0] != 0 ? 
                                 <div key={dm[1]}>
                                   <DmPreview 
                                     from={dm[0].firstName + " " + dm[0].lastName}
@@ -151,7 +151,17 @@ const Chat = () => {
                                     onMessage={handleDmResponse}
                                   />
                                 </div>
-                              : <div>Kai Placeholder</div>
+                              : 
+                              <div key={dm[1]}>
+                                <DmPreview
+                                  from={"kAI"}
+                                  id={dm[1]}
+                                  pfp={null}
+                                  timestamp=""
+                                  message=""
+                                  onMessage={handleDmResponse}
+                                />
+                              </div>
                             ))} 
                           </div>
                         }

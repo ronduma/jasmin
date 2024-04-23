@@ -15,12 +15,11 @@ import SendIcon from '@mui/icons-material/Send';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 
-function Dm(props) {
+function kAI(props) {
   const [message, setMessage] = useState("");
   const [messageReceived, setMessageReceived] = useState(""); //debugging state
   const [history, setHistory] = useState(null);
   const [isLoading, setLoading] = useState(true);
-  const [isKai, setIsKai] = useState(false);
 
   const sendMessageToParent = () => {
     // Invoke the callback function passed from the parent with data
@@ -44,15 +43,9 @@ function Dm(props) {
       sender: props.sender,
       message: message
     }
-    if (!isKai){
-      socket.emit("send_message", {message});
-      const response = await axios.put(`http://localhost:5173/chats/message/${props.chat_id}`, msg);
-      const chat = await getChat();
-    } else {
-      const response = await axios.put(`http://localhost:5173/chats/kai-message/${props.chat_id}`, msg)
-      const chat = await getChat();
-    }
-
+    socket.emit("send_message", {message})
+    const response = await axios.put(`http://localhost:5173/chats/message/${props.chat_id}`, msg)
+    const chat = await getChat();
 
     setMessage("");
   };
@@ -63,18 +56,13 @@ function Dm(props) {
 
   useEffect(()=> {
     getChat();
-    if (history && history.user1_id == 1){
-      setIsKai(true);
-    }
   }, [history])
 
   useEffect(()=> {
-    if (!isKai){
-      socket.on("receive_message", (data) => {
-        getChat();
-        setMessageReceived(data.message)
-      })
-    }
+    socket.on("receive_message", (data) => {
+      getChat();
+      setMessageReceived(data.message)
+    })
   }, [socket])
 
   if (isLoading) {
@@ -96,6 +84,7 @@ function Dm(props) {
             </div>
           </div>
         ))} 
+        {/* {messageReceived} */}
       </div>
       <div className="input">
         <TextField 
@@ -112,4 +101,4 @@ function Dm(props) {
   );
 }
 
-export default Dm;
+export default kAI;
