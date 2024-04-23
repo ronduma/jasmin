@@ -45,6 +45,8 @@ const createUser = async (uid, email) => {
 		patients: [],
 		therapist: null,
 		specialty: [],
+		reviews : [],
+		overallRating: 0,
 		pdf_files: [],
 	};
 

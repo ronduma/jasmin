@@ -33,7 +33,6 @@ import Expertise from './Expertise';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
-
   return (
     <Grid 
       item 
@@ -59,6 +58,20 @@ function TherapistBio({ bio, specialty, price }) {
   const [selectedPrice, setSelectPrice] = useState(price);
   const [newPrice, setNewPrice] = useState(price);
   if (price = "") setSelectPrice("");
+
+  useEffect(() => {
+    const userReviews = async () => {
+      try{
+        console.log(currentUser);
+        const response = await axios.get(`http://localhost:5173/reviews/${currentUser.uid}`);
+        console.log(response.data);
+      }
+      catch(error){
+        console.error(error);
+      }
+    };
+    userReviews();
+  });
 
   const putBio = async () => {
     // console.log("curentUser: ", currentUser);

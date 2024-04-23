@@ -8,7 +8,7 @@ const matchingRoutes = require('./matching');
 const chatsRoutes = require('./chats');
 const meetingRoutes = require('./meeting')
 const videoRoutes = require('./video');
-
+const reviewRoutes = require('./reviews');
 const constructorMethod = (app) => {
   // app.use('/', (req, res) => {
   //   res.status(200).json("Hello World!")
@@ -25,7 +25,7 @@ const constructorMethod = (app) => {
   app.use('/chats', chatsRoutes);
   app.use('/meeting', meetingRoutes);
   app.use('/video',videoRoutes);
-
+  app.use('/reviews', reviewRoutes);
   app.use('*', (req, res) => {
     // console.log('yo')
     res.status(400).json("Error: Page not found.")

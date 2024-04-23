@@ -15,7 +15,9 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircleOutlined";
 import CancelRoundedIcon from "@mui/icons-material/CancelOutlined";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-
+import Button from '@mui/material/Button';
+import Rating from '@mui/material/Rating';
+import Stack from '@mui/material/Stack';
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -25,7 +27,7 @@ import Paper from "@mui/material/Paper";
 
 import Expertise from './Expertise';
 
-function TherapistBioFromPatientView({ bio, specialty }) {
+function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews }) {
   const { currentUser } = useContext(AuthContext);
   const [editAbout, setEditAbout] = useState(false);
   const [currbio, setBio] = useState(bio);
@@ -37,7 +39,10 @@ function TherapistBioFromPatientView({ bio, specialty }) {
   const [isLoading, setLoading] = useState(true);
 
   const [value, setValue] = useState(0);
-    
+  const [currReviews, setReviews] = useState(reviews);
+  const [currReview, setReview] = useState("");
+  const [currReviewTitle, setReviewTitle] = useState("");
+  const [currRating, setRating] = useState(overallRating);
   const handleChange = (event, newValue) => {
     setValue(newValue);
     console.log(value)
@@ -80,7 +85,6 @@ function TherapistBioFromPatientView({ bio, specialty }) {
     updatedtime = time.toString();
     return dayjs(date).format("MM/DD/YYYY") + " " + index;
   };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -167,6 +171,14 @@ function TherapistBioFromPatientView({ bio, specialty }) {
     }
   };
 
+  // const handleReviewChange = async () => {
+  //   try{
+  //     const response = await axios.post(`http://localhost:5173/reviews/${}`)
+  //   }
+  //   catch(error){
+  //     console.error(error);
+  //   }
+  // }
   return (
     <div>
       <Grid
@@ -319,6 +331,47 @@ function TherapistBioFromPatientView({ bio, specialty }) {
 
             <CustomTabPanel value={value} index={2}>
               <div className='right-section-header'> Reviews </div>
+              <div>
+              <Typography component="legend" style={{ marginBottom: '20px' }}>Overall Therapist Rating</Typography>
+              <Rating
+              name="text-feedback"
+              value ={currRating}
+              readOnly
+              precision={0.5}
+              onChange = {(event, newValue) => {
+                setRating(newValue);
+              }}
+              />
+              </div>
+              <div style={{marginTop: '20px', marginBottom:'20px'}}>
+              {currReviews && currReviews.length == 0 ?(<div>Currently No Reviews</div>) : 
+                (<Stack direction ='row' spacing={2}>
+                  {currReviews.map((item, index) => (
+                    <div key={index}>
+                      <div>Name: {item.reviewerName}</div>
+                      <div>Title: {item.reviewTitle}</div>
+                      <div>Rating: {item.rating}</div>
+                      <div>Date: {item.reviewDate}</div>
+                    </div>
+                  ))}
+                </Stack>)}
+              </div>
+              <div>
+              <TextField 
+                inputRef={input => input && input.focus()}
+                fullWidth 
+                label="Review" 
+                id="textbox-Review"
+                value={currReview}
+                onChange = {event => setReview(event.target.value)}
+                multiline
+              />
+              </div>
+              <div style={{marginTop: '20px', marginBottom:'20px'}}>
+                <Button variant="contained">
+                  Submit A Review
+                </Button>
+              </div>
             </CustomTabPanel>
           </Paper>
         </Grid>

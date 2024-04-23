@@ -189,7 +189,8 @@ function Profile() {
           {profileData.isTherapist == true ?
             <TherapistBio
               bio={profileData.bio}
-              specialty={profileData.specialty} />
+              specialty={profileData.specialty}
+               />
             : <PatientBio
               bio={profileData.bio}
               concerns={profileData.concerns}
