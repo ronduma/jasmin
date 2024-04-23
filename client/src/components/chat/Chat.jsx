@@ -62,6 +62,10 @@ const Chat = () => {
       getDm(profileData.chatLog);
     }
   }, [profileData])
+
+  useEffect (() => {
+    setIsOpen(false)
+  }, [currentUser])
   
   const getPreview = async (dms) => {
     setPreviews([]);
@@ -105,7 +109,6 @@ const Chat = () => {
     setIsChatting(data.isChatting);
     setSelectedChat(data.id);
   };
-
 
   if (currentUser){
     return (
