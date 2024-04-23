@@ -10,6 +10,17 @@ export const NotificationProvider = ({ children }) => {
   //need to change this after updaing the db?
   const [unreadNotifications, setUnreadNotifications] = useState(0);
 
+  const markAllNotificationsAsRead = async () => {
+    if (currentUser) {
+      try {
+        await axios.put(`http://localhost:5173/profile/notifications/${currentUser.uid}`, { unread: 0 });
+        setUnreadNotifications(0);
+      } catch (error) {
+        console.error('Error marking notifications as read:', error);
+      }
+    }
+  };
+
   // Fetch noti from the database when the component mounts
   useEffect(() => {
     const fetchNotificationsForCurrentUser = async () => {
@@ -28,7 +39,7 @@ export const NotificationProvider = ({ children }) => {
   }, [currentUser, notifications, unreadNotifications]);
 
   return (
-    <NotificationContext.Provider value={{ notifications, setNotifications, unreadNotifications, setUnreadNotifications }}>
+    <NotificationContext.Provider value={{ notifications, setNotifications, unreadNotifications, setUnreadNotifications, markAllNotificationsAsRead }}>
       {children}
     </NotificationContext.Provider>
   );

@@ -12,7 +12,7 @@ import axios from 'axios';
 
 const Notis = () => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const { notifications, setNotifications, unreadNotifications, setUnreadNotifications } = useContext(NotificationContext);
+  const { notifications, setNotifications, unreadNotifications, setUnreadNotifications, markAllNotificationsAsRead } = useContext(NotificationContext);
 
   // if (!currentUser) {
   //   console.log(currentUser)
@@ -22,8 +22,8 @@ const Notis = () => {
 
   const handleClick = (event) => {
     event.preventDefault();
+    markAllNotificationsAsRead();
     setAnchorEl(event.currentTarget);
-    setUnreadNotifications(0);
   };
 
   const handleClose = () => {

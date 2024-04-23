@@ -190,6 +190,18 @@ router.get("/notifications/:id", async (req, res) => {
 });
 
 //to add new notifications to the database and update unread notifications
-router.put("/notifications/:id", async (req, res) => {});
+router.put("/notifications/:id", async (req, res) => {
+	try {
+		const id = req.params.id;
+		const unread = req.body.unread;
+		const noti_str = req.body.noti_str;
+		const notifications = await users.updateNotifications(id, unread, noti_str);
+		return res.status(200).json(notifications);
+	} catch (error) {
+		return res.status(400).json(error);
+	}
+});
+
+
 
 module.exports = router;
