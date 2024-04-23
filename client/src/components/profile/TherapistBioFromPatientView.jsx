@@ -333,7 +333,7 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
               <div className='right-section-header'> Reviews </div>
               <div>
               <Typography component="legend" style={{ marginBottom: '20px' }}>Overall Therapist Rating</Typography>
-              <Rating
+              {/* <Rating
               name="text-feedback"
               value ={currRating}
               readOnly
@@ -341,9 +341,9 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
               onChange = {(event, newValue) => {
                 setRating(newValue);
               }}
-              />
+              /> */}
               </div>
-              <div style={{marginTop: '20px', marginBottom:'20px'}}>
+              {/* <div style={{marginTop: '20px', marginBottom:'20px'}}>
               {currReviews && currReviews.length == 0 ?(<div>Currently No Reviews</div>) : 
                 (<Stack direction ='row' spacing={2}>
                   {currReviews.map((item, index) => (
@@ -355,7 +355,7 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
                     </div>
                   ))}
                 </Stack>)}
-              </div>
+              </div> */}
               <div>
               <TextField 
                 inputRef={input => input && input.focus()}
