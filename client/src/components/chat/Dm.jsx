@@ -45,17 +45,15 @@ function Dm(props) {
       sender: props.sender,
       message: message
     }
-    if (!isKai){
-      socket.emit("send_message", {message});
-      const response = await axios.put(`http://localhost:5173/chats/message/${props.chat_id}`, msg);
-      const chat = await getChat();
-    } else {
+    socket.emit("send_message", {message});
+    const response = await axios.put(`http://localhost:5173/chats/message/${props.chat_id}`, msg);
+    const chat = await getChat();
+    setMessage("");
+
+    if (isKai){
       const response = await axios.put(`http://localhost:5173/chats/kai-message/${props.chat_id}`, msg)
       const chat = await getChat();
     }
-
-
-    setMessage("");
   };
 
   useEffect(()=> {
@@ -88,8 +86,10 @@ function Dm(props) {
         {history.chatLog.map((message, index) => (
           <Message
             key={index}
+            chatId={props.chat_id}
+            msgId={index}
             timestamp={message.timestamp}
-            sender={message.sender.name}
+            sender={message.sender}
             message={message.message}
             pfp={message.sender.name === props.sender.name ? props.sender_pfp : props.recipient_pfp}
           />
@@ -102,6 +102,7 @@ function Dm(props) {
           value={message}
           onChange={(event) => setMessage(event.target.value)}
           fullWidth
+          autoComplete='off'
         />
         <IconButton onClick={sendMessage}>
           <SendIcon />

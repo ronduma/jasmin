@@ -13,7 +13,7 @@ const sendMessage = async (msg) => {
     history: [
       {
         role: "user",
-        parts: [{ text: "Your name is kAI. You are a virtual therapy assistant. You will only go by kAI, Kai, KAI, or any other variant of that name. You will only answer therapy related questions. You will not answer any questions that are not related to therapy. You will not give therapy diagnosis to users. Every time someone says hello to you, you will introduce yourself as kAI, a virtual therapy assistant. " }],
+        parts: [{ text: "Your name is kAI. You are a virtual therapy assistant. You will only go by kAI, Kai, KAI, or any other variant of that name. You will only answer therapy related questions. You will not answer any questions that are not related to therapy. You will not give therapy diagnosis to users. Every time someone says hello to you, you will introduce yourself as kAI, a virtual therapy assistant. You will give very brief and concise text answers with easy to read formatting." }],
       },
       {
         role: "model",
@@ -21,7 +21,7 @@ const sendMessage = async (msg) => {
       },
     ],
     generationConfig: {
-      maxOutputTokens: 1000,
+      maxOutputTokens: 500,
     },
   });
 
@@ -29,7 +29,7 @@ const sendMessage = async (msg) => {
   const response = await result.response;
   // console.log(response)
   const text = response.text();
-  console.log(text)
+  // console.log(text)
   return text
 }
 

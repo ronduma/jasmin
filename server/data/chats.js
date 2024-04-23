@@ -64,24 +64,13 @@ const createKaiMsg = async (
   sender,
   message
 ) => {
-  let response = await geminiData.sendMessage(message);
-  const msg = {
-    sender: sender, 
-    message: message, 
-    timestamp: dayjs().format('MM-DD-YYYY HH:mm:ss')
-  };
-
   const chatCollection = await chats();
-  const insertInfo = await chatCollection.findOneAndUpdate(
-		{ _id: new ObjectId(id) },
-		{ $push: {chatLog : msg} },
-		{ returnDocument: "after" }
-	);
-
+  let response = await geminiData.sendMessage(message);
   const response_msg = {
     sender: {
       id : 1,
-      name : "kAI"
+      name : "kAI",
+      doneTyping : false
     }, 
     message: response, 
     timestamp: dayjs().format('MM-DD-YYYY HH:mm:ss')
@@ -91,6 +80,20 @@ const createKaiMsg = async (
 		{ $push: {chatLog : response_msg} },
 		{ returnDocument: "after" }
 	);
+}
+
+const kaiMsgDoneTyping = async (
+  id,
+  timestamp
+) => {
+  const chatCollection = await chats();
+  console.log(id, typeof timestamp)
+  const filter = {
+    'chatLog.timestamp': timestamp
+  };
+  const update = {"$set": {"chatLog.$.sender.doneTyping": true}}
+  const setResponseInfo = await chatCollection.findOneAndUpdate(filter, update);
+  console.log(setResponseInfo)
 }
 
 const getChatByID = async (uid) => {
@@ -104,5 +107,6 @@ module.exports = {
 	createChatLog,
   createMsg,
   createKaiMsg,
-  getChatByID
+  getChatByID,
+  kaiMsgDoneTyping
 };

@@ -2,6 +2,9 @@ import React, {useEffect, useRef, useState} from 'react';
 import "./dm.css";
 
 import dayjs from 'dayjs';
+import axios from 'axios';
+
+import { TypeAnimation } from 'react-type-animation';
 
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -30,8 +33,28 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 
 function Message(props) {
   const [pfp, setPfp] = useState(props.pfp)
+  const [doneTyping, setDoneTyping] = useState(false);
+
   const parsedDate = dayjs(props.timestamp, "MM-DD-YYYY HH:mm:ss");
   const formatted = parsedDate.format('MM/DD/YY hh:mm A');
+
+  const kaiDone = async () => {
+    try {
+      console.log("ello")
+      const response = await axios.put(`http://localhost:5173/chats/kai-message/done-typing/${props.chatId}}`, {timestamp: props.timestamp});
+      console.log(response)
+    } catch (e) {
+      console.log(e)
+    }
+    console.log("DONE")
+  }
+
+  useEffect(() => {
+    if (doneTyping){
+      kaiDone()
+    }
+  }, [doneTyping]); 
+
   return (
     <StyledPaper
         sx={{
@@ -46,9 +69,30 @@ function Message(props) {
             <Avatar src={pfp}/>
           </Grid> */}
           <Grid item xs>
-            <Typography style={{fontWeight:800}}>{props.sender} </Typography>
+            <Typography style={{fontWeight:800}}>{props.sender.name} </Typography>
             <Typography>{formatted}</Typography>
-            <Typography>{props.message}</Typography>
+            {
+              props.sender.name == "kAI" ? 
+                props.sender.doneTyping ? 
+                <Typography>{props.message}</Typography>
+                :
+                <Typography>
+                  <TypeAnimation
+                  cursor={false}
+                  sequence={[ 
+                    props.message,
+                    () => {
+                      setDoneTyping(true);
+                    }
+                  ]}
+                  wrapper="span"
+                  repeat={0}
+                  speed={55}
+                />
+                </Typography>
+            :
+              <Typography>{props.message}</Typography>
+            }
           </Grid>
         </Grid>
         <hr></hr>
