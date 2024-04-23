@@ -33,7 +33,7 @@ const Notis = () => {
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
-  if (!notifications) return <p>Loading...</p>;
+  // if (!notifications) return <p>Loading...</p>;
 
   return (
     <div>

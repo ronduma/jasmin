@@ -25,7 +25,7 @@ export const NotificationProvider = ({ children }) => {
     };
 
     fetchNotificationsForCurrentUser();
-  }, [currentUser]);
+  }, [currentUser, notifications, unreadNotifications]);
 
   return (
     <NotificationContext.Provider value={{ notifications, setNotifications, unreadNotifications, setUnreadNotifications }}>

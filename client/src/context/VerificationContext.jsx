@@ -15,7 +15,7 @@ export const VerificationProvider = ({ children }) => {
         .then(response => setPdfFiles(response.data.pdf_files))
         .catch(error => console.error(error));
     }
-  }, [currentUser]); // Depend on currentUser
+  }, [currentUser, pdfFiles]); // Depend on currentUser
 
   return (
     <VerificationContext.Provider value={{ pdfFiles, setPdfFiles }}>
