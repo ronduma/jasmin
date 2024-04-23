@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import dayjs from "dayjs";
 
 import { AuthContext } from "../../context/AuthContext";
@@ -40,7 +40,8 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
 
   const [value, setValue] = useState(0);
   const [currReviews, setReviews] = useState(reviews);
-  const [currReview, setReview] = useState("");
+  const reviewInput = useRef(null);
+  const [currReview, setCurrReview] = useState("");
   const [currReviewTitle, setReviewTitle] = useState("");
   const [currRating, setRating] = useState(overallRating);
   const handleChange = (event, newValue) => {
@@ -50,14 +51,14 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
 
   function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
-  
+
     return (
-      <Grid 
-        item 
+      <Grid
+        item
         hidden={value !== index}
       >
         {value === index && (
-          <Box sx={{ p: 3}}>
+          <Box sx={{ p: 3 }}>
             {children}
           </Box>
         )}
@@ -141,7 +142,7 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
       const responseMeeting = await axios.get(
         `http://localhost:5173/meeting/therapist/${id}`
       );
-      
+
       const fetchedAppointments = responseMeeting.data;
       console.log(fetchedAppointments)
       const filteredAppointments = fetchedAppointments.filter(appointment =>
@@ -186,10 +187,10 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
         spacing={2}
       >
         <Grid item xs={12}>
-          <Paper style={{ minHeight: "18vh", height:'100%' }}>
+          <Paper style={{ minHeight: "18vh", height: '100%' }}>
             <Tabs value={value} onChange={handleChange} variant="fullWidth">
               <Tab label="Details" />
-              <Tab label="Availability"  />
+              <Tab label="Availability" />
               <Tab label="Reviews" />
             </Tabs>
             <CustomTabPanel value={value} index={0}>
@@ -200,13 +201,13 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
                   justifyContent: "space-between",
                 }}
               >
-                <div className="right-section-header"> 
-                  Expertise 
+                <div className="right-section-header">
+                  Expertise
                 </div>
               </div>
-              <Expertise disabled={!editAbout} selected={handleSelectedTopics} display={specialty}/>
-              <div className="right-section-header"> 
-                About Me 
+              <Expertise disabled={!editAbout} selected={handleSelectedTopics} display={specialty} />
+              <div className="right-section-header">
+                About Me
               </div>
               <TextField
                 disabled={!editAbout}
@@ -332,8 +333,8 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
             <CustomTabPanel value={value} index={2}>
               <div className='right-section-header'> Reviews </div>
               <div>
-              <Typography component="legend" style={{ marginBottom: '20px' }}>Overall Therapist Rating</Typography>
-              {/* <Rating
+                <Typography component="legend" style={{ marginBottom: '20px' }}>Overall Therapist Rating</Typography>
+                {/* <Rating
               name="text-feedback"
               value ={currRating}
               readOnly
@@ -357,18 +358,18 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
                 </Stack>)}
               </div> */}
               <div>
-              <TextField 
-                inputRef={input => input && input.focus()}
-                fullWidth 
-                label="Review" 
-                id="textbox-Review"
-                value={currReview}
-                onChange = {event => setReview(event.target.value)}
-                multiline
-              />
+                <TextField
+                  inputRef={reviewInput}
+                  fullWidth
+                  label="Review"
+                  id="textbox-Review"
+                  // value={currReview}
+                  // onChange={event => setCurrReview(event.target.value)}
+                  multiline
+                />
               </div>
-              <div style={{marginTop: '20px', marginBottom:'20px'}}>
-                <Button variant="contained">
+              <div style={{ marginTop: '20px', marginBottom: '20px' }}>
+                <Button variant="contained" onClick={(event) => { event.preventDefault; console.log(reviewInput.current.value) }}>
                   Submit A Review
                 </Button>
               </div>
