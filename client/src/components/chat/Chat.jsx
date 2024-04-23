@@ -26,6 +26,7 @@ const Chat = () => {
   const [profileData, setProfileData] = useState(null);
   const [isChatting, setIsChatting] = useState(false);
   const [selectedChat, setSelectedChat] = useState(null);
+  const [selectedChatPfp, setSelectedChatPfp] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [dms, setDms] = useState([]);
   const [previews, setPreviews] = useState([]);
@@ -84,11 +85,11 @@ const Chat = () => {
     getPreview(dms);
   }, [dms])
 
-
   const handleDmResponse = (data) => {
     // console.log(data)
     setIsChatting(data.isChatting);
     setSelectedChat(data.id);
+    setSelectedChatPfp(data.pfp);
   };
 
   const handleSearchResponse = (data) => {
@@ -96,6 +97,7 @@ const Chat = () => {
     setIsChatting(data.isChatting);
     setSelectedChat(data.id);
   };
+
 
   if (currentUser){
     return (
@@ -144,6 +146,8 @@ const Chat = () => {
                         onMessage={handleDmResponse} 
                         chat_id={selectedChat}
                         sender={{id: currentUser.uid, name: profileData.firstName + " " + profileData.lastName}}
+                        sender_pfp = {profileData.profile_img}
+                        recipient_pfp = {selectedChatPfp}
                       />
                     :
                     <div>

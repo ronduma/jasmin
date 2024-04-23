@@ -16,8 +16,8 @@ router.get("/therapist/:id", async (req, res) => {
   const therapistId = req.params.id;
   try {
     const therapist = await meetings.getMeetingsByTimeTherapist(therapistId);
-    console.log("GET: therapist id");
-    console.log(therapist);
+    // console.log("GET: therapist id");
+    // console.log(therapist);
     return res.status(200).json(therapist);
   } catch (error) {
     return res.status(404).json(error);

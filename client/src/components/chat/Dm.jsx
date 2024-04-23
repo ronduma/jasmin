@@ -8,6 +8,7 @@ import io from 'socket.io-client'
 const socket = io.connect("http://localhost:5173")
 
 import Loading from "../loading/Loading";
+import Message from "./Message";
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SendIcon from '@mui/icons-material/Send';
@@ -82,28 +83,28 @@ function Dm(props) {
   }
 
   return (
-    <div>
+    <div className="dm-container">
       <div className="history">
-        {history.chatLog.map((message, index)=> (
-          <div key={index}>
-            <div style={{margin:"0 0 1rem 0"}}>
-              <div>{message.timestamp}</div>
-              <span>{message.sender.name}: </span>
-              {message.message}
-            </div>
-          </div>
-        ))} 
+        {history.chatLog.map((message, index) => (
+          <Message
+            key={index}
+            timestamp={message.timestamp}
+            sender={message.sender.name}
+            message={message.message}
+            pfp={message.sender.name === props.sender.name ? props.sender_pfp : props.recipient_pfp}
+          />
+        ))}
       </div>
-      <div className="input">
-        <TextField 
-          placeholder="Message..." 
+      <div className="input-container">
+        <TextField
+          placeholder="Message..."
           value={message}
-          onChange={(event) => {
-            setMessage(event.target.value);
-          }}
-          sx={{width:"80%"}}
+          onChange={(event) => setMessage(event.target.value)}
+          fullWidth
         />
-        <IconButton onClick={sendMessage}><SendIcon/></IconButton>
+        <IconButton onClick={sendMessage}>
+          <SendIcon />
+        </IconButton>
       </div>
     </div>
   );
