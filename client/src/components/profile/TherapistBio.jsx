@@ -19,7 +19,9 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircleOutlined';
 import CancelRoundedIcon from '@mui/icons-material/CancelOutlined';
 import EditIcon from '@mui/icons-material/Edit';
 import FormControl from '@mui/material/FormControl';
-
+import Rating from '@mui/material/Rating';
+import Stack from '@mui/material/Stack';
+import Card from '@mui/material/Card';
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
@@ -47,7 +49,7 @@ function CustomTabPanel(props) {
   );
 }
 
-function TherapistBio({ bio, specialty, price }) {
+function TherapistBio({ bio, specialty, price, overallRating, reviews}) {
   const { currentUser } = useContext(AuthContext);
   const [editAbout, setEditAbout] = useState(false);
   const [currbio, setBio] = useState(bio);
@@ -58,7 +60,9 @@ function TherapistBio({ bio, specialty, price }) {
   const [selectedPrice, setSelectPrice] = useState(price);
   const [newPrice, setNewPrice] = useState(price);
   if (price = "") setSelectPrice("");
-
+  const [currRating, setRating] = useState(overallRating);
+  console.log(overallRating);
+  const [currReviews, setReviews] = useState(reviews);
   useEffect(() => {
     const userReviews = async () => {
       try{
@@ -129,7 +133,7 @@ function TherapistBio({ bio, specialty, price }) {
     setValue(newValue);
     console.log(value)
   };
-
+  
   return (
     <div>
       <Grid 
@@ -229,6 +233,34 @@ function TherapistBio({ bio, specialty, price }) {
 
             <CustomTabPanel value={value} index={2}>
               <div className='right-section-header'> Reviews </div>
+              <div>
+                <Typography component="legend" style={{ marginBottom: '20px' }}>Overall Therapist Rating</Typography>
+                <Rating
+                name="text-feedback"
+                value ={currRating}
+                readOnly
+                precision={0.01}
+                onChange = {(event, newValue) => {
+                  setRating(newValue);
+                }}
+               />
+               <Box>{currRating} Stars</Box>
+              </div>
+              <div style={{marginTop: '20px'}}>
+              <Typography component="legend">List of Reviews:</Typography>
+              {!currReviews ?(<div style={{marginTop: '50px'}}>Currently No Reviews</div>) : 
+                (<Stack direction ='column' spacing={2}>
+                  {currReviews && currReviews.map((item, index) => (
+                    <Card variant='outlined' key={index}>
+                      <Typography>Name: {item[0].reviewerName}</Typography>
+                      <Typography>Title: {item[0].reviewTitle}</Typography>
+                      <Typography>Rating: {item[0].rating}</Typography>
+                      <Typography>Date: {item[0].reviewDate}</Typography>
+                      <Typography>Review: {item[0].review}</Typography>
+                    </Card>
+                  ))}
+                </Stack>)}
+              </div>
             </CustomTabPanel>
           </Paper>
         </Grid>

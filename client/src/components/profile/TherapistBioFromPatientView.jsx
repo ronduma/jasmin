@@ -16,6 +16,7 @@ import CancelRoundedIcon from "@mui/icons-material/CancelOutlined";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
 import Rating from '@mui/material/Rating';
 import Stack from '@mui/material/Stack';
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -29,7 +30,7 @@ import Expertise from './Expertise';
 
 function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews }) {
   const { currentUser } = useContext(AuthContext);
-  const [editAbout, setEditAbout] = useState(false);
+  const [editAbout, setEditAbout] = useState(false);;
   const [currbio, setBio] = useState(bio);
   const [profileData, setProfileData] = useState(null);
   const [Appointments, setAppointments] = useState(null);
@@ -40,9 +41,9 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
 
   const [value, setValue] = useState(0);
   const [currReviews, setReviews] = useState(reviews);
+  const [inputRating, setInputRating] = useState(0);
   const reviewInput = useRef(null);
-  const [currReview, setCurrReview] = useState("");
-  const [currReviewTitle, setReviewTitle] = useState("");
+  const reviewTitleInput = useRef(null);
   const [currRating, setRating] = useState(overallRating);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -86,6 +87,7 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
     updatedtime = time.toString();
     return dayjs(date).format("MM/DD/YYYY") + " " + index;
   };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -118,6 +120,7 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
         setAvailableTimes(bookedTimes);
         console.log("avaialbletimes:");
         console.log(availableTimes);
+        console.log(currReviews);
         setLoading(false);
       } catch (e) {
         console.log("yo");
@@ -172,14 +175,16 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
     }
   };
 
-  // const handleReviewChange = async () => {
-  //   try{
-  //     const response = await axios.post(`http://localhost:5173/reviews/${}`)
-  //   }
-  //   catch(error){
-  //     console.error(error);
-  //   }
-  // }
+  const handleInput = async (InputRating, ReviewTitle, Review) => {
+    try{
+      const response = await axios.post(`http://localhost:5173/reviews/${id}`, {uid : currentUser.uid, reviewTitle: ReviewTitle, reviewerName: currentUser.displayName, review: Review, rating: InputRating});
+      console.log(response.data);
+    }
+    catch(error){
+      console.error(error);
+    }
+  };
+  
   return (
     <div>
       <Grid
@@ -334,42 +339,73 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
               <div className='right-section-header'> Reviews </div>
               <div>
                 <Typography component="legend" style={{ marginBottom: '20px' }}>Overall Therapist Rating</Typography>
-                {/* <Rating
-              name="text-feedback"
-              value ={currRating}
-              readOnly
-              precision={0.5}
-              onChange = {(event, newValue) => {
-                setRating(newValue);
-              }}
-              /> */}
+                <Rating
+                name="text-feedback"
+                value ={currRating}
+                readOnly
+                precision={0.5}
+                onChange = {(event, newValue) => {
+                  setRating(newValue);
+                }}
+               />
+               <Box>{currRating ? currRating : 0} Stars</Box>
               </div>
-              {/* <div style={{marginTop: '20px', marginBottom:'20px'}}>
-              {currReviews && currReviews.length == 0 ?(<div>Currently No Reviews</div>) : 
-                (<Stack direction ='row' spacing={2}>
-                  {currReviews.map((item, index) => (
-                    <div key={index}>
-                      <div>Name: {item.reviewerName}</div>
-                      <div>Title: {item.reviewTitle}</div>
-                      <div>Rating: {item.rating}</div>
-                      <div>Date: {item.reviewDate}</div>
-                    </div>
+              
+              <div style={{marginTop: '50px'}}>
+              <Typography component="legend">List of Reviews</Typography>
+              {!currReviews ?(<div style={{marginTop: '50px'}}>Currently No Reviews</div>) : 
+                (<Stack direction ='column' spacing={2}>
+                  {currReviews && currReviews.map((item, index) => (
+                    <Card variant='outlined' key={index}>
+                      <Typography>Name: {item[0].reviewerName}</Typography>
+                      <Typography>Title: {item[0].reviewTitle}</Typography>
+                      <Typography>Rating: {item[0].rating}</Typography>
+                      <Typography>Date: {item[0].reviewDate}</Typography>
+                      <Typography>Review: {item[0].review}</Typography>
+                    </Card>
                   ))}
                 </Stack>)}
-              </div> */}
-              <div>
+              </div>
+              <div style={{ marginTop: '50px'}} >
+              <div className='right-section-header'style={{ marginBottom: '20px'}}> Create Your Review </div>
+                <div style={{marginBottom: '20px'}}>
+                <Typography component="legend">Review Rating</Typography>
+                <Rating
+                  name="text-feedback"
+                  label ="Review Rating"
+                  value ={inputRating}
+                  precision={0.5}
+                  onChange = {(event, newValue) => {
+                    setInputRating(newValue);
+                  }}
+                />
+                </div>
+                <TextField
+                  inputRef={reviewTitleInput}
+                  label="Name of Review"
+                  id ="textbox-Name"
+                  inputProps={{
+                    maxLength:50
+                  }}
+                />
                 <TextField
                   inputRef={reviewInput}
                   fullWidth
-                  label="Review"
+                  label="Title of Review"
                   id="textbox-Review"
                   // value={currReview}
                   // onChange={event => setCurrReview(event.target.value)}
                   multiline
+                  style={{margin: '2vh 0 1vh 0'}}
+                  rows={3}
+                  inputProps={{
+                    maxLength:285
+                  }}
                 />
               </div>
+              
               <div style={{ marginTop: '20px', marginBottom: '20px' }}>
-                <Button variant="contained" onClick={(event) => { event.preventDefault; console.log(reviewInput.current.value) }}>
+                <Button variant="contained" onClick={(event) => { event.preventDefault; handleInput(inputRating, reviewTitleInput.current.value, reviewInput.current.value)}}>
                   Submit A Review
                 </Button>
               </div>

@@ -190,6 +190,8 @@ function Profile() {
             <TherapistBio
               bio={profileData.bio}
               specialty={profileData.specialty}
+              reviews = {profileData.reviews}
+              overallRating ={profileData.overallRating}
                />
             : <PatientBio
               bio={profileData.bio}
