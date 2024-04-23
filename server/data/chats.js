@@ -61,12 +61,32 @@ const createMsg = async (
 const getChatByID = async (uid) => {
   const chatCollection = await chats();
 	const chat = await chatCollection.findOne({ _id: new ObjectId(uid) });
-	if (!chat) throw "Chat not found";
+	if (!chat) throw "GET: Chat not found";
 	return chat;
 }
+
+// DYLAN
+const getChatByPatientandTherapistID = async (patientID, therapistID) => {
+  const chatCollection = await chats();
+  // find one where patientID can be user1_id and therapistID can be user2_id OR patientID is user2_id and therapistID is user1_id
+  const chat = await chatCollection.findOne({
+    $or: [
+      { user1_id: patientID, user2_id: therapistID },
+      { user1_id: therapistID, user2_id: patientID }
+    ]
+  });
+  if (!chat) {
+    console.log("getChatByPatientandTherapistID Can not find chat")
+    return false;
+  }
+  console.log("getChatByPatientandTherapistID success")
+  return chat;
+}
+
 
 module.exports = {
 	createChatLog,
   createMsg,
-  getChatByID
+  getChatByID,
+  getChatByPatientandTherapistID,
 };

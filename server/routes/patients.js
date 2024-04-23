@@ -16,7 +16,8 @@ router.get('/all', async(req, res) => {
   }
 });
 
-router.get('/gettherapist:id', async(req, res) => {
+//DYLAN
+router.get('/gettherapist/:id', async(req, res) => {
 
   try{
     console.log(req.params.id)

@@ -93,10 +93,6 @@ const isMatched = async (userID1, userID2) => {
 const createMeeting = async (userID1, userID2, time, hostRoomUrl,roomUrl) => {
   const meetingCollection = await meetings();
 
-  let account = await user.getUserById(userID1);
-	if (!account) throw "User not found";
-  
-  
   if ((await isMatched(userID1, userID2) == false)){
     throw 'Patient and Therapist not Matched. Can not create meeting';
   }

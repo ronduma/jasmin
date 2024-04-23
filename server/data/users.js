@@ -511,7 +511,7 @@ const match = async (currentUserID, TherapistID) => {
   }
 }
 
-// Chat
+// Chat Dylan (Not sure if this was already in main)
 const getTherapistByPatientID = async (patientid) => {
 	const userCollection = await users();
 	const user = await userCollection.findOne({_id: patientid });
@@ -526,11 +526,21 @@ const getTherapistByPatientID = async (patientid) => {
 const getPatientbyTherapistID = async (therapistid) => {
 	const userCollection = await users();
 	const user = await userCollection.findOne({_id: therapistid});
-	if(!user) throw "Error: There is no therapist";
+	let patients = []
+	if(!user) {
+		throw "Error: There is no therapist";
+	}
 	if (user.patients == null || user.patients.length === 0){
 		throw 'Error therapist has no patients'
 	}
-	return user.patients;
+	console.log(user.patients.length)
+	for (i =0; i < user.patients.length; i++){
+		let patient= await getUserById(user.patients[i])
+		console.log(patient)
+		patients.push(patient)
+	}
+
+	return patients;
 }
 
 

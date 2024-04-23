@@ -42,14 +42,15 @@ router.get("/:name", async(req, res) => {
 })
 
 
-// req.query should be current user 
-router.get('/patients:id', async(req, res) => {
+// DYLAN req.query should be current user 
+router.get('/patients/:id', async(req, res) => {
     try{
+      console.log(req.params.id)
         const patientList = await users.getPatientbyTherapistID(req.params.id);
         return res.status(200).json(patientList);
     }
     catch(e){
-        console.log("Error: Route therapist/patients: ")
+        console.log("Error: Route /therapists/patients/:id ")
         console.log(e);
     }
   });

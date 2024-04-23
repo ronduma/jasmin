@@ -5,11 +5,19 @@ const chats = require('../data/chats');
 const path = require('path');
 const xss = require('xss');
 
-
+// DYLAN
 router.get('/:id', async(req,res) => {
-    const chatObject = await chats.getChatByID(req.params.id);
-    // console.log("chat:", chatObject)
-    return res.status(200).json(chatObject);
+    // const chatObject = await chats.getChatByID(req.params.id);
+    // // console.log("chat:", chatObject)
+    // return res.status(200).json(chatObject);
+    try {
+      const chatObject = await chats.getChatByID(req.params.id);
+      // console.log("chat:", chatObject)
+      return res.status(200).json(chatObject);
+    } catch (error) {
+      console.error('Error fetching chat:', error);
+      return res.status(500).json({ success: false, message: 'Internal server error' });
+    }
 })
 
 router.put('/', async(req,res) => {

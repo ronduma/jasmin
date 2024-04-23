@@ -7,10 +7,10 @@ import axios from 'axios';
 
 import Fab from "@mui/material/Fab";
 import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
 
 import ChatIcon from '@mui/icons-material/Chat';
 import CloseIcon from '@mui/icons-material/Close';
+import IconButton from '@mui/material/IconButton';
 
 import Loading from "../loading/Loading";
 import Search from "./Search";
@@ -23,88 +23,79 @@ const Chat = () => {
   const [profileData, setProfileData] = useState(null);
   const [isChatting, setIsChatting] = useState(false);
   const [selectedChat, setSelectedChat] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const [dms, setDms] = useState([]);
-  const [previews, setPreviews] = useState([]);
+  const [isOpen, setIsOpen] = useState(false); // isOpen state starts as false
 
   const togglePopup = () => {
-    setIsOpen(!isOpen); 
+    setIsOpen(!isOpen); // Toggle the state to open/close the chat pop-up
   };
 
   const fetchData = async () => {
     try {
+      console.log("getting prof data")
       const response = await axios.get(`http://localhost:5173/profile/${currentUser.uid}`);
       setProfileData(response.data);
+      //get matched
+      try {
+        
+      } catch (error) {
+        
+      }
     } catch (e) {
       console.log(e)
     }
   };
 
-  const getDm = async (chatLog) => {
-    setDms([]);
-    for (const id of chatLog){
-      try{
-        const response = await axios.get(`http://localhost:5173/chats/${id}`);
-        setDms(prevDms => [...prevDms, response.data]);
-      } catch (e) {
-        console.log(e)
-      }
-    }
-  }
-
-  useEffect (() => {
-    if (profileData){
-      getDm(profileData.chatLog);
-    }
-  }, [profileData])
-  
-  const getPreview = async (dms) => {
-    setPreviews([]);
-    try {
-      const previewResults = await Promise.all(
-        dms.map(async (dm) => {
-          if (dm.user1_id !== 1){
-            const recipient = profileData._id === dm.user1_id ? dm.user2_id : dm.user1_id;
-            const response = await axios.get(`http://localhost:5173/profile/${recipient}`);
-            return [response.data, dm._id];
-          }
-        })
-      );
-      setPreviews(previewResults);
-    } catch (error) {
-      console.log(error);
-      setPreviews([]);
-    } 
-  }
-
-  useEffect(() =>{
-    getPreview(dms);
-  }, [dms])
-
-
   const handleDmResponse = (data) => {
-    // console.log(data)
+    console.log(data)
     setIsChatting(data.isChatting);
     setSelectedChat(data.id);
   };
 
   const handleSearchResponse = (data) => {
+    setLoading(true);
     fetchData();
     setIsChatting(data.isChatting);
     setSelectedChat(data.id);
+    setLoading(false);
   };
 
-  if (currentUser){
-    return (
-      <div>
-        {isOpen && (
-          <div className="chat-popup">
-            {!profileData ? <Loading/>
-            : 
+  useEffect(() => {
+    if (currentUser && currentUser.uid) {
+      fetchData(); 
+      setLoading(false);
+    } else{
+      console.log(currentUser)
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (currentUser && currentUser.uid) {
+      fetchData(); 
+      setLoading(false);
+    } else{
+      console.log(currentUser)
+      setLoading(false);
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
+    console.log("Updated isChatting:", isChatting);
+  }, [isChatting]); 
+
+  return (
+    <div >
+      {isOpen && (
+        <div className="chat-popup">
+          {isLoading ? <Loading/>
+          : 
+            (currentUser == null ? 
+              <div>Not signed in.</div>
+              :
             <div className="chat-container">
               <Grid
                 container
-                justifyContent="flex-start"
+                justifyContent="left"
               >
                 <Grid item xs={10}>
                   <div className="chat-header">
@@ -132,59 +123,52 @@ const Chat = () => {
                   />
                   :
                   <div>
-                    {previews.length == profileData.chatLog.length ? 
-                      <Grid item xs={12}>
-                        {
-                          profileData.chatLog.length == 0 ?
-                          <div>No messages to show.</div>
-                          :
-                          <div>
-                            {previews.map((dm)=> (
-                              dm ? 
-                                <div key={dm[1]}>
-                                  <DmPreview 
-                                    from={dm[0].firstName + " " + dm[0].lastName}
-                                    id={dm[1]}
-                                    pfp={dm[0].profile_img}
-                                    timestamp=""
-                                    message=""
-                                    onMessage={handleDmResponse}
-                                  />
-                                </div>
-                              : <div>Kai Placeholder</div>
-                            ))} 
-                          </div>
-                        }
-                      </Grid>
-                      :
-                      <Grid item xs={12} className="test">
-                        <Loading />
-                      </Grid>
-                    }
+                    <Grid item xs={12}>
+                      <div className="messages-header">Messages</div>
+                    </Grid>
+                    <Grid item xs={12}>
+                      {
+                        profileData.chatLog.length == 0 ?
+                        <div>No messages to show.</div>
+                        :
+                        <div>
+                          {profileData.chatLog.map((dm, index)=> (
+                            <div key={index}>
+                              <DmPreview 
+                                from={dm.name}
+                                id={dm.id}
+                                timestamp=""
+                                message=""
+                                onMessage={handleDmResponse}
+                              />
+                            </div>
+                          ))} 
+                        </div>
+                      }
+                    </Grid>
                   </div>
                 }
               </Grid>
             </div>
-            }
-          </div>
-        )}
-        {isOpen ? 
-          <></> :
-          <Fab 
-            color="green" 
-            size="large"  
-            className="chat-button" 
-            aria-label="add"
-            onClick={() => {togglePopup(); fetchData();}}
-          >
-            <ChatIcon fontSize="large"  />
-          </Fab>
-        }
-        
-      </div>
-    );
-  }
-  else return <></>
+            )
+          }
+        </div>
+      )}
+      {isOpen ? 
+        <div></div> :
+        <Fab 
+          color="green" 
+          size="large"  
+          className="chat-button" 
+          aria-label="add"
+          onClick={togglePopup}
+        >
+          <ChatIcon fontSize="large"  />
+        </Fab>
+      }
+      
+    </div>
+  );
 };
 
 export default Chat;

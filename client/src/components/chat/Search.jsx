@@ -72,29 +72,44 @@ function Search(props) {
     // 
     const getPatientsbyTherapist = async (id) => {
       try{
-        const response = await axios.get("http://localhost:5173/therapists/patients");
+        // Need to get Therapist ID
+        const response = await axios.get(`http://localhost:5173/therapists/patients/${id}`);
+        console.log("response data")
+        console.log(response.data)
         const patients = response.data.map(patient => patient.firstName + " " + patient.lastName);
-        console.log(patients);
-        setSearchList(response.data);
+        setSearchList(response.data.sort((a,b)=> {
+          const lastNameA = a.lastName.toUpperCase(); 
+          const lastNameB = b.lastName.toUpperCase(); 
+          if (lastNameA < lastNameB) {
+              return -1; 
+          }
+          if (lastNameA > lastNameB) {
+              return 1; 
+          }
+          return 0; 
+        }));
       } catch (e) {
         console.log(e);
       }
     }
-    const getTherapistbyPatient = async (id) => {
-      try{
-        const response = await axios.get("http://localhost:5173/patients/getTherapist");
-        const therapists = response.data.map(therapist => therapist.firstName + " " + therapist.lastName);
-        console.log(therapists);
-        setSearchList(response.data);
-      } catch (e) {
-        console.log(e);
-      }
-    }
+    // const getTherapistbyPatient = async (id) => {
+    //   try{
+    //     const response = await axios.get(`http://localhost:5173/patients/getTherapist:${id}`);
+    //     const therapists = response.data;
+    //     console.log(therapist);
+    //     setSearchList(therapist);
+    //   } catch (e) {
+    //     console.log(e);
+    //   }
+    // }
     if (props.isTherapist){
-      getPatients();
-      // getPatientsbyTherapist(props.id)
+      // getPatients();
+      // // console.log(props.id)
+      //DYLAN attempting to get patients by therapistid in 
+      getPatientsbyTherapist(props.id)
 
     } else{
+      // DYLAN remove/hide search for patients
       getTherapists();
       // getTherapistbyPatient(props.id)
     }
