@@ -13,7 +13,7 @@ import Grid from '@mui/material/Grid';
 const DmPreview = (props) => {
   const sendMessageToParent = () => {
     // Invoke the callback function passed from the parent with data
-    props.onMessage({ isChatting: true, id: props.id, pfp: props.pfp });
+    props.onMessage({ isChatting: true, id: props.id, pfp: props.pfp, name: props.from });
   };
 
   const truncatedText = props.message.length > 20 ? `${props.message.slice(0, 20)}...` : props.message;

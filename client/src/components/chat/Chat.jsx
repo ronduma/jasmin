@@ -27,6 +27,7 @@ const Chat = () => {
   const [isChatting, setIsChatting] = useState(false);
   const [selectedChat, setSelectedChat] = useState(null);
   const [selectedChatPfp, setSelectedChatPfp] = useState(null);
+  const [selectedChatName, setSelectedChatName] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [dms, setDms] = useState([]);
   const [previews, setPreviews] = useState([]);
@@ -90,7 +91,14 @@ const Chat = () => {
     setIsChatting(data.isChatting);
     setSelectedChat(data.id);
     setSelectedChatPfp(data.pfp);
+    setSelectedChatName(data.name);
   };
+
+  useEffect (() => {
+    if (!isChatting){
+      setSelectedChatName(null);
+    }
+  }, [isChatting])
 
   const handleSearchResponse = (data) => {
     fetchData();
@@ -125,7 +133,7 @@ const Chat = () => {
                             <div 
                               className="chat-header"
                             >
-                              Chat 
+                              {isChatting ? selectedChatName : "Chat"} 
                             </div>
                           </Grid>
                           <Grid item xs={1.5}>

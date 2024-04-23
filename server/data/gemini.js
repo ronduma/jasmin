@@ -21,14 +21,16 @@ const sendMessage = async (msg) => {
       },
     ],
     generationConfig: {
-      maxOutputTokens: 500,
+      maxOutputTokens: 250,
     },
   });
 
   const result = await chat.sendMessage(msg);
   const response = await result.response;
-  // console.log(response)
-  const text = response.text();
+  let text = response.text();
+  text = `
+    ${text}
+  `
   // console.log(text)
   return text
 }

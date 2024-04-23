@@ -87,13 +87,11 @@ const kaiMsgDoneTyping = async (
   timestamp
 ) => {
   const chatCollection = await chats();
-  console.log(id, typeof timestamp)
   const filter = {
     'chatLog.timestamp': timestamp
   };
   const update = {"$set": {"chatLog.$.sender.doneTyping": true}}
   const setResponseInfo = await chatCollection.findOneAndUpdate(filter, update);
-  console.log(setResponseInfo)
 }
 
 const getChatByID = async (uid) => {

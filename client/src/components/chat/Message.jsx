@@ -77,21 +77,27 @@ function Message(props) {
                 <Typography>{props.message}</Typography>
                 :
                 <Typography>
-                  <TypeAnimation
-                  cursor={false}
-                  sequence={[ 
-                    props.message,
-                    () => {
-                      setDoneTyping(true);
-                    }
-                  ]}
-                  wrapper="span"
-                  repeat={0}
-                  speed={55}
-                />
+                  <div>
+                    <TypeAnimation
+                    cursor={false}
+                    sequence={[ 
+                      props.message,
+                      () => {
+                        setDoneTyping(true);
+                      }
+                    ]}
+                    wrapper="span"
+                    repeat={0}
+                    speed={55}
+                  />
+                  </div>
                 </Typography>
             :
-              <Typography>{props.message}</Typography>
+              <Typography>
+                <div>
+                  {props.message}
+                </div>
+              </Typography>
             }
           </Grid>
         </Grid>
