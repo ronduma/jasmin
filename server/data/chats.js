@@ -23,19 +23,15 @@ const createChatLog = async (
 	}
 
   const user1_data = await usersData.getUserById(user1_id);
-  const user2_data = await usersData.getUserById(user2_id);
-
-  const user1_name = user1_data.firstName + " " + user1_data.lastName;
-  const user2_name = user2_data.firstName + " " + user2_data.lastName;
-
   const user1 = await userCollection.findOneAndUpdate(
-		{ _id: user1_id },
-		{ $push: {chatLog : {id : insertInfo.insertedId, name : user2_name}} },
-		{ returnDocument: "after" }
-	);
+    { _id: user1_id },
+    { $push: {chatLog : insertInfo.insertedId} },
+    { returnDocument: "after" }
+  );
+  const user2_data = await usersData.getUserById(user2_id);
   const user2 = await userCollection.findOneAndUpdate(
 		{ _id: user2_id },
-		{ $push: {chatLog : {id : insertInfo.insertedId, name : user1_name}} },
+		{ $push: {chatLog : insertInfo.insertedId} },
 		{ returnDocument: "after" }
 	);
 
@@ -52,14 +48,14 @@ const createMsg = async (
     message: message, 
     timestamp: dayjs().format('MM-DD-YYYY HH:mm:ss')
   };
-  console.log(id, msg)
+  // console.log(id, msg)
   const chatCollection = await chats();
   const insertInfo = await chatCollection.findOneAndUpdate(
 		{ _id: new ObjectId(id) },
 		{ $push: {chatLog : msg} },
 		{ returnDocument: "after" }
 	);
-  console.log(insertInfo)
+  // console.log(insertInfo)
 }
 
 const getChatByID = async (uid) => {
