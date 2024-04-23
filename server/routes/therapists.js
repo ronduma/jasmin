@@ -43,9 +43,9 @@ router.get("/:name", async(req, res) => {
 
 
 // req.query should be current user 
-router.get('/patients', async(req, res) => {
+router.get('/patients:id', async(req, res) => {
     try{
-        const patientList = await users.getPatientbyTherapistID(req.session.user);
+        const patientList = await users.getPatientbyTherapistID(req.params.id);
         return res.status(200).json(patientList);
     }
     catch(e){

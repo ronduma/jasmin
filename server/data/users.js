@@ -508,16 +508,18 @@ const match = async (currentUserID, TherapistID) => {
 // Chat
 const getTherapistByPatientID = async (patientid) => {
 	const userCollection = await users();
-	const user = await userCollection. findOne({_id: patientid});
+	const user = await userCollection.findOne({_id: patientid });
+	console.log("user")
 	if(!user) throw "Error: There is no user with patientID";
 	if (user.therapist == null){
 		throw 'Patient is not matched with Therapist'
 	}
 	return user.therapist;
 }
+
 const getPatientbyTherapistID = async (therapistid) => {
 	const userCollection = await users();
-	const user = await userCollection. findOne({_id: therapistid});
+	const user = await userCollection.findOne({_id: therapistid});
 	if(!user) throw "Error: There is no therapist";
 	if (user.patients == null || user.patients.length === 0){
 		throw 'Error therapist has no patients'

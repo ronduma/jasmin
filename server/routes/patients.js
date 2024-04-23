@@ -16,10 +16,11 @@ router.get('/all', async(req, res) => {
   }
 });
 
-router.get('/getTherapist', async(req, res) => {
+router.get('/gettherapist:id', async(req, res) => {
 
   try{
-      const Therapist = await users.getTherapistByPatientID(req.session.user);
+    console.log(req.params.id)
+      const Therapist = await users.getTherapistByPatientID(req.params.id);
       return res.status(200).json(Therapist);
   }
   catch(e){
