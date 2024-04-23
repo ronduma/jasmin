@@ -103,98 +103,102 @@ const Chat = () => {
     return (
       <div>
         {isOpen && (
-          <div className="chat-popup">
+          <div className={isChatting ? "chat-popup-dm" : "chat-popup"}>
             {!profileData ? <Loading/>
             : 
-            <div className="chat-container">
-              <Box>
-                <Stack>
-                  <Grid container>
-                    <Grid item xs={1}>
-                      {isChatting ? 
-                        <IconButton onClick={handleDmResponse}>
-                          <ArrowBackIcon/>
-                        </IconButton>
-                        :
-                        <></>  
-                      }
-                      
-                    </Grid>
-                    <Grid item xs={8}>
-                      <div 
-                        className="chat-header"
-                      >
-                        Chat 
-                      </div>
-                    </Grid>
-                    <Grid item xs={1.5}>
-                      <Search 
-                        id={currentUser.uid}
-                        onMessage={handleSearchResponse}
-                        isTherapist={profileData.isTherapist}
-                      />
-                    </Grid>
-                    <Grid item xs={1.5}>
-                      <IconButton onClick={togglePopup}>
-                        <CloseIcon/>
-                      </IconButton>
-                    </Grid>
-                  </Grid>
-                  {
-                    isChatting ? 
-                      <Dm 
-                        onMessage={handleDmResponse} 
-                        chat_id={selectedChat}
-                        sender={{id: currentUser.uid, name: profileData.firstName + " " + profileData.lastName}}
-                        sender_pfp = {profileData.profile_img}
-                        recipient_pfp = {selectedChatPfp}
-                      />
-                    :
-                    <div>
-                      {previews.length == profileData.chatLog.length ? 
-                        <div xs={12}>
-                          {
-                            profileData.chatLog.length == 0 ?
-                            <div>No messages to show.</div>
-                            :
-                            <div>
-                              {previews.map((dm)=> (
-                                dm[0] != 0 ? 
+            <div>
+              <div className="chat-container">
+                <Box>
+                  <Stack>
+                    <div className="chat-top-section">
+                      <Grid container>
+                          <Grid item xs={1}>
+                            {isChatting ? 
+                              <IconButton onClick={handleDmResponse}>
+                                <ArrowBackIcon/>
+                              </IconButton>
+                              :
+                              <></>  
+                            }
+                          </Grid>
+                          <Grid item xs={8}>
+                            <div 
+                              className="chat-header"
+                            >
+                              Chat 
+                            </div>
+                          </Grid>
+                          <Grid item xs={1.5}>
+                            <Search 
+                              id={currentUser.uid}
+                              onMessage={handleSearchResponse}
+                              isTherapist={profileData.isTherapist}
+                            />
+                          </Grid>
+                          <Grid item xs={1.5}>
+                            <IconButton onClick={togglePopup}>
+                              <CloseIcon/>
+                            </IconButton>
+                          </Grid>
+                      </Grid>
+                    </div>
+                    {
+                      isChatting ? 
+                        <Dm 
+                          onMessage={handleDmResponse} 
+                          chat_id={selectedChat}
+                          sender={{id: currentUser.uid, name: profileData.firstName + " " + profileData.lastName}}
+                          sender_pfp = {profileData.profile_img}
+                          recipient_pfp = {selectedChatPfp}
+                        />
+                      :
+                      <div>
+                        {previews.length == profileData.chatLog.length ? 
+                          <div xs={12}>
+                            {
+                              profileData.chatLog.length == 0 ?
+                              <div>No messages to show.</div>
+                              :
+                              <div>
+                                {previews.map((dm)=> (
+                                  dm[0] != 0 ? 
+                                    <div key={dm[1]}>
+                                      <DmPreview 
+                                        from={dm[0].firstName + " " + dm[0].lastName}
+                                        id={dm[1]}
+                                        pfp={dm[0].profile_img}
+                                        timestamp=""
+                                        message=""
+                                        onMessage={handleDmResponse}
+                                      />
+                                    </div>
+                                  : 
                                   <div key={dm[1]}>
-                                    <DmPreview 
-                                      from={dm[0].firstName + " " + dm[0].lastName}
+                                    <DmPreview
+                                      from={"kAI"}
                                       id={dm[1]}
-                                      pfp={dm[0].profile_img}
+                                      pfp={null}
                                       timestamp=""
                                       message=""
                                       onMessage={handleDmResponse}
                                     />
                                   </div>
-                                : 
-                                <div key={dm[1]}>
-                                  <DmPreview
-                                    from={"kAI"}
-                                    id={dm[1]}
-                                    pfp={null}
-                                    timestamp=""
-                                    message=""
-                                    onMessage={handleDmResponse}
-                                  />
-                                </div>
-                              ))} 
-                            </div>
-                          }
-                        </div>
-                        :
-                        <div xs={12} justifyContent="center">
-                          <Loading />
-                        </div>
-                      }
-                    </div>
-                  }
-                </Stack>
-              </Box>
+                                ))} 
+                              </div>
+                            }
+                          </div>
+                          :
+                          <div xs={12} justifyContent="center">
+                            <Loading />
+                          </div>
+                        }
+                      </div>
+                    }
+                  </Stack>
+                </Box>
+              </div>
             </div>
+            
             }
           </div>
         )}

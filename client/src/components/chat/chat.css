@@ -13,10 +13,16 @@
   color: #01382E !important;
 }
 
-.chat-container {
-  padding: 10px;
-  /* text-align: left; */
-  
+.chat-top-section {
+  position:sticky;
+  top:0;
+  left:0;
+  display:flex;
+  background-color: white;
+}
+
+.chat-container{
+  height:100%
 }
 
 .chat-header{
@@ -33,12 +39,23 @@
   border: 3px solid #f1f1f1;
   z-index: 999; /* Ensure the popup appears on top of other content */
   background-color: rgba(255, 255, 255, 1);
-
-
   width: 400px; /* Adjust the width as per your requirement */
   height: 600px; /* Adjust the height as per your requirement */
-  overflow-y: auto; /* Enable vertical scrolling if the content exceeds the height */
-  padding: 15px; /* Add padding to the chat popup content */
+  overflow-y: auto; 
+}
+
+.chat-popup-dm {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  border: 3px solid #f1f1f1;
+  z-index: 999; /* Ensure the popup appears on top of other content */
+  background-color: rgba(255, 255, 255, 1);
+  display: flex;
+  flex-direction: column-reverse;
+  width: 400px; /* Adjust the width as per your requirement */
+  height: 600px; /* Adjust the height as per your requirement */
+  overflow-y: auto; 
 }
 
 
