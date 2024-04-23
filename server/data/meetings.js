@@ -26,7 +26,7 @@ const getMeetingsByTimeTherapist = async (userID1) => {
   const meetingCollection = await meetings();
   const meetingList = await meetingCollection.find({ therapist: userID1}).toArray();
   if (!meetingList || meetingList.length === 0){
-    console.log('Error: There are no meetings from the given therapist ' + userID1);
+    // console.log('Error: There are no meetings from the given therapist ' + userID1);
     return [];
   }
   return meetingList;

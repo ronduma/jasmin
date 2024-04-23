@@ -13,21 +13,31 @@ import Grid from '@mui/material/Grid';
 const DmPreview = (props) => {
   const sendMessageToParent = () => {
     // Invoke the callback function passed from the parent with data
-    props.onMessage({ isChatting: true, id: props.id });
+    props.onMessage({ isChatting: true, id: props.id, pfp: props.pfp, name: props.from });
   };
 
   const truncatedText = props.message.length > 20 ? `${props.message.slice(0, 20)}...` : props.message;
 
   return (
-    <Card sx={{ display: 'flex', margin: "1rem 0 0 0"}}>
+    <Card 
+      sx={{ 
+        display: 'flex', 
+        // margin: "1rem 0 0 0"
+      }}
+    >
       <CardActionArea 
         onClick={sendMessageToParent}
-        sx={{ display: 'flex', alignItems: 'left' }}
+        sx={{ 
+          display: 'flex', 
+          alignItems: 'flex-start', 
+          justifyContent: 'flex-start', 
+          width: '100%'
+        }}
       >
         <CardMedia
           component="img"
           sx={{ width: '5rem', height: '5rem'}}
-          image={`data:image/png;base64,${props.pfp}`}
+          image={props.from == "kAI" ? '/imgs/logo_flower.png' : `data:image/png;base64,${props.pfp}`}
         />
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <CardContent sx={{ flex: '1 0 auto' }}>

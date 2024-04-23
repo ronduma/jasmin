@@ -5,6 +5,7 @@ const chats = mongoCollections.chats;
 const users = mongoCollections.users;
 
 const usersData = require('../data/users');
+const geminiData = require('../data/gemini')
 
 const createChatLog = async (
 	user1_id,
@@ -58,6 +59,41 @@ const createMsg = async (
   // console.log(insertInfo)
 }
 
+const createKaiMsg = async (
+  id,
+  sender,
+  message
+) => {
+  const chatCollection = await chats();
+  let response = await geminiData.sendMessage(message);
+  const response_msg = {
+    sender: {
+      id : 1,
+      name : "kAI",
+      doneTyping : false
+    }, 
+    message: response, 
+    timestamp: dayjs().format('MM-DD-YYYY HH:mm:ss')
+  }
+  const insertResponseInfo = await chatCollection.findOneAndUpdate(
+		{ _id: new ObjectId(id) },
+		{ $push: {chatLog : response_msg} },
+		{ returnDocument: "after" }
+	);
+}
+
+const kaiMsgDoneTyping = async (
+  id,
+  timestamp
+) => {
+  const chatCollection = await chats();
+  const filter = {
+    'chatLog.timestamp': timestamp
+  };
+  const update = {"$set": {"chatLog.$.sender.doneTyping": true}}
+  const setResponseInfo = await chatCollection.findOneAndUpdate(filter, update);
+}
+
 const getChatByID = async (uid) => {
   const chatCollection = await chats();
 	const chat = await chatCollection.findOne({ _id: new ObjectId(uid) });
@@ -68,5 +104,7 @@ const getChatByID = async (uid) => {
 module.exports = {
 	createChatLog,
   createMsg,
-  getChatByID
+  createKaiMsg,
+  getChatByID,
+  kaiMsgDoneTyping
 };
