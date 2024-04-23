@@ -53,7 +53,13 @@ const Reviews = () => {
         </Grid>
         <Grid container spacing={2}>
           {reviews.map((review, index) => (
-            <Grid item xs={4} className="review-container">
+            <Grid 
+              item 
+              xs={4} 
+              className="review-container" 
+              id={index}
+              key={"placeholder" + index}
+            >
               <div className="review-rating">
                 {review.rating} <StarIcon/>
               </div>

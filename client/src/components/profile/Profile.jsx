@@ -30,7 +30,7 @@ function Profile() {
   const [imgFile, setImgFile] = useState(null);
 
   const { pdfFiles } = useContext(VerificationContext);
-  console.log(pdfFiles);
+  // console.log(pdfFiles);
   const navigate = useNavigate();
 
   const [isLoading, setLoading] = useState(true);
