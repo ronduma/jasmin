@@ -10,7 +10,6 @@ const createChatLog = async (
 	user1_id,
   user2_id
 ) => {
-  console.log(user1_id, user2_id)
   const userCollection = await users();
 	const chatCollection = await chats();
   const log = {
@@ -23,14 +22,12 @@ const createChatLog = async (
 		throw "Could not add chat";
 	}
 
-  if (user1_id != 1){
-    const user1_data = await usersData.getUserById(user1_id);
-    const user1 = await userCollection.findOneAndUpdate(
-      { _id: user1_id },
-      { $push: {chatLog : insertInfo.insertedId} },
-      { returnDocument: "after" }
-    );
-  }
+  const user1_data = await usersData.getUserById(user1_id);
+  const user1 = await userCollection.findOneAndUpdate(
+    { _id: user1_id },
+    { $push: {chatLog : insertInfo.insertedId} },
+    { returnDocument: "after" }
+  );
   const user2_data = await usersData.getUserById(user2_id);
   const user2 = await userCollection.findOneAndUpdate(
 		{ _id: user2_id },

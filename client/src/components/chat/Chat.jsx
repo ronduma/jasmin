@@ -43,7 +43,6 @@ const Chat = () => {
   const getDm = async (chatLog) => {
     setDms([]);
     for (const id of chatLog){
-      console.log("id:", id)
       try{
         const response = await axios.get(`http://localhost:5173/chats/${id}`);
         setDms(prevDms => [...prevDms, response.data]);
@@ -52,35 +51,36 @@ const Chat = () => {
       }
     }
   }
+
+  useEffect (() => {
+    if (profileData){
+      getDm(profileData.chatLog);
+    }
+  }, [profileData])
   
   const getPreview = async (dms) => {
     setPreviews([]);
-    setLoading(true); 
     try {
       const previewResults = await Promise.all(
         dms.map(async (dm) => {
-          const recipient = profileData._id === dm.user1_id ? dm.user2_id : dm.user1_id;
-          const response = await axios.get(`http://localhost:5173/profile/${recipient}`);
-          return [response.data, dm._id];
+          if (dm.user1_id !== 1){
+            const recipient = profileData._id === dm.user1_id ? dm.user2_id : dm.user1_id;
+            const response = await axios.get(`http://localhost:5173/profile/${recipient}`);
+            return [response.data, dm._id];
+          }
         })
       );
       setPreviews(previewResults);
     } catch (error) {
       console.log(error);
       setPreviews([]);
-    } finally {
-      setLoading(false); 
-    }
+    } 
   }
 
   useEffect(() =>{
-    console.log("dms:", dms)
     getPreview(dms);
   }, [dms])
 
-  useEffect(() =>{
-    console.log("previews:", previews)
-  }, [previews])
 
   const handleDmResponse = (data) => {
     // console.log(data)
@@ -96,52 +96,51 @@ const Chat = () => {
 
   if (currentUser){
     return (
-      <div >
+      <div>
         {isOpen && (
           <div className="chat-popup">
-            {isLoading ? <Loading/>
+            {!profileData ? <Loading/>
             : 
-              (currentUser == null ? 
-                <div>Not signed in.</div>
-                :
-                <div className="chat-container">
-                  <Grid
-                    container
-                    justifyContent="left"
-                  >
-                    <Grid item xs={10}>
-                      <div className="chat-header">
-                        Chat 
-                      </div>
-                    </Grid>
-                    <Grid item xs={1}>
-                      <Search 
-                        id={currentUser.uid}
-                        onMessage={handleSearchResponse}
-                        isTherapist={profileData.isTherapist}
-                      />
-                    </Grid>
-                    <Grid item xs={1}>
-                      <IconButton onClick={togglePopup}>
-                        <CloseIcon/>
-                      </IconButton>
-                    </Grid>
-                    {
-                      isChatting ? 
-                      <Dm 
-                        onMessage={handleDmResponse} 
-                        chat_id={selectedChat}
-                        sender={{id: currentUser.uid, name: profileData.firstName + " " + profileData.lastName}}
-                      />
-                      :
-                      <div>
-                        <Grid item xs={12}>
-                          {
-                            profileData.chatLog.length == 0 ?
-                            <div>No messages to show.</div>
-                            :
-                            <div>
-                              {previews.map((dm)=> (
+            <div className="chat-container">
+              <Grid
+                container
+                justifyContent="flex-start"
+              >
+                <Grid item xs={10}>
+                  <div className="chat-header">
+                    Chat 
+                  </div>
+                </Grid>
+                <Grid item xs={1}>
+                  <Search 
+                    id={currentUser.uid}
+                    onMessage={handleSearchResponse}
+                    isTherapist={profileData.isTherapist}
+                  />
+                </Grid>
+                <Grid item xs={1}>
+                  <IconButton onClick={togglePopup}>
+                    <CloseIcon/>
+                  </IconButton>
+                </Grid>
+                {
+                  isChatting ? 
+                  <Dm 
+                    onMessage={handleDmResponse} 
+                    chat_id={selectedChat}
+                    sender={{id: currentUser.uid, name: profileData.firstName + " " + profileData.lastName}}
+                  />
+                  :
+                  <div>
+                    {previews.length == profileData.chatLog.length ? 
+                      <Grid item xs={12}>
+                        {
+                          profileData.chatLog.length == 0 ?
+                          <div>No messages to show.</div>
+                          :
+                          <div>
+                            {previews.map((dm)=> (
+                              dm ? 
                                 <div key={dm[1]}>
                                   <DmPreview 
                                     from={dm[0].firstName + " " + dm[0].lastName}
@@ -151,28 +150,32 @@ const Chat = () => {
                                     message=""
                                     onMessage={handleDmResponse}
                                   />
-                                  {/* {getDm(dm)} */}
                                 </div>
-                              ))} 
-                            </div>
-                          }
-                        </Grid>
-                      </div>
+                              : <div>Kai Placeholder</div>
+                            ))} 
+                          </div>
+                        }
+                      </Grid>
+                      :
+                      <Grid item xs={12} className="test">
+                        <Loading />
+                      </Grid>
                     }
-                  </Grid>
-                </div>
-              )
+                  </div>
+                }
+              </Grid>
+            </div>
             }
           </div>
         )}
         {isOpen ? 
-          <div></div> :
+          <></> :
           <Fab 
             color="green" 
             size="large"  
             className="chat-button" 
             aria-label="add"
-            onClick={() => {togglePopup(); getDm(profileData.chatLog); fetchData();}}
+            onClick={() => {togglePopup(); fetchData();}}
           >
             <ChatIcon fontSize="large"  />
           </Fab>

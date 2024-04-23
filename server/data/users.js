@@ -2,7 +2,6 @@ const { ObjectId } = require("mongodb");
 const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
 const chats = mongoCollections.chats;
-const chatData = './chats.js';
 const fs = require("fs");
 const dayjs = require("dayjs");
 
@@ -45,7 +44,21 @@ const createUser = async (uid, email) => {
 		throw "Could not add user";
 	}
 
-	// const test = await chatData.createChatLog(1, uid);
+  const log = {
+    user1_id: 1,
+    user2_id: uid,
+    chatLog: []
+  }
+  const insertChatInfo = await chatCollection.insertOne(log);
+	if (!insertChatInfo.acknowledged || !insertChatInfo.insertedId) {
+		throw "Could not add chat";
+	}
+
+  const user1 = await userCollection.findOneAndUpdate(
+		{ _id: uid },
+		{ $push: {chatLog : insertChatInfo.insertedId} },
+		{ returnDocument: "after" }
+	);
 
 	return { insertedUser: true, insertedId: insertInfo.insertedId };
 };
