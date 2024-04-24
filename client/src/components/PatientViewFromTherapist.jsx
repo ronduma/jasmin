@@ -1,4 +1,4 @@
-import "../App.css";
+import "./profile/styles.css";
 import { useParams, useNavigate, NavLink } from 'react-router-dom';
 import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
@@ -15,7 +15,7 @@ import PatientBio from "./profile/PatientBio";
 import PatientBioFromTherapistView from "./profile/PatientBioFromTherapistView";
 
 function PatientView() {
-    const { id } = useParams();
+  const { id } = useParams();
   const [profileData, setprofileData] = useState(null);
   const [isLoading, setLoading] = useState(true);
   const {currentUser} = useContext(AuthContext);
@@ -23,9 +23,6 @@ function PatientView() {
   console.log("We are in Psychologist");
   const [therapist, setTherapist] = useState(null);
   
-
-
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -52,9 +49,7 @@ function PatientView() {
   }, [profileData, currentUser]);
 
   const handleClick = async () => {
-
     try {
-
       const response = await axios.post(`http://localhost:5173/matching`, {
         currentUserID: currentUser.uid,
         therapistID: id
@@ -72,26 +67,23 @@ function PatientView() {
   }
 
   return (
-    <div style={{"marginBottom": 100}}>
+    <div className="profile-container">
       <Grid 
         container 
         justifyContent={"center"}
         spacing={2}
         alignItems={"stretch"}
-        style={{padding:'2vh 0 0 0',minWidth: "1200px", minHeight: "500px"}}
       >
         <Grid 
-          fontSize={"14pt"}
-          item 
-          xs={3}
+          item
+          xs={12}
+          md={6}
+          lg={4}
         >
-          <Paper style={{ height: "100%", minWidth: "200px", flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <Typography 
-                  variant='h4'
-                  style={{padding: '1vh 0 0 0'}}
-                >
-                  {profileData.firstName} {profileData.lastName}
-                </Typography> 
+          <Paper className="left-section">
+            <div className="left-section-header">
+              {profileData.firstName} {profileData.lastName}
+            </div> 
             {profileData ? 
               <div>
                 <div id='profilePic'>
@@ -99,22 +91,19 @@ function PatientView() {
                     <Avatar
                       alt="Profile Picture"
                       src={`data:image/png;base64,${profileData.profile_img}`}
-                      sx={{ minWidth: 200, minHeight: 200, mx: 'auto'}}
-                      style={{marginTop: '1em'}}
+                      sx={{ width: "10rem", height: "10rem", mx: 'auto' }}
                     /> :
                     <div sx={{mx:'auto'}}>
                       <div>
                         <AccountCircleIcon
-                          sx={{ width: "auto", height: 200 }}
-                          style={{marginTop: '1em'}}
+                          sx={{ width: "auto", height: "10rem" }}
                         />
                       </div> 
                     </div>
                   }
                 </div>
-                
                 <br/>
-                <div style={{width: "90%", margin: "0 auto", textAlign: "center"}}>
+                <div className="left-section-details">
                   <div style={{display: "inline-block" ,textAlign:'left'}}>
                     <div>Age: {profileData.age}</div> 
                     <div>Gender: {profileData.gender}</div> 
@@ -139,7 +128,11 @@ function PatientView() {
               <Button variant="contained"> Chat </Button>
           </Paper>
         </Grid>
-        <Grid item xs={6}>
+        <Grid
+          item
+          xs={12}
+          md={6}
+        >
           <PatientBioFromTherapistView 
               bio = {profileData.bio} 
               specialty={profileData.concerns}/> 
