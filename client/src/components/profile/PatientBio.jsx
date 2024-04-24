@@ -16,7 +16,6 @@ import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
-
 function PatientBio({ bio, concerns }) {
   const { currentUser } = useContext(AuthContext);
   const [editAbout, setEditAbout] = useState(false);
@@ -337,10 +336,16 @@ function PatientBio({ bio, concerns }) {
                     </Link>
                     :{" "}
                     <a href={appointment.roomUrl} target="_blank">
-                      Meeting Link
+                      Meeting Link   
                     </a>
-                    <Button onClick={() => cancelAppointment(appointment)}>
-                      Cancel Meeting
+                    <Button
+                          variant="contained"
+                          color="secondary"
+                          size="small"
+                          onClick={() => cancelAppointment(appointment)}
+                          style={{ marginLeft:"5px", marginBottom: "5px" }}
+                        >
+                         Cancel Meeting
                     </Button>
                   </Typography>
                   {/* Add additional details about the appointment if needed */}
