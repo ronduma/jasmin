@@ -15,7 +15,8 @@ import Tab from "@mui/material/Tab";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem"import axios from "axios";;
+import MenuItem from "@mui/material/MenuItem";
+import axios from "axios";
 import CheckCircleIcon from "@mui/icons-material/CheckCircleOutlined";
 import CancelRoundedIcon from "@mui/icons-material/CancelOutlined";
 import EditIcon from "@mui/icons-material/Edit";
@@ -71,9 +72,10 @@ function TherapistBio({ bio, specialty, price, overallRating, reviews}) {
       catch(error){
         console.error(error);
       }
-    };
+    }
     userReviews();
-
+  });
+    
   const [loading, setLoading] = useState(false);
 
   const cancelAppointment = async (appointment) => {
