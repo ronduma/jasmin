@@ -33,6 +33,7 @@ const Chat = () => {
   const [previews, setPreviews] = useState([]);
 
   const togglePopup = () => {
+    setLoading(true); 
     setIsOpen(!isOpen); 
   };
 
@@ -43,6 +44,7 @@ const Chat = () => {
     } catch (e) {
       console.log(e)
     }
+    setLoading(false)
   };
 
   const getDm = async (chatLog) => {
@@ -169,7 +171,7 @@ const Chat = () => {
                         />
                       :
                       <div>
-                        {previews.length == profileData.chatLog.length ? 
+                        {previews.length == profileData.chatLog.length || isLoading ? 
                           <div xs={12}>
                             {
                               profileData.chatLog.length == 0 ?
