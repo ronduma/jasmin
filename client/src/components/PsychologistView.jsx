@@ -23,9 +23,7 @@ function PsychologistView() {
   
 
   const handleClick = async () => {
-
     try {
-
       const response = await axios.post(`http://localhost:5173/matching`, {
         currentUserID: currentUser.uid,
         therapistID: id
@@ -36,11 +34,15 @@ function PsychologistView() {
       // Handle error
       console.error('Error:', error);
     }
+    try {
+      let user2_id = id;
+      let matched = isMatched;
+      const response = await axios.put(`http://localhost:5173/chats/${currentUser.uid}`, {user2_id, matched})
+      console.log(response)
+    } catch(e){
+      console.log(e);
+    }
   };
-const handleChat = async () => {
-  
-}
-
 
   useEffect(() => {
     const fetchData = async () => {
