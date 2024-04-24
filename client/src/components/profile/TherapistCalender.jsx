@@ -88,7 +88,7 @@ function TherapistCalender() {
                     <Typography variant="body1">
                       {appointment.time} with <Link to={`/patient/${appointment.patient}`}>
                 {appointment.patientName}
-              </Link>: <a href={appointment.roomUrl} target="_blank">Meeting Link</a>
+              </Link>: <a href={appointment.hostRoomUrl} target="_blank">Host Meeting Link</a>
 
                     </Typography>
                     {/* Add additional details about the appointment if needed */}

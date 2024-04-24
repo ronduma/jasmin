@@ -4,17 +4,19 @@ import dayjs from "dayjs";
 import { AuthContext } from "../../context/AuthContext";
 
 import "../../App.css";
+import Button from "@mui/material/Button";
+import Swal from "sweetalert2";
 
 import axios from "axios";
 import { Typography } from "@mui/material";
-import Box from '@mui/material/Box';
+import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import { useParams, Link } from "react-router-dom";
 import CheckCircleIcon from "@mui/icons-material/CheckCircleOutlined";
 import CancelRoundedIcon from "@mui/icons-material/CancelOutlined";
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
@@ -23,7 +25,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 
-import Expertise from './Expertise';
+import Expertise from "./Expertise";
 
 function TherapistBioFromPatientView({ bio, specialty }) {
   const { currentUser } = useContext(AuthContext);
@@ -34,35 +36,80 @@ function TherapistBioFromPatientView({ bio, specialty }) {
   const [newBio, setNewBio] = useState(bio);
 
   const [availableTimes, setAvailableTimes] = useState({});
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
 
   const [value, setValue] = useState(0);
-    
+
+  const cancelAppointment = async (appointment) => {
+    try {
+      // Make a DELETE request to your server to cancel the appointment using appointmentId
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Cancel Meeting",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          setLoading(true);
+
+          await axios.delete(
+            `http://localhost:5173/meeting/${appointment.id}`,
+            {
+              data: {
+                currentUserID: currentUser.uid,
+                therapistID: appointment.therapist, // Assuming you have therapistID in your appointment object
+                time: appointment.time, // Assuming you have time in your appointment object
+              },
+            }
+          );
+
+          let id = currentUser.uid;
+
+          const responseMeeting = await axios.get(
+            `http://localhost:5173/meeting/patient/${id}`
+          );
+          const fetchedAppointments = responseMeeting.data;
+          setAppointments(fetchedAppointments); //all appointments
+
+          Swal.fire({
+            title: "Meeting Canceled!",
+            icon: "success",
+          });
+
+          setLoading(false);
+        }
+      });
+
+      // If the request is successful, update the appointments state to reflect the cancellation
+      // setAppointments(prevAppointments =>
+      //   prevAppointments.filter(appointment => appointment.id !== appointment.id)
+      // );
+    } catch (error) {
+      console.error("Error canceling appointment:", error);
+    }
+  };
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    console.log(value)
+    console.log(value);
   };
 
   function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
-  
+
     return (
-      <Grid 
-        item 
-        hidden={value !== index}
-      >
-        {value === index && (
-          <Box sx={{ p: 3}}>
-            {children}
-          </Box>
-        )}
+      <Grid item hidden={value !== index}>
+        {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
       </Grid>
     );
   }
 
   const handleSelectedTopics = (data) => {
     setSelectedTopics(data);
-  }
+  };
 
   const { id } = useParams();
   if ((bio = "")) setBio(null);
@@ -92,12 +139,13 @@ function TherapistBioFromPatientView({ bio, specialty }) {
         );
         const fetchedAppointments = responseMeeting.data;
         // filter appointments
-        const filteredAppointments = fetchedAppointments.filter(appointment =>
-          appointment.patient === currentUser.uid && appointment.therapist === id
+        const filteredAppointments = fetchedAppointments.filter(
+          (appointment) =>
+            appointment.patient === currentUser.uid &&
+            appointment.therapist === id
         );
         setAppointments(filteredAppointments);
         console.log(fetchedAppointments);
-
 
         // set Calender
         console.log("bookedTimes");
@@ -113,7 +161,6 @@ function TherapistBioFromPatientView({ bio, specialty }) {
         setAvailableTimes(bookedTimes);
         console.log("avaialbletimes:");
         console.log(availableTimes);
-        setLoading(false);
       } catch (e) {
         console.log("yo");
         console.log(e);
@@ -126,8 +173,9 @@ function TherapistBioFromPatientView({ bio, specialty }) {
 
   const handleTimeSelection = async (index) => {
     try {
-      
       let updatedtime = format(selectedDate.$d, index);
+      setLoading(true);
+
       const response = await axios.post(`http://localhost:5173/meeting`, {
         currentUserID: currentUser.uid,
         therapistID: id,
@@ -138,11 +186,13 @@ function TherapistBioFromPatientView({ bio, specialty }) {
       const responseMeeting = await axios.get(
         `http://localhost:5173/meeting/therapist/${id}`
       );
-      
+
       const fetchedAppointments = responseMeeting.data;
-      console.log(fetchedAppointments)
-      const filteredAppointments = fetchedAppointments.filter(appointment =>
-        appointment.patient === currentUser.uid && appointment.therapist === id
+      console.log(fetchedAppointments);
+      const filteredAppointments = fetchedAppointments.filter(
+        (appointment) =>
+          appointment.patient === currentUser.uid &&
+          appointment.therapist === id
       );
       setAppointments(filteredAppointments);
 
@@ -151,6 +201,7 @@ function TherapistBioFromPatientView({ bio, specialty }) {
       const selectedDateFormatted = updatedtime.$d;
       // Filter out the selectedTime from the availableTimes for the selectedDate
       console.log("updated");
+
       const bookedTimes = fetchedAppointments.reduce((acc, appointment) => {
         const date = dayjs(appointment.time).format("MM/DD/YYYY");
         const time = dayjs(appointment.time).format("h:mm A");
@@ -161,6 +212,11 @@ function TherapistBioFromPatientView({ bio, specialty }) {
         return acc;
       }, {});
       setAvailableTimes(bookedTimes);
+      Swal.fire({
+        title: "Booking confirmed!",
+        icon: "success",
+      });
+      setLoading(false);
       // setAvailableTimes(updatedAvailableTimes);
     } catch (error) {
       // Handle error
@@ -170,15 +226,26 @@ function TherapistBioFromPatientView({ bio, specialty }) {
 
   return (
     <div>
-      <Grid
-        container
-        spacing={2}
-      >
+      <Grid container spacing={2}>
+        {isLoading && (
+          <div
+            style={{
+              position: "fixed",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+            }}
+          >
+            {/* Add your loading icon component here */}
+            loading...
+          </div>
+        )}
+
         <Grid item xs={12}>
-          <Paper style={{ minHeight: "18vh", height:'100%' }}>
+          <Paper style={{ minHeight: "18vh", height: "100%" }}>
             <Tabs value={value} onChange={handleChange} variant="fullWidth">
               <Tab label="Details" />
-              <Tab label="Availability"  />
+              <Tab label="Availability" />
               <Tab label="Reviews" />
             </Tabs>
             <CustomTabPanel value={value} index={0}>
@@ -189,14 +256,14 @@ function TherapistBioFromPatientView({ bio, specialty }) {
                   justifyContent: "space-between",
                 }}
               >
-                <div className="right-section-header"> 
-                  Expertise 
-                </div>
+                <div className="right-section-header">Expertise</div>
               </div>
-              <Expertise disabled={!editAbout} selected={handleSelectedTopics} display={specialty}/>
-              <div className="right-section-header"> 
-                About Me 
-              </div>
+              <Expertise
+                disabled={!editAbout}
+                selected={handleSelectedTopics}
+                display={specialty}
+              />
+              <div className="right-section-header">About Me</div>
               <TextField
                 disabled={!editAbout}
                 inputRef={(input) => input && input.focus()}
@@ -304,14 +371,31 @@ function TherapistBioFromPatientView({ bio, specialty }) {
                 </Grid>
               </Grid>
 
-              <div className="right-section-header"> Upcoming Appointments </div>
-              {Appointments === null ? (
+              <div className="right-section-header">
+                {" "}
+                Upcoming Appointments{" "}
+              </div>
+              {Appointments === null || Appointments.length === 0 ? (
                 <Typography> No upcoming appointments.</Typography>
               ) : (
                 <div>
                   {Appointments.map((appointment, index) => (
                     <div key={index}>
-                     <Typography variant="body1">{appointment.time}: <a href={appointment.roomUrl} target="_blank">Meeting Link</a> </Typography>
+                      <Typography variant="body1">
+                        {appointment.time}:{" "}
+                        <a href={appointment.roomUrl} target="_blank">
+                          Meeting Link
+                        </a>{" "}
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          size="small"
+                          onClick={() => cancelAppointment(appointment)}
+                          style={{ marginBottom: "5px" }}
+                        >
+                          Cancel Meeting
+                        </Button>
+                      </Typography>
                       {/* Add additional details about the appointment if needed */}
                     </div>
                   ))}
@@ -319,7 +403,7 @@ function TherapistBioFromPatientView({ bio, specialty }) {
               )}
             </CustomTabPanel>
             <CustomTabPanel value={value} index={2}>
-              <div className='right-section-header'> Reviews </div>
+              <div className="right-section-header"> Reviews </div>
             </CustomTabPanel>
           </Paper>
         </Grid>
