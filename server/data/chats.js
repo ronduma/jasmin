@@ -13,30 +13,40 @@ const createChatLog = async (
 ) => {
   const userCollection = await users();
 	const chatCollection = await chats();
-  const log = {
-    user1_id: user1_id,
-    user2_id: user2_id,
-    chatLog: []
+
+  const chatExists = await chatCollection.findOne(
+    {
+      user1_id: user1_id,
+      user2_id: user2_id
+    }
+  )
+
+  if (!chatExists) {
+    const log = {
+      user1_id: user1_id,
+      user2_id: user2_id,
+      chatLog: []
+    }
+    const insertInfo = await chatCollection.insertOne(log);
+    if (!insertInfo.acknowledged || !insertInfo.insertedId) {
+      throw "Could not add chat";
+    }
+  
+    const user1_data = await usersData.getUserById(user1_id);
+    const user1 = await userCollection.findOneAndUpdate(
+      { _id: user1_id },
+      { $push: {chatLog : insertInfo.insertedId} },
+      { returnDocument: "after" }
+    );
+    const user2_data = await usersData.getUserById(user2_id);
+    const user2 = await userCollection.findOneAndUpdate(
+      { _id: user2_id },
+      { $push: {chatLog : insertInfo.insertedId} },
+      { returnDocument: "after" }
+    );
+  
+    return { insertedUser: true, insertedId: insertInfo.insertedId };
   }
-  const insertInfo = await chatCollection.insertOne(log);
-  if (!insertInfo.acknowledged || !insertInfo.insertedId) {
-		throw "Could not add chat";
-	}
-
-  const user1_data = await usersData.getUserById(user1_id);
-  const user1 = await userCollection.findOneAndUpdate(
-    { _id: user1_id },
-    { $push: {chatLog : insertInfo.insertedId} },
-    { returnDocument: "after" }
-  );
-  const user2_data = await usersData.getUserById(user2_id);
-  const user2 = await userCollection.findOneAndUpdate(
-		{ _id: user2_id },
-		{ $push: {chatLog : insertInfo.insertedId} },
-		{ returnDocument: "after" }
-	);
-
-	return { insertedUser: true, insertedId: insertInfo.insertedId };
 }
 
 const createMsg = async (
@@ -95,6 +105,7 @@ const kaiMsgDoneTyping = async (
 }
 
 const getChatByID = async (uid) => {
+  // console.log(uid)
   const chatCollection = await chats();
 	const chat = await chatCollection.findOne({ _id: new ObjectId(uid) });
 	if (!chat) throw "Chat not found";

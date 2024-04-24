@@ -108,6 +108,7 @@ const Chat = () => {
     fetchData();
     setIsChatting(data.isChatting);
     setSelectedChat(data.id);
+    setSelectedChatName(data.name);
   };
 
   if (currentUser){
@@ -140,11 +141,15 @@ const Chat = () => {
                             </div>
                           </Grid>
                           <Grid item xs={1.5}>
-                            <Search 
-                              id={currentUser.uid}
-                              onMessage={handleSearchResponse}
-                              isTherapist={profileData.isTherapist}
-                            />
+                            {profileData.isTherapist ?
+                              <Search 
+                                id={currentUser.uid}
+                                onMessage={handleSearchResponse}
+                                isTherapist={profileData.isTherapist}
+                              /> 
+                              :
+                              <></>
+                            }
                           </Grid>
                           <Grid item xs={1.5}>
                             <IconButton onClick={togglePopup}>
