@@ -16,5 +16,17 @@ router.get('/all', async(req, res) => {
   }
 });
 
+router.get('/getTherapist', async(req, res) => {
+
+  try{
+      const Therapist = await users.getTherapistByPatientID(req.session.user);
+      return res.status(200).json(Therapist);
+  }
+  catch(e){
+      console.log(e);
+  }
+});
+
+
 
 module.exports = router;

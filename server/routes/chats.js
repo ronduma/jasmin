@@ -47,4 +47,27 @@ router.put('/message/:id', async(req,res) => {
   }
 });
 
+router.put('/kai-message/:id', async(req,res) => {
+  try {
+    let chat_id = req.params.id;
+    let user = await chats.createKaiMsg(chat_id, req.body.sender, req.body.message);
+    return res.status(200).json(user);
+  } catch (e) {
+    console.log(e)
+    return res.status(400).json(e);
+  }
+});
+
+router.put('/kai-message/done-typing/:id', async(req,res) => {
+  try {
+    let chat_id = req.params.id;
+    let timestamp = req.body.timestamp;
+    let user = await chats.kaiMsgDoneTyping(chat_id, timestamp);
+    return res.status(200).json(user);
+  } catch (e) {
+    console.log(e)
+    return res.status(400).json(e);
+  }
+});
+
 module.exports = router;

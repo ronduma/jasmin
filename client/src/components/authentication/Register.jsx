@@ -43,7 +43,7 @@ function Register() {
         console.log("response", response)
       })
       .catch(error => {
-        console.log(error.response.data.error)
+        console.log(error)
       });        
     } catch (error) {
       alert(error);

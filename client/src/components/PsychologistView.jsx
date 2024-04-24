@@ -37,6 +37,9 @@ function PsychologistView() {
       console.error('Error:', error);
     }
   };
+const handleChat = async () => {
+  
+}
 
 
   useEffect(() => {
@@ -127,7 +130,7 @@ function PsychologistView() {
                   )
                 }
                 {" "}
-                <Button variant="contained"> Schedule </Button>
+                <Button variant="contained"> Chat </Button>
               </div>
           </Paper>
         </Grid>

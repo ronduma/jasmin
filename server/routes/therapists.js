@@ -41,6 +41,17 @@ router.get("/:name", async(req, res) => {
     }
 })
 
+// req.query should be current user 
+router.get('/patients', async(req, res) => {
+    try{
+        const patientList = await users.getPatientbyTherapistID(req.session.user);
+        return res.status(200).json(patientList);
+    }
+    catch(e){
+        console.log("Error: Route therapist/patients: ")
+        console.log(e);
+    }
+  });
 
 
 module.exports = router;

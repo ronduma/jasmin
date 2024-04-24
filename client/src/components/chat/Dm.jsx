@@ -8,6 +8,7 @@ import io from 'socket.io-client'
 const socket = io.connect("http://localhost:5173")
 
 import Loading from "../loading/Loading";
+import Message from "./Message";
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SendIcon from '@mui/icons-material/Send';
@@ -20,6 +21,7 @@ function Dm(props) {
   const [messageReceived, setMessageReceived] = useState(""); //debugging state
   const [history, setHistory] = useState(null);
   const [isLoading, setLoading] = useState(true);
+  const [isKai, setIsKai] = useState(false);
 
   const sendMessageToParent = () => {
     // Invoke the callback function passed from the parent with data
@@ -43,11 +45,15 @@ function Dm(props) {
       sender: props.sender,
       message: message
     }
-    socket.emit("send_message", {message})
-    const response = await axios.put(`http://localhost:5173/chats/message/${props.chat_id}`, msg)
+    socket.emit("send_message", {message});
+    const response = await axios.put(`http://localhost:5173/chats/message/${props.chat_id}`, msg);
     const chat = await getChat();
-
     setMessage("");
+
+    if (isKai){
+      const response = await axios.put(`http://localhost:5173/chats/kai-message/${props.chat_id}`, msg)
+      const chat = await getChat();
+    }
   };
 
   useEffect(()=> {
@@ -56,13 +62,18 @@ function Dm(props) {
 
   useEffect(()=> {
     getChat();
+    if (history && history.user1_id == 1){
+      setIsKai(true);
+    }
   }, [history])
 
   useEffect(()=> {
-    socket.on("receive_message", (data) => {
-      getChat();
-      setMessageReceived(data.message)
-    })
+    if (!isKai){
+      socket.on("receive_message", (data) => {
+        getChat();
+        setMessageReceived(data.message)
+      })
+    }
   }, [socket])
 
   if (isLoading) {
@@ -70,32 +81,32 @@ function Dm(props) {
   }
 
   return (
-    <div>
-      <IconButton onClick={sendMessageToParent}>
-        <ArrowBackIcon/>
-      </IconButton>
+    <div className="dm-container">
       <div className="history">
-        {history.chatLog.map((message, index)=> (
-          <div key={index}>
-            <div style={{margin:"0 0 1rem 0"}}>
-              <div>{message.timestamp}</div>
-              <span>{message.sender.name}: </span>
-              {message.message}
-            </div>
-          </div>
-        ))} 
-        {/* {messageReceived} */}
+        {history.chatLog.map((message, index) => (
+          <Message
+            key={index}
+            chatId={props.chat_id}
+            msgId={index}
+            timestamp={message.timestamp}
+            sender={message.sender}
+            message={message.message}
+            pfp={message.sender.name === props.sender.name ? props.sender_pfp : props.recipient_pfp}
+          />
+        ))}
       </div>
-      <div className="input">
-        <TextField 
-          placeholder="Message..." 
+              <div className='whitespace' />
+      <div className="input-container">
+        <TextField
+          placeholder="Message..."
           value={message}
-          onChange={(event) => {
-            setMessage(event.target.value);
-          }}
-          sx={{width:"80%"}}
+          onChange={(event) => setMessage(event.target.value)}
+          fullWidth
+          autoComplete='off'
         />
-        <IconButton onClick={sendMessage}><SendIcon/></IconButton>
+        <IconButton onClick={sendMessage}>
+          <SendIcon />
+        </IconButton>
       </div>
     </div>
   );

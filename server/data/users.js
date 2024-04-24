@@ -1,6 +1,7 @@
 const { ObjectId } = require("mongodb");
 const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
+const chats = mongoCollections.chats;
 const fs = require("fs");
 const dayjs = require("dayjs");
 
@@ -8,23 +9,11 @@ const validation = require("./validation");
 
 const createUser = async (uid, email) => {
 	const userCollection = await users();
+	const chatCollection = await chats();
+
 	const userExists = await userCollection.findOne({ uid: uid });
 	if (userExists) {
 		throw "User with email already exists.";
-	}
-
-	const kaiChat = {
-		to: {
-			id: "0",
-			name: "kAI"
-		},
-		messages: [
-			{
-				from: "kAI",
-				message: "Hello! I'm kAI, your personal AI assistant. Let me know if you have any questions about Jasmin.",
-				timestamp: dayjs().format('DD-MM-YYYY HH:mm:ss')
-			}
-		]
 	}
 
 	const user = {
@@ -41,21 +30,40 @@ const createUser = async (uid, email) => {
 		bio: null,
 		occupation: null,
 		concerns: [],
-		chatLog: [kaiChat],
+		chatLog: [],
 		patients: [],
 		therapist: null,
 		specialty: [],
 		reviews : [],
 		overallRating: 0.0,
 		pdf_files: [],
+		price: null,
+		noti: [],
 	};
 
-	console.log("inserting user:", user)
+	// console.log("inserting user:", user)
 
 	const insertInfo = await userCollection.insertOne(user);
 	if (!insertInfo.acknowledged || !insertInfo.insertedId) {
 		throw "Could not add user";
 	}
+
+  const log = {
+    user1_id: 1,
+    user2_id: uid,
+    chatLog: []
+  }
+  const insertChatInfo = await chatCollection.insertOne(log);
+	if (!insertChatInfo.acknowledged || !insertChatInfo.insertedId) {
+		throw "Could not add chat";
+	}
+
+  const user1 = await userCollection.findOneAndUpdate(
+		{ _id: uid },
+		{ $push: {chatLog : insertChatInfo.insertedId} },
+		{ returnDocument: "after" }
+	);
+
 	return { insertedUser: true, insertedId: insertInfo.insertedId };
 };
 
@@ -92,7 +100,7 @@ const gettingStarted = async ({
 		})
 	);
 	validation.validateUserUpdate(updated);
-	console.log(validation.validateUserUpdate(updated));
+	// console.log(validation.validateUserUpdate(updated));
 	const userCollection = await users();
 
 	const user = await userCollection.findOneAndUpdate(
@@ -286,6 +294,47 @@ const deletePdfFromDB = async (id, index) => {
 	console.log("PDF file deleted.");
 };
 
+const getNotifications = async (uid) => {
+	const userCollection = await users();
+	const user = await userCollection.findOne({ _id: uid });
+	if (!user) throw "Error: There is no user with the given name";
+	//if noti doesnt exist add it as an empty array
+	if (!user.noti) {
+		const updatedUser = await userCollection.findOneAndUpdate(
+			{ _id: uid },
+			{ $set: { noti: {unread: 0, noti_str: [] } } },
+			{ returnDocument: "after" }
+		);
+		return {unread: 0, noti_str: [] };
+	}
+	return user.noti;
+}
+
+//update databse with notifications
+const updateNotifications = async (uid, unread, noti_str) => {
+	if (unread < 0) throw "Error: Unread notifications cannot be negative";
+	const toUpdate = {unread: unread};
+	const userCollection = await users();
+	const user = await userCollection.findOne({ _id: uid });
+	if (!user) throw "Error: There is no user with the given name";
+	if (noti_str) {
+		if (!Array.isArray(noti_str)) throw "Error: Notifications must be an array";
+		const notiArr = user.noti.noti_str;
+		notiArr.push(...noti_str);
+		toUpdate.noti_str = notiArr;
+	} else toUpdate.noti_str = user.noti.noti_str;
+	console.log("updating notifications: ", toUpdate);
+	const updatedUser = await userCollection.findOneAndUpdate(
+		{ _id: uid },
+		{ $set: { noti: toUpdate } },
+		{ returnDocument: "after" }
+	);
+	if (!updatedUser) {
+		throw `Error: User with id ${uid} not found`;
+	}
+	return updatedUser.noti;
+};
+
 const getUserByUsername = async (username) => {
 	// username = username.toLowerCase();
 	const userCollection = await users();
@@ -476,7 +525,7 @@ const match = async (currentUserID, TherapistID) => {
     if (!Therapist.patients.includes(currentUserID)) {
       const updatedTherapist = await userCollection.findOneAndUpdate(
         { _id: TherapistID },
-        { $push: { patients: TherapistID  } }
+        { $push: { patients: currentUserID  } }
       );
 
       console.log("Patient should be added to therapist" + Therapist.patients)
@@ -507,9 +556,26 @@ const match = async (currentUserID, TherapistID) => {
   }
 }
 
-const unMatch = async (currentUserID, TherapistID) => {
-  return;
+// Chat
+const getTherapistByPatientID = async (patientid) => {
+	const userCollection = await users();
+	const user = await userCollection. findOne({_id: patientid});
+	if(!user) throw "Error: There is no user with patientID";
+	if (user.therapist == null){
+		throw 'Patient is not matched with Therapist'
+	}
+	return user.therapist;
 }
+const getPatientbyTherapistID = async (therapistid) => {
+	const userCollection = await users();
+	const user = await userCollection. findOne({_id: therapistid});
+	if(!user) throw "Error: There is no therapist";
+	if (user.patients == null || user.patients.length === 0){
+		throw 'Error therapist has no patients'
+	}
+	return user.patients;
+}
+
 
 
 module.exports = {
@@ -521,6 +587,8 @@ module.exports = {
   savePdfToDB,
   getPdfFromDB,
   deletePdfFromDB,
+	getNotifications,
+	updateNotifications,
 	updateProfile,
 	getUserByUsername,
 	getAllTherapists,
@@ -530,4 +598,6 @@ module.exports = {
 	gettingStarted,
   match,
   checkUserifTherapist,
+  getPatientbyTherapistID,
+  getTherapistByPatientID,
 };

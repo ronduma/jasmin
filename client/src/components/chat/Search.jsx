@@ -12,13 +12,15 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
-import EditIcon from '@mui/icons-material/Edit';
+
+import AddIcon from '@mui/icons-material/Add';
 
 
 function Search(props) {
-  const [open, setOpen] = React.useState(false);
-  const [searchList, setSearchList] = React.useState(null);
+  const [open, setOpen] = useState(false);
+  const [searchList, setSearchList] = useState(null);
   const [selectedTherapist, setSelectedTherapist] = useState(null);
+
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -33,8 +35,17 @@ function Search(props) {
       try{
         const response = await axios.get("http://localhost:5173/therapists/all");
         const therapists = response.data.map(therapist => therapist.firstName + " " + therapist.lastName);
-        console.log(therapists);
-        setSearchList(response.data);
+        setSearchList(response.data.sort((a,b)=> {
+          const lastNameA = a.lastName.toUpperCase(); 
+          const lastNameB = b.lastName.toUpperCase(); 
+          if (lastNameA < lastNameB) {
+              return -1; 
+          }
+          if (lastNameA > lastNameB) {
+              return 1; 
+          }
+          return 0; 
+        }));
       } catch (e) {
         console.log(e);
       }
@@ -43,7 +54,37 @@ function Search(props) {
       try{
         const response = await axios.get("http://localhost:5173/patients/all");
         const patients = response.data.map(patient => patient.firstName + " " + patient.lastName);
+        setSearchList(response.data.sort((a,b)=> {
+          const lastNameA = a.lastName.toUpperCase(); 
+          const lastNameB = b.lastName.toUpperCase(); 
+          if (lastNameA < lastNameB) {
+              return -1; 
+          }
+          if (lastNameA > lastNameB) {
+              return 1; 
+          }
+          return 0; 
+        }));
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    // 
+    const getPatientsbyTherapist = async (id) => {
+      try{
+        const response = await axios.get("http://localhost:5173/therapists/patients");
+        const patients = response.data.map(patient => patient.firstName + " " + patient.lastName);
         console.log(patients);
+        setSearchList(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    const getTherapistbyPatient = async (id) => {
+      try{
+        const response = await axios.get("http://localhost:5173/patients/getTherapist");
+        const therapists = response.data.map(therapist => therapist.firstName + " " + therapist.lastName);
+        console.log(therapists);
         setSearchList(response.data);
       } catch (e) {
         console.log(e);
@@ -51,18 +92,13 @@ function Search(props) {
     }
     if (props.isTherapist){
       getPatients();
+      // getPatientsbyTherapist(props.id)
+
     } else{
       getTherapists();
+      // getTherapistbyPatient(props.id)
     }
-  }, []); // Re-run effect whenever currentUser changes
-
-  useEffect(() => {
-    console.log(selectedTherapist);
-  }, [selectedTherapist])
-
-  useEffect(() => {
-    console.log("search list updated", searchList);
-  }, [searchList]); // Run this effect whenever searchList changes
+  }, []); 
 
   const handleChat = async () => {
     console.log("chatting with", selectedTherapist)
@@ -79,7 +115,7 @@ function Search(props) {
 
   return (
     <React.Fragment>
-      <IconButton onClick={handleClickOpen}><EditIcon/></IconButton>
+      <IconButton onClick={handleClickOpen}><AddIcon/></IconButton>
       <Dialog
         open={open}
         onClose={handleClose}
