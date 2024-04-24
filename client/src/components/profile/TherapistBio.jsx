@@ -70,8 +70,6 @@ function TherapistBio({ bio, specialty, price }) {
     const fetchData = async () => {
       try {
         const id = currentUser.uid;
-        const response = await axios.get(`http://localhost:5173/profile/${id}`);
-
 
         const responseMeeting = await axios.get(
           `http://localhost:5173/meeting/therapist/${id}`
@@ -253,7 +251,7 @@ function TherapistBio({ bio, specialty, price }) {
                     <div key={index}>
                      <Typography variant="body1">{appointment.time} with <Link to={`/patient/${appointment.patient}`}>
                 {appointment.patientName}
-              </Link>: <a href={appointment.roomUrl} target="_blank">Meeting Link</a> </Typography>
+              </Link>: <a href={appointment.hostRoomUrl} target="_blank">Host Meeting Link</a> </Typography>
                       {/* Add additional details about the appointment if needed */}
                     </div>
                   ))}
