@@ -6,13 +6,15 @@ const fs = require("fs");
 const dayjs = require("dayjs");
 
 const createReview = async (
-  uid, 
+  uid,
+  reviewId, 
   reviewTitle,
   reviewerName, 
   review, 
   rating,
 ) => {
   // console.log(uid);
+  // console.log(reviewId);
   // console.log(reviewTitle);
   // console.log(reviewerName);
   // console.log(review);
@@ -28,7 +30,7 @@ const createReview = async (
   console.log(current_date);
 
   let newReview = {
-    _id: uid,
+    _id: reviewId,
     reviewTitle : reviewTitle,
     reviewerName : reviewerName,
     review : review, 

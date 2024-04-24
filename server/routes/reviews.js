@@ -16,9 +16,11 @@ router
 .post("/:id", async (req, res) => {
   const id = req.params.id; // therapistId
   const review_post = req.body; // object => review
+  // console.log(review_post.reviewId);
   try{
     const postReview = await reviews.createReview(
-      id, 
+      id,
+      review_post.reviewId, 
       review_post.reviewTitle,
       review_post.reviewerName, 
       review_post.review, 

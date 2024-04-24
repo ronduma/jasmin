@@ -181,7 +181,7 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
 
   const handleInput = async (InputRating, ReviewTitle, Review) => {
     try{
-      const response = await axios.post(`http://localhost:5173/reviews/${id}`, {uid : signedData.id, reviewTitle: ReviewTitle, reviewerName: signedData.firstName + " " + signedData.lastName, review: Review, rating: InputRating});
+      const response = await axios.post(`http://localhost:5173/reviews/${id}`, {reviewId : signedData._id, reviewTitle: ReviewTitle, reviewerName: signedData.firstName + " " + signedData.lastName, review: Review, rating: InputRating});
       window.location.reload();
     }
     catch(error){
