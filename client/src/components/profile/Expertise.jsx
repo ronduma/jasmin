@@ -32,10 +32,10 @@ const Expertise = (props) => {
 
   const personalTherapySubtopics = [
     ["Fatigue", "Depression", "Irritability", "Anxiety", "Panic Attacks", "Self-Esteem",
-    "Loneliness", "Chemical", "Suicide Attempts", "Psychosomatics", "Bipolar Disorder",
-    "Food Attitude", "Obsessive Thoughts and Rituals", "Borderline Personality Disorder" ], 
-    ["Romantic Relationships", "Relationship issues", "Sexual relations", "Codependency"], 
-    ["Self-determination, Job Search", "Burnout", "Procrastination", "Attitude Towards Money"], 
+      "Loneliness", "Chemical", "Suicide Attempts", "Psychosomatics", "Bipolar Disorder",
+      "Food Attitude", "Obsessive Thoughts and Rituals", "Borderline Personality Disorder"],
+    ["Romantic Relationships", "Relationship issues", "Sexual relations", "Codependency"],
+    ["Self-determination, Job Search", "Burnout", "Procrastination", "Attitude Towards Money"],
     ["Childbirth", "Adaptation, Emigration", "Grief", "Disease Diagnosis", "PTSD"]
   ];
 
@@ -56,19 +56,19 @@ const Expertise = (props) => {
   let fourth = [];
   let fifth = [];
 
-  for (let i = 0; i < subtopics.length; i++){
-    for (let j = 0; j < subtopics[i].length; j++){
-      for (let k = 0; k < props.display.length; k++){
-        if (props.display[k] == subtopics[i][j]){
-          if (i == 0){
+  for (let i = 0; i < subtopics.length; i++) {
+    for (let j = 0; j < subtopics[i].length; j++) {
+      for (let k = 0; k < props.display.length; k++) {
+        if (props.display[k] == subtopics[i][j]) {
+          if (i == 0) {
             first.push(props.display[k]);
-          } else if (i == 1){
+          } else if (i == 1) {
             second.push(props.display[k]);
-          } else if (i == 2){
+          } else if (i == 2) {
             third.push(props.display[k]);
-          } else if (i == 3){
+          } else if (i == 3) {
             fourth.push(props.display[k]);
-          } else if (i == 4){
+          } else if (i == 4) {
             fifth.push(props.display[k]);
           }
         }
@@ -76,7 +76,7 @@ const Expertise = (props) => {
     }
   }
 
-  console.log(first, second, third, fourth)
+  // console.log(first, second, third, fourth)
 
   const [personName1, setPersonName1] = useState(first);
   const [personName2, setPersonName2] = useState(second);
@@ -94,17 +94,17 @@ const Expertise = (props) => {
 
   const handleChange = (event, setState) => {
     const { value } = event.target;
-  
+
     if (setState === setPersonName1) {
       const updatedIndices = [];
-  
+
       // Iterate over each selected value
       for (let i = 0; i < value.length; i++) {
         const selectedValue = value[i];
         const selectedIndex = subtopics[0].indexOf(selectedValue);
         updatedIndices.push(selectedIndex);
       }
-  
+
       // Update selectedPersonal by spreading the existing state and appending new indices
       setSelectedPersonal(updatedIndices);
     }
@@ -113,7 +113,7 @@ const Expertise = (props) => {
 
   useEffect(() => {
     let items = [];
-    for (let i = 0; i < selectedPersonal.length; i++){
+    for (let i = 0; i < selectedPersonal.length; i++) {
       items.push(personalTherapySubtopics[selectedPersonal[i]]);
     }
     setSelectedSubtopics(items)
@@ -131,9 +131,9 @@ const Expertise = (props) => {
   return (
     <div>
       {topics.map((topic, index) => (
-        <FormControl 
+        <FormControl
           disabled={props.disabled}
-          key={topic.label} 
+          key={topic.label}
           sx={{ m: 1, width: "100%" }}>
           <InputLabel id={`demo-multiple-chip-label-${topic.label}`}>{topic.label}</InputLabel>
           <Select
@@ -157,21 +157,21 @@ const Expertise = (props) => {
             MenuProps={MenuProps}
           >
             {
-              topic.index == 0 ? 
-              subtopics[topic.index].map((name, index) => (
-                <MenuItem key={name} value={name}>
-                  {name}
-                  <Tooltip title={personalTherapySubtopics[index].join(", ")}>
-                    <InfoOutlinedIcon style={{ marginLeft: '5px' }} />
-                  </Tooltip>
-                </MenuItem>
-              ))
-              :
-              subtopics[topic.index].map((name) => (
-                <MenuItem key={name} value={name}>
-                  {name}
-                </MenuItem>
-              ))
+              topic.index == 0 ?
+                subtopics[topic.index].map((name, index) => (
+                  <MenuItem key={name} value={name}>
+                    {name}
+                    <Tooltip title={personalTherapySubtopics[index].join(", ")}>
+                      <InfoOutlinedIcon style={{ marginLeft: '5px' }} />
+                    </Tooltip>
+                  </MenuItem>
+                ))
+                :
+                subtopics[topic.index].map((name) => (
+                  <MenuItem key={name} value={name}>
+                    {name}
+                  </MenuItem>
+                ))
             }
           </Select>
         </FormControl>

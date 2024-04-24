@@ -30,54 +30,57 @@ import Chat from './components/chat/Chat';
 import Video from './components/video/Video';
 import PatientFromTherapistView from './components/PatientViewFromTherapist';
 // import Feedback from './components/Feedback';
-import { VerificationContext, VerificationProvider } from './context/VerificationContext';
+import { VerificationProvider } from './context/VerificationContext';
+import { NotificationProvider } from './context/NotificationContext';
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <AuthProvider>
         <VerificationProvider>
-          <div className="App">
-            <header>
-              <Navigation />
-            </header>
-            <main>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path='/getting-started' element={<PrivateRoute />}>
-                  <Route path="/getting-started" element={<GettingStarted />} />
-                </Route>
-                <Route path='/profile' element={<PrivateRoute />}>
-                  <Route path='/profile' element={<Profile />} />
-                </Route>
-                <Route path='/edit-profile' element={<PrivateRoute />}>
-                  <Route path='/edit-profile' element={<EditProfile />} />
-                </Route>
-                <Route path='/login' element={<Login />} />
-                <Route path='/register' element={<Register />} />
+          <NotificationProvider>
+            <div className="App">
+              <header>
+                <Navigation />
+              </header>
+              <main>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path='/getting-started' element={<PrivateRoute />}>
+                    <Route path="/getting-started" element={<GettingStarted />} />
+                  </Route>
+                  <Route path='/profile' element={<PrivateRoute />}>
+                    <Route path='/profile' element={<Profile />} />
+                  </Route>
+                  <Route path='/edit-profile' element={<PrivateRoute />}>
+                    <Route path='/edit-profile' element={<EditProfile />} />
+                  </Route>
+                  <Route path='/login' element={<Login />} />
+                  <Route path='/register' element={<Register />} />
 
-                <Route path="/about" element={<About />} />
-                <Route path="/psychologist" element={<PsychologistView />} />
-                {/* <Route path="/feedback" element={<Feedback/>} />  */}
-                <Route path='/personal_matching' element={<Personal_Matching />} />
-                <Route path='/couple_matching' element={<Couple_Matching />} />
-                <Route path='/children_matching' element={<Children_Matching />} />
-                <Route path='/all_matching' element={<All_Matching />} />
-                <Route path='/matching' element={<Matching />} />
-                <Route path="/matching/:id" element={<PsychologistView />} />
-                <Route path="/patient/:id" element={<PatientFromTherapistView />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/psychologist" element={<PsychologistView />} />
+                  {/* <Route path="/feedback" element={<Feedback/>} />  */}
+                  <Route path='/personal_matching' element={<Personal_Matching />} />
+                  <Route path='/couple_matching' element={<Couple_Matching />} />
+                  <Route path='/children_matching' element={<Children_Matching />} />
+                  <Route path='/all_matching' element={<All_Matching />} />
+                  <Route path='/matching' element={<Matching />} />
+                  <Route path="/matching/:id" element={<PsychologistView />} />
+                  <Route path="/patient/:id" element={<PatientFromTherapistView />} />
 
-                <Route path='/speciallist' element={<SpecialList />} />
-                <Route path='/privacy_policy' element={<Privacy />} />
-                <Route path='/video_chat' element={<Video />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-              <Chat />
-            </main>
-            <footer>
-              <Footer />
-            </footer>
-          </div>
+                  <Route path='/speciallist' element={<SpecialList />} />
+                  <Route path='/privacy_policy' element={<Privacy />} />
+                  <Route path='/video_chat' element={<Video />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+                <Chat />
+              </main>
+              <footer>
+                <Footer />
+              </footer>
+            </div>
+          </NotificationProvider>
         </VerificationProvider>
       </AuthProvider>
     </ThemeProvider>

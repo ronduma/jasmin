@@ -35,6 +35,8 @@ const createUser = async (uid, email) => {
 		therapist: null,
 		specialty: [],
 		pdf_files: [],
+		price: null,
+		noti: [],
 	};
 
 	// console.log("inserting user:", user)
@@ -290,6 +292,47 @@ const deletePdfFromDB = async (id, index) => {
 	console.log("PDF file deleted.");
 };
 
+const getNotifications = async (uid) => {
+	const userCollection = await users();
+	const user = await userCollection.findOne({ _id: uid });
+	if (!user) throw "Error: There is no user with the given name";
+	//if noti doesnt exist add it as an empty array
+	if (!user.noti) {
+		const updatedUser = await userCollection.findOneAndUpdate(
+			{ _id: uid },
+			{ $set: { noti: {unread: 0, noti_str: [] } } },
+			{ returnDocument: "after" }
+		);
+		return {unread: 0, noti_str: [] };
+	}
+	return user.noti;
+}
+
+//update databse with notifications
+const updateNotifications = async (uid, unread, noti_str) => {
+	if (unread < 0) throw "Error: Unread notifications cannot be negative";
+	const toUpdate = {unread: unread};
+	const userCollection = await users();
+	const user = await userCollection.findOne({ _id: uid });
+	if (!user) throw "Error: There is no user with the given name";
+	if (noti_str) {
+		if (!Array.isArray(noti_str)) throw "Error: Notifications must be an array";
+		const notiArr = user.noti.noti_str;
+		notiArr.push(...noti_str);
+		toUpdate.noti_str = notiArr;
+	} else toUpdate.noti_str = user.noti.noti_str;
+	console.log("updating notifications: ", toUpdate);
+	const updatedUser = await userCollection.findOneAndUpdate(
+		{ _id: uid },
+		{ $set: { noti: toUpdate } },
+		{ returnDocument: "after" }
+	);
+	if (!updatedUser) {
+		throw `Error: User with id ${uid} not found`;
+	}
+	return updatedUser.noti;
+};
+
 const getUserByUsername = async (username) => {
 	// username = username.toLowerCase();
 	const userCollection = await users();
@@ -542,6 +585,8 @@ module.exports = {
   savePdfToDB,
   getPdfFromDB,
   deletePdfFromDB,
+	getNotifications,
+	updateNotifications,
 	updateProfile,
 	getUserByUsername,
 	getAllTherapists,
