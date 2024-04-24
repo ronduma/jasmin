@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import dayjs from "dayjs";
 
 import { AuthContext } from "../../context/AuthContext";
@@ -15,8 +15,13 @@ import IconButton from "@mui/material/IconButton";
 import { useParams, Link } from "react-router-dom";
 import CheckCircleIcon from "@mui/icons-material/CheckCircleOutlined";
 import CancelRoundedIcon from "@mui/icons-material/CancelOutlined";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
+
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import Rating from '@mui/material/Rating';
+import Stack from '@mui/material/Stack';
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
@@ -27,11 +32,13 @@ import Paper from "@mui/material/Paper";
 
 import Expertise from "./Expertise";
 
-function TherapistBioFromPatientView({ bio, specialty }) {
+function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews }) {
   const { currentUser } = useContext(AuthContext);
   const [editAbout, setEditAbout] = useState(false);
+  const [editReview, setEditReview] = useState(false);
   const [currbio, setBio] = useState(bio);
   const [profileData, setProfileData] = useState(null);
+  const [signedData, setSignedData] = useState(null);
   const [Appointments, setAppointments] = useState(null);
   const [newBio, setNewBio] = useState(bio);
 
@@ -39,6 +46,15 @@ function TherapistBioFromPatientView({ bio, specialty }) {
   const [isLoading, setLoading] = useState(false);
 
   const [value, setValue] = useState(0);
+
+
+  const [currReviews, setReviews] = useState(reviews);
+  const [inputRating, setInputRating] = useState(0);
+  const reviewInput = useRef(null);
+  const reviewTitleInput = useRef(null);
+  const [currRating, setRating] = useState(overallRating);
+  
+
 
   const cancelAppointment = async (appointment) => {
     try {
@@ -133,7 +149,9 @@ function TherapistBioFromPatientView({ bio, specialty }) {
       try {
         const response = await axios.get(`http://localhost:5173/profile/${id}`);
         setProfileData(response.data);
-
+        const signedUser = await axios.get(`http://localhost:5173/profile/${currentUser.uid}`);
+        setSignedData(signedUser.data);
+        setEditReview(signedData.isTherapist);
         const responseMeeting = await axios.get(
           `http://localhost:5173/meeting/therapist/${id}`
         );
@@ -224,6 +242,15 @@ function TherapistBioFromPatientView({ bio, specialty }) {
     }
   };
 
+  const handleInput = async (InputRating, ReviewTitle, Review) => {
+    try{
+      const response = await axios.post(`http://localhost:5173/reviews/${id}`, {reviewId : signedData._id, reviewTitle: ReviewTitle, reviewerName: signedData.firstName + " " + signedData.lastName, review: Review, rating: InputRating});
+      window.location.reload();
+    }
+    catch(error){
+      console.error(error);
+    }
+  };
   return (
     <div>
       <Grid container spacing={2}>
@@ -242,6 +269,7 @@ function TherapistBioFromPatientView({ bio, specialty }) {
         )}
 
         <Grid item xs={12}>
+
           <Paper style={{ minHeight: "18vh", height: "100%" }}>
             <Tabs value={value} onChange={handleChange} variant="fullWidth">
               <Tab label="Details" />
@@ -256,7 +284,7 @@ function TherapistBioFromPatientView({ bio, specialty }) {
                   justifyContent: "space-between",
                 }}
               >
-                <div className="right-section-header">Expertise</div>
+               <div className="right-section-header">Expertise</div>
               </div>
               <Expertise
                 disabled={!editAbout}
@@ -403,7 +431,85 @@ function TherapistBioFromPatientView({ bio, specialty }) {
               )}
             </CustomTabPanel>
             <CustomTabPanel value={value} index={2}>
-              <div className="right-section-header"> Reviews </div>
+              <div className='right-section-header'> Reviews </div>
+              <div>
+                <Typography component="legend" style={{ marginBottom: '20px' }}>Overall Therapist Rating</Typography>
+                <Rating
+                name="text-feedback"
+                value ={currRating}
+                readOnly
+                precision={0.5}
+                onChange = {(event, newValue) => {
+                  setRating(newValue);
+                }}
+               />
+               <Box>{currRating ? currRating.toFixed(2) : 0} Stars</Box>
+              </div>
+              
+              <div style={{marginTop: '50px'}}>
+              <Typography component="legend">List of Reviews</Typography>
+              {!currReviews ?(<div style={{marginTop: '50px'}}>Currently No Reviews</div>) : 
+                (<Stack direction ='column' spacing={2}>
+                  {currReviews && currReviews.slice(-5).map((item, index) => (
+                    <Card variant='outlined' key={index}>
+                      <Typography>Name: {item[0].reviewerName}</Typography>
+                      <Typography>Title: {item[0].reviewTitle}</Typography>
+                      <Typography>Rating: {item[0].rating}</Typography>
+                      <Typography>Date: {item[0].reviewDate}</Typography>
+                      <Typography>Review: {item[0].review}</Typography>
+                    </Card>
+                  ))}
+                </Stack>)}
+              </div>
+              {!editReview ? 
+              <div>
+                <div style={{ marginTop: '50px'}} >
+              <div className='right-section-header'style={{ marginBottom: '20px'}}> Create Your Review </div>
+                <div style={{marginBottom: '20px'}}>
+                <Typography component="legend">Review Rating</Typography>
+                <Rating
+                  name="text-feedback"
+                  label ="Review Rating"
+                  value ={inputRating}
+                  precision={0.5}
+                  onChange = {(event, newValue) => {
+                    setInputRating(newValue);
+                  }}
+                />
+                </div>
+                <TextField
+                  inputRef={reviewTitleInput}
+                  label="Name of Review"
+                  id ="textbox-Name"
+                  inputProps={{
+                    maxLength:50
+                  }}
+                />
+                <TextField
+                  inputRef={reviewInput}
+                  fullWidth
+                  label="Title of Review"
+                  id="textbox-Review"
+                  // value={currReview}
+                  // onChange={event => setCurrReview(event.target.value)}
+                  multiline
+                  style={{margin: '2vh 0 1vh 0'}}
+                  rows={3}
+                  inputProps={{
+                    maxLength:285
+                  }}
+                />
+              </div>
+              
+              <div style={{ marginTop: '20px', marginBottom: '20px' }}>
+                <Button variant="contained" onClick={(event) => { event.preventDefault; handleInput(inputRating, reviewTitleInput.current.value, reviewInput.current.value)}}>
+                  Submit A Review
+                </Button>
+              </div>
+              </div> 
+              : 
+              <br/>}
+
             </CustomTabPanel>
           </Paper>
         </Grid>
