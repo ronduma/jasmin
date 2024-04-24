@@ -1,49 +1,42 @@
-import React, {useContext, useState, useEffect} from 'react';
-import dayjs from 'dayjs';
-import PropTypes from 'prop-types'
+import React, { useContext, useState, useEffect } from "react";
+import dayjs from "dayjs";
+import PropTypes from "prop-types";
 
-import {AuthContext} from '../../context/AuthContext';
-
+import { AuthContext } from "../../context/AuthContext";
+import Button from "@mui/material/Button";
+import Swal from "sweetalert2";
 // import './styles.css';
+import { useParams, Link } from "react-router-dom";
+import axios from "axios";
+import { Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import TextField from "@mui/material/TextField";
+import IconButton from "@mui/material/IconButton";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import CheckCircleIcon from "@mui/icons-material/CheckCircleOutlined";
+import CancelRoundedIcon from "@mui/icons-material/CancelOutlined";
+import EditIcon from "@mui/icons-material/Edit";
+import FormControl from "@mui/material/FormControl";
 
-import axios from 'axios';
-import {Typography}  from '@mui/material';
-import Box from '@mui/material/Box';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import TextField from '@mui/material/TextField';
-import IconButton from '@mui/material/IconButton';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import CheckCircleIcon from '@mui/icons-material/CheckCircleOutlined';
-import CancelRoundedIcon from '@mui/icons-material/CancelOutlined';
-import EditIcon from '@mui/icons-material/Edit';
-import FormControl from '@mui/material/FormControl';
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import TherapistCalender from "./TherapistCalender";
 
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import TherapistCalender from './TherapistCalender';
-
-import Expertise from './Expertise';
+import Expertise from "./Expertise";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
   return (
-    <Grid 
-      item 
-      hidden={value !== index}
-    >
-      {value === index && (
-        <Box sx={{ p: 3}}>
-          {children}
-        </Box>
-      )}
+    <Grid item hidden={value !== index}>
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </Grid>
   );
 }
@@ -53,173 +46,313 @@ function TherapistBio({ bio, specialty, price }) {
   const [editAbout, setEditAbout] = useState(false);
   const [currbio, setBio] = useState(bio);
   const [newBio, setNewBio] = useState(bio);
-  if (bio = "") setBio(null);
+
+  const [Appointments, setAppointments] = useState(null);
+
+  if ((bio = "")) setBio(null);
   const [selectedTopics, setSelectedTopics] = useState(specialty);
   let [selectedDate, setSelectedDate] = useState(dayjs());
   const [selectedPrice, setSelectPrice] = useState(price);
   const [newPrice, setNewPrice] = useState(price);
-  if (price = "") setSelectPrice("");
+  if ((price = "")) setSelectPrice("");
+
+  const [loading, setLoading] = useState(false);
+
+  const cancelAppointment = async (appointment) => {
+    try {
+      // Make a DELETE request to your server to cancel the appointment using appointmentId
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Cancel Meeting",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          setLoading(true);
+
+          await axios.delete(
+            `http://localhost:5173/meeting/${appointment.id}`,
+            {
+              data: {
+                currentUserID: appointment.patient,
+                therapistID: appointment.therapist, // Assuming you have therapistID in your appointment object
+                time: appointment.time, // Assuming you have time in your appointment object
+              },
+            }
+          );
+
+          let id = currentUser.uid;
+
+          const responseMeeting = await axios.get(
+            `http://localhost:5173/meeting/therapist/${id}`
+          );
+          const fetchedAppointments = responseMeeting.data;
+          setAppointments(fetchedAppointments); //all appointments
+
+          Swal.fire({
+            title: "Meeting Canceled!",
+            icon: "success",
+          });
+
+          setLoading(false);
+        }
+      });
+
+      // If the request is successful, update the appointments state to reflect the cancellation
+      // setAppointments(prevAppointments =>
+      //   prevAppointments.filter(appointment => appointment.id !== appointment.id)
+      // );
+    } catch (error) {
+      console.error("Error canceling appointment:", error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const id = currentUser.uid;
+
+        const responseMeeting = await axios.get(
+          `http://localhost:5173/meeting/therapist/${id}`
+        );
+        const fetchedAppointments = responseMeeting.data;
+        setAppointments(fetchedAppointments); //all appointments
+      } catch (e) {
+        console.log("yo");
+        console.log(e);
+      }
+    };
+    fetchData();
+  });
 
   const putBio = async () => {
     // console.log("curentUser: ", currentUser);
-    axios.put('http://localhost:5173/profile/bio', {
-      uid: currentUser.uid,
-      bio: document.getElementById('textbox-bio').value
-    })
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-    setNewBio(document.getElementById('textbox-bio').value);
+    axios
+      .put("http://localhost:5173/profile/bio", {
+        uid: currentUser.uid,
+        bio: document.getElementById("textbox-bio").value,
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    setNewBio(document.getElementById("textbox-bio").value);
     setEditAbout(false);
-  }
+  };
   const handlePriceChange = async () => {
-    axios.put('http://localhost:5173/profile/price', {
-      uid:currentUser.uid,
-      price: selectedPrice
-    })
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+    axios
+      .put("http://localhost:5173/profile/price", {
+        uid: currentUser.uid,
+        price: selectedPrice,
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     setNewPrice(selectedPrice);
     setEditAbout(false);
-  }
+  };
 
   const handleSelectedTopics = (data) => {
     setSelectedTopics(data);
-  }
+  };
 
   //checks ids and sees what is selected and stores that
   const handleCheckboxChange = async () => {
     // axios call to add to database
-    axios.put('http://localhost:5173/profile/specialty', {
-      uid: currentUser.uid,
-      specialty: selectedTopics
-    })
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+    axios
+      .put("http://localhost:5173/profile/specialty", {
+        uid: currentUser.uid,
+        specialty: selectedTopics,
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     setEditAbout(false);
-  }
+  };
 
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    console.log(value)
+    console.log(value);
   };
 
   return (
     <div>
-      <Grid 
-        container 
-        spacing={2}
-      >
+      <Grid container spacing={2}>
+        {loading && (
+          <div
+            style={{
+              position: "fixed",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+            }}
+          >
+            {/* Add your loading icon component here */}
+            loading...
+          </div>
+        )}
+
         <Grid item xs={12}>
-          <Paper style={{padding: '2vh', height:'100%'}}>
+          <Paper style={{ padding: "2vh", height: "100%" }}>
             <Tabs value={value} onChange={handleChange} variant="fullWidth">
               <Tab label="Details" />
-              <Tab label="Availability"  />
+              <Tab label="Availability" />
               <Tab label="Reviews" />
             </Tabs>
 
             <CustomTabPanel value={value} index={0}>
-              <div 
-                style={{ 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    justifyContent: "space-between"
-                  }}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
               >
-                <div className='right-section-header'> 
-                  Expertise 
-                </div>
-                {editAbout ? 
-                  "" : 
-                  <IconButton onClick={() => setEditAbout(true)}><EditIcon /></IconButton>}
+                <div className="right-section-header">Expertise</div>
+                {editAbout ? (
+                  ""
+                ) : (
+                  <IconButton onClick={() => setEditAbout(true)}>
+                    <EditIcon />
+                  </IconButton>
+                )}
               </div>
-              <Expertise disabled={!editAbout} selected={handleSelectedTopics} display={specialty}/>
-              <div className='right-section-header'> 
-                About Me 
-              </div>
+              <Expertise
+                disabled={!editAbout}
+                selected={handleSelectedTopics}
+                display={specialty}
+              />
+              <div className="right-section-header">About Me</div>
               <TextField
                 disabled={!editAbout}
-                inputRef={input => input && input.focus()}
+                inputRef={(input) => input && input.focus()}
                 fullWidth
                 id="textbox-bio"
                 label="Tell us about yourself!"
                 value={currbio}
-                onChange={event => setBio(event.target.value)}
+                onChange={(event) => setBio(event.target.value)}
                 InputLabelProps={{
                   shrink: currbio || editAbout ? true : false,
                 }}
                 multiline
-                style={{margin: '2vh 0 1vh 0'}}
+                style={{ margin: "2vh 0 1vh 0" }}
                 rows={3}
                 inputProps={{
-                  maxLength:285
+                  maxLength: 285,
                 }}
               />
-              <div className='right-section-header'>Price</div>
+              <div className="right-section-header">Price</div>
               <FormControl fullWidth>
                 <Select
-                  onChange = {event => setSelectPrice(event.target.value)}
-                  id ="therapist-price"
-                  value ={selectedPrice}
+                  onChange={(event) => setSelectPrice(event.target.value)}
+                  id="therapist-price"
+                  value={selectedPrice}
                   disabled={!editAbout}
                   InputLabelProps={{
                     shrink: selectedPrice || editAbout ? true : false,
                   }}
                 >
-                  <MenuItem value=""><em>Free</em></MenuItem>
+                  <MenuItem value="">
+                    <em>Free</em>
+                  </MenuItem>
                   <MenuItem value="Low">$ - Low</MenuItem>
                   <MenuItem value="Medium">$$ - Medium</MenuItem>
                   <MenuItem value="High">$$$ - High</MenuItem>
                 </Select>
               </FormControl>
               {editAbout && (
-                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <div style={{ display: "flex", justifyContent: "flex-end" }}>
                   <IconButton>
-                    <CheckCircleIcon onClick={() => { putBio(); handleCheckboxChange(); handlePriceChange();}}>
-                    </CheckCircleIcon>
+                    <CheckCircleIcon
+                      onClick={() => {
+                        putBio();
+                        handleCheckboxChange();
+                        handlePriceChange();
+                      }}
+                    ></CheckCircleIcon>
                   </IconButton>
                   <IconButton>
-                    <CancelRoundedIcon onClick={ ()=> {setEditAbout(false); setBio(newBio); setSelectPrice(newPrice);}}></CancelRoundedIcon>
+                    <CancelRoundedIcon
+                      onClick={() => {
+                        setEditAbout(false);
+                        setBio(newBio);
+                        setSelectPrice(newPrice);
+                      }}
+                    ></CancelRoundedIcon>
                   </IconButton>
                 </div>
               )}
             </CustomTabPanel>
 
             <CustomTabPanel value={value} index={1}>
-              <div className="right-section-header">
-                Upcoming Availability
-              </div>
+              <div className="right-section-header">Upcoming Availability</div>
               <div>
                 <div>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateCalendar defaultValue={dayjs()} onChange={(newValue) => setSelectedDate(newValue)} />
+                    <DateCalendar
+                      defaultValue={dayjs()}
+                      onChange={(newValue) => setSelectedDate(newValue)}
+                    />
                   </LocalizationProvider>
                 </div>
-                <div>
-                  {selectedDate.$d.toString()}
-                </div>
+                <div>{selectedDate.$d.toString()}</div>
               </div>
+
+              <div className="right-section-header">
+                {" "}
+                Upcoming Appointments{" "}
+              </div>
+              {Appointments === null || Appointments.length === 0 ? (
+                <Typography> No upcoming appointments.</Typography>
+              ) : (
+                <div>
+                  {Appointments.map((appointment, index) => (
+                    <div key={index}>
+                      <Typography variant="body1">
+                        {appointment.time} with{" "}
+                        <Link to={`/patient/${appointment.patient}`}>
+                          {appointment.patientName}
+                        </Link>
+                        :{" "}
+                        <a href={appointment.hostRoomUrl} target="_blank">
+                          Host Meeting Link
+                        </a>
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          size="small"
+                          onClick={() => cancelAppointment(appointment)}
+                          style={{ marginLeft: "5px", marginBottom: "5px" }}
+                        >
+                          Cancel Meeting
+                        </Button>
+                      </Typography>
+                      {/* Add additional details about the appointment if needed */}
+                    </div>
+                  ))}
+                </div>
+              )}
             </CustomTabPanel>
 
             <CustomTabPanel value={value} index={2}>
-              <div className='right-section-header'> Reviews </div>
+              <div className="right-section-header"> Reviews </div>
             </CustomTabPanel>
           </Paper>
         </Grid>
-    </Grid>
+      </Grid>
     </div>
   );
 }

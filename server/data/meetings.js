@@ -26,7 +26,7 @@ const getMeetingsByTimeTherapist = async (userID1) => {
   const meetingCollection = await meetings();
   const meetingList = await meetingCollection.find({ therapist: userID1}).toArray();
   if (!meetingList || meetingList.length === 0){
-    console.log('Error: There are no meetings from the given therapist ' + userID1);
+    // console.log('Error: There are no meetings from the given therapist ' + userID1);
     return [];
   }
   return meetingList;
@@ -78,6 +78,9 @@ const isMatched = async (userID1, userID2) => {
   }
   let user1 = await user.getUserById(tempPatientID);
   let user2 = await user.getUserById(tempTherapistID);
+  console.log("In isMatched")
+  console.log(tempPatientID)
+  console.log(tempTherapistID)
 
   //if patient is not therapist & patient therapist = therapist && user2.istherapist && user2.includes the patient
   if ((!user1.isTherapist && user1.therapist === user2._id) && (user2.isTherapist && user2.patients.includes(user1._id))) {
@@ -166,9 +169,9 @@ const deleteMeeting = async (userID1, userID2, time) => {
 
   }
 
-  //check if time is already chosen for patient or therapist
-  await ifMeetingExistByTimePatient(tempPatientID,time);
-  await ifMeetingExistByTimeTherapist(tempTherapistID,time);
+  // //check if time is already chosen for patient or therapist
+  // await ifMeetingExistByTimePatient(tempPatientID,time);
+  // await ifMeetingExistByTimeTherapist(tempTherapistID,time);
 
 
 const deleteMeeting = await meetingCollection.deleteOne({patient: tempPatientID, therapist:tempTherapistID, time: time});

@@ -5,7 +5,7 @@ const users = require('../data/users');
 const xss = require('xss');
 
 router.post('/', async(req,res) => {
-  console.log(req.body)
+  // console.log(req.body)
   try {
     let user = await users.createUser(req.body.uid, req.body.email);
     return res.status(200).json(user);
@@ -15,12 +15,12 @@ router.post('/', async(req,res) => {
 });
 
 router.get('/:id', async(req,res) => {
-  console.log(req.session.user)
+  // console.log(req.session.user)
   return res.status(200).json(req.session.user);
 });
 
 router.post('/:id', async(req,res) => {
-  console.log(req.session.user)
+  // console.log(req.session.user)
   return res.status(200).json(req.session.user);
 });
 

@@ -128,7 +128,7 @@ function PatientView() {
               <br/>
               {isMatched ? (
               <Button variant="contained" onClick={handleClick}>
-                Unmatch with Therapist
+                Unmatch with Patient
               </Button>
             ) : (
               <Button variant="contained" onClick={handleClick}>
@@ -136,7 +136,7 @@ function PatientView() {
               </Button>
             )}
             {" "}
-              <Button variant="contained"> Schedule </Button>
+              <Button variant="contained"> Chat </Button>
           </Paper>
         </Grid>
         <Grid item xs={6}>

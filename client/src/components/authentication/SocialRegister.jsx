@@ -11,6 +11,7 @@ const SocialRegister = ({ onRegister }) => {
       let additionalUserInfo = getAdditionalUserInfo(user)
       onRegister(additionalUserInfo)
       if (additionalUserInfo.isNewUser){
+        console.log(user.user)
         axios.post('http://localhost:5173/register', user.user)
         .then(response => {
           // console.log("user", user)

@@ -5,6 +5,7 @@ const chats = mongoCollections.chats;
 const users = mongoCollections.users;
 
 const usersData = require('../data/users');
+const geminiData = require('../data/gemini')
 
 const createChatLog = async (
 	user1_id,
@@ -23,19 +24,15 @@ const createChatLog = async (
 	}
 
   const user1_data = await usersData.getUserById(user1_id);
-  const user2_data = await usersData.getUserById(user2_id);
-
-  const user1_name = user1_data.firstName + " " + user1_data.lastName;
-  const user2_name = user2_data.firstName + " " + user2_data.lastName;
-
   const user1 = await userCollection.findOneAndUpdate(
-		{ _id: user1_id },
-		{ $push: {chatLog : {id : insertInfo.insertedId, name : user2_name}} },
-		{ returnDocument: "after" }
-	);
+    { _id: user1_id },
+    { $push: {chatLog : insertInfo.insertedId} },
+    { returnDocument: "after" }
+  );
+  const user2_data = await usersData.getUserById(user2_id);
   const user2 = await userCollection.findOneAndUpdate(
 		{ _id: user2_id },
-		{ $push: {chatLog : {id : insertInfo.insertedId, name : user1_name}} },
+		{ $push: {chatLog : insertInfo.insertedId} },
 		{ returnDocument: "after" }
 	);
 
@@ -52,14 +49,49 @@ const createMsg = async (
     message: message, 
     timestamp: dayjs().format('MM-DD-YYYY HH:mm:ss')
   };
-  console.log(id, msg)
+  // console.log(id, msg)
   const chatCollection = await chats();
   const insertInfo = await chatCollection.findOneAndUpdate(
 		{ _id: new ObjectId(id) },
 		{ $push: {chatLog : msg} },
 		{ returnDocument: "after" }
 	);
-  console.log(insertInfo)
+  // console.log(insertInfo)
+}
+
+const createKaiMsg = async (
+  id,
+  sender,
+  message
+) => {
+  const chatCollection = await chats();
+  let response = await geminiData.sendMessage(message);
+  const response_msg = {
+    sender: {
+      id : 1,
+      name : "kAI",
+      doneTyping : false
+    }, 
+    message: response, 
+    timestamp: dayjs().format('MM-DD-YYYY HH:mm:ss')
+  }
+  const insertResponseInfo = await chatCollection.findOneAndUpdate(
+		{ _id: new ObjectId(id) },
+		{ $push: {chatLog : response_msg} },
+		{ returnDocument: "after" }
+	);
+}
+
+const kaiMsgDoneTyping = async (
+  id,
+  timestamp
+) => {
+  const chatCollection = await chats();
+  const filter = {
+    'chatLog.timestamp': timestamp
+  };
+  const update = {"$set": {"chatLog.$.sender.doneTyping": true}}
+  const setResponseInfo = await chatCollection.findOneAndUpdate(filter, update);
 }
 
 const getChatByID = async (uid) => {
@@ -72,5 +104,7 @@ const getChatByID = async (uid) => {
 module.exports = {
 	createChatLog,
   createMsg,
-  getChatByID
+  createKaiMsg,
+  getChatByID,
+  kaiMsgDoneTyping
 };
