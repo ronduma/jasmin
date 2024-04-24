@@ -234,7 +234,7 @@ function TherapistBio({ bio, specialty, price, overallRating, reviews}) {
             <CustomTabPanel value={value} index={2}>
               <div className='right-section-header'> Reviews </div>
               <div>
-                <Typography component="legend" style={{ marginBottom: '20px' }}>Overall Therapist Rating</Typography>
+                <Typography component="legend" style={{ marginBottom: '20px' }}>Overall Therapist Rating:</Typography>
                 <Rating
                 name="text-feedback"
                 value ={currRating}
@@ -244,7 +244,7 @@ function TherapistBio({ bio, specialty, price, overallRating, reviews}) {
                   setRating(newValue);
                 }}
                />
-               <Box>{currRating} Stars</Box>
+               <Box>{currRating ? currRating : 0} Stars</Box>
               </div>
               <div style={{marginTop: '20px'}}>
               <Typography component="legend">List of Reviews:</Typography>

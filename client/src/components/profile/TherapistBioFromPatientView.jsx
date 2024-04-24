@@ -30,9 +30,11 @@ import Expertise from './Expertise';
 
 function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews }) {
   const { currentUser } = useContext(AuthContext);
-  const [editAbout, setEditAbout] = useState(false);;
+  const [editAbout, setEditAbout] = useState(false);
+  const [editReview, setEditReview] = useState(false);
   const [currbio, setBio] = useState(bio);
   const [profileData, setProfileData] = useState(null);
+  const [signedData, setSignedData] = useState(null);
   const [Appointments, setAppointments] = useState(null);
   const [newBio, setNewBio] = useState(bio);
 
@@ -45,6 +47,7 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
   const reviewInput = useRef(null);
   const reviewTitleInput = useRef(null);
   const [currRating, setRating] = useState(overallRating);
+  
   const handleChange = (event, newValue) => {
     setValue(newValue);
     console.log(value)
@@ -93,7 +96,9 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
       try {
         const response = await axios.get(`http://localhost:5173/profile/${id}`);
         setProfileData(response.data);
-
+        const signedUser = await axios.get(`http://localhost:5173/profile/${currentUser.uid}`);
+        setSignedData(signedUser.data);
+        setEditReview(signedData.isTherapist);
         const responseMeeting = await axios.get(
           `http://localhost:5173/meeting/therapist/${id}`
         );
@@ -120,7 +125,6 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
         setAvailableTimes(bookedTimes);
         console.log("avaialbletimes:");
         console.log(availableTimes);
-        console.log(currReviews);
         setLoading(false);
       } catch (e) {
         console.log("yo");
@@ -177,14 +181,13 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
 
   const handleInput = async (InputRating, ReviewTitle, Review) => {
     try{
-      const response = await axios.post(`http://localhost:5173/reviews/${id}`, {uid : currentUser.uid, reviewTitle: ReviewTitle, reviewerName: currentUser.displayName, review: Review, rating: InputRating});
-      console.log(response.data);
+      const response = await axios.post(`http://localhost:5173/reviews/${id}`, {uid : signedData.id, reviewTitle: ReviewTitle, reviewerName: signedData.firstName + " " + signedData.lastName, review: Review, rating: InputRating});
+      window.location.reload();
     }
     catch(error){
       console.error(error);
     }
   };
-  
   return (
     <div>
       <Grid
@@ -348,14 +351,14 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
                   setRating(newValue);
                 }}
                />
-               <Box>{currRating ? currRating : 0} Stars</Box>
+               <Box>{currRating ? currRating.toFixed(2) : 0} Stars</Box>
               </div>
               
               <div style={{marginTop: '50px'}}>
               <Typography component="legend">List of Reviews</Typography>
               {!currReviews ?(<div style={{marginTop: '50px'}}>Currently No Reviews</div>) : 
                 (<Stack direction ='column' spacing={2}>
-                  {currReviews && currReviews.map((item, index) => (
+                  {currReviews && currReviews.slice(-5).map((item, index) => (
                     <Card variant='outlined' key={index}>
                       <Typography>Name: {item[0].reviewerName}</Typography>
                       <Typography>Title: {item[0].reviewTitle}</Typography>
@@ -366,7 +369,9 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
                   ))}
                 </Stack>)}
               </div>
-              <div style={{ marginTop: '50px'}} >
+              {!editReview ? 
+              <div>
+                <div style={{ marginTop: '50px'}} >
               <div className='right-section-header'style={{ marginBottom: '20px'}}> Create Your Review </div>
                 <div style={{marginBottom: '20px'}}>
                 <Typography component="legend">Review Rating</Typography>
@@ -409,6 +414,9 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
                   Submit A Review
                 </Button>
               </div>
+              </div> 
+              : 
+              <br/>}
             </CustomTabPanel>
           </Paper>
         </Grid>

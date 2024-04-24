@@ -36,7 +36,6 @@ const createReview = async (
     reviewDate: current_date
   }
 
-  console.log('ass3')
   const addedReview = await userCollection.updateOne({_id: uid}, {$push: {reviews: [newReview]}});
   
   // updating overall rating
