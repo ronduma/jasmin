@@ -169,9 +169,9 @@ const deleteMeeting = async (userID1, userID2, time) => {
 
   }
 
-  //check if time is already chosen for patient or therapist
-  await ifMeetingExistByTimePatient(tempPatientID,time);
-  await ifMeetingExistByTimeTherapist(tempTherapistID,time);
+  // //check if time is already chosen for patient or therapist
+  // await ifMeetingExistByTimePatient(tempPatientID,time);
+  // await ifMeetingExistByTimeTherapist(tempTherapistID,time);
 
 
 const deleteMeeting = await meetingCollection.deleteOne({patient: tempPatientID, therapist:tempTherapistID, time: time});
