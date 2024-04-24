@@ -323,7 +323,7 @@ function PatientBio({ bio, concerns }) {
             <div className="right-section-header">Upcoming Appointments</div>
             {/* Add edit button if needed */}
           </div>
-          {Appointments === null ? (
+          {Appointments === null || Appointments.length === 0 ? (
             <Typography> No upcoming appointments.</Typography>
           ) : (
             <div>
