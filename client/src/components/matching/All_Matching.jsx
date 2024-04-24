@@ -14,6 +14,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Autocomplete from '@mui/material/Autocomplete';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import "../matching.css";
+import Loading from '../loading/Loading';
 
 function All_Matching() {
   //   const {currentUser} = useContext(AuthContext);
@@ -82,19 +83,17 @@ function All_Matching() {
     const personalSpecialty = ["Relationship with Yourself", "Relationship with Others", "Personal and Professional development", "New Living Conditions"];
     const coupleSpecialty = ["Difficulty in communication, crisis", "Intimate Relations", "Breakup", "Emotional abuse, abusive behavior", "Child-rearing practices", "Betrayal"];
     const childrenSpecialty = ["ADHD (Attention Deficit Hyperactivity Disorder)", "Excessive Aggression", "Children with Special Needs", "Loss of Loved Ones", "Adaptation", "Bullying"];
+
     function checkSpecialty(arr1, arr2) {
       const count = arr1.filter(value => arr2.includes(value)).length;
       return count > 2
     }
 
-    function getSpecialty(arr1, arr2) {
-      return arr1.filter(value => arr2.includes(value));
-    }
     return (
-      <div className="shadow" >
+      <div className="shadow">
         <Link to={`/matching/${therapist._id}`} style={{ textDecoration: 'none' }}>
           <Card variant='outlined'
-            style={{ backgroundColor: "#01382E", margin: "1em", border: "10px solid transparent" }}
+            style={{ backgroundColor: "#01382E", border: "10px solid transparent" }}
             sx={{
               flex: "1 0 auto",
               width: 300,
@@ -171,269 +170,199 @@ function All_Matching() {
     )
   };
   // console.log(typeof therapists);
+
   return (
     <div>
-      <h1 className="matching-title">Psychologist for Therapy</h1>
+      {/* <h1 className="matching-title">Psychologist for Therapy</h1> */}
+      <br />
       <div className="matching-container">
-        <div className="matching-category-choice" style={{ marginLeft: "1vw" }}>Therapist Options</div>
+        <div className="matching-category-choice" style={{ marginLeft: "2vw" }}>Therapist Options</div>
       </div>
-      <div className="filtersContainer" style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", margin: "1vw" }}>
-        <div className="filters">
-          <ThemeProvider theme={theme}>
-            <FormControl sx={{ m: 1, minWidth: 200 }} size='small'>
-              <TextField
-                select
-                value={selectedApproach}
-                id="selectApproach"
-                label="Therapeutic Approaches"
-                onChange={(e) => setSelectedApproach(e.target.value)}
-                InputProps={{ // Adding InputProps prop to customize input styles
-                  style: { color: '#008f72' } // Change color here
-                }}
-                InputLabelProps={{ // Adding InputLabelProps prop to customize label styles
-                  style: { color: '#008f72' } // Change color here
-                }}
-                sx={{
-                  [`& fieldset`]: {
-                    borderRadius: 10,
-                    color: '#008f72',
-                    borderColor: '#008f72',
-                  }
-                }}
-              >
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="">Therapeutic Approaches</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Gestalt">Gestalt</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Existential">Existential</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Client-centered therapy">Client-centered therapy</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="CBT (Cognitive Behavioral Therapy)">CBT (Cognitive Behavioral Therapy)</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Positive psychotherapy">Positive psychotherapy</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Psychoanalysis">Psychoanalysis</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Schema therapy">Schema therapy</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Transactional Analysis">Transactional Analysis</MenuItem>
-              </TextField>
-            </FormControl>
-          </ThemeProvider>
-          <ThemeProvider theme={theme}>
-            <FormControl sx={{ m: 1, minWidth: 200 }} size='small'>
-              <TextField
-                select
-                value={selectedGender}
-                id='selectGender'
-                label="Gender"
-                onChange={(e) => setSelectedGender(e.target.value)}
-                InputProps={{ // Adding InputProps prop to customize input styles
-                  style: { color: '#008f72' } // Change color here
-                }}
-                InputLabelProps={{ // Adding InputLabelProps prop to customize label styles
-                  style: { color: '#008f72' } // Change color here
-                }}
-                sx={{
-                  [`& fieldset`]: {
-                    borderRadius: 10,
-                    color: '#008f72',
-                    borderColor: '#008f72',
-                  }
-                }}
-              >
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="">Select Gender</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Male">Male</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Female">Female</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Other">Other</MenuItem>
-              </TextField>
-            </FormControl>
-          </ThemeProvider>
-
-          <ThemeProvider theme={theme}>
-            <FormControl sx={{ m: 1, minWidth: 200 }} size='small'>
-              <TextField
-                select
-                value={selectedPrice}
-                id="selectPrice"
-                label='Price'
-                onChange={(e) => setSelectedPrice(e.target.value)}
-                InputProps={{ // Adding InputProps prop to customize input styles
-                  style: { color: '#008f72' } // Change color here
-                }}
-                InputLabelProps={{ // Adding InputLabelProps prop to customize label styles
-                  style: { color: '#008f72' } // Change color here
-                }}
-                sx={{
-                  [`& fieldset`]: {
-                    borderRadius: 10,
-                    color: '#008f72',
-                    borderColor: '#008f72',
-                  }
-                }}
-              >
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="">Select Price</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Low">$ - Low</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Medium">$$ - Medium</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="High">$$$ - High</MenuItem>
-              </TextField>
-            </FormControl>
-          </ThemeProvider>
-          <ThemeProvider theme={theme}>
-            <FormControl sx={{ m: 1, minWidth: 200 }} size='small'>
-              <TextField
-                select
-                value={selectedSort}
-                id="selectSort"
-                label="Sort By"
-                onChange={(e) => setSelectedSort(e.target.value)}
-                InputProps={{ // Adding InputProps prop to customize input styles
-                  style: { color: '#008f72' } // Change color here
-                }}
-                InputLabelProps={{ // Adding InputLabelProps prop to customize label styles
-                  style: { color: '#008f72' } // Change color here
-                }}
-                sx={{
-                  [`& fieldset`]: {
-                    borderRadius: 10,
-                    color: '#008f72',
-                    borderColor: '#008f72',
-                  }
-                }}
-              >
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="">No sorting</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="first_name_order">Order By First Name</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="last_name_order">Order By Last Name</MenuItem>
-              </TextField>
-            </FormControl>
-          </ThemeProvider>
-        </div>
-        {/* Render psychologist profiles filtered */}
-        <div className="search-bar-container">
-          <ThemeProvider theme={theme}>
-            <Autocomplete
-              freeSolo
-              id="searchTherapist"
-              disableClearable
-              options={therapistList ? therapistList.map(option => option.firstName + " " + option.lastName) : []}
-              getOptionLabel={(option) => option}
-              renderInput={(params) => (
+      {loading ? <Loading /> : <>
+        <div className="filtersContainer" style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "1vw" }}>
+          <div className="filters" style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+            <ThemeProvider theme={theme}>
+              <FormControl sx={{ m: 1, minWidth: 200 }} size='small'>
                 <TextField
+                  select
+                  value={selectedApproach}
+                  id="selectApproach"
+                  label="Therapeutic Approaches"
+                  onChange={(e) => setSelectedApproach(e.target.value)}
+                  InputProps={{ // Adding InputProps prop to customize input styles
+                    style: { color: '#008f72' } // Change color here
+                  }}
+                  InputLabelProps={{ // Adding InputLabelProps prop to customize label styles
+                    style: { color: '#008f72' } // Change color here
+                  }}
                   sx={{
-                    // m: 1,
-                    // width: 300,
                     [`& fieldset`]: {
                       borderRadius: 10,
                       color: '#008f72',
                       borderColor: '#008f72',
                     }
                   }}
-                  {...params}
-                  label="Search Therapist"
-                  InputProps={{
-                    ...params.InputProps,
-                    type: 'search',
+                >
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="">Therapeutic Approaches</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Gestalt">Gestalt</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Existential">Existential</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Client-centered therapy">Client-centered therapy</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="CBT (Cognitive Behavioral Therapy)">CBT (Cognitive Behavioral Therapy)</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Positive psychotherapy">Positive psychotherapy</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Psychoanalysis">Psychoanalysis</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Schema therapy">Schema therapy</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Transactional Analysis">Transactional Analysis</MenuItem>
+                </TextField>
+              </FormControl>
+            </ThemeProvider>
+            <ThemeProvider theme={theme}>
+              <FormControl sx={{ m: 1, minWidth: 200 }} size='small'>
+                <TextField
+                  select
+                  value={selectedGender}
+                  id='selectGender'
+                  label="Gender"
+                  onChange={(e) => setSelectedGender(e.target.value)}
+                  InputProps={{ // Adding InputProps prop to customize input styles
                     style: { color: '#008f72' } // Change color here
                   }}
                   InputLabelProps={{ // Adding InputLabelProps prop to customize label styles
                     style: { color: '#008f72' } // Change color here
                   }}
+                  sx={{
+                    [`& fieldset`]: {
+                      borderRadius: 10,
+                      color: '#008f72',
+                      borderColor: '#008f72',
+                    }
+                  }}
+                >
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="">Select Gender</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Male">Male</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Female">Female</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Other">Other</MenuItem>
+                </TextField>
+              </FormControl>
+            </ThemeProvider>
 
-                />
-              )}
-              value={searchValue}
-              sx={{
-                marginTop: 3.3,
-                width: 300,
-              }}
-              onChange={(event, newValue) => {
-                setSearch(newValue);
-              }}
-            >
-            </Autocomplete>
-          </ThemeProvider>
+            <ThemeProvider theme={theme}>
+              <FormControl sx={{ m: 1, minWidth: 200 }} size='small'>
+                <TextField
+                  select
+                  value={selectedPrice}
+                  id="selectPrice"
+                  label='Price'
+                  onChange={(e) => setSelectedPrice(e.target.value)}
+                  InputProps={{ // Adding InputProps prop to customize input styles
+                    style: { color: '#008f72' } // Change color here
+                  }}
+                  InputLabelProps={{ // Adding InputLabelProps prop to customize label styles
+                    style: { color: '#008f72' } // Change color here
+                  }}
+                  sx={{
+                    [`& fieldset`]: {
+                      borderRadius: 10,
+                      color: '#008f72',
+                      borderColor: '#008f72',
+                    }
+                  }}
+                >
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="">Select Price</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Low">$ - Low</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Medium">$$ - Medium</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="High">$$$ - High</MenuItem>
+                </TextField>
+              </FormControl>
+            </ThemeProvider>
+            <ThemeProvider theme={theme}>
+              <FormControl sx={{ m: 1, minWidth: 200 }} size='small'>
+                <TextField
+                  select
+                  value={selectedSort}
+                  id="selectSort"
+                  label="Sort By"
+                  onChange={(e) => setSelectedSort(e.target.value)}
+                  InputProps={{ // Adding InputProps prop to customize input styles
+                    style: { color: '#008f72' } // Change color here
+                  }}
+                  InputLabelProps={{ // Adding InputLabelProps prop to customize label styles
+                    style: { color: '#008f72' } // Change color here
+                  }}
+                  sx={{
+                    [`& fieldset`]: {
+                      borderRadius: 10,
+                      color: '#008f72',
+                      borderColor: '#008f72',
+                    }
+                  }}
+                >
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="">No sorting</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="first_name_order">Order By First Name</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="last_name_order">Order By Last Name</MenuItem>
+                </TextField>
+              </FormControl>
+            </ThemeProvider>
+          </div>
+          {/* Render psychologist profiles filtered */}
+          <div className="search-bar-container" style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+            <ThemeProvider theme={theme}>
+              <Autocomplete
+                freeSolo
+                id="searchTherapist"
+                disableClearable
+                options={therapistList ? therapistList.map(option => option.firstName + " " + option.lastName) : []}
+                getOptionLabel={(option) => option}
+                renderInput={(params) => (
+                  <TextField
+                    sx={{
+                      // m: 1,
+                      // width: 300,
+                      [`& fieldset`]: {
+                        borderRadius: 10,
+                        color: '#008f72',
+                        borderColor: '#008f72',
+                      }
+                    }}
+                    {...params}
+                    label="Search Therapist"
+                    InputProps={{
+                      ...params.InputProps,
+                      type: 'search',
+                      style: { color: '#008f72' } // Change color here
+                    }}
+                    InputLabelProps={{ // Adding InputLabelProps prop to customize label styles
+                      style: { color: '#008f72' } // Change color here
+                    }}
+
+                  />
+                )}
+                value={searchValue}
+                sx={{
+                  marginTop: "21px",
+                  width: 300,
+                }}
+                onChange={(event, newValue) => {
+                  setSearch(newValue);
+                }}
+              >
+              </Autocomplete>
+            </ThemeProvider>
+          </div>
         </div>
-      </div>
-      <div>
-        <div style={{
-          display: 'flex', flexWrap: 'wrap',
-          gap: "20px", alignItems: "flex-start",
-          margin: "20px", paddingBottom: "50px"
-        }}>
-          {loading && <>
-            <Card variant='outlined'
-              sx={{
-                // flex: "1 0 auto",
-                width: 350,
-                height: 'auto',
-                paddingBottom: '20px',
-                borderRadius: 5,
-                border: '1px solid #1e8678',
-              }}>
-              <AccountCircleIcon sx={{ width: 300, height: 200 }} />
-              <CardContent>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-              </CardContent>
-            </Card>
-            <Card variant='outlined'
-              sx={{
-                // flex: "1 0 auto",
-                width: 350,
-                height: 'auto',
-                paddingBottom: '20px',
-                borderRadius: 5,
-                border: '1px solid #1e8678',
-              }}>
-              <AccountCircleIcon sx={{ width: 300, height: 200 }} />
-              <CardContent>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-              </CardContent>
-            </Card>
-            <Card variant='outlined'
-              sx={{
-                // flex: "1 0 auto",
-                width: 350,
-                height: 'auto',
-                paddingBottom: '20px',
-                borderRadius: 5,
-                border: '1px solid #1e8678',
-              }}>
-              <AccountCircleIcon sx={{ width: 300, height: 200 }} />
-              <CardContent>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-              </CardContent>
-            </Card>
-            <Card variant='outlined'
-              sx={{
-                // flex: "1 0 auto",
-                width: 350,
-                height: 'auto',
-                paddingBottom: '20px',
-                borderRadius: 5,
-                border: '1px solid #1e8678',
-              }}>
-              <AccountCircleIcon sx={{ width: 300, height: 200 }} />
-              <CardContent>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-              </CardContent>
-            </Card>
-          </>}
-          <Grid container justifyContent="center">
-            {therapists && therapists.map((therapist) => (
-              buildCard(therapist)
-            ))}
-          </Grid>
+        <div>
+          <div style={{
+            display: 'flex', flexWrap: 'wrap',
+            gap: "20px", alignItems: "flex-start",
+            margin: "20px", paddingBottom: "50px"
+          }}>
+            <Grid container justifyContent="center">
+              {therapists && therapists.map((therapist) => (
+                buildCard(therapist)
+              ))}
+            </Grid>
+          </div>
         </div>
-      </div>
+      </>}
     </div>
   );
 }
