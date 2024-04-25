@@ -29,6 +29,12 @@ const getMeetingsByTimeTherapist = async (userID1) => {
     // console.log('Error: There are no meetings from the given therapist ' + userID1);
     return [];
   }
+
+  meetingList.sort((a, b) => {
+    const timeA = new Date(a.time);
+    const timeB = new Date(b.time);
+    return timeA - timeB;
+  });
   return meetingList;
 }
 
@@ -37,6 +43,13 @@ const getMeetingByTimePatients = async (userID1) => {
   const meetingCollection = await meetings();
   const meetingList = await meetingCollection.find({ patient: userID1}).toArray();
   if (!meetingList  || meetingList.length === 0 ) throw 'Error: There is no meeting with the given patient ' + userID1 ;
+  meetingList.sort((a, b) => {
+    const timeA = new Date(a.time);
+    const timeB = new Date(b.time);
+    return timeA - timeB;
+  });
+  console.log("success");
+
   return meetingList;
 }
 
