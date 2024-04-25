@@ -163,10 +163,18 @@ function All_Matching() {
         <div className="matching-container">
           <div className="matching-category-choice" style={{ marginLeft: "2vw" }}>Therapist Options</div>
         </div>
-          <Grid container>
-            <Grid container xs={12} sm={8}>
-              <Grid item>
-                <FormControl sx={{ m: 1, minWidth: 150 }} size='small'>
+          <Grid 
+            container 
+            direction="row"
+          >
+            <Grid 
+              container 
+              direction="row" 
+              xs={12} 
+              sm={8}
+            >
+              <Grid item xs={12} sm={3}>
+                <FormControl sx={{ m: 1, minWidth: "15vw" }} size='small'>
                   <TextField
                     select
                     value={selectedApproach}
@@ -199,8 +207,8 @@ function All_Matching() {
                   </TextField>
                 </FormControl>
               </Grid>
-              <Grid item>
-                <FormControl sx={{ m: 1, minWidth: 150 }} size='small'>
+              <Grid item xs={12} sm={3}>
+                <FormControl sx={{ m: 1, minWidth: "15vw" }} size='small'>
                   <TextField
                     select
                     value={selectedGender}
@@ -228,8 +236,8 @@ function All_Matching() {
                   </TextField>
                 </FormControl>
               </Grid>
-              <Grid item>
-                <FormControl sx={{ m: 1, minWidth: 150 }} size='small'>
+              <Grid item xs={12} sm={3}>
+                <FormControl sx={{ m: 1, minWidth: "15vw" }} size='small'>
                   <TextField
                     select
                     value={selectedPrice}
@@ -257,8 +265,8 @@ function All_Matching() {
                   </TextField>
                 </FormControl>
               </Grid>
-              <Grid item>
-                <FormControl sx={{ m: 1, minWidth: 150 }} size='small'>
+              <Grid item xs={12} sm={3}>
+                <FormControl sx={{ m: 1, minWidth: "15vw" }} size='small'>
                   <TextField
                     select
                     value={selectedSort}
@@ -287,7 +295,10 @@ function All_Matching() {
               </Grid>
             </Grid>
 
-            <Grid container>
+            <Grid 
+              item
+              marginLeft="auto"
+            >
               <Grid item>
                 <FormControl sx={{ m: 1, minWidth: 150 }} size='small'>
                   <Autocomplete
