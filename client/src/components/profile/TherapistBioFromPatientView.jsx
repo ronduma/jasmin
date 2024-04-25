@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 
 import axios from "axios";
 import { Typography } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
@@ -529,7 +530,7 @@ function TherapistBioFromPatientView({
             <CustomTabPanel value={value} index={2}>
               <div className="right-section-header"> Reviews </div>
               <div>
-                <Typography component="legend" style={{ marginBottom: '20px' }}>Overall Therapist Rating</Typography>
+                <Typography component="legend" style={{ marginBottom: '20px', fontSize: 18, fontWeight: "bold"}}>Overall Therapist Rating</Typography>
                 <Rating
                 name="text-feedback"
                 value ={currRating}
@@ -540,17 +541,17 @@ function TherapistBioFromPatientView({
               </div>
               
               <div style={{marginTop: '50px'}}>
-              <Typography component="legend">List of Reviews</Typography>
+              <Typography component="legend" sx={{fontSize:18, fontWeight: 'bold'}}>List of Reviews</Typography>
               {!currReviews && currReviews.length == 0 ?(<div style={{marginTop: '50px'}}>Currently No Reviews</div>) : 
                 (<Stack direction ='column' spacing={2}>
                   {currReviews && currReviews.slice(-5).map((item, index) => (
-                    <Card variant='outlined' key={index}>
-                      <Typography>Name: {item.reviewerName}</Typography>
-                      <Typography>Title: {item.reviewTitle}</Typography>
-                      <Typography>Rating: {item.rating}</Typography>
-                      <Typography>Date: {item.reviewDate}</Typography>
-                      <Typography>Review: {item.review}</Typography>
-                    </Card>
+                    <Box key={index} sx={{textAlign: 'left'}}>
+                      <Typography sx={{fontSize: 18, fontFamily: 'Arial'}}>{item.reviewerName}</Typography>
+                      <Rating preciesion = {0.1} value={item.rating} readOnly /> 
+                      <Typography sx={{fontWeight: 'bold'}}>{item.reviewTitle}</Typography>
+                      <Typography>Reviewed made on {item.reviewDate}</Typography>
+                      <Typography sx={{marginTop: '20px'}}>{item.review}</Typography>
+                    </Box>
                   ))}
                 </Stack>)}
               </div>
