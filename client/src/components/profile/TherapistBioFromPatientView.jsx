@@ -287,8 +287,9 @@ function TherapistBioFromPatientView({
   const handleInput = async (InputRating, ReviewTitle, Review) => {
     try{
         const response = await axios.post(`http://localhost:5173/reviews/${id}`, {reviewId : signedData._id, reviewTitle: ReviewTitle, reviewerName: signedData.firstName + " " + signedData.lastName, review: Review, rating: InputRating});
-        console.log(response.data);
-        setReviews([...reviews, response.data])
+        setReviews(response.data.reviews);
+        console.log(response.data.overallRating);
+        setRating(response.data.overallRating);
         setAlreadyReviewed(true);
     }
     catch(error){
@@ -299,8 +300,9 @@ function TherapistBioFromPatientView({
   const handleInput2 = async (InputRating, ReviewTitle, Review) => {
     try{
       const response = await axios.put(`http://localhost:5173/reviews/${id}/${signedData._id}`, {reviewId : signedData._id, reviewTitle: ReviewTitle, reviewerName: signedData.firstName + " " + signedData.lastName, review: Review, rating: InputRating});
-      console.log(response.data);
-      setReviews(response.data);
+      setReviews(response.data.reviews);
+      console.log(response.data.overallRating);
+      setRating(response.data.overallRating);
       setAlreadyReviewed(true);
     }
     catch(error){
@@ -533,9 +535,6 @@ function TherapistBioFromPatientView({
                 value ={currRating}
                 readOnly
                 precision={0.5}
-                onChange = {(event, newValue) => {
-                  setRating(newValue);
-                }}
                />
                <Box>{currRating ? currRating.toFixed(2) : 0} Stars</Box>
               </div>

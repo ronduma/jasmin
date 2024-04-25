@@ -1,4 +1,4 @@
-const { ObjectId } = require("mongodb");
+const { ObjectId, ReturnDocument } = require("mongodb");
 const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
 const users_js = require('./users')
@@ -49,8 +49,9 @@ const createReview = async (
   }
   average = average / therapist_reviews.length;
   console.log(average);
-  const new_overall_rating = await userCollection.updateOne({_id: uid}, {$set: {overallRating: average}});
-  return newReview;
+  const new_overall_rating = await userCollection.findOneAndUpdate({_id: uid}, {$set: {overallRating: average}}, {returnDocument: 'after'});
+  console.log(new_overall_rating);
+  return new_overall_rating;
 };
 
 const getAllReviews = async (uid) => {
@@ -99,7 +100,7 @@ const updateReview = async(profileId, reviewId, review) => {
     }
   }
   const userCollection = await users();
-  const updatedUser = await userCollection.findOneAndUpdate({_id: profileId}, {$set:{reviews: listReviews}})
+  const updatedUser = await userCollection.updateOne({_id: profileId}, {$set: {reviews: listReviews}})
   // updating overall rating
   let therapist_reviews = profileUser.reviews;
   let average = 0;
@@ -109,10 +110,11 @@ const updateReview = async(profileId, reviewId, review) => {
   average = average / therapist_reviews.length;
   console.log(average);
   
-  const new_overall_rating = await userCollection.updateOne({_id: profileId}, {$set: {overallRating: average}});
+  const new_overall_rating = await userCollection.findOneAndUpdate({_id: profileId}, {$set: {overallRating: average}}, {returnDocument: 'after'});
 
   // this returns the updated profile's reviews.
-  return updatedUser.reviews;
+  console.log(new_overall_rating);
+  return new_overall_rating;
 }
 
 module.exports ={
