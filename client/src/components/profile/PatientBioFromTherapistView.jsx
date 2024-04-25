@@ -92,7 +92,14 @@ function PatientFromTherapistView({ bio, concerns }) {
       // );
     } catch (error) {
       console.error("Error canceling appointment:", error);
+      Swal.fire({
+        title: "Error canceling appointment",
+        icon: "error",
+      });
+
+      setLoading(false);
     }
+    
   };
 
   const allowEditAbout = () => {
