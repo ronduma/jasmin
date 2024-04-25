@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect, useRef } from "react";
 import dayjs from "dayjs";
 
 import { AuthContext } from "../../context/AuthContext";
-import { NotificationContext } from "../../context/NotificationContext";
 
 import "../../App.css";
 import Button from "@mui/material/Button";
@@ -10,6 +9,7 @@ import Swal from "sweetalert2";
 
 import axios from "axios";
 import { Typography } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
@@ -39,8 +39,6 @@ function TherapistBioFromPatientView({
   reviews,
 }) {
   const { currentUser } = useContext(AuthContext);
-  const { unreadNotifications, setUnreadNotifications } = useContext(NotificationContext);
-  // console.log(unreadNotifications);
   const [editAbout, setEditAbout] = useState(false);
   const [editReview, setEditReview] = useState(true);
   const [currbio, setBio] = useState(bio);
@@ -61,7 +59,6 @@ function TherapistBioFromPatientView({
   const reviewInput = useRef(null);
   const reviewTitleInput = useRef(null);
   const [currRating, setRating] = useState(overallRating);
-
   const [pastAppointments, setPastAppointments] = useState([]);
   const [futureAppointments, setFutureAppointments] = useState([]);
 
@@ -730,9 +727,7 @@ function TherapistBioFromPatientView({
             <CustomTabPanel value={value} index={2}>
               <div className="right-section-header"> Reviews </div>
               <div>
-                <Typography component="legend" style={{ marginBottom: "20px" }}>
-                  Overall Therapist Rating
-                </Typography>
+                <Typography component="legend" style={{ marginBottom: '20px', fontSize: 18, fontWeight: "bold"}}>Overall Therapist Rating</Typography>
                 <Rating
                   name="text-feedback"
                   value={currRating}
@@ -741,161 +736,119 @@ function TherapistBioFromPatientView({
                 />
                 <Box>{currRating ? currRating.toFixed(2) : 0} Stars</Box>
               </div>
-
-              <div style={{ marginTop: "50px" }}>
-                <Typography component="legend">List of Reviews</Typography>
-                {!currReviews && currReviews.length == 0 ? (
-                  <div style={{ marginTop: "50px" }}>Currently No Reviews</div>
-                ) : (
-                  <Stack direction="column" spacing={2}>
-                    {currReviews &&
-                      currReviews.slice(-5).map((item, index) => (
-                        <Card variant="outlined" key={index}>
-                          <Typography>Name: {item.reviewerName}</Typography>
-                          <Typography>Title: {item.reviewTitle}</Typography>
-                          <Typography>Rating: {item.rating}</Typography>
-                          <Typography>Date: {item.reviewDate}</Typography>
-                          <Typography>Review: {item.review}</Typography>
-                        </Card>
-                      ))}
-                  </Stack>
-                )}
+              
+              <div style={{marginTop: '50px'}}>
+              <Typography component="legend" sx={{fontSize:18, fontWeight: 'bold'}}>List of Reviews</Typography>
+              {!currReviews && currReviews.length == 0 ?(<div style={{marginTop: '50px'}}>Currently No Reviews</div>) : 
+                (<Stack direction ='column' spacing={2}>
+                  {currReviews && currReviews.slice(-5).map((item, index) => (
+                    <Box key={index} sx={{textAlign: 'left'}}>
+                      <Typography sx={{fontSize: 18, fontFamily: 'Arial'}}>{item.reviewerName}</Typography>
+                      <Rating  readOnly precision = {0.5} value={item.rating} /> 
+                      <Typography sx={{fontWeight: 'bold'}}>{item.reviewTitle}</Typography>
+                      <Typography>Review made on {item.reviewDate}</Typography>
+                      <Typography sx={{marginTop: '20px'}}>{item.review}</Typography>
+                    </Box>
+                  ))}
+                </Stack>)}
               </div>
-              {!editReview ? (
-                <>
-                  {alreadyReviewed ? (
-                    <div>
-                      <div style={{ marginTop: "50px" }}>
-                        <div
-                          className="right-section-header"
-                          style={{ marginBottom: "20px" }}
-                        >
-                          {" "}
-                          Create Your Review{" "}
-                        </div>
-                        <div style={{ marginBottom: "20px" }}>
-                          <Typography component="legend">
-                            Review Rating
-                          </Typography>
-                          <Rating
-                            name="text-feedback"
-                            label="Review Rating"
-                            value={inputRating}
-                            precision={0.5}
-                            onChange={(event, newValue) => {
-                              setInputRating(newValue);
-                            }}
-                          />
-                        </div>
-                        <TextField
-                          inputRef={reviewTitleInput}
-                          label="Name of Review"
-                          id="textbox-Name"
-                          inputProps={{
-                            maxLength: 50,
-                          }}
-                        />
-                        <TextField
-                          inputRef={reviewInput}
-                          fullWidth
-                          label="Title of Review"
-                          id="textbox-Review"
-                          // value={currReview}
-                          // onChange={event => setCurrReview(event.target.value)}
-                          multiline
-                          style={{ margin: "2vh 0 1vh 0" }}
-                          rows={3}
-                          inputProps={{
-                            maxLength: 285,
-                          }}
-                        />
-                      </div>
-
-                      <div style={{ marginTop: "20px", marginBottom: "20px" }}>
-                        <Button
-                          variant="contained"
-                          onClick={(event) => {
-                            event.preventDefault;
-                            handleInput2(
-                              inputRating,
-                              reviewTitleInput.current.value,
-                              reviewInput.current.value
-                            );
-                          }}
-                        >
-                          Edit A Review
-                        </Button>
-                      </div>
-                    </div>
-                  ) : (
-                    <div>
-                      <div style={{ marginTop: "50px" }}>
-                        <div
-                          className="right-section-header"
-                          style={{ marginBottom: "20px" }}
-                        >
-                          {" "}
-                          Create Your Review{" "}
-                        </div>
-                        <div style={{ marginBottom: "20px" }}>
-                          <Typography component="legend">
-                            Review Rating
-                          </Typography>
-                          <Rating
-                            name="text-feedback"
-                            label="Review Rating"
-                            value={inputRating}
-                            precision={0.5}
-                            onChange={(event, newValue) => {
-                              setInputRating(newValue);
-                            }}
-                          />
-                        </div>
-                        <TextField
-                          inputRef={reviewTitleInput}
-                          label="Name of Review"
-                          id="textbox-Name"
-                          inputProps={{
-                            maxLength: 50,
-                          }}
-                        />
-                        <TextField
-                          inputRef={reviewInput}
-                          fullWidth
-                          label="Title of Review"
-                          id="textbox-Review"
-                          // value={currReview}
-                          // onChange={event => setCurrReview(event.target.value)}
-                          multiline
-                          style={{ margin: "2vh 0 1vh 0" }}
-                          rows={3}
-                          inputProps={{
-                            maxLength: 285,
-                          }}
-                        />
-                      </div>
-
-                      <div style={{ marginTop: "20px", marginBottom: "20px" }}>
-                        <Button
-                          variant="contained"
-                          onClick={(event) => {
-                            event.preventDefault;
-                            handleInput(
-                              inputRating,
-                              reviewTitleInput.current.value,
-                              reviewInput.current.value
-                            );
-                          }}
-                        >
-                          Submit A Review
-                        </Button>
-                      </div>
-                    </div>
-                  )}
-                </>
-              ) : (
-                <br />
-              )}
+              {!editReview ?
+              <>
+              {alreadyReviewed ?
+              <div>
+              <div style={{ marginTop: '50px'}} >
+               <div className='right-section-header'style={{ marginBottom: '20px'}}> Create Your Review </div>
+                 <div style={{marginBottom: '20px'}}>
+                 <Typography component="legend">Review Rating</Typography>
+                 <Rating
+                   name="text-feedback"
+                   label ="Review Rating"
+                   value ={inputRating}
+                   precision={0.5}
+                   onChange = {(event, newValue) => {
+                     setInputRating(newValue);
+                   }}
+                 />
+                 </div>
+                 <TextField
+                   inputRef={reviewTitleInput}
+                   label="Name of Review"
+                   id ="textbox-Name"
+                   inputProps={{
+                     maxLength:50
+                   }}
+                 />
+                 <TextField
+                   inputRef={reviewInput}
+                   fullWidth
+                   label="Description of Review"
+                   id="textbox-Review"
+                   // value={currReview}
+                   // onChange={event => setCurrReview(event.target.value)}
+                   multiline
+                   style={{margin: '2vh 0 1vh 0'}}
+                   rows={3}
+                   inputProps={{
+                     maxLength:285
+                   }}
+                 />
+               </div>
+               
+               <div style={{ marginTop: '20px', marginBottom: '20px' }}>
+                 <Button variant="contained" onClick={(event) => { event.preventDefault; handleInput2(inputRating, reviewTitleInput.current.value, reviewInput.current.value)}}>
+                   Edit A Review
+                 </Button>
+               </div>
+               </div>
+                :
+                <div>
+                  <div style={{ marginTop: '50px'}} >
+                <div className='right-section-header'style={{ marginBottom: '20px'}}> Create Your Review </div>
+                  <div style={{marginBottom: '20px'}}>
+                  <Typography component="legend">Review Rating</Typography>
+                  <Rating
+                    name="text-feedback"
+                    label ="Review Rating"
+                    value ={inputRating}
+                    precision={0.5}
+                    onChange = {(event, newValue) => {
+                      setInputRating(newValue);
+                    }}
+                  />
+                  </div>
+                  <TextField
+                    inputRef={reviewTitleInput}
+                    label="Name of Review"
+                    id ="textbox-Name"
+                    inputProps={{
+                      maxLength:50
+                    }}
+                  />
+                  <TextField
+                    inputRef={reviewInput}
+                    fullWidth
+                    label="Description of Review"
+                    id="textbox-Review"
+                    // value={currReview}
+                    // onChange={event => setCurrReview(event.target.value)}
+                    multiline
+                    style={{margin: '2vh 0 1vh 0'}}
+                    rows={3}
+                    inputProps={{
+                      maxLength:285
+                    }}
+                  />
+                </div>
+                
+                <div style={{ marginTop: '20px', marginBottom: '20px' }}>
+                  <Button variant="contained" onClick={(event) => { event.preventDefault; handleInput(inputRating, reviewTitleInput.current.value, reviewInput.current.value)}}>
+                    Submit A Review
+                  </Button>
+                </div>
+                </div> }
+              </>
+              : 
+              <br/>}
             </CustomTabPanel>
           </Paper>
         </Grid>

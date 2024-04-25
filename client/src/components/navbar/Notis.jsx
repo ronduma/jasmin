@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
-import NotificationsIcon from '@mui/icons-material/Notifications';
+import InboxRoundedIcon from '@mui/icons-material/InboxRounded';
 import Popover from '@mui/material/Popover';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -14,15 +14,9 @@ const Notis = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const { notifications, setNotifications, unreadNotifications, setUnreadNotifications, markAllNotificationsAsRead } = useContext(NotificationContext);
   
-  // if (!currentUser) {
-  //   console.log(currentUser)
-  //   return <p>Loading...</p>;
-  // }
-
-
   const handleClick = (event) => {
     event.preventDefault();
-    markAllNotificationsAsRead();
+    if (unreadNotifications > 0) markAllNotificationsAsRead();
     setAnchorEl(event.currentTarget);
   };
 
@@ -33,13 +27,11 @@ const Notis = () => {
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
-  // if (!notifications) return <p>Loading...</p>;
-
   return (
     <div>
       <IconButton color="inherit" onClick={handleClick}>
         <Badge badgeContent={unreadNotifications} color="success">
-          <NotificationsIcon />
+          <InboxRoundedIcon />
         </Badge>
       </IconButton>
       <Popover
