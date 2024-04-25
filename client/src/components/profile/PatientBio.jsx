@@ -78,6 +78,12 @@ function PatientBio({ bio, concerns }) {
       // );
     } catch (error) {
       console.error("Error canceling appointment:", error);
+      Swal.fire({
+        title: "Error canceling appointment",
+        icon: "error",
+      });
+
+      setLoading(false);
     }
   };
 
@@ -156,7 +162,7 @@ function PatientBio({ bio, concerns }) {
           }}
         >
           {/* Add your loading icon component here */}
-          loading...
+          Loading...
         </div>
       )}
 

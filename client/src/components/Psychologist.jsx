@@ -42,6 +42,8 @@ function Psychologist() {
         console.log(response.data);
       } catch (e) {
         console.log("ERROR: " + e);
+        setLoading(false);
+      
       }
     };
     fetchData();
