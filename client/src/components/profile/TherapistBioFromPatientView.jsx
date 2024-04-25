@@ -333,7 +333,8 @@ function TherapistBioFromPatientView({
       console.error("Error:", error);
       setLoading(false);
       Swal.fire({
-        title: "Time Selection Unsuccessful",
+        title: "Time Selection Unsuccessful ",
+        text: error.response.data.message,
         icon: "error",
       });
     }
