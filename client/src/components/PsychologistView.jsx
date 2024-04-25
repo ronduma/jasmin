@@ -30,7 +30,7 @@ function PsychologistView() {
       if (isMatched) {
         Swal.fire({
           title: "Are you sure?",
-          text: "You won't be able to revert this!",
+          text: "All scheduled meetings will be canceled if you ",
           icon: "warning",
           showCancelButton: true,
           confirmButtonColor: "#3085d6",
@@ -45,7 +45,7 @@ function PsychologistView() {
           console.log("Success Match Response:", response.data);
           setIsMatched(!isMatched);
           setLoading2(false);
-
+          window.location.reload();
           Swal.fire({
             title: "Unmatch Successful!",
             icon: "success",
@@ -68,20 +68,7 @@ function PsychologistView() {
 
       }
 
-      // // //unmatched??
-      // if (isMatched) {
-      //   // window.location.reload();
-
-      //   Swal.fire({
-      //     title: "Unmatch Successful!",
-      //     icon: "success",
-      //   });
-      // } else {
-      //   Swal.fire({
-      //     title: "Match Successful!",
-      //     icon: "success",
-      //   });
-      // }
+    
     } catch (error) {
       // Handle error
       setLoading2(false);
