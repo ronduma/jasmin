@@ -49,8 +49,6 @@ function PatientView() {
     }
   }, [profileData, currentUser]);
 
-
-  //for match/unmatching
   const handleClick = async () => {
     try {
       setLoading2(true);

@@ -13,7 +13,7 @@ import axios from 'axios';
 const Notis = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const { notifications, setNotifications, unreadNotifications, setUnreadNotifications, markAllNotificationsAsRead } = useContext(NotificationContext);
-  
+
   const handleClick = (event) => {
     event.preventDefault();
     if (unreadNotifications > 0) markAllNotificationsAsRead();

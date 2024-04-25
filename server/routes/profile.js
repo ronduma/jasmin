@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 // const helpers = require("../helpers");
 const users = require("../data/users");
-const meetings=require("../data/meetings")
 const path = require("path");
 const xss = require("xss");
 const multer = require("multer");
@@ -183,7 +182,6 @@ router.get("/notifications/:id", async (req, res) => {
 	try {
 		const id = req.params.id;
 		const notifications = await users.getNotifications(id);
-
 		return res.status(200).json(notifications);
 	} catch (e) {
 		console.log(e);
@@ -197,34 +195,12 @@ router.put("/notifications/:id", async (req, res) => {
 		const id = req.params.id;
 		const unread = req.body.unread;
 		const noti_str = req.body.noti_str;
-		// console.log(req.body)
-		// console.log("Put: /notifications/:id")
 		const notifications = await users.updateNotifications(id, unread, noti_str);
-		// console.log("notifications")
-		console.log(notifications)
 		return res.status(200).json(notifications);
 	} catch (error) {
-		console.log(error)
 		return res.status(400).json(error);
 	}
 });
-
-// function filter(){
-// 	const meetingsList = await meetings.getMeetingByTimePatients(id);
-// 		console.log("Route: Notifications id")
-		
-// 		const uniqueAppointments = new Set();
-// 		meetingsList.forEach(meeting => {
-// 			const appointmentStr = `Appointment: ${meeting.time} with ${meeting.therapistName}`;
-			
-// 			// Check if the appointment string is already in the set
-// 			if (!uniqueAppointments.has(appointmentStr)) {
-// 			noti_str.push(appointmentStr);
-// 			  uniqueAppointments.add(appointmentStr);
-// 			//   unread += 1;
-// 			}
-// 		  });
-// }
 
 
 
