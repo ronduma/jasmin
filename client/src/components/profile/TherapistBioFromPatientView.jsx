@@ -233,7 +233,6 @@ function TherapistBioFromPatientView({
     fetchData();
   }, [id]);
 
-  // COLLEEN
   useEffect(() => {
     if (Appointments) {
       const currentDate = dayjs();
