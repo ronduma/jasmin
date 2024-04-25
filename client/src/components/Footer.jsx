@@ -43,14 +43,10 @@ const Footer = () => {
           color:'lightgray',
           textAlign:'left',
           justifyContent: 'center',
+          margin: '3rem 0 0 0'
           // padding: '0 10% 0 10%'
         }}
       >
-        <div>
-          <a href="/specialist" style = {{textDecoration:'none',color: 'inherit' , cursor: 'pointer'}}>
-            Services
-          </a>
-        </div>
         <div>
           <a href="/personal_matching" style = {{textDecoration:'none',color: 'inherit' , cursor: 'pointer'}}>
             Personal Therapy
@@ -66,22 +62,23 @@ const Footer = () => {
             Children Therapy
           </a>
         </div>
-        <div>
+        {/* <div>
           Kai
         </div>
         <div>
           Our Principles
-        </div>
+        </div> */}
       </Grid>
       <Grid item xs={1} 
         style={{
           color:'lightgray',
           textAlign:'left',
           justifyContent: 'center',
+          margin: '3rem 0 0 0'
           // padding: '0 00 10%'
         }}
       >
-        <div>
+        {/* <div>
           Community
         </div>
         <div>
@@ -89,6 +86,11 @@ const Footer = () => {
         </div>
         <div>
           Contact
+        </div> */}
+        <div>
+          <a href="/specialist" style = {{textDecoration:'none',color: 'inherit' , cursor: 'pointer'}}>
+            Services
+          </a>
         </div>
         <div>
           <a href="/privacy_policy" style = {{textDecoration:'none',color: 'inherit' , cursor: 'pointer'}}>Privacy Policy</a> 
