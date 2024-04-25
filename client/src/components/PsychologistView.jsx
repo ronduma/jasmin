@@ -171,7 +171,7 @@ function PsychologistView() {
                   Match
                 </Button>
               )}{" "}
-              <Button variant="contained"> Chat </Button>
+              
             </div>
           </Paper>
         </Grid>
