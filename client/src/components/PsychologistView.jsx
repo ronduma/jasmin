@@ -11,7 +11,6 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Typography from '@mui/material/Typography';
 
 import TherapistBioFromPatientView from "./profile/TherapistBioFromPatientView";
-
 import { AuthContext } from "../context/AuthContext";
 
 function PsychologistView() {

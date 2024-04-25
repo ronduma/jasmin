@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect, useRef } from "react";
 import dayjs from "dayjs";
 
 import { AuthContext } from "../../context/AuthContext";
+import { NotificationContext } from "../../context/NotificationContext";
 
 import "../../App.css";
 import Button from "@mui/material/Button";
@@ -38,6 +39,8 @@ function TherapistBioFromPatientView({
   reviews,
 }) {
   const { currentUser } = useContext(AuthContext);
+  const { unreadNotifications, setUnreadNotifications } = useContext(NotificationContext);
+  // console.log(unreadNotifications);
   const [editAbout, setEditAbout] = useState(false);
   const [editReview, setEditReview] = useState(true);
   const [currbio, setBio] = useState(bio);
@@ -59,6 +62,10 @@ function TherapistBioFromPatientView({
   const reviewInput = useRef(null);
   const reviewTitleInput = useRef(null);
   const [currRating, setRating] = useState(overallRating);
+
+  const [pastAppointments, setPastAppointments] = useState([]);
+  const [futureAppointments, setFutureAppointments] = useState([]);
+
 
   const cancelAppointment = async (appointment) => {
     try {
@@ -222,6 +229,33 @@ function TherapistBioFromPatientView({
     fetchData();
   }, [id]);
 
+   // COLLEEN
+   useEffect(() => {
+    if (Appointments) {
+      const currentDate = dayjs();
+      const filteredAppointments = Appointments.filter(appointment => {
+        const appointmentDateTime = dayjs(appointment.time);
+        console.log("pastAppointments")
+        console.log(appointmentDateTime)
+        
+        return appointmentDateTime.isBefore(currentDate);
+      });
+      setPastAppointments(filteredAppointments);
+    }
+  }, [Appointments]);
+    // COLLEEN
+  useEffect(() => {
+  if (Appointments) {
+    const currentDate = dayjs();
+    const filteredAppointments = Appointments.filter(appointment => {
+      const appointmentDateTime = dayjs(appointment.time);
+      console.log(appointmentDateTime)
+      return appointmentDateTime.isAfter(currentDate);
+    });
+    setFutureAppointments(filteredAppointments);
+  }
+}, [Appointments]);
+
   //   insert Matching Button
 
   const handleTimeSelection = async (index) => {
@@ -256,6 +290,27 @@ function TherapistBioFromPatientView({
       // Filter out the selectedTime from the availableTimes for the selectedDate
       console.log("updated");
 
+      // add notifcation to therapist side
+      try {
+        console.log("ADDING NOTIFICATION TO THERAPIST SIDE")
+        const responseTherapistNotifications = await axios.get(`http://localhost:5173/profile/notifications/${id}`);
+        console.log(responseTherapistNotifications.data)
+        const currentunRead=responseTherapistNotifications.data.unread
+
+        try {
+          const responseNotifications = await axios.put(`http://localhost:5173/profile/notifications/${id}`, { unread: currentunRead + 1, noti_str: [`Upcoming Appointment ${updatedtime}`] });
+          console.log(responseNotifications)
+        } catch (error) {
+          console.log(error)
+        }
+  
+      } catch (error) {
+        console.log("Could not add NOTIFICATION TO THERAPIST SIDE")
+        console.log(error)
+      }
+      
+      setLoading(false);
+
       const bookedTimes = fetchedAppointments.reduce((acc, appointment) => {
         const date = dayjs(appointment.time).format("MM/DD/YYYY");
         const time = dayjs(appointment.time).format("h:mm A");
@@ -270,7 +325,7 @@ function TherapistBioFromPatientView({
         title: "Booking confirmed!",
         icon: "success",
       });
-      setLoading(false);
+
 
       // setAvailableTimes(updatedAvailableTimes);
     } catch (error) {
@@ -525,6 +580,34 @@ function TherapistBioFromPatientView({
                   ))}
                 </div>
               )}
+
+{futureAppointments.length > 0 ? (
+  <div>
+    {futureAppointments.map((appointment, index) => (
+      <div key={index}>
+        <Typography variant="body1"><a href={appointment.roomUrl}>{appointment.time} with {appointment.patientName}</a></Typography>
+        {/* Add additional details about the appointment if needed */}
+      </div>
+    ))}
+  </div>
+) : (
+  <Typography>No future appointments.</Typography>
+)}
+
+              {/* COLLEEN */}
+               <div className="right-section-header"> Past Appointments </div>
+               {pastAppointments.length > 0 ? (
+  <div>
+    {pastAppointments.map((appointment, index) => (
+      <div key={index}>
+        <Typography variant="body1">{appointment.time} with {appointment.patientName}</Typography>
+        {/* Add additional details about the appointment if needed */}
+      </div>
+    ))}
+  </div>
+) : (
+  <Typography>No past appointments.</Typography>
+)}
             </CustomTabPanel>
             <CustomTabPanel value={value} index={2}>
               <div className="right-section-header"> Reviews </div>
