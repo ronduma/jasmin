@@ -547,7 +547,7 @@ function TherapistBioFromPatientView({
                   {currReviews && currReviews.slice(-5).map((item, index) => (
                     <Box key={index} sx={{textAlign: 'left'}}>
                       <Typography sx={{fontSize: 18, fontFamily: 'Arial'}}>{item.reviewerName}</Typography>
-                      <Rating preciesion = {0.1} value={item.rating} readOnly /> 
+                      <Rating  readOnly precision = {0.5} value={item.rating} /> 
                       <Typography sx={{fontWeight: 'bold'}}>{item.reviewTitle}</Typography>
                       <Typography>Reviewed made on {item.reviewDate}</Typography>
                       <Typography sx={{marginTop: '20px'}}>{item.review}</Typography>
