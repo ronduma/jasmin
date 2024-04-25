@@ -98,9 +98,18 @@ const updateReview = async(profileId, reviewId, review) => {
       listReviews[i] = updateReview;
     }
   }
-
   const userCollection = await users();
-  const updatedUser = await userCollection.updateOne({_id: profileId}, {$set:{reviews: listReviews}})
+  const updatedUser = await userCollection.findOneAndUpdate({_id: profileId}, {$set:{reviews: listReviews}})
+  // updating overall rating
+  let therapist_reviews = profileUser.reviews;
+  let average = 0;
+  for(let i = 0; i < therapist_reviews.length; i++){
+    average += therapist_reviews[i]['rating'];
+  }
+  average = average / therapist_reviews.length;
+  console.log(average);
+  
+  const new_overall_rating = await userCollection.updateOne({_id: profileId}, {$set: {overallRating: average}});
 
   // this returns the updated profile's reviews.
   return updatedUser.reviews;
