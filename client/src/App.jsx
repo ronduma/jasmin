@@ -22,7 +22,7 @@ import Couple_Matching from './components/matching/Couple_Matching';
 import Matching from './components/Matching';
 import All_Matching from './components/matching/All_Matching';
 import Children_Matching from './components/matching/Children_Matching';
-import SpecialList from './components/Specialist';
+import Specialist from './components/Specialist';
 import { AuthProvider } from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 import Privacy from './components/Privacy';
@@ -70,7 +70,7 @@ function App() {
                   <Route path="/matching/:id" element={<PsychologistView />} />
                   <Route path="/patient/:id" element={<PatientFromTherapistView />} />
 
-                  <Route path='/speciallist' element={<SpecialList />} />
+                  <Route path='/specialist' element={<Specialist />} />
                   <Route path='/privacy_policy' element={<Privacy />} />
                   <Route path='/terms_conditions' element={<TermsOfService />} />
                   <Route path='/video_chat' element={<Video />} />
