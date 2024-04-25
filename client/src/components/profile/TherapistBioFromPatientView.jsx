@@ -64,7 +64,6 @@ function TherapistBioFromPatientView({
 
   const [pastAppointments, setPastAppointments] = useState([]);
   const [futureAppointments, setFutureAppointments] = useState([]);
-  const endOfNextMonth = dayjs().add(1, 'month').endOf('month');
 
   const cancelAppointment = async (appointment) => {
     try {
