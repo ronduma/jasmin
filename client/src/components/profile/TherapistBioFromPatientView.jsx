@@ -87,10 +87,14 @@ function TherapistBioFromPatientView({
             let id = currentUser.uid;
 
             const responseMeeting = await axios.get(
-              `http://localhost:5173/meeting/patient/${id}`
+              `http://localhost:5173/meeting/therapist/${id}`
             );
             const fetchedAppointments = responseMeeting.data;
-            setAppointments(fetchedAppointments); //all appointments
+            // filter appointments
+            const filteredAppointments = fetchedAppointments.filter(appointment =>
+              appointment.patient === currentUser.uid && appointment.therapist === id
+            );
+            setAppointments(filteredAppointments);
 
             Swal.fire({
               title: "Meeting Canceled!",
@@ -162,13 +166,13 @@ function TherapistBioFromPatientView({
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log("using effect");
         const response = await axios.get(`http://localhost:5173/profile/${id}`);
         setProfileData(response.data);
         const signedUser = await axios.get(
           `http://localhost:5173/profile/${currentUser.uid}`
         );
-        setSignedData(signedUser.data);
-        setEditReview(signedData.isTherapist);
+
         const responseMeeting = await axios.get(
           `http://localhost:5173/meeting/therapist/${id}`
         );
@@ -182,6 +186,11 @@ function TherapistBioFromPatientView({
         setAppointments(filteredAppointments);
         console.log(fetchedAppointments);
 
+
+        setSignedData(signedUser.data);
+        setEditReview(signedData.isTherapist);
+
+        
         // set Calender
         console.log("bookedTimes");
         const bookedTimes = fetchedAppointments.reduce((acc, appointment) => {
