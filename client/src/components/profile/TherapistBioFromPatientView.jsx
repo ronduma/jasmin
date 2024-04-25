@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect, useRef } from "react";
 import dayjs from "dayjs";
 
 import { AuthContext } from "../../context/AuthContext";
-import { NotificationContext } from "../../context/NotificationContext";
 
 import "../../App.css";
 import Button from "@mui/material/Button";
@@ -10,6 +9,7 @@ import Swal from "sweetalert2";
 
 import axios from "axios";
 import { Typography } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
@@ -39,8 +39,6 @@ function TherapistBioFromPatientView({
   reviews,
 }) {
   const { currentUser } = useContext(AuthContext);
-  const { unreadNotifications, setUnreadNotifications } = useContext(NotificationContext);
-  // console.log(unreadNotifications);
   const [editAbout, setEditAbout] = useState(false);
   const [editReview, setEditReview] = useState(true);
   const [currbio, setBio] = useState(bio);
@@ -62,10 +60,6 @@ function TherapistBioFromPatientView({
   const reviewInput = useRef(null);
   const reviewTitleInput = useRef(null);
   const [currRating, setRating] = useState(overallRating);
-
-  const [pastAppointments, setPastAppointments] = useState([]);
-  const [futureAppointments, setFutureAppointments] = useState([]);
-
 
   const cancelAppointment = async (appointment) => {
     try {
@@ -229,33 +223,6 @@ function TherapistBioFromPatientView({
     fetchData();
   }, [id]);
 
-   // COLLEEN
-   useEffect(() => {
-    if (Appointments) {
-      const currentDate = dayjs();
-      const filteredAppointments = Appointments.filter(appointment => {
-        const appointmentDateTime = dayjs(appointment.time);
-        console.log("pastAppointments")
-        console.log(appointmentDateTime)
-        
-        return appointmentDateTime.isBefore(currentDate);
-      });
-      setPastAppointments(filteredAppointments);
-    }
-  }, [Appointments]);
-    // COLLEEN
-  useEffect(() => {
-  if (Appointments) {
-    const currentDate = dayjs();
-    const filteredAppointments = Appointments.filter(appointment => {
-      const appointmentDateTime = dayjs(appointment.time);
-      console.log(appointmentDateTime)
-      return appointmentDateTime.isAfter(currentDate);
-    });
-    setFutureAppointments(filteredAppointments);
-  }
-}, [Appointments]);
-
   //   insert Matching Button
 
   const handleTimeSelection = async (index) => {
@@ -290,27 +257,6 @@ function TherapistBioFromPatientView({
       // Filter out the selectedTime from the availableTimes for the selectedDate
       console.log("updated");
 
-      // add notifcation to therapist side
-      try {
-        console.log("ADDING NOTIFICATION TO THERAPIST SIDE")
-        const responseTherapistNotifications = await axios.get(`http://localhost:5173/profile/notifications/${id}`);
-        console.log(responseTherapistNotifications.data)
-        const currentunRead=responseTherapistNotifications.data.unread
-
-        try {
-          const responseNotifications = await axios.put(`http://localhost:5173/profile/notifications/${id}`, { unread: currentunRead + 1, noti_str: [`Upcoming Appointment ${updatedtime}`] });
-          console.log(responseNotifications)
-        } catch (error) {
-          console.log(error)
-        }
-  
-      } catch (error) {
-        console.log("Could not add NOTIFICATION TO THERAPIST SIDE")
-        console.log(error)
-      }
-      
-      setLoading(false);
-
       const bookedTimes = fetchedAppointments.reduce((acc, appointment) => {
         const date = dayjs(appointment.time).format("MM/DD/YYYY");
         const time = dayjs(appointment.time).format("h:mm A");
@@ -325,7 +271,7 @@ function TherapistBioFromPatientView({
         title: "Booking confirmed!",
         icon: "success",
       });
-
+      setLoading(false);
 
       // setAvailableTimes(updatedAvailableTimes);
     } catch (error) {
@@ -333,8 +279,7 @@ function TherapistBioFromPatientView({
       console.error("Error:", error);
       setLoading(false);
       Swal.fire({
-        title: "Time Selection Unsuccessful ",
-        text: error.response.data.message,
+        title: "Time Selection Unsuccessful",
         icon: "error",
       });
     }
@@ -581,39 +526,11 @@ function TherapistBioFromPatientView({
                   ))}
                 </div>
               )}
-
-{futureAppointments.length > 0 ? (
-  <div>
-    {futureAppointments.map((appointment, index) => (
-      <div key={index}>
-        <Typography variant="body1"><a href={appointment.roomUrl}>{appointment.time} with {appointment.patientName}</a></Typography>
-        {/* Add additional details about the appointment if needed */}
-      </div>
-    ))}
-  </div>
-) : (
-  <Typography>No future appointments.</Typography>
-)}
-
-              {/* COLLEEN */}
-               <div className="right-section-header"> Past Appointments </div>
-               {pastAppointments.length > 0 ? (
-  <div>
-    {pastAppointments.map((appointment, index) => (
-      <div key={index}>
-        <Typography variant="body1">{appointment.time} with {appointment.patientName}</Typography>
-        {/* Add additional details about the appointment if needed */}
-      </div>
-    ))}
-  </div>
-) : (
-  <Typography>No past appointments.</Typography>
-)}
             </CustomTabPanel>
             <CustomTabPanel value={value} index={2}>
               <div className="right-section-header"> Reviews </div>
               <div>
-                <Typography component="legend" style={{ marginBottom: '20px' }}>Overall Therapist Rating</Typography>
+                <Typography component="legend" style={{ marginBottom: '20px', fontSize: 18, fontWeight: "bold"}}>Overall Therapist Rating</Typography>
                 <Rating
                 name="text-feedback"
                 value ={currRating}
@@ -624,17 +541,17 @@ function TherapistBioFromPatientView({
               </div>
               
               <div style={{marginTop: '50px'}}>
-              <Typography component="legend">List of Reviews</Typography>
+              <Typography component="legend" sx={{fontSize:18, fontWeight: 'bold'}}>List of Reviews</Typography>
               {!currReviews && currReviews.length == 0 ?(<div style={{marginTop: '50px'}}>Currently No Reviews</div>) : 
                 (<Stack direction ='column' spacing={2}>
                   {currReviews && currReviews.slice(-5).map((item, index) => (
-                    <Card variant='outlined' key={index}>
-                      <Typography>Name: {item.reviewerName}</Typography>
-                      <Typography>Title: {item.reviewTitle}</Typography>
-                      <Typography>Rating: {item.rating}</Typography>
-                      <Typography>Date: {item.reviewDate}</Typography>
-                      <Typography>Review: {item.review}</Typography>
-                    </Card>
+                    <Box key={index} sx={{textAlign: 'left'}}>
+                      <Typography sx={{fontSize: 18, fontFamily: 'Arial'}}>{item.reviewerName}</Typography>
+                      <Rating  readOnly precision = {0.5} value={item.rating} /> 
+                      <Typography sx={{fontWeight: 'bold'}}>{item.reviewTitle}</Typography>
+                      <Typography>Reviewed made on {item.reviewDate}</Typography>
+                      <Typography sx={{marginTop: '20px'}}>{item.review}</Typography>
+                    </Box>
                   ))}
                 </Stack>)}
               </div>
