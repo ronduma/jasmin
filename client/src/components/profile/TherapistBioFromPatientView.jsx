@@ -130,7 +130,7 @@ function TherapistBioFromPatientView({
           console.error("Error canceling appointment:", error);
           setLoading(false);
           Swal.fire({
-            title: "Error canceling meeting",
+            title: "Error canceling meeting:",
             icon: "error",
           });
         }
@@ -333,7 +333,8 @@ function TherapistBioFromPatientView({
       console.error("Error:", error);
       setLoading(false);
       Swal.fire({
-        title: "Time Selection Unsuccessful",
+        title: "Time Selection Unsuccessful ",
+        text: error.response.data.message,
         icon: "error",
       });
     }

@@ -80,7 +80,7 @@ function PatientBio({ bio, concerns }) {
       console.error("Error canceling appointment:", error);
       Swal.fire({
         title: "Error canceling appointment",
-        icon: "error",
+        icon: "error"
       });
 
       setLoading(false);
