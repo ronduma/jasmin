@@ -26,7 +26,6 @@ import Specialist from './components/Specialist';
 import { AuthProvider } from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 import Privacy from './components/Privacy';
-import TermsOfService from './components/Terms';
 import Chat from './components/chat/Chat';
 import Video from './components/video/Video';
 import PatientFromTherapistView from './components/PatientViewFromTherapist';
@@ -72,7 +71,6 @@ function App() {
 
                   <Route path='/specialist' element={<Specialist />} />
                   <Route path='/privacy_policy' element={<Privacy />} />
-                  <Route path='/terms_conditions' element={<TermsOfService />} />
                   <Route path='/video_chat' element={<Video />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
