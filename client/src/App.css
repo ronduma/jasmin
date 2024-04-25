@@ -362,6 +362,12 @@ html {
   transform: translateY(-2px);
 }
 
+.timeCalender.disabled {
+  cursor: not-allowed; /* Change cursor to indicate not clickable */
+  opacity: 0; 
+  pointer-events: none; /* Disable pointer events to prevent clicks */
+}
+
 @media (min-width: 768px) {
   .timeCalender {
     padding: 10px 30px;
