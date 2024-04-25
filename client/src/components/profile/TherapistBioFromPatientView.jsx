@@ -87,7 +87,7 @@ function TherapistBioFromPatientView({
               }
             );
 
-            let id = currentUser.uid;
+            let id = appointment.therapist;
 
             const responseMeeting = await axios.get(
               `http://localhost:5173/meeting/therapist/${id}`
@@ -98,6 +98,19 @@ function TherapistBioFromPatientView({
               appointment.patient === currentUser.uid && appointment.therapist === id
             );
             setAppointments(filteredAppointments);
+
+            //bookedtimes
+            const bookedTimes = fetchedAppointments.reduce((acc, appointment) => {
+              const date = dayjs(appointment.time).format("MM/DD/YYYY");
+              const time = dayjs(appointment.time).format("h:mm A");
+              if (!acc[date]) {
+                acc[date] = [];
+              }
+              acc[date].push(time);
+              return acc;
+            }, {});
+            setAvailableTimes(bookedTimes);
+
 
             Swal.fire({
               title: "Meeting Canceled!",
@@ -274,8 +287,9 @@ function TherapistBioFromPatientView({
   const handleInput = async (InputRating, ReviewTitle, Review) => {
     try{
         const response = await axios.post(`http://localhost:5173/reviews/${id}`, {reviewId : signedData._id, reviewTitle: ReviewTitle, reviewerName: signedData.firstName + " " + signedData.lastName, review: Review, rating: InputRating});
-        console.log(response.data);
-        setReviews([...reviews, response.data])
+        setReviews(response.data.reviews);
+        console.log(response.data.overallRating);
+        setRating(response.data.overallRating);
         setAlreadyReviewed(true);
     }
     catch(error){
@@ -286,8 +300,9 @@ function TherapistBioFromPatientView({
   const handleInput2 = async (InputRating, ReviewTitle, Review) => {
     try{
       const response = await axios.put(`http://localhost:5173/reviews/${id}/${signedData._id}`, {reviewId : signedData._id, reviewTitle: ReviewTitle, reviewerName: signedData.firstName + " " + signedData.lastName, review: Review, rating: InputRating});
-      console.log(response.data);
-      setReviews(response.data);
+      setReviews(response.data.reviews);
+      console.log(response.data.overallRating);
+      setRating(response.data.overallRating);
       setAlreadyReviewed(true);
     }
     catch(error){
@@ -520,9 +535,6 @@ function TherapistBioFromPatientView({
                 value ={currRating}
                 readOnly
                 precision={0.5}
-                onChange = {(event, newValue) => {
-                  setRating(newValue);
-                }}
                />
                <Box>{currRating ? currRating.toFixed(2) : 0} Stars</Box>
               </div>
