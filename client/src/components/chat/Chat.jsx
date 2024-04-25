@@ -68,7 +68,7 @@ const Chat = () => {
   useEffect (() => {
     setIsOpen(false)
   }, [currentUser])
-  
+ 
   const getPreview = async (dms) => {
     setPreviews([]);
     try {
@@ -112,6 +112,24 @@ const Chat = () => {
     setSelectedChat(data.id);
     setSelectedChatName(data.name);
   };
+
+  const sendNotif = async (data) => {
+    if (data){
+      try {
+        const response = await axios.get(`http://localhost:5173/profile/notifications/${data}`);
+        console.log(response.data)
+        const currentUnread=response.data.unread
+        try {
+          const response = await axios.put(`http://localhost:5173/profile/notifications/${data}`, { unread: currentUnread + 1, noti_str: [`Your therapist sent you a message.`] });
+          console.log(response)
+        } catch (error) {
+          console.log(error)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
 
   if (currentUser){
     return (
@@ -164,6 +182,7 @@ const Chat = () => {
                       isChatting ? 
                         <Dm 
                           onMessage={handleDmResponse} 
+                          onMessage2={sendNotif}
                           chat_id={selectedChat}
                           sender={{id: currentUser.uid, name: profileData.firstName + " " + profileData.lastName}}
                           sender_pfp = {profileData.profile_img}

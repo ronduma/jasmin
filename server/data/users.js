@@ -318,12 +318,13 @@ const updateNotifications = async (uid, unread, noti_str) => {
 	const user = await userCollection.findOne({ _id: uid });
 	if (!user) throw "Error: There is no user with the given name";
 	if (noti_str) {
+		console.log(uid, noti_str)
 		if (!Array.isArray(noti_str)) throw "Error: Notifications must be an array";
 		const notiArr = user.noti.noti_str;
 		notiArr.push(...noti_str);
 		toUpdate.noti_str = notiArr;
 	} else toUpdate.noti_str = user.noti.noti_str;
-	console.log("updating notifications: ", toUpdate);
+	// console.log("updating notifications: ", toUpdate);
 	const updatedUser = await userCollection.findOneAndUpdate(
 		{ _id: uid },
 		{ $set: { noti: toUpdate } },

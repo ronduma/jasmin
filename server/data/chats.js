@@ -66,7 +66,15 @@ const createMsg = async (
 		{ $push: {chatLog : msg} },
 		{ returnDocument: "after" }
 	);
-  // console.log(insertInfo)
+  let user1_id = insertInfo.user1_id;
+  let user2_id = insertInfo.user2_id;
+  if (sender.id == user1_id){
+    console.log(user1_id)
+    return user2_id
+  } else{
+    console.log(user2_id)
+    return user1_id
+  }
 }
 
 const createKaiMsg = async (

@@ -47,16 +47,24 @@ const Footer = () => {
         }}
       >
         <div>
-          Services
+          <a href="/specialist" style = {{textDecoration:'none',color: 'inherit' , cursor: 'pointer'}}>
+            Services
+          </a>
         </div>
         <div>
-          Family Therapy
+          <a href="/personal_matching" style = {{textDecoration:'none',color: 'inherit' , cursor: 'pointer'}}>
+            Personal Therapy
+          </a>
         </div>
         <div>
-          Couples Therapy
+          <a href="/couple_matching" style = {{textDecoration:'none',color: 'inherit' , cursor: 'pointer'}}>
+            Couples Therapy
+          </a>
         </div>
         <div>
-          Children Therapy
+          <a href="/children_matching" style = {{textDecoration:'none',color: 'inherit' , cursor: 'pointer'}}>
+            Children Therapy
+          </a>
         </div>
         <div>
           Kai
@@ -83,10 +91,10 @@ const Footer = () => {
           Contact
         </div>
         <div>
-        <a href="/privacy_policy" style = {{textDecoration:'none',color: 'inherit' , cursor: 'pointer'}}>Privacy Policy</a> 
+          <a href="/privacy_policy" style = {{textDecoration:'none',color: 'inherit' , cursor: 'pointer'}}>Privacy Policy</a> 
         </div>
         <div>
-          Terms and Conditions
+          <a href="/terms_conditions" style={{ textDecoration: 'none', color: 'inherit', cursor: 'pointer' }}>Terms and Conditions</a>
         </div>
       </Grid>
       <Grid 

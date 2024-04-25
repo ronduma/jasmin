@@ -22,10 +22,16 @@ function Dm(props) {
   const [history, setHistory] = useState(null);
   const [isLoading, setLoading] = useState(true);
   const [isKai, setIsKai] = useState(false);
+  const [recipientID, setRecipientID] = useState(null);
 
   const sendMessageToParent = () => {
     // Invoke the callback function passed from the parent with data
     props.onMessage(false);
+  };
+
+  const sendMessageToParent2 = (id) => {
+    // Invoke the callback function passed from the parent with data
+    props.onMessage2(id);
   };
   
   const getChat = async () => {
@@ -53,12 +59,18 @@ function Dm(props) {
     if (isKai){
       const response = await axios.put(`http://localhost:5173/chats/kai-message/${props.chat_id}`, msg)
       const chat = await getChat();
+    } else{
+      setRecipientID(response.data);
     }
   };
 
   useEffect(()=> {
     getChat();
   }, [])
+
+  useEffect(()=> {
+    sendMessageToParent2(recipientID);
+  }, [recipientID])
 
   useEffect(()=> {
     getChat();

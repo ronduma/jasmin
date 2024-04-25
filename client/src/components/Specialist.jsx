@@ -21,7 +21,7 @@ const theme = createTheme({
     },
   });
 
-function Speciallists(){
+function Specialist(){
      return(
         <div>
             <Box
@@ -103,4 +103,4 @@ function Speciallists(){
      );
 }
 
-export default Speciallists;
+export default Specialist;
