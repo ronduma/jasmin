@@ -4,7 +4,7 @@ const users = mongoCollections.users;
 const chats = mongoCollections.chats;
 const fs = require("fs");
 const dayjs = require("dayjs");
-
+const meetings = mongoCollections.meetings;
 const validation = require("./validation");
 
 const createUser = async (uid, email) => {
@@ -396,6 +396,43 @@ const getAllPatients = async () => {
 	return patientCollection;
 };
 
+const getTherapistPatients = async (id) => {
+	const chatCollection = await chats();
+
+	const therapistData = await getUserById(id);
+	const patientList = therapistData.patients;
+	// console.log(patientList)
+	let nameList = [];
+	for (let i = 0; i < patientList.length; i++){
+		let patientData = await getUserById(patientList[i]);
+		console.log(id, patientList[i])
+		let chatExists = await chatCollection.findOne(
+			{
+				user1_id: id,
+				user2_id: patientList[i]
+			}
+		)
+		if (!chatExists){
+			chatExists = await chatCollection.findOne(
+				{
+					user1_id: patientList[i],
+					user2_id: id
+				}
+			)
+		}
+		let chatID = chatExists._id;
+		nameList.push(
+			{
+				_id: patientList[i],
+				name: patientData.firstName + " " + patientData.lastName,
+				chatID: chatID
+			}
+		);
+	}
+	console.log(nameList)
+	return nameList
+};
+
 const getFilteredTherapists = async(filters) => {
 	let selectedPrice = '';
 	let selectedGender = '';
@@ -514,7 +551,7 @@ const match = async (currentUserID, TherapistID) => {
 
   // Patient 
   if (currentUser.isTherapist != true){
-    console.log(" BOTH Patient and Therapist Exist and Current User not Therapist")
+    // console.log(" BOTH Patient and Therapist Exist and Current User not Therapist")
 
     //Update
     const updatedUser = await userCollection.findOneAndUpdate(
@@ -528,14 +565,13 @@ const match = async (currentUserID, TherapistID) => {
         { $push: { patients: currentUserID  } }
       );
 
-      console.log("Patient should be added to therapist" + Therapist.patients)
+      // console.log("Patient should be added to therapist" + Therapist.patients)
     }
     //already matched call unmatch
     else{
-      console.log("User already matched with therapist  " + currentUser.therapist);
-
-
-      console.log("Therapist should be removed from patient" + currentUser.therapist)
+      // console.log("User already matched with therapist  " + currentUser.therapist);
+			
+      // console.log("Therapist should be removed from patient" + currentUser.therapist)
       const updatedUser = await userCollection.findOneAndUpdate(
         { _id: currentUserID },
         { $set: { therapist: null  } }
@@ -544,8 +580,11 @@ const match = async (currentUserID, TherapistID) => {
         { _id: TherapistID },
         { $pull: { patients: currentUserID  } }
       );
-      console.log("Patient should be removed from therapist" + currentUser.therapist)
-		
+      // console.log("Patient should be removed from therapist" + currentUser.therapist)
+	
+			//cancel all meetings
+			const meetingCollection = await meetings();
+			await meetingCollection.deleteMany({patient: currentUserID, therapist:TherapistID});
 
       return currentUser;
     }
@@ -600,4 +639,5 @@ module.exports = {
   checkUserifTherapist,
   getPatientbyTherapistID,
   getTherapistByPatientID,
+	getTherapistPatients,
 };

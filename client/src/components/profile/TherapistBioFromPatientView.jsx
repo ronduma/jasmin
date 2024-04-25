@@ -16,11 +16,11 @@ import { useParams, Link } from "react-router-dom";
 import CheckCircleIcon from "@mui/icons-material/CheckCircleOutlined";
 import CancelRoundedIcon from "@mui/icons-material/CancelOutlined";
 
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Card from '@mui/material/Card';
-import Rating from '@mui/material/Rating';
-import Stack from '@mui/material/Stack';
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Card from "@mui/material/Card";
+import Rating from "@mui/material/Rating";
+import Stack from "@mui/material/Stack";
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
@@ -31,7 +31,12 @@ import Paper from "@mui/material/Paper";
 
 import Expertise from "./Expertise";
 
-function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews }) {
+function TherapistBioFromPatientView({
+  bio,
+  specialty,
+  overallRating,
+  reviews,
+}) {
   const { currentUser } = useContext(AuthContext);
   const [editAbout, setEditAbout] = useState(false);
   const [editReview, setEditReview] = useState(true);
@@ -46,14 +51,14 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
 
   const [value, setValue] = useState(0);
 
+
   const [alreadyReviewed, setAlreadyReviewed] = useState(false);
+
   const [currReviews, setReviews] = useState(reviews);
   const [inputRating, setInputRating] = useState(0);
   const reviewInput = useRef(null);
   const reviewTitleInput = useRef(null);
   const [currRating, setRating] = useState(overallRating);
-  
-
 
   const cancelAppointment = async (appointment) => {
     try {
@@ -67,34 +72,47 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes, Cancel Meeting",
       }).then(async (result) => {
-        if (result.isConfirmed) {
-          setLoading(true);
+        try {
+          if (result.isConfirmed) {
+            setLoading(true);
 
-          await axios.delete(
-            `http://localhost:5173/meeting/${appointment.id}`,
-            {
-              data: {
-                currentUserID: currentUser.uid,
-                therapistID: appointment.therapist, // Assuming you have therapistID in your appointment object
-                time: appointment.time, // Assuming you have time in your appointment object
-              },
-            }
-          );
+            await axios.delete(
+              `http://localhost:5173/meeting/${appointment.id}`,
+              {
+                data: {
+                  currentUserID: currentUser.uid,
+                  therapistID: appointment.therapist, // Assuming you have therapistID in your appointment object
+                  time: appointment.time, // Assuming you have time in your appointment object
+                },
+              }
+            );
 
-          let id = currentUser.uid;
+            let id = currentUser.uid;
 
-          const responseMeeting = await axios.get(
-            `http://localhost:5173/meeting/patient/${id}`
-          );
-          const fetchedAppointments = responseMeeting.data;
-          setAppointments(fetchedAppointments); //all appointments
+            const responseMeeting = await axios.get(
+              `http://localhost:5173/meeting/therapist/${id}`
+            );
+            const fetchedAppointments = responseMeeting.data;
+            // filter appointments
+            const filteredAppointments = fetchedAppointments.filter(appointment =>
+              appointment.patient === currentUser.uid && appointment.therapist === id
+            );
+            setAppointments(filteredAppointments);
 
-          Swal.fire({
-            title: "Meeting Canceled!",
-            icon: "success",
-          });
+            Swal.fire({
+              title: "Meeting Canceled!",
+              icon: "success",
+            });
 
+            setLoading(false);
+          }
+        } catch (error) {
+          console.error("Error canceling appointment:", error);
           setLoading(false);
+          Swal.fire({
+            title: "Error canceling meeting",
+            icon: "error",
+          });
         }
       });
 
@@ -104,6 +122,11 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
       // );
     } catch (error) {
       console.error("Error canceling appointment:", error);
+      setLoading(false);
+      Swal.fire({
+        title: "Error canceling meeting",
+        icon: "error",
+      });
     }
   };
 
@@ -159,6 +182,11 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
         setAppointments(filteredAppointments);
         console.log(fetchedAppointments);
 
+
+        setSignedData(signedUser.data);
+        setEditReview(signedData.isTherapist);
+
+        
         // set Calender
         console.log("bookedTimes");
         const bookedTimes = fetchedAppointments.reduce((acc, appointment) => {
@@ -193,6 +221,7 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
         therapistID: id,
         time: updatedtime,
       });
+
       console.log("Success Match Response:", response.data);
 
       const responseMeeting = await axios.get(
@@ -229,10 +258,16 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
         icon: "success",
       });
       setLoading(false);
+
       // setAvailableTimes(updatedAvailableTimes);
     } catch (error) {
       // Handle error
       console.error("Error:", error);
+      setLoading(false);
+      Swal.fire({
+        title: "Time Selection Unsuccessful",
+        icon: "error",
+      });
     }
   };
 
@@ -310,7 +345,6 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
         )}
 
         <Grid item xs={12}>
-
           <Paper style={{ minHeight: "18vh", height: "100%" }}>
             <Tabs value={value} onChange={handleChange} variant="fullWidth">
               <Tab label="Details" />
@@ -325,7 +359,7 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
                   justifyContent: "space-between",
                 }}
               >
-               <div className="right-section-header">Expertise</div>
+                <div className="right-section-header">Expertise</div>
               </div>
               <Expertise
                 disabled={!editAbout}
@@ -472,7 +506,7 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
               )}
             </CustomTabPanel>
             <CustomTabPanel value={value} index={2}>
-              <div className='right-section-header'> Reviews </div>
+              <div className="right-section-header"> Reviews </div>
               <div>
                 <Typography component="legend" style={{ marginBottom: '20px' }}>Overall Therapist Rating</Typography>
                 <Rating
@@ -600,6 +634,26 @@ function TherapistBioFromPatientView({ bio, specialty, overallRating, reviews })
               : 
               <br/>}
 
+
+                  <div style={{ marginTop: "20px", marginBottom: "20px" }}>
+                    <Button
+                      variant="contained"
+                      onClick={(event) => {
+                        event.preventDefault;
+                        handleInput(
+                          inputRating,
+                          reviewTitleInput.current.value,
+                          reviewInput.current.value
+                        );
+                      }}
+                    >
+                      Submit A Review
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <br />
+              )}
             </CustomTabPanel>
           </Paper>
         </Grid>

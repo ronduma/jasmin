@@ -127,6 +127,11 @@ function TherapistBio({ bio, specialty, price, overallRating, reviews}) {
       // );
     } catch (error) {
       console.error("Error canceling appointment:", error);
+      Swal.fire({
+        title: "Error canceling appointment",
+        icon: "error",
+      });
+      setLoading(false);
     }
   };
 
@@ -221,7 +226,7 @@ function TherapistBio({ bio, specialty, price, overallRating, reviews}) {
             }}
           >
             {/* Add your loading icon component here */}
-            loading...
+            Loading...
           </div>
         )}
 
