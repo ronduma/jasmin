@@ -150,9 +150,9 @@ const deleteMeeting = async (userID1, userID2, time) => {
   const meetingCollection = await meetings();
 
 
-  if ((await isMatched(userID1, userID2) == false)){
-    throw 'Patient and Therapist not Matched. Can not delete meeting';
-  }
+  // if ((await isMatched(userID1, userID2) == false)){
+  //   throw 'Patient and Therapist not Matched. Can not delete meeting';
+  // }
 
   let therapist = await user.checkUserifTherapist(userID1);
   let tempPatientID;
