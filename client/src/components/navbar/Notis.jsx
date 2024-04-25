@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
-import NotificationsIcon from '@mui/icons-material/Notifications';
+import InboxRoundedIcon from '@mui/icons-material/InboxRounded';
 import Popover from '@mui/material/Popover';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -22,7 +22,7 @@ const Notis = () => {
 
   const handleClick = (event) => {
     event.preventDefault();
-    markAllNotificationsAsRead();
+    if (unreadNotifications > 0) markAllNotificationsAsRead();
     setAnchorEl(event.currentTarget);
   };
 
@@ -39,7 +39,7 @@ const Notis = () => {
     <div>
       <IconButton color="inherit" onClick={handleClick}>
         <Badge badgeContent={unreadNotifications} color="success">
-          <NotificationsIcon />
+          <InboxRoundedIcon />
         </Badge>
       </IconButton>
       <Popover

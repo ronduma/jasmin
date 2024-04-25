@@ -146,21 +146,12 @@ function All_Matching() {
                 }
                 {checkSpecialty(therapist.specialty, personalSpecialty) ?
                   <div className='therapist-detail'>Personal Therapist</div> : null
-                  // getSpecialty(therapist.specialty, personalSpecialty).map((detail) => (
-                  //   <div className = 'therapist-detail'>{detail}</div>
-                  // ))
                 }
                 {checkSpecialty(therapist.specialty, coupleSpecialty) ?
                   <div className='therapist-detail'>Couple Therapist</div> : null
-                  // getSpecialty(therapist.specialty, coupleSpecialty).map((detail) => (
-                  //   <div className = 'therapist-detail'>{detail}</div>
-                  // ))
                 }
                 {checkSpecialty(therapist.specialty, childrenSpecialty) ?
                   <div className='therapist-detail'>Children Therapist</div> : null
-                  // getSpecialty(therapist.specialty, childrenSpecialty).map((detail) => (
-                  //   <div className = 'therapist-detail'>{detail}</div>
-                  // ))
                 }
               </Typography>
             </CardContent>
@@ -193,7 +184,7 @@ function All_Matching() {
                     style: { color: '#008f72' } // Change color here
                   }}
                   InputLabelProps={{ // Adding InputLabelProps prop to customize label styles
-                    style: { color: '#008f72' } // Change color here
+                    style: { color: '#008f72', width: "165px" } // Change color here
                   }}
                   sx={{
                     [`& fieldset`]: {
@@ -304,7 +295,7 @@ function All_Matching() {
             </ThemeProvider>
           </div>
           {/* Render psychologist profiles filtered */}
-          <div className="search-bar-container" style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+          <div className="search-bar-container" style={{ marginRight: "1vw" }}>
             <ThemeProvider theme={theme}>
               <Autocomplete
                 freeSolo
@@ -339,7 +330,7 @@ function All_Matching() {
                 value={searchValue}
                 sx={{
                   marginTop: "21px",
-                  width: 300,
+                  width: 250,
                 }}
                 onChange={(event, newValue) => {
                   setSearch(newValue);
@@ -357,7 +348,11 @@ function All_Matching() {
           }}>
             <Grid container justifyContent="center">
               {therapists && therapists.map((therapist) => (
-                buildCard(therapist)
+                <Grid item xs={12} sm={6} md={3}>
+                  <div>
+                    {buildCard(therapist)}
+                  </div>
+                </Grid>
               ))}
             </Grid>
           </div>

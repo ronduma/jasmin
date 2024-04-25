@@ -13,6 +13,8 @@ import TextField from '@mui/material/TextField';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Autocomplete from '@mui/material/Autocomplete';
 import "../matching.css";
+import VerifiedIcon from '@mui/icons-material/Verified';
+import Loading from '../loading/Loading';
 
 function Couple_Matching() {
   //   const {currentUser} = useContext(AuthContext);
@@ -120,9 +122,14 @@ function Couple_Matching() {
 
 
             <CardContent>
-              <Typography className='therapist-name' fontSize={36}>
-                {therapist.firstName + " "} {therapist.lastName}
-              </Typography>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Typography className='therapist-name' fontSize={36}>
+                  {therapist.firstName + " " + therapist.lastName}
+                </Typography>
+                {therapist.pdf_files.length > 0 &&
+                  <span> <VerifiedIcon style={{ "color": "#FFD700" }} /> </span>
+                }
+              </div>
               <Typography className='detail-container'>
                 <div className='therapist-detail'>
                   {therapist.location}
@@ -142,10 +149,7 @@ function Couple_Matching() {
                   </div>
                 }
                 {checkSpecialty(therapist.specialty, coupleSpecialty) ?
-                  <div className='therapist-detail'>Couple Therapist</div> :
-                  getSpecialty(therapist.specialty, coupleSpecialty).map((detail) => (
-                    <div className='therapist-detail'>{detail}</div>
-                  ))}
+                  <div className='therapist-detail'>Couple Therapist</div> : null}
               </Typography>
             </CardContent>
           </Card>
@@ -156,50 +160,13 @@ function Couple_Matching() {
   // console.log(typeof therapists);
   return (
     <div>
+      {loading && <Loading />}
       {/* <h1 className="matching-title">Psychologist for Couple Therapy</h1> */}
       <div className="matching-container">
         <div className="matching-category-choice" style={{ marginLeft: "2vw" }}>Couple Therapy</div>
-        <div className="search-bar-container">
-          <ThemeProvider theme={theme}>
-            <Autocomplete
-              freeSolo
-              id="searchTherapist"
-              disableClearable
-              options={therapistList ? therapistList.map(option => option.firstName + " " + option.lastName) : []}
-              renderInput={(params) => (
-                <TextField
-                  sx={{
-                    margin: "1rem 0 0 0",
-                    [`& fieldset`]: {
-                      borderRadius: 10,
-                      color: '#008f72',
-                      borderColor: '#008f72',
-                    }
-                  }}
-                  {...params}
-                  label="Search Therapist"
-                  InputProps={{
-                    ...params.InputProps,
-                    type: 'search',
-                    style: { color: '#008f72' } // Change color here
-                  }}
-                  InputLabelProps={{ // Adding InputLabelProps prop to customize label styles
-                    style: { color: '#008f72' } // Change color here
-                  }}
-                />
-              )}
-              value={searchValue}
-              sx={{ width: 300 }}
-              onChange={(event, newValue) => {
-                setSearch(newValue);
-              }}
-            >
-            </Autocomplete>
-          </ThemeProvider>
-        </div>
       </div>
       <div className="filtersContainer">
-        <div className="filters">
+        <div className="filters" style={{ margin: "1vw" }}>
           <ThemeProvider theme={theme}>
             <FormControl sx={{ m: 1, minWidth: 200 }} size='small'>
               <TextField
@@ -212,7 +179,7 @@ function Couple_Matching() {
                   style: { color: '#008f72' } // Change color here
                 }}
                 InputLabelProps={{ // Adding InputLabelProps prop to customize label styles
-                  style: { color: '#008f72' } // Change color here
+                  style: { color: '#008f72', width: "165px" } // Change color here
                 }}
                 sx={{
                   [`& fieldset`]: {
@@ -356,89 +323,49 @@ function Couple_Matching() {
         </div>
         {/* Render psychologist profiles filtered */}
         <br />
+        <div className="search-bar-container" style={{ marginRight: "1vw" }}>
+          <ThemeProvider theme={theme}>
+            <Autocomplete
+              freeSolo
+              id="searchTherapist"
+              disableClearable
+              options={therapistList ? therapistList.map(option => option.firstName + " " + option.lastName) : []}
+              renderInput={(params) => (
+                <TextField
+                  sx={{
+                    margin: "1rem 0 0 0",
+                    [`& fieldset`]: {
+                      borderRadius: 10,
+                      color: '#008f72',
+                      borderColor: '#008f72',
+                    }
+                  }}
+                  {...params}
+                  label="Search Therapist"
+                  InputProps={{
+                    ...params.InputProps,
+                    type: 'search',
+                    style: { color: '#008f72' } // Change color here
+                  }}
+                  InputLabelProps={{ // Adding InputLabelProps prop to customize label styles
+                    style: { color: '#008f72' } // Change color here
+                  }}
+                />
+              )}
+              value={searchValue}
+              sx={{ width: 250, marginTop: "2px" }}
+              onChange={(event, newValue) => {
+                setSearch(newValue);
+              }}
+            >
+            </Autocomplete>
+          </ThemeProvider>
+        </div>
       </div>
       <div>
-        <div style={{
-          display: 'flex', flexWrap: 'wrap',
-          gap: "20px", alignItems: "flex-start",
-          margin: "20px", paddingBottom: "50px"
-        }}>
-          {loading && <>
-            <Card variant='outlined'
-              sx={{
-                // flex: "1 0 auto",
-                width: 350,
-                height: 'auto',
-                paddingBottom: '20px',
-                borderRadius: 5,
-                border: '1px solid #1e8678',
-              }}>
-              <AccountCircleIcon sx={{ width: 300, height: 200 }} />
-              <CardContent>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-              </CardContent>
-            </Card>
-            <Card variant='outlined'
-              sx={{
-                // flex: "1 0 auto",
-                width: 350,
-                height: 'auto',
-                paddingBottom: '20px',
-                borderRadius: 5,
-                border: '1px solid #1e8678',
-              }}>
-              <AccountCircleIcon sx={{ width: 300, height: 200 }} />
-              <CardContent>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-              </CardContent>
-            </Card>
-            <Card variant='outlined'
-              sx={{
-                // flex: "1 0 auto",
-                width: 350,
-                height: 'auto',
-                paddingBottom: '20px',
-                borderRadius: 5,
-                border: '1px solid #1e8678',
-              }}>
-              <AccountCircleIcon sx={{ width: 300, height: 200 }} />
-              <CardContent>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-              </CardContent>
-            </Card>
-            <Card variant='outlined'
-              sx={{
-                // flex: "1 0 auto",
-                width: 350,
-                height: 'auto',
-                paddingBottom: '20px',
-                borderRadius: 5,
-                border: '1px solid #1e8678',
-              }}>
-              <AccountCircleIcon sx={{ width: 300, height: 200 }} />
-              <CardContent>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-                <Typography>Loading...</Typography>
-              </CardContent>
-            </Card>
-          </>}
+        <Grid container justifyContent="center">
           {therapists && therapists.map((therapist) => buildCard(therapist))}
-        </div>
+        </Grid>
       </div>
     </div>
   );

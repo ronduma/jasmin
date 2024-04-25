@@ -14,6 +14,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import "../matching.css";
 import Autocomplete from '@mui/material/Autocomplete';
+import VerifiedIcon from '@mui/icons-material/Verified';
+import Loading from '../loading/Loading';
+
 function Personal_Matching() {
   //   const {currentUser} = useContext(AuthContext);
   const [searchValue, setSearch] = useState("");
@@ -123,9 +126,14 @@ function Personal_Matching() {
 
 
             <CardContent>
-              <Typography className="therapist-name" fontSize={36}>
-                {therapist.firstName + " "} {therapist.lastName}
-              </Typography>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Typography className='therapist-name' fontSize={36}>
+                  {therapist.firstName + " " + therapist.lastName}
+                </Typography>
+                {therapist.pdf_files.length > 0 &&
+                  <span> <VerifiedIcon style={{ "color": "#FFD700" }} /> </span>
+                }
+              </div>
               <Typography className='detail-container'>
                 <div className='therapist-detail'>
                   {therapist.location}
@@ -145,10 +153,7 @@ function Personal_Matching() {
                   </div>
                 }
                 {checkSpecialty(therapist.specialty, personalSpecialty) ?
-                  <div className='therapist-detail'>Personal Therapist</div> :
-                  getSpecialty(therapist.specialty, personalSpecialty).map((detail) => (
-                    <div className='therapist-detail'>{detail}</div>
-                  ))}
+                  <div className='therapist-detail'>Personal Therapist</div> : null}
               </Typography>
             </CardContent>
           </Card>
@@ -159,6 +164,7 @@ function Personal_Matching() {
   // console.log(typeof therapists);
   return (
     <div>
+      {loading && <Loading />}
       {/* <h1 className="matching-title">Psychologist for Personal Therapy</h1> */}
       <div className="matching-container">
         <div className="matching-category-choice" style={{ marginLeft: "2vw" }} >Personal Therapy</div>
