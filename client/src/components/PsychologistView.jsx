@@ -6,7 +6,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Typography from '@mui/material/Typography';
 import TherapistBioFromPatientView from "./profile/TherapistBioFromPatientView";
 

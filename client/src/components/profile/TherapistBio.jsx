@@ -389,11 +389,11 @@ function TherapistBio({ bio, specialty, price, overallRating, reviews}) {
                 (<Stack direction ='column' spacing={2}>
                   {currReviews && currReviews.map((item, index) => (
                     <Card variant='outlined' key={index}>
-                      <Typography>Name: {item[0].reviewerName}</Typography>
-                      <Typography>Title: {item[0].reviewTitle}</Typography>
-                      <Typography>Rating: {item[0].rating}</Typography>
-                      <Typography>Date: {item[0].reviewDate}</Typography>
-                      <Typography>Review: {item[0].review}</Typography>
+                      <Typography>Name: {item.reviewerName}</Typography>
+                      <Typography>Title: {item.reviewTitle}</Typography>
+                      <Typography>Rating: {item.rating}</Typography>
+                      <Typography>Date: {item.reviewDate}</Typography>
+                      <Typography>Review: {item.review}</Typography>
                     </Card>
                   ))}
                 </Stack>)}
