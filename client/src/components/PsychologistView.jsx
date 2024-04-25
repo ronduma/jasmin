@@ -9,7 +9,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Typography from '@mui/material/Typography';
-
+import VerifiedIcon from '@mui/icons-material/Verified';
 import TherapistBioFromPatientView from "./profile/TherapistBioFromPatientView";
 
 import { AuthContext } from "../context/AuthContext";
@@ -128,7 +128,10 @@ function PsychologistView() {
           <Paper className="left-section">
             <div className="left-section-header">
               {profileData.firstName} {profileData.lastName}
+              {profileData.isTherapist && profileData.pdf_files.length > 0 ? 
+                <span> <VerifiedIcon /> </span> : null}
             </div>
+            
             {profileData ? (
               <div>
                 <div id="profilePic">
