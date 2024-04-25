@@ -130,7 +130,7 @@ function TherapistBioFromPatientView({
           console.error("Error canceling appointment:", error);
           setLoading(false);
           Swal.fire({
-            title: "Error canceling meeting:",
+            title: "Error canceling meeting",
             icon: "error",
           });
         }
