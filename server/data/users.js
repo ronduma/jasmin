@@ -4,7 +4,7 @@ const users = mongoCollections.users;
 const chats = mongoCollections.chats;
 const fs = require("fs");
 const dayjs = require("dayjs");
-
+const meetings = mongoCollections.meetings;
 const validation = require("./validation");
 
 const createUser = async (uid, email) => {
@@ -582,6 +582,10 @@ const match = async (currentUserID, TherapistID) => {
       );
       // console.log("Patient should be removed from therapist" + currentUser.therapist)
 	
+			//cancel all meetings
+			const meetingCollection = await meetings();
+			await meetingCollection.deleteMany({patient: currentUserID, therapist:TherapistID});
+
       return currentUser;
     }
   }
