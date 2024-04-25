@@ -52,7 +52,6 @@ function TherapistBioFromPatientView({
 
   const [value, setValue] = useState(0);
 
-
   const [alreadyReviewed, setAlreadyReviewed] = useState(false);
 
   const [currReviews, setReviews] = useState(reviews);
@@ -95,23 +94,27 @@ function TherapistBioFromPatientView({
             );
             const fetchedAppointments = responseMeeting.data;
             // filter appointments
-            const filteredAppointments = fetchedAppointments.filter(appointment =>
-              appointment.patient === currentUser.uid && appointment.therapist === id
+            const filteredAppointments = fetchedAppointments.filter(
+              (appointment) =>
+                appointment.patient === currentUser.uid &&
+                appointment.therapist === id
             );
             setAppointments(filteredAppointments);
 
             //bookedtimes
-            const bookedTimes = fetchedAppointments.reduce((acc, appointment) => {
-              const date = dayjs(appointment.time).format("MM/DD/YYYY");
-              const time = dayjs(appointment.time).format("h:mm A");
-              if (!acc[date]) {
-                acc[date] = [];
-              }
-              acc[date].push(time);
-              return acc;
-            }, {});
+            const bookedTimes = fetchedAppointments.reduce(
+              (acc, appointment) => {
+                const date = dayjs(appointment.time).format("MM/DD/YYYY");
+                const time = dayjs(appointment.time).format("h:mm A");
+                if (!acc[date]) {
+                  acc[date] = [];
+                }
+                acc[date].push(time);
+                return acc;
+              },
+              {}
+            );
             setAvailableTimes(bookedTimes);
-
 
             Swal.fire({
               title: "Meeting Canceled!",
@@ -182,7 +185,6 @@ function TherapistBioFromPatientView({
   useEffect(() => {
     const fetchData = async () => {
       try {
-
         const responseMeeting = await axios.get(
           `http://localhost:5173/meeting/therapist/${id}`
         );
@@ -196,11 +198,9 @@ function TherapistBioFromPatientView({
         setAppointments(filteredAppointments);
         console.log(fetchedAppointments);
 
-
         setSignedData(signedUser.data);
         setEditReview(signedData.isTherapist);
 
-        
         // set Calender
         console.log("bookedTimes");
         const bookedTimes = fetchedAppointments.reduce((acc, appointment) => {
@@ -278,77 +278,99 @@ function TherapistBioFromPatientView({
       // Handle error
       console.error("Error:", error);
       setLoading(false);
-      Swal.fire({
-        title: "Time Selection Unsuccessful",
-        icon: "error",
-      });
+      if (error.response) {
+        Swal.fire({
+          title: "Time Selection Unsuccessful",
+          icon: "error",
+
+          text: error.response.data.message,
+        });
+      }
+      else{
+        Swal.fire({
+          title: "Time Selection Unsuccessful",
+          icon: "error",
+        });
+      }
     }
   };
 
   const handleInput = async (InputRating, ReviewTitle, Review) => {
-    try{
-        const response = await axios.post(`http://localhost:5173/reviews/${id}`, {reviewId : signedData._id, reviewTitle: ReviewTitle, reviewerName: signedData.firstName + " " + signedData.lastName, review: Review, rating: InputRating});
-        setReviews(response.data.reviews);
-        console.log(response.data.overallRating);
-        setRating(response.data.overallRating);
-        setAlreadyReviewed(true);
-    }
-    catch(error){
+    try {
+      const response = await axios.post(`http://localhost:5173/reviews/${id}`, {
+        reviewId: signedData._id,
+        reviewTitle: ReviewTitle,
+        reviewerName: signedData.firstName + " " + signedData.lastName,
+        review: Review,
+        rating: InputRating,
+      });
+      setReviews(response.data.reviews);
+      console.log(response.data.overallRating);
+      setRating(response.data.overallRating);
+      setAlreadyReviewed(true);
+    } catch (error) {
       console.error(error);
     }
   };
 
   const handleInput2 = async (InputRating, ReviewTitle, Review) => {
-    try{
-      const response = await axios.put(`http://localhost:5173/reviews/${id}/${signedData._id}`, {reviewId : signedData._id, reviewTitle: ReviewTitle, reviewerName: signedData.firstName + " " + signedData.lastName, review: Review, rating: InputRating});
+    try {
+      const response = await axios.put(
+        `http://localhost:5173/reviews/${id}/${signedData._id}`,
+        {
+          reviewId: signedData._id,
+          reviewTitle: ReviewTitle,
+          reviewerName: signedData.firstName + " " + signedData.lastName,
+          review: Review,
+          rating: InputRating,
+        }
+      );
       setReviews(response.data.reviews);
       console.log(response.data.overallRating);
       setRating(response.data.overallRating);
       setAlreadyReviewed(true);
-    }
-    catch(error){
+    } catch (error) {
       console.error(error);
     }
   };
 
-  useEffect(() =>{
+  useEffect(() => {
     const handleId = async () => {
-      try{
-          const signedUser = await axios.get(`http://localhost:5173/profile/${currentUser.uid}`);
-          if(signedUser.data != null){
-            console.log('huh');
-            setSignedData(signedUser.data);
-            setEditReview(signedUser.data.isTherapist);
-          }
-          const response = await axios.get(`http://localhost:5173/profile/${id}`);
-          setProfileData(response.data);
-      }
-      catch(e){
+      try {
+        const signedUser = await axios.get(
+          `http://localhost:5173/profile/${currentUser.uid}`
+        );
+        if (signedUser.data != null) {
+          console.log("huh");
+          setSignedData(signedUser.data);
+          setEditReview(signedUser.data.isTherapist);
+        }
+        const response = await axios.get(`http://localhost:5173/profile/${id}`);
+        setProfileData(response.data);
+      } catch (e) {
         console.log(e);
       }
     };
     handleId();
-  }, [currentUser])
+  }, [currentUser]);
 
   useEffect(() => {
     const handleAlreadyReviewed = async () => {
-      try{
-        const isFound = currReviews.some(obj => obj._id == signedData._id);
+      try {
+        const isFound = currReviews.some((obj) => obj._id == signedData._id);
         console.log(isFound);
-        if(isFound){
+        if (isFound) {
           setAlreadyReviewed(true);
-        }
-        else{
+        } else {
           setAlreadyReviewed(false);
         }
         console.log(alreadyReviewed);
-      }
-      catch(e){
+      } catch (e) {
         console.log(e);
       }
     };
     handleAlreadyReviewed();
-  }, [signedData])
+  }, [signedData]);
   return (
     <div>
       <Grid container spacing={2}>
@@ -530,128 +552,198 @@ function TherapistBioFromPatientView({
             <CustomTabPanel value={value} index={2}>
               <div className="right-section-header"> Reviews </div>
               <div>
-                <Typography component="legend" style={{ marginBottom: '20px', fontSize: 18, fontWeight: "bold"}}>Overall Therapist Rating</Typography>
+                <Typography
+                  component="legend"
+                  style={{
+                    marginBottom: "20px",
+                    fontSize: 18,
+                    fontWeight: "bold",
+                  }}
+                >
+                  Overall Therapist Rating
+                </Typography>
                 <Rating
-                name="text-feedback"
-                value ={currRating}
-                readOnly
-                precision={0.5}
-               />
-               <Box>{currRating ? currRating.toFixed(2) : 0} Stars</Box>
+                  name="text-feedback"
+                  value={currRating}
+                  readOnly
+                  precision={0.5}
+                />
+                <Box>{currRating ? currRating.toFixed(2) : 0} Stars</Box>
               </div>
-              
-              <div style={{marginTop: '50px'}}>
-              <Typography component="legend" sx={{fontSize:18, fontWeight: 'bold'}}>List of Reviews</Typography>
-              {!currReviews && currReviews.length == 0 ?(<div style={{marginTop: '50px'}}>Currently No Reviews</div>) : 
-                (<Stack direction ='column' spacing={2}>
-                  {currReviews && currReviews.slice(-5).map((item, index) => (
-                    <Box key={index} sx={{textAlign: 'left'}}>
-                      <Typography sx={{fontSize: 18, fontFamily: 'Arial'}}>{item.reviewerName}</Typography>
-                      <Rating  readOnly precision = {0.5} value={item.rating} /> 
-                      <Typography sx={{fontWeight: 'bold'}}>{item.reviewTitle}</Typography>
-                      <Typography>Review made on {item.reviewDate}</Typography>
-                      <Typography sx={{marginTop: '20px'}}>{item.review}</Typography>
-                    </Box>
-                  ))}
-                </Stack>)}
+
+              <div style={{ marginTop: "50px" }}>
+                <Typography
+                  component="legend"
+                  sx={{ fontSize: 18, fontWeight: "bold" }}
+                >
+                  List of Reviews
+                </Typography>
+                {!currReviews && currReviews.length == 0 ? (
+                  <div style={{ marginTop: "50px" }}>Currently No Reviews</div>
+                ) : (
+                  <Stack direction="column" spacing={2}>
+                    {currReviews &&
+                      currReviews.slice(-5).map((item, index) => (
+                        <Box key={index} sx={{ textAlign: "left" }}>
+                          <Typography
+                            sx={{ fontSize: 18, fontFamily: "Arial" }}
+                          >
+                            {item.reviewerName}
+                          </Typography>
+                          <Rating
+                            readOnly
+                            precision={0.5}
+                            value={item.rating}
+                          />
+                          <Typography sx={{ fontWeight: "bold" }}>
+                            {item.reviewTitle}
+                          </Typography>
+                          <Typography>
+                            Review made on {item.reviewDate}
+                          </Typography>
+                          <Typography sx={{ marginTop: "20px" }}>
+                            {item.review}
+                          </Typography>
+                        </Box>
+                      ))}
+                  </Stack>
+                )}
               </div>
-              {!editReview ?
-              <>
-              {alreadyReviewed ?
-              <div>
-              <div style={{ marginTop: '50px'}} >
-               <div className='right-section-header'style={{ marginBottom: '20px'}}> Create Your Review </div>
-                 <div style={{marginBottom: '20px'}}>
-                 <Typography component="legend">Review Rating</Typography>
-                 <Rating
-                   name="text-feedback"
-                   label ="Review Rating"
-                   value ={inputRating}
-                   precision={0.5}
-                   onChange = {(event, newValue) => {
-                     setInputRating(newValue);
-                   }}
-                 />
-                 </div>
-                 <TextField
-                   inputRef={reviewTitleInput}
-                   label="Name of Review"
-                   id ="textbox-Name"
-                   inputProps={{
-                     maxLength:50
-                   }}
-                 />
-                 <TextField
-                   inputRef={reviewInput}
-                   fullWidth
-                   label="Description of Review"
-                   id="textbox-Review"
-                   // value={currReview}
-                   // onChange={event => setCurrReview(event.target.value)}
-                   multiline
-                   style={{margin: '2vh 0 1vh 0'}}
-                   rows={3}
-                   inputProps={{
-                     maxLength:285
-                   }}
-                 />
-               </div>
-               
-               <div style={{ marginTop: '20px', marginBottom: '20px' }}>
-                 <Button variant="contained" onClick={(event) => { event.preventDefault; handleInput2(inputRating, reviewTitleInput.current.value, reviewInput.current.value)}}>
-                   Edit A Review
-                 </Button>
-               </div>
-               </div>
-                :
-                <div>
-                  <div style={{ marginTop: '50px'}} >
-                <div className='right-section-header'style={{ marginBottom: '20px'}}> Create Your Review </div>
-                  <div style={{marginBottom: '20px'}}>
-                  <Typography component="legend">Review Rating</Typography>
-                  <Rating
-                    name="text-feedback"
-                    label ="Review Rating"
-                    value ={inputRating}
-                    precision={0.5}
-                    onChange = {(event, newValue) => {
-                      setInputRating(newValue);
-                    }}
-                  />
-                  </div>
-                  <TextField
-                    inputRef={reviewTitleInput}
-                    label="Name of Review"
-                    id ="textbox-Name"
-                    inputProps={{
-                      maxLength:50
-                    }}
-                  />
-                  <TextField
-                    inputRef={reviewInput}
-                    fullWidth
-                    label="Description of Review"
-                    id="textbox-Review"
-                    // value={currReview}
-                    // onChange={event => setCurrReview(event.target.value)}
-                    multiline
-                    style={{margin: '2vh 0 1vh 0'}}
-                    rows={3}
-                    inputProps={{
-                      maxLength:285
-                    }}
-                  />
-                </div>
-                
-                <div style={{ marginTop: '20px', marginBottom: '20px' }}>
-                  <Button variant="contained" onClick={(event) => { event.preventDefault; handleInput(inputRating, reviewTitleInput.current.value, reviewInput.current.value)}}>
-                    Submit A Review
-                  </Button>
-                </div>
-                </div> }
-              </>
-              : 
-              <br/>}
+              {!editReview ? (
+                <>
+                  {alreadyReviewed ? (
+                    <div>
+                      <div style={{ marginTop: "50px" }}>
+                        <div
+                          className="right-section-header"
+                          style={{ marginBottom: "20px" }}
+                        >
+                          {" "}
+                          Create Your Review{" "}
+                        </div>
+                        <div style={{ marginBottom: "20px" }}>
+                          <Typography component="legend">
+                            Review Rating
+                          </Typography>
+                          <Rating
+                            name="text-feedback"
+                            label="Review Rating"
+                            value={inputRating}
+                            precision={0.5}
+                            onChange={(event, newValue) => {
+                              setInputRating(newValue);
+                            }}
+                          />
+                        </div>
+                        <TextField
+                          inputRef={reviewTitleInput}
+                          label="Name of Review"
+                          id="textbox-Name"
+                          inputProps={{
+                            maxLength: 50,
+                          }}
+                        />
+                        <TextField
+                          inputRef={reviewInput}
+                          fullWidth
+                          label="Description of Review"
+                          id="textbox-Review"
+                          // value={currReview}
+                          // onChange={event => setCurrReview(event.target.value)}
+                          multiline
+                          style={{ margin: "2vh 0 1vh 0" }}
+                          rows={3}
+                          inputProps={{
+                            maxLength: 285,
+                          }}
+                        />
+                      </div>
+
+                      <div style={{ marginTop: "20px", marginBottom: "20px" }}>
+                        <Button
+                          variant="contained"
+                          onClick={(event) => {
+                            event.preventDefault;
+                            handleInput2(
+                              inputRating,
+                              reviewTitleInput.current.value,
+                              reviewInput.current.value
+                            );
+                          }}
+                        >
+                          Edit A Review
+                        </Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <div style={{ marginTop: "50px" }}>
+                        <div
+                          className="right-section-header"
+                          style={{ marginBottom: "20px" }}
+                        >
+                          {" "}
+                          Create Your Review{" "}
+                        </div>
+                        <div style={{ marginBottom: "20px" }}>
+                          <Typography component="legend">
+                            Review Rating
+                          </Typography>
+                          <Rating
+                            name="text-feedback"
+                            label="Review Rating"
+                            value={inputRating}
+                            precision={0.5}
+                            onChange={(event, newValue) => {
+                              setInputRating(newValue);
+                            }}
+                          />
+                        </div>
+                        <TextField
+                          inputRef={reviewTitleInput}
+                          label="Name of Review"
+                          id="textbox-Name"
+                          inputProps={{
+                            maxLength: 50,
+                          }}
+                        />
+                        <TextField
+                          inputRef={reviewInput}
+                          fullWidth
+                          label="Description of Review"
+                          id="textbox-Review"
+                          // value={currReview}
+                          // onChange={event => setCurrReview(event.target.value)}
+                          multiline
+                          style={{ margin: "2vh 0 1vh 0" }}
+                          rows={3}
+                          inputProps={{
+                            maxLength: 285,
+                          }}
+                        />
+                      </div>
+
+                      <div style={{ marginTop: "20px", marginBottom: "20px" }}>
+                        <Button
+                          variant="contained"
+                          onClick={(event) => {
+                            event.preventDefault;
+                            handleInput(
+                              inputRating,
+                              reviewTitleInput.current.value,
+                              reviewInput.current.value
+                            );
+                          }}
+                        >
+                          Submit A Review
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <br />
+              )}
             </CustomTabPanel>
           </Paper>
         </Grid>
