@@ -273,16 +273,22 @@ function TherapistBioFromPatientView({
 
   const handleInput = async (InputRating, ReviewTitle, Review) => {
     try{
-      if(alreadyReviewed){
-        const response = await axios.put(`http://localhost:5173/reviews/${id}/${signedData._id}`, {reviewId : signedData._id, reviewTitle: ReviewTitle, reviewerName: signedData.firstName + " " + signedData.lastName, review: Review, rating: InputRating})
-        console.log(response.data);
-      }
-      else{
         const response = await axios.post(`http://localhost:5173/reviews/${id}`, {reviewId : signedData._id, reviewTitle: ReviewTitle, reviewerName: signedData.firstName + " " + signedData.lastName, review: Review, rating: InputRating});
         console.log(response.data);
         setReviews([...reviews, response.data])
         setAlreadyReviewed(true);
-      }
+    }
+    catch(error){
+      console.error(error);
+    }
+  };
+
+  const handleInput2 = async (InputRating, ReviewTitle, Review) => {
+    try{
+      const response = await axios.put(`http://localhost:5173/reviews/${id}/${signedData._id}`, {reviewId : signedData._id, reviewTitle: ReviewTitle, reviewerName: signedData.firstName + " " + signedData.lastName, review: Review, rating: InputRating});
+      console.log(response.data);
+      setReviews(response.data);
+      setAlreadyReviewed(true);
     }
     catch(error){
       console.error(error);
@@ -579,7 +585,7 @@ function TherapistBioFromPatientView({
                </div>
                
                <div style={{ marginTop: '20px', marginBottom: '20px' }}>
-                 <Button variant="contained" onClick={(event) => { event.preventDefault; handleInput(inputRating, reviewTitleInput.current.value, reviewInput.current.value)}}>
+                 <Button variant="contained" onClick={(event) => { event.preventDefault; handleInput2(inputRating, reviewTitleInput.current.value, reviewInput.current.value)}}>
                    Edit A Review
                  </Button>
                </div>
