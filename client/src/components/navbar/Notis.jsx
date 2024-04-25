@@ -57,7 +57,7 @@ const Notis = () => {
         }}
       >
         <List style={{ maxHeight: '200px', overflow: 'auto' }}>
-          {notifications.length > 0 ?
+          {/* {notifications.length > 0 ?
             notifications.map((notification, index) => (
               <ListItem key={index}>
                 <ListItemText primary={notification} />
@@ -66,7 +66,7 @@ const Notis = () => {
             : <ListItem>
               <ListItemText primary="No notifications" />
             </ListItem>
-          }
+          } */}
         </List>
       </Popover>
     </div>
