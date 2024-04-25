@@ -332,6 +332,8 @@ const updateNotifications = async (uid, unread, noti_str) => {
 	if (!updatedUser) {
 		throw `Error: User with id ${uid} not found`;
 	}
+	console.log("UPDATED FUNCTION CALL")
+	console.log(updatedUser.noti)
 	return updatedUser.noti;
 };
 // const updateNotifications = async (uid, notifications) => {

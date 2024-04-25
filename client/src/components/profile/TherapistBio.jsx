@@ -65,9 +65,9 @@ function TherapistBio({ bio, specialty, price, overallRating, reviews}) {
   useEffect(() => {
     const userReviews = async () => {
       try{
-        console.log(currentUser);
+        // console.log(currentUser);
         const response = await axios.get(`http://localhost:5173/reviews/${currentUser.uid}`);
-        console.log(response.data);
+        // console.log(response.data);
       }
       catch(error){
         console.error(error);
