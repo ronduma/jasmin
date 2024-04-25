@@ -87,7 +87,7 @@ function TherapistBioFromPatientView({
               }
             );
 
-            let id = currentUser.uid;
+            let id = appointment.therapist;
 
             const responseMeeting = await axios.get(
               `http://localhost:5173/meeting/therapist/${id}`
@@ -98,6 +98,19 @@ function TherapistBioFromPatientView({
               appointment.patient === currentUser.uid && appointment.therapist === id
             );
             setAppointments(filteredAppointments);
+
+            //bookedtimes
+            const bookedTimes = fetchedAppointments.reduce((acc, appointment) => {
+              const date = dayjs(appointment.time).format("MM/DD/YYYY");
+              const time = dayjs(appointment.time).format("h:mm A");
+              if (!acc[date]) {
+                acc[date] = [];
+              }
+              acc[date].push(time);
+              return acc;
+            }, {});
+            setAvailableTimes(bookedTimes);
+
 
             Swal.fire({
               title: "Meeting Canceled!",
