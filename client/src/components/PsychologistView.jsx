@@ -1,17 +1,16 @@
 import "./profile/styles.css";
 
-import { useParams, useNavigate, NavLink } from 'react-router-dom';
-import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import Typography from '@mui/material/Typography';
-
+import { useParams, useNavigate, NavLink } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
+import axios from "axios";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import Typography from "@mui/material/Typography";
+import Swal from "sweetalert2";
 import TherapistBioFromPatientView from "./profile/TherapistBioFromPatientView";
-
 import { AuthContext } from "../context/AuthContext";
 
 function PsychologistView() {
@@ -27,31 +26,49 @@ function PsychologistView() {
 
   const handleClick = async () => {
     try {
-      setLoading2(true);
-      const response = await axios.post(`http://localhost:5173/matching`, {
-        currentUserID: currentUser.uid,
-        therapistID: id,
-      });
-      console.log("Success Match Response:", response.data);
-      setIsMatched(!isMatched);
-      setLoading2(false);
-
-      //unmatched??
+      //currently matched
       if (isMatched) {
-        
-      window.location.reload();
-      
         Swal.fire({
-          title: "Unmatch Successful!",
-          icon: "success",
+          title: "Are you sure?",
+          text: "All scheduled meetings will be canceled if you ",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, unmatch with therapist",
+        }).then(async (result) => {
+          setLoading2(true);
+          const response = await axios.post(`http://localhost:5173/matching`, {
+            currentUserID: currentUser.uid,
+            therapistID: id,
+          });
+          console.log("Success Match Response:", response.data);
+          setIsMatched(!isMatched);
+          setLoading2(false);
+          window.location.reload();
+          Swal.fire({
+            title: "Unmatch Successful!",
+            icon: "success",
+          });
         });
       } else {
+        setLoading2(true);
+        const response = await axios.post(`http://localhost:5173/matching`, {
+          currentUserID: currentUser.uid,
+          therapistID: id,
+        });
+        console.log("Success Match Response:", response.data);
+        setIsMatched(!isMatched);
+        setLoading2(false);
+
         Swal.fire({
           title: "Match Successful!",
           icon: "success",
         });
+
       }
 
+    
     } catch (error) {
       // Handle error
       setLoading2(false);
@@ -171,7 +188,6 @@ function PsychologistView() {
                   Match
                 </Button>
               )}{" "}
-              <Button variant="contained"> Chat </Button>
             </div>
           </Paper>
         </Grid>

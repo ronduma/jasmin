@@ -10,6 +10,7 @@ export const NotificationProvider = ({ children }) => {
   //need to change this after updaing the db?
   const [unreadNotifications, setUnreadNotifications] = useState(0);
 
+  //EDIT
   const markAllNotificationsAsRead = async () => {
     if (currentUser) {
       try {
@@ -27,6 +28,9 @@ export const NotificationProvider = ({ children }) => {
       if (currentUser) {
         try {
           const response = await axios.get(`http://localhost:5173/profile/notifications/${currentUser.uid}`);
+          // console.log("CurrentUser Notifications")
+          // console.log(response.data.noti_str)
+
           setNotifications(response.data.noti_str);
           setUnreadNotifications(response.data.unread);
         } catch (error) {
