@@ -90,7 +90,7 @@ router.post("/", async (req, res) => {
     console.error("Error matching users:", error);
     return res
       .status(500)
-      .json({ success: false, message: "Internal server error" });
+      .json({ success: false, message: error});
   }
 });
 
@@ -116,7 +116,7 @@ router.delete("/:id", async (req, res) => {
     console.error("Error deleting meeting:", error);
     return res
       .status(500)
-      .json({ success: false, message: "Internal server error" });
+      .json({ success: false, message: error });
   }
 });
 

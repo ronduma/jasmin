@@ -554,19 +554,33 @@ const match = async (currentUserID, TherapistID) => {
   if (currentUser.isTherapist != true){
     // console.log(" BOTH Patient and Therapist Exist and Current User not Therapist")
 
-    //Update
+		
+		const user = await userCollection.findOne({ _id: currentUserID });
+		const prevTherapistID = user.therapist;
+
+    //Update for user
     const updatedUser = await userCollection.findOneAndUpdate(
 			{ _id: currentUserID },
 			{ $set: { therapist: TherapistID  } }
 		);
   
+		//update for therapist
     if (!Therapist.patients.includes(currentUserID)) {
       const updatedTherapist = await userCollection.findOneAndUpdate(
         { _id: TherapistID },
         { $push: { patients: currentUserID  } }
       );
 
-      // console.log("Patient should be added to therapist" + Therapist.patients)
+		//delete from the previous therapist
+		await userCollection.findOneAndUpdate(
+			{ _id: prevTherapistID },
+			{ $pull: { patients: currentUserID  } }
+		);
+		//delete all meetings with previous therapist
+		const meetingCollection = await meetings();
+		await meetingCollection.deleteMany({patient: currentUserID, therapist:prevTherapistID});
+
+
     }
     //already matched call unmatch
     else{
