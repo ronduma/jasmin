@@ -197,11 +197,10 @@ router.put("/notifications/:id", async (req, res) => {
 		const id = req.params.id;
 		const unread = req.body.unread;
 		const noti_str = req.body.noti_str;
-		console.log(req.body)
-		console.log("Put: /notifications/:id")
-
+		// console.log(req.body)
+		// console.log("Put: /notifications/:id")
 		const notifications = await users.updateNotifications(id, unread, noti_str);
-		console.log("notifications")
+		// console.log("notifications")
 		console.log(notifications)
 		return res.status(200).json(notifications);
 	} catch (error) {

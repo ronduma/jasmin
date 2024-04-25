@@ -14,12 +14,6 @@ const Notis = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const { notifications, setNotifications, unreadNotifications, setUnreadNotifications, markAllNotificationsAsRead } = useContext(NotificationContext);
   
-  // if (!currentUser) {
-  //   console.log(currentUser)
-  //   return <p>Loading...</p>;
-  // }
-
-
   const handleClick = (event) => {
     event.preventDefault();
     markAllNotificationsAsRead();
@@ -32,8 +26,6 @@ const Notis = () => {
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
-
-  // if (!notifications) return <p>Loading...</p>;
 
   return (
     <div>
