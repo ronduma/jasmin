@@ -13,10 +13,32 @@ router
     console.log(error);
   }
 })
+.get("/:id/:reviewId", async(req, res) => {
+  try{
+    const id = req.params.id;
+    const reviewId = req.params.reviewId;
+    const getSpecificReview = await reviews.getReview(id, reviewId);
+    res.status(200).json(getSpecificReview);
+  }
+  catch(error){
+    console.log(error);
+  }
+})
+.put("/:id/:reviewId", async(req, res) => {
+  try{
+    const review_put = req.body;
+    const id = req.params.id;
+    const reviewId = req.params.reviewId
+    const reviewPut= await reviews.updateReview(id, reviewId, review_put);
+    return res.status(200).json(reviewPut);
+  }
+  catch(error){
+    console.log(error);
+  }
+})
 .post("/:id", async (req, res) => {
   const id = req.params.id; // therapistId
   const review_post = req.body; // object => review
-  // console.log(review_post.reviewId);
   try{
     const postReview = await reviews.createReview(
       id,

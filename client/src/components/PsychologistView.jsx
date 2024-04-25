@@ -1,13 +1,15 @@
 import "./profile/styles.css";
-import { useParams, useNavigate, NavLink } from "react-router-dom";
-import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
-import Swal from "sweetalert2";
-import Typography from "@mui/material/Typography";
+
+import { useParams, useNavigate, NavLink } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import axios from 'axios';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import Typography from '@mui/material/Typography';
+
 import TherapistBioFromPatientView from "./profile/TherapistBioFromPatientView";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { AuthContext } from "../context/AuthContext";
@@ -169,7 +171,7 @@ function PsychologistView() {
                   Match
                 </Button>
               )}{" "}
-              <Button variant="contained"> Chat </Button>
+              
             </div>
           </Paper>
         </Grid>
