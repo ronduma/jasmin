@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
 
-html{
+html {
   background-color: #F2F0E1;
 }
 
@@ -36,18 +36,21 @@ html{
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
+
 .slideshow-container {
   width: flex;
   justify-content: space-between;
   display: center;
   overflow: hidden;
   align-items: center;
-  
+
 }
+
 .slideshow-container2 {
   width: 700px;
   justify-content: center;
@@ -55,16 +58,19 @@ html{
   overflow: hidden;
   align-items: center;
 }
+
 .div-between {
   flex: 1;
   text-align: center;
   padding: 10px;
   border: 1px;
 }
-.link-button{
+
+.link-button {
   text-decoration: none;
   color: white;
 }
+
 .link-button:hover {
   text-decoration: none;
   color: inherit;
@@ -73,15 +79,17 @@ html{
 .link-button:focus {
   outline: none;
 }
+
 .slide-button {
   background-color: #439873;
-  width : 400px;
+  width: 400px;
   height: 100px;
   text-align: center;
   font-size: 70px;
   font-family: Georgia, 'Times New Roman', Times, serif;
   border-radius: 20px;
 }
+
 .image-slide {
   width: 700px;
   height: 400px;
@@ -89,17 +97,20 @@ html{
   text-align: center;
   flex: 1;
 }
+
 .text-slide {
   flex: 1;
   background-size: cover;
   font-size: 50px;
   font-weight: 300;
 }
-.each-slide > div{
+
+.each-slide>div {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 700px; /* Adjust the height to your preference */
+  height: 700px;
+  /* Adjust the height to your preference */
   background-size: cover;
   border-radius: 50px;
 }
@@ -114,6 +125,7 @@ html{
   font-style: normal;
   font-weight: 700;
 }
+
 .textStyle {
   padding: '20px';
   text-align: center;
@@ -123,7 +135,8 @@ html{
   font-style: normal;
   font-weight: 700;
 }
-.homeBanner{
+
+.homeBanner {
   color: #439873;
   font-family: EB Garamond;
   font-size: 48px;
@@ -138,14 +151,14 @@ html{
 
 .boxes-container {
   display: flex;
-  margin-top:20px
-  /* background-color:green; */
+  margin-top: 20px
+    /* background-color:green; */
 }
 
-.left-boxes{
+.left-boxes {
   padding: 20px;
   width: 500px;
-  margin:20px;
+  margin: 20px;
 }
 
 .patient {
@@ -153,8 +166,8 @@ html{
   background-color: white;
   padding: 20px;
   width: 300px;
-  
-  margin:20px;
+
+  margin: 20px;
 
 }
 
@@ -182,7 +195,7 @@ html{
 
 .list-container {
   display: flex;
-  
+
 }
 
 .list {
@@ -191,8 +204,9 @@ html{
   margin: 0 20px;
 }
 
-.blue{
-  background-color: blue; /* Green */
+.blue {
+  background-color: blue;
+  /* Green */
   border: none;
   color: white;
   padding: 15px 32px;
@@ -200,9 +214,9 @@ html{
   text-decoration: none;
   display: flex;
   font-size: 16px;
-  margin-left:100px;
-  margin-bottom:20px;
-  
+  margin-left: 100px;
+  margin-bottom: 20px;
+
 }
 
 .container {
@@ -210,8 +224,10 @@ html{
 }
 
 .edit-icon {
-  margin-left: 10px; /* Adjust the margin as needed */
+  margin-left: 10px;
+  /* Adjust the margin as needed */
 }
+
 /* done with profile */
 
 
@@ -220,28 +236,34 @@ html{
 .matching {
   background: #01382E;
 }
-.matching-title{
+
+.matching-title {
   color: #439873;
   font-size: 50px;
 }
+
 .bold-option {
   font-weight: bold;
   text-align: center;
 }
-.custom-select{
+
+.custom-select {
   padding: 5px;
   font-size: 14px;
 }
+
 .custom-select option {
-  font-size:16px;
+  font-size: 16px;
   font-weight: bold;
   text-align: center;
 }
-.matching-category-choice{
-  color: #439873;
+
+.matching-category-choice {
+  color: #005241;
   font-weight: bold;
   font-size: 50px;
 }
+
 .matching-container {
   display: flex;
   align-items: center;
@@ -249,8 +271,10 @@ html{
 }
 
 .search-bar-container {
-  margin-left: auto; /* Pushes the search bar to the right but it goes off screen*/
+  margin-left: auto;
+  /* Pushes the search bar to the right but it goes off screen*/
 }
+
 .search-bar input {
   padding: 8px;
   border-radius: 20px;
@@ -261,7 +285,7 @@ html{
 .search-button {
   padding: 0;
   border: none;
-  background: none; 
+  background: none;
   width: 24px;
   height: 24px;
   padding: 0;
@@ -269,17 +293,19 @@ html{
   cursor: pointer;
 
 }
+
 /* just to check if button is clickable considering i made it so small now*/
-.search-button:active{ 
-  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24); 
-  /* Lowering the shadow */ 
+.search-button:active {
+  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+  /* Lowering the shadow */
 }
+
 .search-button img {
   width: 100%;
   height: 100%;
 }
 
-.filtersContainer{
+.filtersContainer {
   display: flex;
   margin-bottom: 100px;
 
@@ -287,21 +313,24 @@ html{
 
 .filters {
   margin-top: 20px;
-  
+
   align-items: center;
-  
+
 }
 
 .filters select {
-  padding: 8px 16px; /* Adjust padding */
-  border-radius: 5px; /* Decrease border-radius for less oval shape */
+  padding: 8px 16px;
+  /* Adjust padding */
+  border-radius: 5px;
+  /* Decrease border-radius for less oval shape */
   border: 1px solid #ccc;
   margin-right: 10px;
 }
 
 .filters select:last-child {
   position: relative;
-  margin-right: 0; /* Remove margin from the last select */
+  margin-right: 0;
+  /* Remove margin from the last select */
   right: 0;
 }
 
