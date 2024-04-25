@@ -549,7 +549,7 @@ function TherapistBioFromPatientView({
                       <Typography sx={{fontSize: 18, fontFamily: 'Arial'}}>{item.reviewerName}</Typography>
                       <Rating  readOnly precision = {0.5} value={item.rating} /> 
                       <Typography sx={{fontWeight: 'bold'}}>{item.reviewTitle}</Typography>
-                      <Typography>Reviewed made on {item.reviewDate}</Typography>
+                      <Typography>Review made on {item.reviewDate}</Typography>
                       <Typography sx={{marginTop: '20px'}}>{item.review}</Typography>
                     </Box>
                   ))}
@@ -584,7 +584,7 @@ function TherapistBioFromPatientView({
                  <TextField
                    inputRef={reviewInput}
                    fullWidth
-                   label="Title of Review"
+                   label="Description of Review"
                    id="textbox-Review"
                    // value={currReview}
                    // onChange={event => setCurrReview(event.target.value)}
@@ -630,7 +630,7 @@ function TherapistBioFromPatientView({
                   <TextField
                     inputRef={reviewInput}
                     fullWidth
-                    label="Title of Review"
+                    label="Description of Review"
                     id="textbox-Review"
                     // value={currReview}
                     // onChange={event => setCurrReview(event.target.value)}
