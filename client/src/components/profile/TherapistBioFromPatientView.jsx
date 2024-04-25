@@ -84,7 +84,7 @@ function TherapistBioFromPatientView({
               }
             );
 
-            let id = currentUser.uid;
+            let id = appointment.therapist;
 
             const responseMeeting = await axios.get(
               `http://localhost:5173/meeting/therapist/${id}`
@@ -96,6 +96,7 @@ function TherapistBioFromPatientView({
             );
             setAppointments(filteredAppointments);
 
+            console.log(Appointments);
             Swal.fire({
               title: "Meeting Canceled!",
               icon: "success",

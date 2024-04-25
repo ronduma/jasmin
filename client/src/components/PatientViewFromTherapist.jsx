@@ -156,7 +156,7 @@ function PatientView() {
                 Match
               </Button>
             )}{" "}
-            <Button variant="contained"> Chat </Button>
+            
           </Paper>
         </Grid>
         <Grid item xs={12} md={6}>
