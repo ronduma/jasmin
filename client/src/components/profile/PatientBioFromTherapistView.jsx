@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import dayjs from "dayjs";
 import { AuthContext } from "../../context/AuthContext";
-import "../../App.css";
+import "./styles.css";
 import axios from "axios";
 import { Typography } from "@mui/material";
 import { useParams, NavLink } from "react-router-dom";
@@ -92,7 +92,14 @@ function PatientFromTherapistView({ bio, concerns }) {
       // );
     } catch (error) {
       console.error("Error canceling appointment:", error);
+      Swal.fire({
+        title: "Error canceling appointment",
+        icon: "error",
+      });
+
+      setLoading(false);
     }
+    
   };
 
   const allowEditAbout = () => {
@@ -188,206 +195,196 @@ function PatientFromTherapistView({ bio, concerns }) {
   };
 
   return (
-    <div>
-      <Grid
-        container
-        justifyContent={"center"}
-        spacing={2}
-        alignItems={"stretch"}
-        style={{ padding: "2vh 0 0 0", minWidth: "1200px", minHeight: "500px" }}
-      >
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Paper className="about-me">
-              <div
-                style={{
-                  alignItems: "flex-start",
-                  display: "flex",
-                  justifyContent: "space-between",
-                }}
-              >
-                <div className="right-section-header">About Me</div>
-                {editAbout ? (
-                  ""
-                ) : (
-                  <IconButton onClick={allowEditAbout}></IconButton>
-                )}
-              </div>
-              <TextField
-                disabled={!editAbout}
-                inputRef={(input) => input && input.focus()}
-                fullWidth
-                id="textbox-bio"
-                label="Tell us about yourself!"
-                value={currbio}
-                onChange={(event) => setBio(event.target.value)}
-                InputLabelProps={{
-                  shrink: currbio || editAbout ? true : false,
-                }}
-                multiline
-                style={{ margin: "2vh 0 1vh 0" }}
-                rows={3}
-                inputProps={{
-                  maxLength: 285,
-                }}
-              />
-              {editAbout && (
-                <div style={{ position: "absolute", bottom: 0, right: 0 }}>
-                  <IconButton>
-                    <CheckCircleIcon onClick={putBio}></CheckCircleIcon>
-                  </IconButton>
-                  <IconButton>
-                    <CancelRoundedIcon
-                      onClick={() => {
-                        setEditAbout(false);
-                        setBio(bio);
-                      }}
-                    ></CancelRoundedIcon>
-                  </IconButton>
-                </div>
-              )}
-            </Paper>
-          </Grid>
-          <Grid item xs={12}>
-            <Paper className="core-concerns">
-              <div
-                style={{
-                  alignItems: "flex-start",
-                  display: "flex",
-                  justifyContent: "space-between",
-                }}
-              >
-                <div className="right-section-header">Core Concerns</div>
-                {editConcerns ? (
-                  ""
-                ) : (
-                  <IconButton onClick={allowEditConcerns}>
-                    <EditIcon />
-                  </IconButton>
-                )}
-              </div>
-              <TextField
-                disabled={!editConcerns}
-                fullWidth
-                id="textbox-concern-one"
-                label="Concern #1"
-                value={currConcerns[0] || ""}
-                onChange={(event) =>
-                  setConcerns([
-                    event.target.value,
-                    currConcerns[1],
-                    currConcerns[2],
-                  ])
-                }
-                InputLabelProps={{
-                  shrink: currConcerns[0] || editConcerns ? true : false,
-                }}
-                style={{ margin: "2vh 0 2vh 0" }}
-                inputProps={{
-                  maxLength: 90,
-                }}
-              />
-              <TextField
-                disabled={!editConcerns}
-                fullWidth
-                id="textbox-concern-two"
-                label="Concern #2"
-                value={currConcerns[1] || ""}
-                onChange={(event) =>
-                  setConcerns([
-                    currConcerns[0],
-                    event.target.value,
-                    currConcerns[2],
-                  ])
-                }
-                InputLabelProps={{
-                  shrink: currConcerns[1] || editConcerns ? true : false,
-                }}
-                style={{ margin: "2vh 0 2vh 0" }}
-                inputProps={{
-                  maxLength: 90,
-                }}
-              />
-              <TextField
-                disabled={!editConcerns}
-                fullWidth
-                id="textbox-concern-three"
-                label="Concern #3"
-                value={currConcerns[2] || ""}
-                onChange={(event) =>
-                  setConcerns([
-                    currConcerns[0],
-                    currConcerns[1],
-                    event.target.value,
-                  ])
-                }
-                InputLabelProps={{
-                  shrink: currConcerns[2] || editConcerns ? true : false,
-                }}
-                style={{ margin: "2vh 0 2vh 0" }}
-                inputProps={{
-                  maxLength: 90,
-                }}
-              />
-              {editConcerns && (
-                <div style={{ position: "absolute", bottom: 0, right: 0 }}>
-                  <IconButton>
-                    <CheckCircleIcon onClick={putConcerns}></CheckCircleIcon>
-                  </IconButton>
-                  <IconButton>
-                    <CancelRoundedIcon
-                      onClick={() => {
-                        setEditConcerns(false);
-                        setConcernsHelper(concerns);
-                      }}
-                    ></CancelRoundedIcon>
-                  </IconButton>
-                </div>
-              )}
-            </Paper>
-          </Grid>
-        </Grid>
-        <Grid item xs={12}>
-          <Paper style={{ minHeight: "18vh", padding: "2vh" }}>
-            <div className="right-section-header"> Upcoming Appointments </div>
-            {Appointments === null || Appointments.length === 0 ? (
-              <Typography> No upcoming appointments.</Typography>
+    <Paper style={{ height: "100%" }}>
+      <Grid item xs={12}>
+        <div className="about-me">
+          <div
+            style={{
+              alignItems: "flex-start",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <div className="right-section-header">About Me</div>
+            {editAbout ? (
+              ""
             ) : (
-              <div>
-                {Appointments.map((appointment, index) => (
-                  <div key={index}>
-                    {/* <Typography variant="body1">
-                      {appointment.time} with {appointment.therapistName}
-                    </Typography> */}
-
-                    <Typography variant="body1">
-                      {appointment.time}:{" "}
-                      <a href={appointment.hostRoomUrl} target="_blank">
-                        {" "}
-                        Host Meeting Link
-                      </a>{" "}
-
-                      <Button
-                          variant="contained"
-                          color="secondary"
-                          size="small"
-                          onClick={() => cancelAppointment(appointment)}
-                          style={{ marginLeft: "5px", marginBottom: "5px" }}
-                        >
-                          Cancel Meeting
-                        </Button>
-                        
-                    </Typography>
-
-                    {/* Add additional details about the appointment if needed */}
-                  </div>
-                ))}
-              </div>
+              <IconButton onClick={allowEditAbout}></IconButton>
             )}
-          </Paper>
-        </Grid>
+          </div>
+          <TextField
+            disabled={!editAbout}
+            inputRef={(input) => input && input.focus()}
+            fullWidth
+            id="textbox-bio"
+            label="Tell us about yourself!"
+            value={currbio}
+            onChange={(event) => setBio(event.target.value)}
+            InputLabelProps={{
+              shrink: currbio || editAbout ? true : false,
+            }}
+            multiline
+            style={{ margin: "2vh 0 1vh 0" }}
+            rows={3}
+            inputProps={{
+              maxLength: 285,
+            }}
+          />
+          {editAbout && (
+            <div style={{ position: "absolute", bottom: 0, right: 0 }}>
+              <IconButton>
+                <CheckCircleIcon onClick={putBio}></CheckCircleIcon>
+              </IconButton>
+              <IconButton>
+                <CancelRoundedIcon
+                  onClick={() => {
+                    setEditAbout(false);
+                    setBio(bio);
+                  }}
+                ></CancelRoundedIcon>
+              </IconButton>
+            </div>
+          )}
+        </div>
       </Grid>
-    </div>
+      <Grid item xs={12}>
+        <div className="core-concerns">
+          <div
+            style={{
+              alignItems: "flex-start",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <div className="right-section-header">Core Concerns</div>
+            {editConcerns ? (
+              ""
+            ) : (
+              <IconButton onClick={allowEditConcerns}>
+                <EditIcon />
+              </IconButton>
+            )}
+          </div>
+          <TextField
+            disabled={!editConcerns}
+            fullWidth
+            id="textbox-concern-one"
+            label="Concern #1"
+            value={currConcerns[0] || ""}
+            onChange={(event) =>
+              setConcerns([
+                event.target.value,
+                currConcerns[1],
+                currConcerns[2],
+              ])
+            }
+            InputLabelProps={{
+              shrink: currConcerns[0] || editConcerns ? true : false,
+            }}
+            style={{ margin: "2vh 0 2vh 0" }}
+            inputProps={{
+              maxLength: 90,
+            }}
+          />
+          <TextField
+            disabled={!editConcerns}
+            fullWidth
+            id="textbox-concern-two"
+            label="Concern #2"
+            value={currConcerns[1] || ""}
+            onChange={(event) =>
+              setConcerns([
+                currConcerns[0],
+                event.target.value,
+                currConcerns[2],
+              ])
+            }
+            InputLabelProps={{
+              shrink: currConcerns[1] || editConcerns ? true : false,
+            }}
+            style={{ margin: "2vh 0 2vh 0" }}
+            inputProps={{
+              maxLength: 90,
+            }}
+          />
+          <TextField
+            disabled={!editConcerns}
+            fullWidth
+            id="textbox-concern-three"
+            label="Concern #3"
+            value={currConcerns[2] || ""}
+            onChange={(event) =>
+              setConcerns([
+                currConcerns[0],
+                currConcerns[1],
+                event.target.value,
+              ])
+            }
+            InputLabelProps={{
+              shrink: currConcerns[2] || editConcerns ? true : false,
+            }}
+            style={{ margin: "2vh 0 2vh 0" }}
+            inputProps={{
+              maxLength: 90,
+            }}
+          />
+          {editConcerns && (
+            <div style={{ position: "absolute", bottom: 0, right: 0 }}>
+              <IconButton>
+                <CheckCircleIcon onClick={putConcerns}></CheckCircleIcon>
+              </IconButton>
+              <IconButton>
+                <CancelRoundedIcon
+                  onClick={() => {
+                    setEditConcerns(false);
+                    setConcernsHelper(concerns);
+                  }}
+                ></CancelRoundedIcon>
+              </IconButton>
+            </div>
+          )}
+        </div>
+      </Grid>
+      <Grid item xs={12}>
+        <Paper style={{ minHeight: "18vh", padding: "2vh" }}>
+          <div className="right-section-header"> Upcoming Appointments </div>
+          {Appointments === null || Appointments.length === 0 ? (
+            <Typography> No upcoming appointments.</Typography>
+          ) : (
+            <div>
+              {Appointments.map((appointment, index) => (
+                <div key={index}>
+                  {/* <Typography variant="body1">
+                    {appointment.time} with {appointment.therapistName}
+                  </Typography> */}
+
+                  <Typography variant="body1">
+                    {appointment.time}:{" "}
+                    <a href={appointment.hostRoomUrl} target="_blank">
+                      {" "}
+                      Host Meeting Link
+                    </a>{" "}
+
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        size="small"
+                        onClick={() => cancelAppointment(appointment)}
+                        style={{ marginLeft: "5px", marginBottom: "5px" }}
+                      >
+                        Cancel Meeting
+                      </Button>
+                      
+                  </Typography>
+
+                  {/* Add additional details about the appointment if needed */}
+                </div>
+              ))}
+            </div>
+          )}
+        </Paper>
+      </Grid>
+    </Paper>
   );
 }
 

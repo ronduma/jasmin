@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import dayjs from "dayjs";
 
 import { AuthContext } from "../../context/AuthContext";
@@ -15,8 +15,12 @@ import IconButton from "@mui/material/IconButton";
 import { useParams, Link } from "react-router-dom";
 import CheckCircleIcon from "@mui/icons-material/CheckCircleOutlined";
 import CancelRoundedIcon from "@mui/icons-material/CancelOutlined";
+
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import Card from "@mui/material/Card";
+import Rating from "@mui/material/Rating";
+import Stack from "@mui/material/Stack";
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
@@ -27,11 +31,18 @@ import Paper from "@mui/material/Paper";
 
 import Expertise from "./Expertise";
 
-function TherapistBioFromPatientView({ bio, specialty }) {
+function TherapistBioFromPatientView({
+  bio,
+  specialty,
+  overallRating,
+  reviews,
+}) {
   const { currentUser } = useContext(AuthContext);
   const [editAbout, setEditAbout] = useState(false);
+  const [editReview, setEditReview] = useState(true);
   const [currbio, setBio] = useState(bio);
   const [profileData, setProfileData] = useState(null);
+  const [signedData, setSignedData] = useState(null);
   const [Appointments, setAppointments] = useState(null);
   const [newBio, setNewBio] = useState(bio);
 
@@ -39,6 +50,15 @@ function TherapistBioFromPatientView({ bio, specialty }) {
   const [isLoading, setLoading] = useState(false);
 
   const [value, setValue] = useState(0);
+
+
+  const [alreadyReviewed, setAlreadyReviewed] = useState(false);
+
+  const [currReviews, setReviews] = useState(reviews);
+  const [inputRating, setInputRating] = useState(0);
+  const reviewInput = useRef(null);
+  const reviewTitleInput = useRef(null);
+  const [currRating, setRating] = useState(overallRating);
 
   const cancelAppointment = async (appointment) => {
     try {
@@ -52,34 +72,60 @@ function TherapistBioFromPatientView({ bio, specialty }) {
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes, Cancel Meeting",
       }).then(async (result) => {
-        if (result.isConfirmed) {
-          setLoading(true);
+        try {
+          if (result.isConfirmed) {
+            setLoading(true);
 
-          await axios.delete(
-            `http://localhost:5173/meeting/${appointment.id}`,
-            {
-              data: {
-                currentUserID: currentUser.uid,
-                therapistID: appointment.therapist, // Assuming you have therapistID in your appointment object
-                time: appointment.time, // Assuming you have time in your appointment object
-              },
-            }
-          );
+            await axios.delete(
+              `http://localhost:5173/meeting/${appointment.id}`,
+              {
+                data: {
+                  currentUserID: currentUser.uid,
+                  therapistID: appointment.therapist, // Assuming you have therapistID in your appointment object
+                  time: appointment.time, // Assuming you have time in your appointment object
+                },
+              }
+            );
 
-          let id = currentUser.uid;
+            let id = appointment.therapist;
 
-          const responseMeeting = await axios.get(
-            `http://localhost:5173/meeting/patient/${id}`
-          );
-          const fetchedAppointments = responseMeeting.data;
-          setAppointments(fetchedAppointments); //all appointments
+            const responseMeeting = await axios.get(
+              `http://localhost:5173/meeting/therapist/${id}`
+            );
+            const fetchedAppointments = responseMeeting.data;
+            // filter appointments
+            const filteredAppointments = fetchedAppointments.filter(appointment =>
+              appointment.patient === currentUser.uid && appointment.therapist === id
+            );
+            setAppointments(filteredAppointments);
 
-          Swal.fire({
-            title: "Meeting Canceled!",
-            icon: "success",
-          });
+            //bookedtimes
+            const bookedTimes = fetchedAppointments.reduce((acc, appointment) => {
+              const date = dayjs(appointment.time).format("MM/DD/YYYY");
+              const time = dayjs(appointment.time).format("h:mm A");
+              if (!acc[date]) {
+                acc[date] = [];
+              }
+              acc[date].push(time);
+              return acc;
+            }, {});
+            setAvailableTimes(bookedTimes);
 
+
+            Swal.fire({
+              title: "Meeting Canceled!",
+              icon: "success",
+            });
+
+            setLoading(false);
+          }
+        } catch (error) {
+          console.error("Error canceling appointment:", error);
           setLoading(false);
+          Swal.fire({
+            title: "Error canceling meeting",
+            icon: "error",
+          });
         }
       });
 
@@ -89,6 +135,11 @@ function TherapistBioFromPatientView({ bio, specialty }) {
       // );
     } catch (error) {
       console.error("Error canceling appointment:", error);
+      setLoading(false);
+      Swal.fire({
+        title: "Error canceling meeting",
+        icon: "error",
+      });
     }
   };
 
@@ -127,12 +178,9 @@ function TherapistBioFromPatientView({ bio, specialty }) {
     updatedtime = time.toString();
     return dayjs(date).format("MM/DD/YYYY") + " " + index;
   };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5173/profile/${id}`);
-        setProfileData(response.data);
 
         const responseMeeting = await axios.get(
           `http://localhost:5173/meeting/therapist/${id}`
@@ -147,6 +195,11 @@ function TherapistBioFromPatientView({ bio, specialty }) {
         setAppointments(filteredAppointments);
         console.log(fetchedAppointments);
 
+
+        setSignedData(signedUser.data);
+        setEditReview(signedData.isTherapist);
+
+        
         // set Calender
         console.log("bookedTimes");
         const bookedTimes = fetchedAppointments.reduce((acc, appointment) => {
@@ -181,6 +234,7 @@ function TherapistBioFromPatientView({ bio, specialty }) {
         therapistID: id,
         time: updatedtime,
       });
+
       console.log("Success Match Response:", response.data);
 
       const responseMeeting = await axios.get(
@@ -217,13 +271,75 @@ function TherapistBioFromPatientView({ bio, specialty }) {
         icon: "success",
       });
       setLoading(false);
+
       // setAvailableTimes(updatedAvailableTimes);
     } catch (error) {
       // Handle error
       console.error("Error:", error);
+      setLoading(false);
+      Swal.fire({
+        title: "Time Selection Unsuccessful",
+        icon: "error",
+      });
     }
   };
 
+  const handleInput = async (InputRating, ReviewTitle, Review) => {
+    try{
+      if(alreadyReviewed){
+        const response = await axios.put(`http://localhost:5173/reviews/${id}/${signedData._id}`, {reviewId : signedData._id, reviewTitle: ReviewTitle, reviewerName: signedData.firstName + " " + signedData.lastName, review: Review, rating: InputRating})
+        console.log(response.data);
+      }
+      else{
+        const response = await axios.post(`http://localhost:5173/reviews/${id}`, {reviewId : signedData._id, reviewTitle: ReviewTitle, reviewerName: signedData.firstName + " " + signedData.lastName, review: Review, rating: InputRating});
+        console.log(response.data);
+        setReviews([...reviews, response.data])
+        setAlreadyReviewed(true);
+      }
+    }
+    catch(error){
+      console.error(error);
+    }
+  };
+
+  useEffect(() =>{
+    const handleId = async () => {
+      try{
+          const signedUser = await axios.get(`http://localhost:5173/profile/${currentUser.uid}`);
+          if(signedUser.data != null){
+            console.log('huh');
+            setSignedData(signedUser.data);
+            setEditReview(signedUser.data.isTherapist);
+          }
+          const response = await axios.get(`http://localhost:5173/profile/${id}`);
+          setProfileData(response.data);
+      }
+      catch(e){
+        console.log(e);
+      }
+    };
+    handleId();
+  }, [currentUser])
+
+  useEffect(() => {
+    const handleAlreadyReviewed = async () => {
+      try{
+        const isFound = currReviews.some(obj => obj._id == signedData._id);
+        console.log(isFound);
+        if(isFound){
+          setAlreadyReviewed(true);
+        }
+        else{
+          setAlreadyReviewed(false);
+        }
+        console.log(alreadyReviewed);
+      }
+      catch(e){
+        console.log(e);
+      }
+    };
+    handleAlreadyReviewed();
+  }, [signedData])
   return (
     <div>
       <Grid container spacing={2}>
@@ -404,6 +520,132 @@ function TherapistBioFromPatientView({ bio, specialty }) {
             </CustomTabPanel>
             <CustomTabPanel value={value} index={2}>
               <div className="right-section-header"> Reviews </div>
+              <div>
+                <Typography component="legend" style={{ marginBottom: '20px' }}>Overall Therapist Rating</Typography>
+                <Rating
+                name="text-feedback"
+                value ={currRating}
+                readOnly
+                precision={0.5}
+                onChange = {(event, newValue) => {
+                  setRating(newValue);
+                }}
+               />
+               <Box>{currRating ? currRating.toFixed(2) : 0} Stars</Box>
+              </div>
+              
+              <div style={{marginTop: '50px'}}>
+              <Typography component="legend">List of Reviews</Typography>
+              {!currReviews && currReviews.length == 0 ?(<div style={{marginTop: '50px'}}>Currently No Reviews</div>) : 
+                (<Stack direction ='column' spacing={2}>
+                  {currReviews && currReviews.slice(-5).map((item, index) => (
+                    <Card variant='outlined' key={index}>
+                      <Typography>Name: {item.reviewerName}</Typography>
+                      <Typography>Title: {item.reviewTitle}</Typography>
+                      <Typography>Rating: {item.rating}</Typography>
+                      <Typography>Date: {item.reviewDate}</Typography>
+                      <Typography>Review: {item.review}</Typography>
+                    </Card>
+                  ))}
+                </Stack>)}
+              </div>
+              {!editReview ?
+              <>
+              {alreadyReviewed ?
+              <div>
+              <div style={{ marginTop: '50px'}} >
+               <div className='right-section-header'style={{ marginBottom: '20px'}}> Create Your Review </div>
+                 <div style={{marginBottom: '20px'}}>
+                 <Typography component="legend">Review Rating</Typography>
+                 <Rating
+                   name="text-feedback"
+                   label ="Review Rating"
+                   value ={inputRating}
+                   precision={0.5}
+                   onChange = {(event, newValue) => {
+                     setInputRating(newValue);
+                   }}
+                 />
+                 </div>
+                 <TextField
+                   inputRef={reviewTitleInput}
+                   label="Name of Review"
+                   id ="textbox-Name"
+                   inputProps={{
+                     maxLength:50
+                   }}
+                 />
+                 <TextField
+                   inputRef={reviewInput}
+                   fullWidth
+                   label="Title of Review"
+                   id="textbox-Review"
+                   // value={currReview}
+                   // onChange={event => setCurrReview(event.target.value)}
+                   multiline
+                   style={{margin: '2vh 0 1vh 0'}}
+                   rows={3}
+                   inputProps={{
+                     maxLength:285
+                   }}
+                 />
+               </div>
+               
+               <div style={{ marginTop: '20px', marginBottom: '20px' }}>
+                 <Button variant="contained" onClick={(event) => { event.preventDefault; handleInput(inputRating, reviewTitleInput.current.value, reviewInput.current.value)}}>
+                   Edit A Review
+                 </Button>
+               </div>
+               </div>
+                :
+                <div>
+                  <div style={{ marginTop: '50px'}} >
+                <div className='right-section-header'style={{ marginBottom: '20px'}}> Create Your Review </div>
+                  <div style={{marginBottom: '20px'}}>
+                  <Typography component="legend">Review Rating</Typography>
+                  <Rating
+                    name="text-feedback"
+                    label ="Review Rating"
+                    value ={inputRating}
+                    precision={0.5}
+                    onChange = {(event, newValue) => {
+                      setInputRating(newValue);
+                    }}
+                  />
+                  </div>
+                  <TextField
+                    inputRef={reviewTitleInput}
+                    label="Name of Review"
+                    id ="textbox-Name"
+                    inputProps={{
+                      maxLength:50
+                    }}
+                  />
+                  <TextField
+                    inputRef={reviewInput}
+                    fullWidth
+                    label="Title of Review"
+                    id="textbox-Review"
+                    // value={currReview}
+                    // onChange={event => setCurrReview(event.target.value)}
+                    multiline
+                    style={{margin: '2vh 0 1vh 0'}}
+                    rows={3}
+                    inputProps={{
+                      maxLength:285
+                    }}
+                  />
+                </div>
+                
+                <div style={{ marginTop: '20px', marginBottom: '20px' }}>
+                  <Button variant="contained" onClick={(event) => { event.preventDefault; handleInput(inputRating, reviewTitleInput.current.value, reviewInput.current.value)}}>
+                    Submit A Review
+                  </Button>
+                </div>
+                </div> }
+              </>
+              : 
+              <br/>}
             </CustomTabPanel>
           </Paper>
         </Grid>

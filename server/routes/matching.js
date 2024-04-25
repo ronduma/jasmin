@@ -14,8 +14,8 @@ router.post('/', async (req, res) => {
     try {
         // Extract data from the request body
         const { currentUserID, therapistID } = req.body;
-        console.log("Matching: Req Body")
-        console.log(req.body)
+        // console.log("Matching: Req Body")
+        // console.log(req.body)
         // Call the match function
         const currentUser = await users.match(currentUserID, therapistID);
         return res.status(200).json({ success: true, message: 'User matched/unmatched successfully', user: currentUser });

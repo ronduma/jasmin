@@ -41,7 +41,6 @@ router.get("/:name", async(req, res) => {
     }
 })
 
-
 // req.query should be current user 
 router.get('/patients', async(req, res) => {
     try{
@@ -53,7 +52,6 @@ router.get('/patients', async(req, res) => {
         console.log(e);
     }
   });
-  
 
 
 module.exports = router;

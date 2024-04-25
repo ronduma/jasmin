@@ -1,30 +1,29 @@
-import "../App.css";
-import { useParams, useNavigate, NavLink } from 'react-router-dom';
-import React, { useContext, useState, useEffect } from 'react';
-import axios from 'axios';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-
-import Typography from '@mui/material/Typography';
+import "./profile/styles.css";
+import { useParams, useNavigate, NavLink } from "react-router-dom";
+import React, { useContext, useState, useEffect } from "react";
+import axios from "axios";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import Swal from "sweetalert2";
+import Typography from "@mui/material/Typography";
 import TherapistBioFromPatientView from "./profile/TherapistBioFromPatientView";
-import {AuthContext} from '../context/AuthContext';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { AuthContext } from "../context/AuthContext";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import PatientBio from "./profile/PatientBio";
 import PatientBioFromTherapistView from "./profile/PatientBioFromTherapistView";
 
 function PatientView() {
-    const { id } = useParams();
+  const { id } = useParams();
   const [profileData, setprofileData] = useState(null);
   const [isLoading, setLoading] = useState(true);
-  const {currentUser} = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
   const [isMatched, setIsMatched] = useState(false);
   console.log("We are in Psychologist");
   const [therapist, setTherapist] = useState(null);
-  
 
-
+  const [loading, setLoading2] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,26 +43,42 @@ function PatientView() {
       // Check if currentUser.uid is included in profileData.patients
       if (profileData.therapist && profileData.therapist == currentUser.uid) {
         setIsMatched(true);
-      }
-      else{
+      } else {
         setIsMatched(false);
       }
     }
   }, [profileData, currentUser]);
 
   const handleClick = async () => {
-
     try {
-
+      setLoading2(true);
       const response = await axios.post(`http://localhost:5173/matching`, {
         currentUserID: currentUser.uid,
-        therapistID: id
+        therapistID: id,
       });
-      console.log('Success Match Response:', response.data);
-      setIsMatched(!isMatched)
+      console.log("Success Match Response:", response.data);
+      setIsMatched(!isMatched);
+      setLoading2(false);
+      if (isMatched) {
+        Swal.fire({
+          title: "Matched!",
+          icon: "success",
+        });
+      }
+      else{
+        Swal.fire({
+          title: "Unmatched!",
+          icon: "success",
+        });
+      }
     } catch (error) {
       // Handle error
-      console.error('Error:', error);
+      console.error("Error:", error);
+      setLoading2(false);
+      Swal.fire({
+        title: "Error handling match!",
+        icon: "error",
+      });
     }
   };
 
@@ -72,61 +87,67 @@ function PatientView() {
   }
 
   return (
-    <div style={{"marginBottom": 100}}>
-      <Grid 
-        container 
+    <div className="profile-container">
+      <Grid
+        container
         justifyContent={"center"}
         spacing={2}
         alignItems={"stretch"}
-        style={{padding:'2vh 0 0 0',minWidth: "1200px", minHeight: "500px"}}
       >
-        <Grid 
-          fontSize={"14pt"}
-          item 
-          xs={3}
-        >
-          <Paper style={{ height: "100%", minWidth: "200px", flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <Typography 
-                  variant='h4'
-                  style={{padding: '1vh 0 0 0'}}
-                >
-                  {profileData.firstName} {profileData.lastName}
-                </Typography> 
-            {profileData ? 
+        <Grid item xs={12} md={6} lg={4}>
+          {loading && (
+            <div
+              style={{
+                position: "fixed",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+              }}
+            >
+              {/* Add your loading icon component here */}
+              loading...
+            </div>
+          )}
+
+          <Paper className="left-section">
+            <div className="left-section-header">
+              {profileData.firstName} {profileData.lastName}
+            </div>
+            {profileData ? (
               <div>
-                <div id='profilePic'>
-                  {profileData.profile_img ?            
+                <div id="profilePic">
+                  {profileData.profile_img ? (
                     <Avatar
                       alt="Profile Picture"
                       src={`data:image/png;base64,${profileData.profile_img}`}
-                      sx={{ minWidth: 200, minHeight: 200, mx: 'auto'}}
-                      style={{marginTop: '1em'}}
-                    /> :
-                    <div sx={{mx:'auto'}}>
+                      sx={{ width: "10rem", height: "10rem", mx: "auto" }}
+                    />
+                  ) : (
+                    <div sx={{ mx: "auto" }}>
                       <div>
                         <AccountCircleIcon
-                          sx={{ width: "auto", height: 200 }}
-                          style={{marginTop: '1em'}}
+                          sx={{ width: "auto", height: "10rem" }}
                         />
-                      </div> 
+                      </div>
                     </div>
-                  }
+                  )}
                 </div>
-                
-                <br/>
-                <div style={{width: "90%", margin: "0 auto", textAlign: "center"}}>
-                  <div style={{display: "inline-block" ,textAlign:'left'}}>
-                    <div>Age: {profileData.age}</div> 
-                    <div>Gender: {profileData.gender}</div> 
-                    <div>Location: {profileData.location}</div> 
-                    <div>Occupation: {profileData.occupation}</div> 
-                    <div>Email: {profileData.email}</div> 
+                <br />
+                <div className="left-section-details">
+                  <div style={{ display: "inline-block", textAlign: "left" }}>
+                    <div>Age: {profileData.age}</div>
+                    <div>Gender: {profileData.gender}</div>
+                    <div>Location: {profileData.location}</div>
+                    <div>Occupation: {profileData.occupation}</div>
+                    <div>Email: {profileData.email}</div>
                   </div>
-                </div>                
+                </div>
               </div>
-              : <div>Missing Data</div>}
-              <br/>
-              {isMatched ? (
+            ) : (
+              <div>Missing Data</div>
+            )}
+            <br />
+            {isMatched ? (
               <Button variant="contained" onClick={handleClick}>
                 Unmatch with Patient
               </Button>
@@ -134,21 +155,19 @@ function PatientView() {
               <Button variant="contained" onClick={handleClick}>
                 Match
               </Button>
-            )}
-            {" "}
-              <Button variant="contained"> Chat </Button>
+            )}{" "}
+            <Button variant="contained"> Chat </Button>
           </Paper>
         </Grid>
-        <Grid item xs={6}>
-          <PatientBioFromTherapistView 
-              bio = {profileData.bio} 
-              specialty={profileData.concerns}/> 
+        <Grid item xs={12} md={6}>
+          <PatientBioFromTherapistView
+            bio={profileData.bio}
+            specialty={profileData.concerns}
+          />
         </Grid>
       </Grid>
     </div>
   );
-
 }
-
 
 export default PatientView;

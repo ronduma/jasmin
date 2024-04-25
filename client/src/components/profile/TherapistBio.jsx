@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import Swal from "sweetalert2";
 // import './styles.css';
 import { useParams, Link } from "react-router-dom";
-import axios from "axios";
+
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
@@ -16,14 +16,18 @@ import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import axios from "axios";
 import CheckCircleIcon from "@mui/icons-material/CheckCircleOutlined";
 import CancelRoundedIcon from "@mui/icons-material/CancelOutlined";
 import EditIcon from "@mui/icons-material/Edit";
 import FormControl from "@mui/material/FormControl";
+import Rating from '@mui/material/Rating';
+import Stack from '@mui/material/Stack';
+import Card from '@mui/material/Card';
 
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
@@ -33,7 +37,6 @@ import Expertise from "./Expertise";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
-
   return (
     <Grid item hidden={value !== index}>
       {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
@@ -41,7 +44,7 @@ function CustomTabPanel(props) {
   );
 }
 
-function TherapistBio({ bio, specialty, price }) {
+function TherapistBio({ bio, specialty, price, overallRating, reviews}) {
   const { currentUser } = useContext(AuthContext);
   const [editAbout, setEditAbout] = useState(false);
   const [currbio, setBio] = useState(bio);
@@ -54,8 +57,25 @@ function TherapistBio({ bio, specialty, price }) {
   let [selectedDate, setSelectedDate] = useState(dayjs());
   const [selectedPrice, setSelectPrice] = useState(price);
   const [newPrice, setNewPrice] = useState(price);
-  if ((price = "")) setSelectPrice("");
 
+  if (price = "") setSelectPrice("");
+  const [currRating, setRating] = useState(overallRating);
+  console.log(overallRating);
+  const [currReviews, setReviews] = useState(reviews);
+  useEffect(() => {
+    const userReviews = async () => {
+      try{
+        console.log(currentUser);
+        const response = await axios.get(`http://localhost:5173/reviews/${currentUser.uid}`);
+        console.log(response.data);
+      }
+      catch(error){
+        console.error(error);
+      }
+    }
+    userReviews();
+  });
+    
   const [loading, setLoading] = useState(false);
 
   const cancelAppointment = async (appointment) => {
@@ -107,6 +127,11 @@ function TherapistBio({ bio, specialty, price }) {
       // );
     } catch (error) {
       console.error("Error canceling appointment:", error);
+      Swal.fire({
+        title: "Error canceling appointment",
+        icon: "error",
+      });
+      setLoading(false);
     }
   };
 
@@ -187,7 +212,7 @@ function TherapistBio({ bio, specialty, price }) {
     setValue(newValue);
     console.log(value);
   };
-
+  
   return (
     <div>
       <Grid container spacing={2}>
@@ -201,7 +226,7 @@ function TherapistBio({ bio, specialty, price }) {
             }}
           >
             {/* Add your loading icon component here */}
-            loading...
+            Loading...
           </div>
         )}
 
@@ -348,7 +373,36 @@ function TherapistBio({ bio, specialty, price }) {
             </CustomTabPanel>
 
             <CustomTabPanel value={value} index={2}>
-              <div className="right-section-header"> Reviews </div>
+
+              <div className='right-section-header'> Reviews </div>
+              <div>
+                <Typography component="legend" style={{ marginBottom: '20px' }}>Overall Therapist Rating:</Typography>
+                <Rating
+                name="text-feedback"
+                value ={currRating}
+                readOnly
+                precision={0.01}
+                onChange = {(event, newValue) => {
+                  setRating(newValue);
+                }}
+               />
+               <Box>{currRating ? currRating : 0} Stars</Box>
+              </div>
+              <div style={{marginTop: '20px'}}>
+              <Typography component="legend">List of Reviews:</Typography>
+              {!currReviews ?(<div style={{marginTop: '50px'}}>Currently No Reviews</div>) : 
+                (<Stack direction ='column' spacing={2}>
+                  {currReviews && currReviews.map((item, index) => (
+                    <Card variant='outlined' key={index}>
+                      <Typography>Name: {item.reviewerName}</Typography>
+                      <Typography>Title: {item.reviewTitle}</Typography>
+                      <Typography>Rating: {item.rating}</Typography>
+                      <Typography>Date: {item.reviewDate}</Typography>
+                      <Typography>Review: {item.review}</Typography>
+                    </Card>
+                  ))}
+                </Stack>)}
+              </div>
             </CustomTabPanel>
           </Paper>
         </Grid>

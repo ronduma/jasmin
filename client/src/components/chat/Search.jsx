@@ -31,83 +31,21 @@ function Search(props) {
   };
 
   useEffect(() => {
-    const getTherapists = async () => {
-      try{
-        const response = await axios.get("http://localhost:5173/therapists/all");
-        const therapists = response.data.map(therapist => therapist.firstName + " " + therapist.lastName);
-        setSearchList(response.data.sort((a,b)=> {
-          const lastNameA = a.lastName.toUpperCase(); 
-          const lastNameB = b.lastName.toUpperCase(); 
-          if (lastNameA < lastNameB) {
-              return -1; 
-          }
-          if (lastNameA > lastNameB) {
-              return 1; 
-          }
-          return 0; 
-        }));
-      } catch (e) {
-        console.log(e);
-      }
-    }
     const getPatients = async () => {
       try{
-        const response = await axios.get("http://localhost:5173/patients/all");
-        const patients = response.data.map(patient => patient.firstName + " " + patient.lastName);
-        setSearchList(response.data.sort((a,b)=> {
-          const lastNameA = a.lastName.toUpperCase(); 
-          const lastNameB = b.lastName.toUpperCase(); 
-          if (lastNameA < lastNameB) {
-              return -1; 
-          }
-          if (lastNameA > lastNameB) {
-              return 1; 
-          }
-          return 0; 
-        }));
-      } catch (e) {
-        console.log(e);
-      }
-    }
-    // 
-    const getPatientsbyTherapist = async (id) => {
-      try{
-        const response = await axios.get("http://localhost:5173/therapists/patients");
-        const patients = response.data.map(patient => patient.firstName + " " + patient.lastName);
-        console.log(patients);
+        const response = await axios.get(`http://localhost:5173/patients/all/${props.id}`);
         setSearchList(response.data);
       } catch (e) {
         console.log(e);
       }
     }
-    const getTherapistbyPatient = async (id) => {
-      try{
-        const response = await axios.get("http://localhost:5173/patients/getTherapist");
-        const therapists = response.data.map(therapist => therapist.firstName + " " + therapist.lastName);
-        console.log(therapists);
-        setSearchList(response.data);
-      } catch (e) {
-        console.log(e);
-      }
-    }
-    if (props.isTherapist){
-      getPatients();
-      // getPatientsbyTherapist(props.id)
-
-    } else{
-      getTherapists();
-      // getTherapistbyPatient(props.id)
-    }
+    getPatients();
   }, []); 
 
   const handleChat = async () => {
-    console.log("chatting with", selectedTherapist)
-    let user2_id = selectedTherapist.id;
-    console.log(user2_id)
+    console.log("chatting with", selectedTherapist.name)
     try {
-      const response = await axios.put(`http://localhost:5173/chats/${props.id}`, {user2_id})
-      console.log(response)
-      props.onMessage({isChatting: true, id: response.data.insertedId});
+      props.onMessage({isChatting: true, name: selectedTherapist.name, id: selectedTherapist.chatID});
     } catch(e){
       console.log(e);
     }
@@ -139,7 +77,8 @@ function Search(props) {
               disableClearable
               options={searchList ? searchList.map(search => ({
                 id: search._id,
-                name: search.firstName + " " + search.lastName
+                name: search.name,
+                chatID: search.chatID
               })) : []}
               getOptionLabel={(option) => option.name}
               renderInput={(params) => (

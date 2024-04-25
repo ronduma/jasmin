@@ -33,6 +33,7 @@ const Chat = () => {
   const [previews, setPreviews] = useState([]);
 
   const togglePopup = () => {
+    setLoading(true); 
     setIsOpen(!isOpen); 
   };
 
@@ -43,6 +44,7 @@ const Chat = () => {
     } catch (e) {
       console.log(e)
     }
+    setLoading(false)
   };
 
   const getDm = async (chatLog) => {
@@ -108,6 +110,7 @@ const Chat = () => {
     fetchData();
     setIsChatting(data.isChatting);
     setSelectedChat(data.id);
+    setSelectedChatName(data.name);
   };
 
   if (currentUser){
@@ -140,11 +143,15 @@ const Chat = () => {
                             </div>
                           </Grid>
                           <Grid item xs={1.5}>
-                            <Search 
-                              id={currentUser.uid}
-                              onMessage={handleSearchResponse}
-                              isTherapist={profileData.isTherapist}
-                            />
+                            {profileData.isTherapist ?
+                              <Search 
+                                id={currentUser.uid}
+                                onMessage={handleSearchResponse}
+                                isTherapist={profileData.isTherapist}
+                              /> 
+                              :
+                              <></>
+                            }
                           </Grid>
                           <Grid item xs={1.5}>
                             <IconButton onClick={togglePopup}>
@@ -164,7 +171,7 @@ const Chat = () => {
                         />
                       :
                       <div>
-                        {previews.length == profileData.chatLog.length ? 
+                        {previews.length == profileData.chatLog.length || isLoading ? 
                           <div xs={12}>
                             {
                               profileData.chatLog.length == 0 ?
