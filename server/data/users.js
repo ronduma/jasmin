@@ -310,7 +310,7 @@ const getNotifications = async (uid) => {
 	return user.noti;
 }
 
-//update databse with notifications
+// update databse with notifications
 const updateNotifications = async (uid, unread, noti_str) => {
 	if (unread < 0) throw "Error: Unread notifications cannot be negative";
 	const toUpdate = {unread: unread};
@@ -334,6 +334,13 @@ const updateNotifications = async (uid, unread, noti_str) => {
 	}
 	return updatedUser.noti;
 };
+// const updateNotifications = async (uid, notifications) => {
+// 	const userCollection = await users();
+// 	await userCollection.updateOne(
+// 	  { _id: uid },
+// 	  { $set: { noti: notifications } }
+// 	);
+//   };
 
 const getUserByUsername = async (username) => {
 	// username = username.toLowerCase();

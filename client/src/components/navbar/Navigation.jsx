@@ -116,7 +116,7 @@ const NavigationAuth = () => {
       </Box>
       <Box>
         <Button color='green' className="navlink">
-          <Notis />
+          <Notis/>
         </Button>
         <Button component={NavLink} to='/profile' color='green' className="navlink"><CircleUserRound /></Button>
         <LogOutButton className='logout' />

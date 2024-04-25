@@ -9,7 +9,7 @@ import Paper from "@mui/material/Paper";
 import Swal from "sweetalert2";
 import Typography from "@mui/material/Typography";
 import TherapistBioFromPatientView from "./profile/TherapistBioFromPatientView";
-
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { AuthContext } from "../context/AuthContext";
 
 function PsychologistView() {

@@ -10,6 +10,7 @@ export const NotificationProvider = ({ children }) => {
   //need to change this after updaing the db?
   const [unreadNotifications, setUnreadNotifications] = useState(0);
 
+  //EDIT
   const markAllNotificationsAsRead = async () => {
     if (currentUser) {
       try {
