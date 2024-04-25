@@ -86,7 +86,7 @@ const Footer = () => {
         <a href="/privacy_policy" style = {{textDecoration:'none',color: 'inherit' , cursor: 'pointer'}}>Privacy Policy</a> 
         </div>
         <div>
-         <a href="/terms_conditions" style={{ textDecoration: 'none', color: 'inherit', cursor: 'pointer' }}>Terms and Conditions</a>
+          Terms and Conditions
         </div>
       </Grid>
       <Grid 
