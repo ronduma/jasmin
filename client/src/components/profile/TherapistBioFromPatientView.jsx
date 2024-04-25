@@ -633,27 +633,6 @@ function TherapistBioFromPatientView({
               </>
               : 
               <br/>}
-
-
-                  <div style={{ marginTop: "20px", marginBottom: "20px" }}>
-                    <Button
-                      variant="contained"
-                      onClick={(event) => {
-                        event.preventDefault;
-                        handleInput(
-                          inputRating,
-                          reviewTitleInput.current.value,
-                          reviewInput.current.value
-                        );
-                      }}
-                    >
-                      Submit A Review
-                    </Button>
-                  </div>
-                </div>
-              ) : (
-                <br />
-              )}
             </CustomTabPanel>
           </Paper>
         </Grid>
