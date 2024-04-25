@@ -93,7 +93,7 @@ function PatientFromTherapistView({ bio, concerns }) {
     } catch (error) {
       console.error("Error canceling appointment:", error);
       Swal.fire({
-        title: error,
+        title: "Error canceling appointment",
         icon: "error",
       });
 
