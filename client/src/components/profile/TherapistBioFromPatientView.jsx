@@ -88,7 +88,7 @@ function TherapistBioFromPatientView({
                 },
               }
             );
-
+              
             let id = appointment.therapist;
 
             const responseMeeting = await axios.get(
@@ -204,7 +204,7 @@ function TherapistBioFromPatientView({
         // setEditReview(signedData.isTherapist);
 
         // set Calender
-        console.log("bookedTimes");
+        // console.log("bookedTimes");
         const bookedTimes = fetchedAppointments.reduce((acc, appointment) => {
           const date = dayjs(appointment.time).format("MM/DD/YYYY");
           const time = dayjs(appointment.time).format("h:mm A");

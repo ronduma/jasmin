@@ -65,19 +65,20 @@ function TherapistBio({ bio, specialty, price, overallRating, reviews}) {
   const [pastAppointments, setPastAppointments] = useState([]);
   const [futureAppointments, setFutureAppointments] = useState([]);
 
-  useEffect(() => {
-    const userReviews = async () => {
-      try{
-        console.log(currentUser);
-        const response = await axios.get(`http://localhost:5173/reviews/${currentUser.uid}`);
-        // console.log(response.data);
-      }
-      catch(error){
-        console.error(error);
-      }
-    }
-    userReviews();
-  });
+  // useEffect(() => {
+  //   const userReviews = async () => {
+  //     try{
+  //       console.log("Userreviews");
+  //       const response = await axios.get(`http://localhost:5173/reviews/${currentUser.uid}`);
+  //       // console.log(response.data);
+  //     }
+  //     catch(error){
+  //       console.log("Get userReviews");
+  //       console.error(error);
+  //     }
+  //   }
+  //   userReviews();
+  // });
     
   const [loading, setLoading] = useState(false);
 
@@ -149,7 +150,7 @@ function TherapistBio({ bio, specialty, price, overallRating, reviews}) {
         const fetchedAppointments = responseMeeting.data;
         setAppointments(fetchedAppointments); //all appointments
       } catch (e) {
-        console.log("yo");
+        console.log("fetchData Therapist Bio");
         console.log(e);
       }
     };
@@ -220,7 +221,7 @@ function TherapistBio({ bio, specialty, price, overallRating, reviews}) {
     if (Appointments) {
       const currentDate = dayjs();
       const formatDate = currentDate.format("h:mm A");
-      console.group(formatDate)
+      // console.group(formatDate)
       const filteredAppointments = Appointments.filter((appointment) => {
         // Extracting the date and time from the appointment string
         const appointmentDateTime = dayjs(appointment.time);
@@ -374,17 +375,17 @@ function TherapistBio({ bio, specialty, price, overallRating, reviews}) {
                 <div>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DateCalendar
-                      defaultValue={dayjs()}
+                      defaultValue={selectedDate}
                       onChange={(newValue) => setSelectedDate(newValue)}
                       minDate={dayjs().startOf("month")}
                       maxDate={dayjs().add(1, "month").endOf("month")}
                     />
                   </LocalizationProvider>
                 </div>
-                <div>{selectedDate.$d.toString()}</div>
+
               </div>
 
-              <div className="right-section-header">
+              {/* <div className="right-section-header">
                 {" "}
                 Upcoming Appointments{" "}
               </div>
@@ -413,11 +414,10 @@ function TherapistBio({ bio, specialty, price, overallRating, reviews}) {
                           Cancel Meeting
                         </Button>
                       </Typography>
-                      {/* Add additional details about the appointment if needed */}
                     </div>
                   ))}
                 </div>
-              )}
+              )} */}
               <div className="right-section-header"> Future Appointments </div>
               {futureAppointments.length > 0 ? (
                 <div>
