@@ -7,7 +7,7 @@ import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import "../matching.css";
-import BasicSearch from './BasicSearch';
+import BasicSearchInTherapistForPatientViewInTherapistView from './BasicSearchInTherapistForPatientViewInTherapistView';
 import AutoSearch from './AutoSearch';
 import Loading from '../loading/Loading';
 import BuildCard from './BuildCard';
@@ -90,41 +90,42 @@ function Couple_Matching() {
             container
             direction="row"
             xs={12}
-            sm={8}
-          >
-            <FormControl sx={{ m: 1, minWidth: "95%" }} size='small'>
-              <TextField
-                select
-                value={selectedTopic}
-                id="selectTopic"
-                label="Couple Therapy Topics"
-                onChange={(e) => setSelectedTopic(e.target.value)}
-                InputProps={{ // Adding InputProps prop to customize input styles
-                  style: { color: '#008f72' } // Change color here
-                }}
-                InputLabelProps={{ // Adding InputLabelProps prop to customize label styles
-                  style: { color: '#008f72', } // Change color here
-                }}
-                sx={{
-                  [`& fieldset`]: {
-                    borderRadius: 10,
-                    color: '#008f72',
-                    borderColor: '#008f72',
-                  }
-                }}
-              >
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="">Couple Therapy Topics</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Difficulty in communication, crisis">Difficulty in communication, crisis</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Intimate Relations">Intimate Relations</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Breakup">Breakup</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Emotional abuse, abusive behavior">Emotional abuse, abusive behavior</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Child-rearing practices">Child-rearing practices</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Betrayal">Betrayal</MenuItem>
-              </TextField>
-            </FormControl>
+            sm={10}
+          > 
+            <Grid item xs={12} sm={2}>
+              <FormControl sx={{ m: 1, minWidth: "95%" }} size='small'>
+                <TextField
+                  select
+                  value={selectedTopic}
+                  id="selectTopic"
+                  label="Couple Therapy Topics"
+                  onChange={(e) => setSelectedTopic(e.target.value)}
+                  InputProps={{ // Adding InputProps prop to customize input styles
+                    style: { color: '#008f72' } // Change color here
+                  }}
+                  InputLabelProps={{ // Adding InputLabelProps prop to customize label styles
+                    style: { color: '#008f72', } // Change color here
+                  }}
+                  sx={{
+                    [`& fieldset`]: {
+                      borderRadius: 10,
+                      color: '#008f72',
+                      borderColor: '#008f72',
+                    }
+                  }}
+                >
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="">Couple Therapy Topics</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Difficulty in communication, crisis">Difficulty in communication, crisis</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Intimate Relations">Intimate Relations</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Breakup">Breakup</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Emotional abuse, abusive behavior">Emotional abuse, abusive behavior</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Child-rearing practices">Child-rearing practices</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Betrayal">Betrayal</MenuItem>
+                </TextField>
+              </FormControl>
+            </Grid>
 
-
-            <BasicSearch
+            <BasicSearchInTherapistForPatientViewInTherapistView
               selectedApproach={selectedApproach} setSelectedApproach={setSelectedApproach}
               selectedGender={selectedGender} setSelectedGender={setSelectedGender}
               selectedPrice={selectedPrice} setSelectedPrice={setSelectedPrice}
@@ -157,8 +158,9 @@ function Couple_Matching() {
           </Grid>
         ))
           :
-          !loading && <div className="no-therapist" style={{ alignItems: "center" }}>
-            <br /> <h2>No Therapists Found</h2>
+          !loading && 
+          <div className="no-therapist" style={{ alignItems: "center", height:"35vh"}}>
+            <h2 style={{padding:"10vh"}}>No Therapists Found</h2>
           </div>
         }
       </Grid>

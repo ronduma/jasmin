@@ -118,8 +118,9 @@ function All_Matching() {
           </Grid>
         ))
           :
-          !loading && <div className="no-therapist" style={{ alignItems: "center" }}>
-            <br /> <h2>No Therapists Found</h2>
+          !loading && 
+          <div className="no-therapist" style={{ alignItems: "center", height:"35vh"}}>
+            <h2 style={{padding:"10vh"}}>No Therapists Found</h2>
           </div>
         }
       </Grid>

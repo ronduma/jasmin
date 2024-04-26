@@ -81,7 +81,7 @@ function Personal_Matching() {
     <ThemeProvider theme={theme}>
       <div>
         <div className="matching-container">
-          <div className="matching-category-choice" style={{ marginLeft: "2vw" }}>Couple Therapy</div>
+          <div className="matching-category-choice" style={{ marginLeft: "2vw" }}>Personal Therapy</div>
         </div>
         <Grid
           container
@@ -93,141 +93,136 @@ function Personal_Matching() {
             xs={12}
             sm={8}
           >
-            <FormControl sx={{ m: 1, width: "95%" }} size='small'>
-              <TextField
-                select
-                value={selectedYourself}
-                id="selectYourself"
-                label="Relationship With Yourself"
-                onChange={(e) => setYourself(e.target.value)}
-                InputProps={{ // Adding InputProps prop to customize input styles
-                  style: { color: '#008f72' } // Change color here
-                }}
-                InputLabelProps={{ // Adding InputLabelProps prop to customize label styles
-                  style: { color: '#008f72' } // Change color here
-                }}
-                sx={{
-                  [`& fieldset`]: {
-                    borderRadius: 10,
-                    color: '#008f72',
-                    borderColor: '#008f72',
-                  }
-                }}
-              >
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value=""><em>Relationship With Yourself Topics</em></MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Anxiety">Anxiety</MenuItem >
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Bipolar Disorder">Bipolar Disorder</MenuItem >
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Borderline Personality Disorder">Borderline Peronsality Disorder</MenuItem >
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Chemicals">Chemicals</MenuItem >
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Depression">Depression</MenuItem >
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Fatigue">Fatigue</MenuItem >
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Food Attitude">Food Attitude</MenuItem >
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Irritability">Irritability</MenuItem >
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Loneliness">Loneliness</MenuItem >
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Obsessive thoughts and rituals">Obsessive thoughts and rituals</MenuItem >
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Panic attacks">Panic attacks</MenuItem >
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Psychosomatics">Psychosomatics</MenuItem >
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Self-esteem">Self-esteem</MenuItem >
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Suicide attempts">Suicide attempts</MenuItem >
-              </TextField>
-            </FormControl>
-
-            <FormControl sx={{ m: 1, width: "95%" }} size='small'>
-              <TextField
-                select
-                id="selectOthers"
-                label="Relationship With Others"
-                value={selectedOthers}
-                onChange={(e) => setOthers(e.target.value)}
-                InputProps={{ // Adding InputProps prop to customize input styles
-                  style: { color: '#008f72' } // Change color here
-                }}
-                InputLabelProps={{ // Adding InputLabelProps prop to customize label styles
-                  style: { color: '#008f72' } // Change color here
-                }}
-                sx={{
-                  [`& fieldset`]: {
-                    borderRadius: 10,
-                    color: '#008f72',
-                    borderColor: '#008f72',
-                  }
-                }}
-              >
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value=""><em>Relationships with Others</em></MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Romantic relationship">Romantic relationship</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Relationship issues">Relationship issues</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Sexual relations">Sexual relations</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Codependency">Codependency</MenuItem>
-              </TextField>
-            </FormControl>
-
-            <FormControl sx={{ m: 1, width: "95%" }}>
-              <TextField
-                select
-                id="selectDevelopment"
-                label="Personal and Professional development"
-                value={selectedDevelopment}
-                onChange={(e) => setDevelopment(e.target.value)}
-                InputProps={{ // Adding InputProps prop to customize input styles
-                  style: { color: '#008f72' } // Change color here
-                }}
-                InputLabelProps={{ // Adding InputLabelProps prop to customize label styles
-                  style: { color: '#008f72' } // Change color here
-                }}
-                sx={{
-                  [`& fieldset`]: {
-                    borderRadius: 10,
-                    color: '#008f72',
-                    borderColor: '#008f72',
-                  }
-                }}
-              >
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value=""><em>Personal and Professional development</em></MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Self-determination, job search">Self-determination, job search</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Burnout">Burnout</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Procrastination">Procrastination</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Attitude towards money">Attitude towards money</MenuItem>
-              </TextField>
-            </FormControl>
-
-
-            <FormControl sx={{ m: 1, width: "95%" }} size='small'>
-              <TextField
-                select
-                id="selectCondition"
-                label="New Living Conditions"
-                value={selectedConditions}
-                onChange={(e) => setConditions(e.target.value)}
-                InputProps={{ // Adding InputProps prop to customize input styles
-                  style: { color: '#008f72' } // Change color here
-                }}
-                InputLabelProps={{ // Adding InputLabelProps prop to customize label styles
-                  style: { color: '#008f72' } // Change color here
-                }}
-                sx={{
-                  [`& fieldset`]: {
-                    borderRadius: 10,
-                    color: '#008f72',
-                    borderColor: '#008f72',
-                  }
-                }}
-              >
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value=""><em>New Living Conditions</em></MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Adaptation, emigration">Adaptation, emigration</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Grief">Grief</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Disease diagnosis">Disease diagnosis</MenuItem>
-                <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="PTSD">PTSD</MenuItem>
-              </TextField>
-            </FormControl>
-
-
-
-            <BasicSearch
-              selectedApproach={selectedApproach} setSelectedApproach={setSelectedApproach}
-              selectedGender={selectedGender} setSelectedGender={setSelectedGender}
-              selectedPrice={selectedPrice} setSelectedPrice={setSelectedPrice}
-              selectedSort={selectedSort} setSelectedSort={setSelectedSort}
-            />
+            <Grid item xs={12} sm={3}>
+              <FormControl sx={{ m: 1, width: "95%" }} size='small'>
+                <TextField
+                  select
+                  value={selectedYourself}
+                  id="selectYourself"
+                  label="Relationship With Yourself"
+                  onChange={(e) => setYourself(e.target.value)}
+                  InputProps={{ // Adding InputProps prop to customize input styles
+                    style: { color: '#008f72' } // Change color here
+                  }}
+                  InputLabelProps={{ // Adding InputLabelProps prop to customize label styles
+                    style: { color: '#008f72' } // Change color here
+                  }}
+                  sx={{
+                    [`& fieldset`]: {
+                      borderRadius: 10,
+                      color: '#008f72',
+                      borderColor: '#008f72',
+                    }
+                  }}
+                >
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value=""><em>Relationship With Yourself Topics</em></MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Anxiety">Anxiety</MenuItem >
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Bipolar Disorder">Bipolar Disorder</MenuItem >
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Borderline Personality Disorder">Borderline Peronsality Disorder</MenuItem >
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Chemicals">Chemicals</MenuItem >
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Depression">Depression</MenuItem >
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Fatigue">Fatigue</MenuItem >
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Food Attitude">Food Attitude</MenuItem >
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Irritability">Irritability</MenuItem >
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Loneliness">Loneliness</MenuItem >
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Obsessive thoughts and rituals">Obsessive thoughts and rituals</MenuItem >
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Panic attacks">Panic attacks</MenuItem >
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Psychosomatics">Psychosomatics</MenuItem >
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Self-esteem">Self-esteem</MenuItem >
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Suicide attempts">Suicide attempts</MenuItem >
+                </TextField>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={3}>
+              <FormControl sx={{ m: 1, width: "95%" }} size='small'>
+                <TextField
+                  select
+                  id="selectOthers"
+                  label="Relationship With Others"
+                  value={selectedOthers}
+                  onChange={(e) => setOthers(e.target.value)}
+                  InputProps={{ // Adding InputProps prop to customize input styles
+                    style: { color: '#008f72' } // Change color here
+                  }}
+                  InputLabelProps={{ // Adding InputLabelProps prop to customize label styles
+                    style: { color: '#008f72' } // Change color here
+                  }}
+                  sx={{
+                    [`& fieldset`]: {
+                      borderRadius: 10,
+                      color: '#008f72',
+                      borderColor: '#008f72',
+                    }
+                  }}
+                >
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value=""><em>Relationships with Others</em></MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Romantic relationship">Romantic relationship</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Relationship issues">Relationship issues</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Sexual relations">Sexual relations</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Codependency">Codependency</MenuItem>
+                </TextField>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={3}>
+              <FormControl sx={{ m: 1, width: "95%" }}>
+                <TextField
+                  select
+                  id="selectDevelopment"
+                  label="Personal and Professional development"
+                  value={selectedDevelopment}
+                  onChange={(e) => setDevelopment(e.target.value)}
+                  InputProps={{ // Adding InputProps prop to customize input styles
+                    style: { color: '#008f72' } // Change color here
+                  }}
+                  InputLabelProps={{ // Adding InputLabelProps prop to customize label styles
+                    style: { color: '#008f72' } // Change color here
+                  }}
+                  sx={{
+                    [`& fieldset`]: {
+                      borderRadius: 10,
+                      color: '#008f72',
+                      borderColor: '#008f72',
+                    }
+                  }}
+                >
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value=""><em>Personal and Professional development</em></MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Self-determination, job search">Self-determination, job search</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Burnout">Burnout</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Procrastination">Procrastination</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Attitude towards money">Attitude towards money</MenuItem>
+                </TextField>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={3}>
+              <FormControl sx={{ m: 1, width: "95%" }} size='small'>
+                <TextField
+                  select
+                  id="selectCondition"
+                  label="New Living Conditions"
+                  value={selectedConditions}
+                  onChange={(e) => setConditions(e.target.value)}
+                  InputProps={{ // Adding InputProps prop to customize input styles
+                    style: { color: '#008f72' } // Change color here
+                  }}
+                  InputLabelProps={{ // Adding InputLabelProps prop to customize label styles
+                    style: { color: '#008f72' } // Change color here
+                  }}
+                  sx={{
+                    [`& fieldset`]: {
+                      borderRadius: 10,
+                      color: '#008f72',
+                      borderColor: '#008f72',
+                    }
+                  }}
+                >
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value=""><em>New Living Conditions</em></MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Adaptation, emigration">Adaptation, emigration</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Grief">Grief</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Disease diagnosis">Disease diagnosis</MenuItem>
+                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="PTSD">PTSD</MenuItem>
+                </TextField>
+              </FormControl>
+            </Grid>
           </Grid>
 
           <Grid
@@ -240,6 +235,22 @@ function Personal_Matching() {
             <AutoSearch therapistList={therapistList} searchValue={searchValue} setSearch={setSearch} />
 
           </Grid>
+
+          <Grid
+            container
+            direction="row"
+            xs={12}
+            sm={8}
+          >
+            <BasicSearch
+              selectedApproach={selectedApproach} setSelectedApproach={setSelectedApproach}
+              selectedGender={selectedGender} setSelectedGender={setSelectedGender}
+              selectedPrice={selectedPrice} setSelectedPrice={setSelectedPrice}
+              selectedSort={selectedSort} setSelectedSort={setSelectedSort}
+            />
+          </Grid>
+
+          
 
         </Grid>
       </div>
@@ -255,8 +266,9 @@ function Personal_Matching() {
           </Grid>
         ))
           :
-          !loading && <div className="no-therapist" style={{ alignItems: "center" }}>
-            <br /> <h2>No Therapists Found</h2>
+          !loading && 
+          <div className="no-therapist" style={{ alignItems: "center", height:"35vh"}}>
+            <h2 style={{padding:"10vh"}}>No Therapists Found</h2>
           </div>
         }
       </Grid>
