@@ -60,14 +60,14 @@ function TherapistBio({ bio, specialty, price, overallRating, reviews}) {
 
   if (price = "") setSelectPrice("");
   const [currRating, setRating] = useState(overallRating);
-  console.log(overallRating);
+  // console.log(overallRating);
   const [currReviews, setReviews] = useState(reviews);
   useEffect(() => {
     const userReviews = async () => {
       try{
-        console.log(currentUser);
+        // console.log(currentUser);
         const response = await axios.get(`http://localhost:5173/reviews/${currentUser.uid}`);
-        console.log(response.data);
+        // console.log(response.data);
       }
       catch(error){
         console.error(error);
