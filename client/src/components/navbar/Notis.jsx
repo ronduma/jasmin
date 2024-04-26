@@ -13,7 +13,7 @@ import axios from 'axios';
 const Notis = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const { notifications, setNotifications, unreadNotifications, setUnreadNotifications, markAllNotificationsAsRead } = useContext(NotificationContext);
-  
+
   const handleClick = (event) => {
     event.preventDefault();
     if (unreadNotifications > 0) markAllNotificationsAsRead();
@@ -49,8 +49,8 @@ const Notis = () => {
         }}
       >
         <List style={{ maxHeight: '200px', overflow: 'auto' }}>
-          {notifications.length > 0 ?
-            notifications.map((notification, index) => (
+          {notifications && notifications.length > 0 ?
+            notifications.reverse().map((notification, index) => (
               <ListItem key={index}>
                 <ListItemText primary={notification} />
               </ListItem>
