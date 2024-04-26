@@ -614,7 +614,7 @@ const match = async (currentUserID, TherapistID) => {
   }
   // Therapist needs to confirm on their side later
   else {
-    throw" 'THERAPIST Acc can't match with a patient '"
+    throw" therapist account can't match/unmatch with a patient (to be done)"
   }
 }
 
