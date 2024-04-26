@@ -49,8 +49,8 @@ const Notis = () => {
         }}
       >
         <List style={{ maxHeight: '200px', overflow: 'auto' }}>
-          {notifications.length > 0 ?
-            notifications.map((notification, index) => (
+          {notifications && notifications.length > 0 ?
+            notifications.reverse().map((notification, index) => (
               <ListItem key={index}>
                 <ListItemText primary={notification} />
               </ListItem>
