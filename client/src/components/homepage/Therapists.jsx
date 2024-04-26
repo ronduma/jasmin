@@ -10,33 +10,33 @@ import StarIcon from '@mui/icons-material/Star';
 // NOTE: these are for demo purposes, to be populated with backend eventually
 const therapists = [
   { url: "/imgs/homepage/therapists/img1.png",
-    id: "voWEWkQP5ueby8os2GzZOXZynLz1",
-    first_name: "Colleen",
-    last_name: "Que",
+    id: "96KMiMPEaPRapWxQ2hYxNRb2yml1",
+    first_name: "Mia",
+    last_name: "Johnson",
     details: ["Personal therapy", "Family therapy", "10+ years"]
   },
   { url: "/imgs/homepage/therapists/img2.png",
-    id: "v7AB7BMoLQg5AEbncJWthZqnps43",
-    first_name: "Fenella",
-    last_name: "LaChica",
+    id: "OFnq6qDYiVWC0xlJesz5k1Za3Tl1",
+    first_name: "Jae",
+    last_name: "Jang",
     details: ["Personal therapy", "Teen therapy", "15 years"]
   },
   { url: "/imgs/homepage/therapists/img3.png",
-    id: "XpKUF6UmLXVmXAVEOfct0olsUKn2",
-    first_name: "Dr.Bishawjit",
-    last_name: "Saha",
+    id: "6pH96WrkQ2OPEwgSwGHcBmiGaXo1",
+    first_name: "Fenella",
+    last_name: "LaChica",
     details: ["Personal therapy", "Teen therapy", "5 years"]
   },
   { url: "/imgs/homepage/therapists/img4.png",
-    id: "YgDUKFb5HEdgVVLzvAggO6Am5BG2",
-    first_name: "Jae",
-    last_name: "Jang",
+    id: "YZNzQ4CcSISaNXri8kq5jG8aRkG2",
+    first_name: "Max",
+    last_name: "Smith",
     details: ["Personal therapy", "Family therapy", "5 years"]
   },
   { url: "/imgs/homepage/therapists/img5.png",
-    id: "4C1RppNb95NWtK8mUBHDIS1BFtP2",
+    id: "xoV19CppL2NELdP1uq0QKRMPzGX2",
     first_name: "Ron",
-    last_name: "Dumalagan",
+    last_name: "Duma",
     details: ["Personal therapy", "Family therapy", "10+ years"]
   }
 ];
