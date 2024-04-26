@@ -73,7 +73,7 @@ function App() {
                   <Route path='/specialist' element={<Specialist />} />
                   <Route path='/privacy_policy' element={<Privacy />} />
                   <Route path='/video_chat' element={<Video />} />
-                  <Route path='/terms' element={<Terms />} />
+                  <Route path='/terms_conditions' element={<Terms />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
                 <Chat />

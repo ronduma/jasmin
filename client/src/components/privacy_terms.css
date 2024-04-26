@@ -1,0 +1,13 @@
+/* styles.css */
+.box {
+  background-color: #28806e;
+  /* Adjust the background color as needed */
+  padding: 2px;
+  /* Adjust the padding as needed */
+  border-radius: 20px;
+  /* Adjust the border radius as needed */
+  width: 80%;
+  /* Adjust the width as needed */
+  margin: 0 auto 10px;
+  /* Center horizontally and add bottom margin */
+}
