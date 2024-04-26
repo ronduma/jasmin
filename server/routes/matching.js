@@ -22,7 +22,7 @@ router.post('/', async (req, res) => {
       } catch (error) {
         // Handle errors
         console.error('Error matching users:', error);
-        return res.status(500).json({ success: false, message: 'Internal server error' });
+        return res.status(500).json({ success: false, message: error });
       }
 
 });

@@ -28,6 +28,7 @@ import PrivateRoute from './components/PrivateRoute';
 import Privacy from './components/Privacy';
 import Chat from './components/chat/Chat';
 import Video from './components/video/Video';
+import Terms from './components/Terms';
 import PatientFromTherapistView from './components/PatientViewFromTherapist';
 // import Feedback from './components/Feedback';
 import { VerificationProvider } from './context/VerificationContext';
@@ -72,6 +73,7 @@ function App() {
                   <Route path='/specialist' element={<Specialist />} />
                   <Route path='/privacy_policy' element={<Privacy />} />
                   <Route path='/video_chat' element={<Video />} />
+                  <Route path='/terms_conditions' element={<Terms />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
                 <Chat />

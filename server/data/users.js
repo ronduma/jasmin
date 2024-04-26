@@ -545,33 +545,54 @@ const checkUserifTherapist = async (userID) => {
 	return false;
 };
 
+
 const match = async (currentUserID, TherapistID) => {
   const userCollection = await users();
   const currentUser = await getUserById(currentUserID);
   const Therapist = await getUserById(TherapistID);
 
-  // Patient 
+
+  // Patient
   if (currentUser.isTherapist != true){
     // console.log(" BOTH Patient and Therapist Exist and Current User not Therapist")
 
-    //Update
+
+   
+    const user = await userCollection.findOne({ _id: currentUserID });
+    const prevTherapistID = user.therapist;
+
+
+    //Update for user
     const updatedUser = await userCollection.findOneAndUpdate(
-			{ _id: currentUserID },
-			{ $set: { therapist: TherapistID  } }
-		);
-  
+      { _id: currentUserID },
+      { $set: { therapist: TherapistID  } }
+    );
+ 
+    //update for therapist
     if (!Therapist.patients.includes(currentUserID)) {
       const updatedTherapist = await userCollection.findOneAndUpdate(
         { _id: TherapistID },
         { $push: { patients: currentUserID  } }
       );
 
-      // console.log("Patient should be added to therapist" + Therapist.patients)
+
+    //delete from the previous therapist
+    await userCollection.findOneAndUpdate(
+      { _id: prevTherapistID },
+      { $pull: { patients: currentUserID  } }
+    );
+    //delete all meetings with previous therapist
+    const meetingCollection = await meetings();
+    await meetingCollection.deleteMany({patient: currentUserID, therapist:prevTherapistID});
+
+
+
+
     }
     //already matched call unmatch
     else{
       // console.log("User already matched with therapist  " + currentUser.therapist);
-			
+     
       // console.log("Therapist should be removed from patient" + currentUser.therapist)
       const updatedUser = await userCollection.findOneAndUpdate(
         { _id: currentUserID },
@@ -582,19 +603,21 @@ const match = async (currentUserID, TherapistID) => {
         { $pull: { patients: currentUserID  } }
       );
       // console.log("Patient should be removed from therapist" + currentUser.therapist)
-	
-			//cancel all meetings
-			const meetingCollection = await meetings();
-			await meetingCollection.deleteMany({patient: currentUserID, therapist:TherapistID});
+ 
+      //cancel all meetings
+      const meetingCollection = await meetings();
+      await meetingCollection.deleteMany({patient: currentUserID, therapist:TherapistID});
+
 
       return currentUser;
     }
   }
   // Therapist needs to confirm on their side later
   else {
-    throw" 'THERAPIST Acc can't match with a patient '"
+    throw" therapist account can't match/unmatch with a patient (to be done)"
   }
 }
+
 
 // Chat
 const getTherapistByPatientID = async (patientid) => {
