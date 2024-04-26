@@ -149,15 +149,15 @@ function PatientView() {
               <div>Missing Data</div>
             )}
             <br />
-            {isMatched ? (
-              <Button variant="contained" onClick={handleClick}>
-                Unmatch with Patient
-              </Button>
+            {/* {isMatched ? (
+              // <Button variant="contained" onClick={handleClick}>
+              //   Unmatch with Patient
+              // </Button>
             ) : (
               <Button variant="contained" onClick={handleClick}>
                 Match
               </Button>
-            )}{" "}
+            )}{" "} */}
           </Paper>
         </Grid>
         <Grid item xs={12} md={6}>
