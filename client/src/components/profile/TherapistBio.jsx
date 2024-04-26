@@ -60,14 +60,17 @@ function TherapistBio({ bio, specialty, price, overallRating, reviews}) {
 
   if (price = "") setSelectPrice("");
   const [currRating, setRating] = useState(overallRating);
-  console.log(overallRating);
+  // console.log(overallRating);
   const [currReviews, setReviews] = useState(reviews);
+  const [pastAppointments, setPastAppointments] = useState([]);
+  const [futureAppointments, setFutureAppointments] = useState([]);
+
   useEffect(() => {
     const userReviews = async () => {
       try{
         console.log(currentUser);
         const response = await axios.get(`http://localhost:5173/reviews/${currentUser.uid}`);
-        console.log(response.data);
+        // console.log(response.data);
       }
       catch(error){
         console.error(error);
@@ -212,6 +215,49 @@ function TherapistBio({ bio, specialty, price, overallRating, reviews}) {
     setValue(newValue);
     console.log(value);
   };
+
+  useEffect(() => {
+    if (Appointments) {
+      const currentDate = dayjs();
+      const formatDate = currentDate.format("h:mm A");
+      console.group(formatDate)
+      const filteredAppointments = Appointments.filter((appointment) => {
+        // Extracting the date and time from the appointment string
+        const appointmentDateTime = dayjs(appointment.time);
+        const appointmentDateTimeFormated = dayjs(appointmentDateTime, "MM/DD/YYYY h:mm A");
+  
+        // Check if the appointment date is before the current date
+        if (appointmentDateTimeFormated.isBefore(currentDate, 'day')) {
+          return true;
+        }
+  
+        // If the appointment date is the same as the current date, check the time
+        if (appointmentDateTimeFormated.isSame(currentDate, 'day')) {
+          // Check if the appointment time is before the current time
+          return appointmentDateTimeFormated.isBefore(currentDate, 'minute');
+        }
+  
+        return false;
+      });
+      setPastAppointments(filteredAppointments);
+    }
+    
+  }, [Appointments]);
+
+  useEffect(() => {
+    if (Appointments) {
+      const currentDate = dayjs();
+      const filteredAppointments = Appointments.filter((appointment) => {
+        // Extracting the date and time from the appointment string
+        const dateTimeString = dayjs(appointment.time); // Assuming the date starts at index 20
+        const appointmentDateTime = dayjs(dateTimeString, "MM/DD/YYYY h:mm A");
+  
+        // Check if the appointment date is after the current date
+        return appointmentDateTime.isAfter(currentDate);
+      });
+      setFutureAppointments(filteredAppointments);
+    }
+  }, [Appointments]);
   
   return (
     <div>
@@ -330,6 +376,8 @@ function TherapistBio({ bio, specialty, price, overallRating, reviews}) {
                     <DateCalendar
                       defaultValue={dayjs()}
                       onChange={(newValue) => setSelectedDate(newValue)}
+                      minDate={dayjs().startOf("month")}
+                      maxDate={dayjs().add(1, "month").endOf("month")}
                     />
                   </LocalizationProvider>
                 </div>
@@ -369,6 +417,70 @@ function TherapistBio({ bio, specialty, price, overallRating, reviews}) {
                     </div>
                   ))}
                 </div>
+              )}
+              <div className="right-section-header"> Future Appointments </div>
+              {futureAppointments.length > 0 ? (
+                <div>
+                  {futureAppointments.map((appointment, index) => (
+                   <div key={index}>
+                   <Typography variant="body1">
+                     {appointment.time} with{" "}
+                     <Link to={`/patient/${appointment.patient}`}>
+                       {appointment.patientName}
+                     </Link>
+                     :{" "}
+                     <a href={appointment.hostRoomUrl} target="_blank">
+                       Host Meeting Link
+                     </a>
+                     <Button
+                       variant="contained"
+                       color="secondary"
+                       size="small"
+                       onClick={() => cancelAppointment(appointment)}
+                       style={{ marginLeft: "5px", marginBottom: "5px" }}
+                     >
+                       Cancel Meeting
+                     </Button>
+                   </Typography>
+                   {/* Add additional details about the appointment if needed */}
+                 </div>
+                  ))}
+                </div>
+              ) : (
+                <Typography>No future appointments.</Typography>
+              )}
+
+              {/* COLLEEN */}
+              <div className="right-section-header"> Past Appointments </div>
+              {pastAppointments.length > 0 ? (
+                <div>
+                  {pastAppointments.map((appointment, index) => (
+                    <div key={index}>
+                    <Typography variant="body1">
+                      {appointment.time} with{" "}
+                      <Link to={`/patient/${appointment.patient}`}>
+                        {appointment.patientName}
+                      </Link>
+                      :{" "}
+                      <a href={appointment.hostRoomUrl} target="_blank">
+                        Host Meeting Link
+                      </a>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        size="small"
+                        onClick={() => cancelAppointment(appointment)}
+                        style={{ marginLeft: "5px", marginBottom: "5px" }}
+                      >
+                        Cancel Meeting
+                      </Button>
+                    </Typography>
+                    {/* Add additional details about the appointment if needed */}
+                  </div>
+                  ))}
+                </div>
+              ) : (
+                <Typography>No past appointments.</Typography>
               )}
             </CustomTabPanel>
 
