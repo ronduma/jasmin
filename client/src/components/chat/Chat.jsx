@@ -116,9 +116,11 @@ const Chat = () => {
   const sendNotif = async (data) => {
     if (data){
       try {
+        console.log(data)
         const response = await axios.get(`http://localhost:5173/profile/notifications/${data}`);
         console.log(response.data)
         const currentUnread=response.data.unread
+        console.log(currentUnread)
         try {
           const response = await axios.put(`http://localhost:5173/profile/notifications/${data}`, { unread: currentUnread + 1, noti_str: [`Your therapist sent you a message.`] });
           console.log(response)

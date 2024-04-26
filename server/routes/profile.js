@@ -24,6 +24,7 @@ router.get("/:id", async (req, res) => {
 		// console.log("user:", userObject);
 		return res.status(200).json(userObject);
 	} catch (e) {
+		console.log("Route Get: profile/id")
 		console.log(e);
 		return res.status(400).json(e);
 	}
@@ -34,6 +35,7 @@ router.put("/", async (req, res) => {
 		let user = await users.updateUserInfo(req.body);
 		return res.status(200).json(user);
 	} catch (e) {
+		console.log("Route Put: profile")
 		console.log(e);
 		return res.status(400).json(e);
 	}
@@ -45,6 +47,7 @@ router.put("/getting-started", async (req, res) => {
 		return res.status(200).json(user);
 	} catch (e) {
 		console.log(e);
+		console.log("getting started")
 		return res.status(400).json(e);
 	}
 });
@@ -195,9 +198,12 @@ router.put("/notifications/:id", async (req, res) => {
 		const id = req.params.id;
 		const unread = req.body.unread;
 		const noti_str = req.body.noti_str;
+		console.log(id,unread, noti_str);
+		console.log("Notifications put");
 		const notifications = await users.updateNotifications(id, unread, noti_str);
 		return res.status(200).json(notifications);
 	} catch (error) {
+		console.log("Notifications put err");
 		return res.status(400).json(error);
 	}
 });

@@ -38,7 +38,7 @@ const createUser = async (uid, email) => {
 		overallRating: 0.0,
 		pdf_files: [],
 		price: null,
-		noti: [],
+		noti: {unread: 0, noti_str: []},
 	};
 
 	// console.log("inserting user:", user)
