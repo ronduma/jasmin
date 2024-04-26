@@ -64,8 +64,7 @@ function PatientView() {
           title: "Matched!",
           icon: "success",
         });
-      }
-      else{
+      } else {
         Swal.fire({
           title: "Unmatched!",
           icon: "success",
@@ -75,10 +74,13 @@ function PatientView() {
       // Handle error
       console.error("Error:", error);
       setLoading2(false);
-      Swal.fire({
-        title: "Error handling match!",
-        icon: "error",
-      });
+      if (error.response) {
+        Swal.fire({
+          title: "Error handling match!",
+          icon: "error",
+          text: error.response.data.message,
+        });
+      }
     }
   };
 
