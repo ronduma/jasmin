@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';;
-import "../../App.css";
 import axios from 'axios';
-import { Grid } from '@mui/material';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import TextField from '@mui/material/TextField';
+import { Grid } from '@mui/material';;
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Autocomplete from '@mui/material/Autocomplete';
+import "../../App.css";
 import "../matching.css";
 import Loading from '../loading/Loading';
 import BuildCard from './BuildCard';
+import AutoSearch from './AutoSearch';
+import BasicSearch from './BasicSearch';
 
 function All_Matching() {
   const [searchValue, setSearch] = useState("");
@@ -87,126 +85,12 @@ function All_Matching() {
             xs={12}
             sm={8}
           >
-            <Grid item xs={12} sm={3}>
-              <FormControl sx={{ m: 1, width: "95%" }} size='small'>
-                <TextField
-                  select
-                  value={selectedApproach}
-                  id="selectApproach"
-                  label="Therapeutic Approaches"
-                  onChange={(e) => setSelectedApproach(e.target.value)}
-                  InputProps={{ // Adding InputProps prop to customize input styles
-                    style: { color: '#008f72' } // Change color here
-                  }}
-                  InputLabelProps={{ // Adding InputLabelProps prop to customize label styles
-                    style: { color: '#008f72', width: "120px" } // Change color here
-                  }}
-                  sx={{
-                    [`& fieldset`]: {
-                      borderRadius: 10,
-                      color: '#008f72',
-                      borderColor: '#008f72',
-                    }
-                  }}
-                >
-                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="">Therapeutic Approaches</MenuItem>
-                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Gestalt">Gestalt</MenuItem>
-                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Existential">Existential</MenuItem>
-                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Client-centered therapy">Client-centered therapy</MenuItem>
-                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="CBT (Cognitive Behavioral Therapy)">CBT (Cognitive Behavioral Therapy)</MenuItem>
-                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Positive psychotherapy">Positive psychotherapy</MenuItem>
-                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Psychoanalysis">Psychoanalysis</MenuItem>
-                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Schema therapy">Schema therapy</MenuItem>
-                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Transactional Analysis">Transactional Analysis</MenuItem>
-                </TextField>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={3}>
-              <FormControl sx={{ m: 1, width: "95%" }} size='small'>
-                <TextField
-                  select
-                  value={selectedGender}
-                  id='selectGender'
-                  label="Gender"
-                  onChange={(e) => setSelectedGender(e.target.value)}
-                  InputProps={{ // Adding InputProps prop to customize input styles
-                    style: { color: '#008f72' } // Change color here
-                  }}
-                  InputLabelProps={{ // Adding InputLabelProps prop to customize label styles
-                    style: { color: '#008f72' } // Change color here
-                  }}
-                  sx={{
-                    [`& fieldset`]: {
-                      borderRadius: 10,
-                      color: '#008f72',
-                      borderColor: '#008f72',
-                    }
-                  }}
-                >
-                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="">Select Gender</MenuItem>
-                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Male">Male</MenuItem>
-                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Female">Female</MenuItem>
-                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Other">Other</MenuItem>
-                </TextField>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={3}>
-              <FormControl sx={{ m: 1, width: "95%" }} size='small'>
-                <TextField
-                  select
-                  value={selectedPrice}
-                  id="selectPrice"
-                  label='Price'
-                  onChange={(e) => setSelectedPrice(e.target.value)}
-                  InputProps={{ // Adding InputProps prop to customize input styles
-                    style: { color: '#008f72' } // Change color here
-                  }}
-                  InputLabelProps={{ // Adding InputLabelProps prop to customize label styles
-                    style: { color: '#008f72' } // Change color here
-                  }}
-                  sx={{
-                    [`& fieldset`]: {
-                      borderRadius: 10,
-                      color: '#008f72',
-                      borderColor: '#008f72',
-                    }
-                  }}
-                >
-                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="">Select Price</MenuItem>
-                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Low">$ - Low</MenuItem>
-                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="Medium">$$ - Medium</MenuItem>
-                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="High">$$$ - High</MenuItem>
-                </TextField>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={3}>
-              <FormControl sx={{ m: 1, width: "95%" }} size='small'>
-                <TextField
-                  select
-                  value={selectedSort}
-                  id="selectSort"
-                  label="Sort By"
-                  onChange={(e) => setSelectedSort(e.target.value)}
-                  InputProps={{ // Adding InputProps prop to customize input styles
-                    style: { color: '#008f72' } // Change color here
-                  }}
-                  InputLabelProps={{ // Adding InputLabelProps prop to customize label styles
-                    style: { color: '#008f72' } // Change color here
-                  }}
-                  sx={{
-                    [`& fieldset`]: {
-                      borderRadius: 10,
-                      color: '#008f72',
-                      borderColor: '#008f72',
-                    }
-                  }}
-                >
-                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="">No sorting</MenuItem>
-                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="first_name_order">Order By First Name</MenuItem>
-                  <MenuItem sx={{ '&:hover': { backgroundColor: 'rgba(120, 219, 199, 0.4)' } }} value="last_name_order">Order By Last Name</MenuItem>
-                </TextField>
-              </FormControl>
-            </Grid>
+            <BasicSearch
+              selectedApproach={selectedApproach} setSelectedApproach={setSelectedApproach}
+              selectedGender={selectedGender} setSelectedGender={setSelectedGender}
+              selectedPrice={selectedPrice} setSelectedPrice={setSelectedPrice}
+              selectedSort={selectedSort} setSelectedSort={setSelectedSort}
+            />
           </Grid>
 
           <Grid
@@ -216,46 +100,8 @@ function All_Matching() {
             xs={12}
             sm={1}
           >
-            <Grid item>
-              <FormControl sx={{ m: 1, width: '98%' }} size='small'>
-                <Autocomplete
-                  freeSolo
-                  id="searchTherapist"
-                  disableClearable
-                  options={therapistList ? therapistList.map(option => option.firstName + " " + option.lastName) : []}
-                  getOptionLabel={(option) => option}
-                  renderInput={(params) => (
-                    <TextField
-                      sx={{
-                        // m: 1,
-                        // width: 300,
-                        [`& fieldset`]: {
-                          borderRadius: 10,
-                          color: '#008f72',
-                          borderColor: '#008f72',
-                        }
-                      }}
-                      {...params}
-                      label="Search Therapist"
-                      InputProps={{
-                        ...params.InputProps,
-                        type: 'search',
-                        style: { color: '#008f72' } // Change color here
-                      }}
-                      InputLabelProps={{ // Adding InputLabelProps prop to customize label styles
-                        style: { color: '#008f72' } // Change color here
-                      }}
+            <AutoSearch therapistList={therapistList} searchValue={searchValue} setSearch={setSearch} />
 
-                    />
-                  )}
-                  value={searchValue}
-                  onChange={(event, newValue) => {
-                    setSearch(newValue);
-                  }}
-                >
-                </Autocomplete>
-              </FormControl>
-            </Grid>
           </Grid>
         </Grid>
       </div>
@@ -266,11 +112,16 @@ function All_Matching() {
         justifyContent="center"
         spacing={4}
       >
-        {therapists && therapists.map((therapist) => (
+        {therapists && therapists.length > 0 ? therapists.map((therapist) => (
           <Grid item xs={8} sm={6} md={4} lg={3}>
             <BuildCard therapist={therapist} />
           </Grid>
-        ))}
+        ))
+          :
+          !loading && <div className="no-therapist" style={{ alignItems: "center" }}>
+            <br /> <h2>No Therapists Found</h2>
+          </div>
+        }
       </Grid>
     </ThemeProvider>
   );
