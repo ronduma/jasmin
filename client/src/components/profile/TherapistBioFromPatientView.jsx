@@ -128,10 +128,14 @@ function TherapistBioFromPatientView({
         } catch (error) {
           console.error("Error canceling appointment:", error);
           setLoading(false);
-          Swal.fire({
-            title: "Error canceling meeting",
-            icon: "error",
-          });
+          if (error.response) {
+            Swal.fire({
+              title: "Error canceling appointment!",
+              icon: "error",
+              text: error.response.data.message,
+            });
+          }
+        
         }
       });
 
@@ -142,11 +146,17 @@ function TherapistBioFromPatientView({
     } catch (error) {
       console.error("Error canceling appointment:", error);
       setLoading(false);
-      Swal.fire({
-        title: "Error canceling meeting",
-        icon: "error",
-      });
+ 
+
+      if (error.response) {
+        Swal.fire({
+          title: "Error canceling appointment",
+          icon: "error",
+          text: error.response.data.message,
+        });
+      }
     }
+    
   };
 
   const handleChange = (event, newValue) => {
@@ -380,11 +390,15 @@ function TherapistBioFromPatientView({
       // Handle error
       console.error("Error:", error);
       setLoading(false);
-      Swal.fire({
-        title: "Time Selection Unsuccessful",
-        icon: "error",
-      });
+      if (error.response) {
+        Swal.fire({
+          title: "Time selection unsuccessful!",
+          icon: "error",
+          text: error.response.data.message,
+        });
+      }
     }
+    
   };
 
   const handleInput = async (InputRating, ReviewTitle, Review) => {
